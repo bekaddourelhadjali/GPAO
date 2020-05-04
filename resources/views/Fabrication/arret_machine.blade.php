@@ -1,0 +1,567 @@
+@extends('layouts.app')
+
+@section('style')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        /*input[type="time"]::-webkit-inner-spin-button {*/
+            /*-webkit-appearance: none;*/
+        /*}*/
+
+        span.valeur{
+            color:red;
+        }
+        #operatuersTable td{
+            text-align: left ;
+        }
+
+        .small-td input{
+            width: 18px;
+            height: 18px;
+        }
+         td{
+            width: 20%;
+             vertical-align: middle !important;
+             text-align: center;
+        }
+        .input-title  {
+            text-align: center;
+            word-break: keep-all;
+            font-size: 16px;
+            font-weight: bold ;
+        }
+        .input-text{
+                padding: 0;
+        }
+        .col-head{
+                padding:5px;
+        }
+        .table{
+            color : #000;
+        }
+        .table {
+            table-layout: auto;
+            width: 100%;
+        }
+        .table td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        table button
+         ,table i.fa{
+             font-size: 20px;
+             border:none;
+             background-color: rgba(0,0,0,0);
+         }
+        .operateurDelete{
+            font-size: 20px;
+            border:none;
+            background-color: rgba(0,0,0,0);
+        }
+
+    </style>
+    @endsection
+@section('content')
+<div class="container">
+    <section>
+        <div class="row ">
+            <div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">
+                <div class="row ">
+                    <img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">
+                    <div class="col-10">
+                        <h1>Project : {{$projet->Nom}}</h1>
+                        <h5>Client: {{$projet->Customer}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-xl-4 col-lg-4">
+                <div class="col-12">Information projet:</div>
+                <div class="col-12"><span class="valeur">   <span class="valeur"> Epais: {{$rapport->details->Epaisseur}} mm -Diam : {{$rapport->details->Diametre}}mm</span></span></div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-xl-3 col-lg-3">
+                <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
+                <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-xl-2 col-lg-2">
+                <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span> </div>
+                <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
+            </div>
+            <div class="col-sm-12 col-md-8 col-xl-3 col-lg-3">
+                <div class="row">Agent: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}</span></div>
+                <div class="row">Machine: &nbsp; <span class="valeur">{{$rapport->Machine}}</span></div>
+            </div>
+
+        </div>
+    </section>
+    <section>
+        {{--<form   method="post" @if(isset($selectedArret))action="{{route('arret_machine.update',['id'=>$selectedArret->id])}}"--}}
+              {{--@else action="{{route('arret_machine.store')}}"   @endif >--}}
+        <form id="arretForm">
+            @csrf()
+
+            <input name="id" type="hidden" id="id" value="">
+            <input type="hidden" name="Pid" id="Pid" value="{{$rapport->Pid}}">
+            <input type="hidden" name="Did" id="Did" value="{{$rapport->Did}}">
+            <input type="hidden" name="NumRap" id="NumRap" value="{{$rapport->Numero}}">
+            <input type="hidden" name="Machine" id="Machine" value="{{$rapport->Machine}}">
+   <div class="row">
+       <div class="col-3  col-head"  >
+           <div class="row">
+               <div class="col-12 input-title text-primary ">TETE DE SOUDAGE INTERIEUR</div>
+               <div class="col-6"><input class="form-control" type="text"  value="0"  id="flux_int" name="flux_int"></div>
+               <div class="col-6"><input class="form-control" type="text"   value="0"    id="fil_int" name="fil_int"></div>
+           </div>
+       </div>
+       <div class="col-3 col-head">
+           <div class="row">
+               <div class="col-12 input-title text-primary ">TETE DE SOUDAGE EXTERIEUR</div>
+               <div class="col-6"><input class="form-control" type="text"   value="0"   id="flux_ext" name="flux_ext"></div>
+               <div class="col-6"><input class="form-control" type="text"  value="0"     id="fil_ext" name="fil_ext"></div>
+           </div></div>
+       <div class="col-2 col-head">
+           <div class="col-12 input-title text-primary ">V.SOUDAGE</div>
+           <div class="col-12"><input class="form-control" type="text"   value="0"   id="v_soudage" name="v_soudage"></div>
+       </div>
+       <div class="col-2 col-head">
+           <div class="col-12 input-title text-primary ">LARGEUR CISAIge</div>
+           <div class="col-12"><input class="form-control" type="text" value="0"   id="largeur" name="largeur"></div>
+       </div>
+       <div class="col-1 col-head">
+               <div class="col-12 input-title text-primary ">FLUX</div>
+               <div class="col-12 input-text"><input class="form-control"  type="text"  id="flux" name="flux"></div>
+       </div>
+       <div class="col-1 col-head">
+               <div class="col-12 input-title text-primary">FIL</div>
+               <div class="col-12 input-text"><input class="form-control" type="text"  id="fil" name="fil"></div>
+
+       </div>
+
+      </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-2">
+                <div class="form-group row">
+                    <label class="col-12" for="type_arret">Type Arret</label>
+                    <select class="form-control col-10" id="type_arret" name="type_arret">
+                        <option value="panne" >Panne</option>
+                        <option value="arret"  selected >Arret</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                <div class="col-6">
+                <div class="form-group  ">
+                    <label class="col-12" for="du" >Du</label>
+                    <input class="col-12 form-control" type="time" id="du" name="du"   value="00:00"   required >
+                </div></div>
+                <div class="col-6">
+                <div class="form-group  ">
+                    <label class="col-12" for="au">Au</label>
+                    <input class="col-12 form-control" type="time" id="au" name="au"      value="00:00"    required>
+                </div>
+                </div>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="form-group row">
+                    <label class="col-12" for="duree">Durée(m)</label>
+                    <input class="col-10 form-control" type="text" id="duree" name="duree"  value=""      required>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-12" for="cause">Cause</label>
+                    <input class="col-12 form-control" type="text" id="cause" name="cause"  value=""  required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <div class="form-group row">
+                    <label class="col-12" for="ndi">N°DI</label>
+                    <input class="col-10 form-control" type="text" id="ndi" name="ndi"   value="" >
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group row">
+                    <label class="col-12" for="obs">Obs</label>
+                    <input class="col-11 form-control" type="text" id="obs" name="obs" value=""   >
+                </div>
+            </div>
+            <div class="col-2 offset">
+                <div class="form-group row">
+                    <label class="col-12" for="relv">Relv_Compt</label>
+                    <input class="col-12 form-control" type="text" id="relv" name="relv"   value="" >
+                </div>
+            </div>
+            <div class="col-1 " id="annulerButton">
+                <div class="col-10">
+                    <label class="col-10"  > &nbsp;</label>
+                    <button type="reset"    class="btn btn-secondary" type="submit"> Annuler  </button></div>
+            </div>
+             <div class="col-3 "  >
+                     <div class="col-10"> <label class="col-12"  > &nbsp;</label>
+                     </div> <button class="col-10 btn btn-success offset-2" type="button" type="submit" id="ajouterPanne"  > Ajouter panne </button></div>
+            </div>
+
+
+
+    </form>
+        <hr>
+
+    <table class="table table-striped table-hover table-bordered" id="ArretTable">
+        <thead class="thead-dark">
+        <tr>
+            <th>Type Arret</th>
+            <th>Du</th>
+            <th>Au</th>
+            <th>Duree</th>
+            <th>Cause</th>
+            <th>N°DI</th>
+            <th>Obs</th>
+            <th>Relv_Compt</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @if(isset($arrets))
+            @foreach($arrets as $arret)
+            <tr id="arret{{$arret->id}}">
+                <td id="type{{$arret->id}}">{{$arret->TypeArret}}</td>
+                <td id="du{{$arret->id}}">{{$arret->Du}}</td>
+                <td id="au{{$arret->id}}">{{$arret->Au}}</td>
+                <td id="duree{{$arret->id}}">{{$arret->Durée}}</td>
+                <td id="cause{{$arret->id}}">{{$arret->Cause}}</td>
+                <td id="ndi{{$arret->id}}"> {{$arret->NDI}}</td>
+                <td id="obs{{$arret->id}}">{{$arret->Obs}}</td>
+                <td id="relv{{$arret->id}}">{{$arret->Relv_Compt}}</td>
+                <td>
+                    <button id="arret{{$arret->id}}Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>
+                    <button id="arret{{$arret->id}}Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>
+            </tr>
+            @endforeach
+        @endif
+        </tbody>
+    </table>
+    </section>
+    <section>
+    <div class="row">
+        <div class="col-4 offset-1">
+            <div class="form-group row">
+                {{--<form method="get" action="{{route('operateur')}}">--}}
+                    @csrf()
+                    <input type="hidden"  id="operateur_Pid" name="Pid" value="{{$rapport->Pid}}">
+                    <input type="hidden" id="operateur_Did" name="Did" value="{{$rapport->Did}}">
+                    <input type="hidden" id="operateur_NumRap" name="NumRap" value="{{$rapport->Numero}}">
+                <label class="col-12" for="operateurs">Operateurs</label>
+                <div class="input-group mb-3 col-12">
+                    <input type="text" class="form-control" placeholder="Nom d'operateur" id="operateur_Nom" name="Nom" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" id="OperateurSubmit" type="submit">Entrer</button>
+                    </div>
+                </div>
+                {{--</form>--}}
+                <table id="operatuersTable" class="table">
+                    @if(isset($operateurs))
+                        @foreach($operateurs as $operateur)
+                    <tr id="operateur{{$operateur->id}}"> <td>* {{$operateur->Nom}}</td>
+                    <td><button id="operateur{{$operateur->id}}Delete" class="operateurDelete text-danger" ><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                        @endforeach
+                        @endif
+                </table>
+            </div>
+
+        </div>
+        <div class="col-6 offset-1">
+            <div class="form-group row">
+                <label class="col-12" for="observation">Observation</label>
+                <textarea class="col-10 form-control" id="observation" name="observation"  rows="8" ></textarea>
+
+            </div>
+        </div>
+    </div>
+        <hr>
+    <div class="row">
+        <div class="col-2"> <a href="{{route('rapprod.show',['id'=>$rapport->Numero])}}" role="button" class="btn btn-primary">Retour</a></div>
+        <div class="col-2 offset-6"><button class="btn btn-warning">Quitter le rapport</button></div>
+        <div class="col-2"><button class="btn btn-success">Clôturer Rapport</button></div>
+    </div>
+
+    </section>
+    </div>
+
+
+    @endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('#annulerButton').hide();
+            addOperatorsListeners();
+            addArretsListeners();
+            $('#OperateurSubmit').click(function(e){
+    e.preventDefault();
+    $.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+        $.ajax({
+    url: "{{ url('/operateur')}}",
+    method: 'post',
+    data: {
+        _token :'{{csrf_token()}}',
+        Nom: $('#operateur_Nom').val(),
+        Pid: $('#operateur_Pid').val(),
+        Did: $('#operateur_Did').val(),
+        NumRap: $('#operateur_NumRap').val()
+    },
+    success: function(result){
+        $('#operatuersTable').append('<tr id="operateur'+result.operateur.id+'"><td>* '+result.operateur.Nom+
+               '</td><td><button id="operateur'+result.operateur.id+'Delete" class="operateurDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
+        addOperatorsListeners();
+    },
+    error: function(result){
+        alert("error");
+    }
+    });
+    });
+            function addOperatorsListeners(){
+                $('.operateurDelete').each(function(e){
+                    $(this).click(function(e){
+                        tr= $(this).parent().parent();
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url: "{{ url('/delete_operateur')}}",
+                            method: 'post',
+                            data: {
+                                _token :'{{csrf_token()}}',
+                                id:id
+                            },
+                            success: function(result){
+                                tr.remove();
+                            },
+                            error: function(result){
+                                alert("error");
+                            }
+                        });
+                    });
+                });
+            }
+
+            $("#au , #du").click(function(event){
+
+
+            if ($("#du").val() != "" && $("#au").val() != "" ) {
+                var du = parseTime($("#du").val());
+                var au = parseTime($("#au").val());
+                var auHours=au.getHours();
+                if (auHours  > du.getHours()) {
+
+                    $('#duree').val( (auHours - du.getHours()) * 60 + (au.getMinutes() - du.getMinutes()));
+                }
+                else {
+                    if (auHours == '00'){ auHours=24;
+                    $('#duree').val( ((auHours- du.getHours()) * 60 + (au.getMinutes() - du.getMinutes())));
+                    }
+                    else {
+                        $('#duree').val( ((auHours- du.getHours()) * 60 + (au.getMinutes() - du.getMinutes()))*-1);
+                    }
+                    }
+                    if(au.getHours()=='00' && du.getHours()=='00'){
+                        $('#duree').val( ( (au.getMinutes() - du.getMinutes())));
+                    }
+            }
+            });
+            function parseTime(cTime)
+            {
+                if (cTime == '') return null;
+                var d = new Date();
+                var time = cTime.match(/(\d+)(:(\d\d))?\s*(p?)/);
+                d.setHours( parseInt(time[1]) + ( ( parseInt(time[1]) < 12 && time[4] ) ? 12 : 0) );
+                d.setMinutes( parseInt(time[3]) || 0 );
+                d.setSeconds(0, 0);
+                return d;
+            }
+
+        $('#ajouterPanne').click(function(e){
+            if($('#arretForm')[0].checkValidity()) {  
+                const id = $('#id').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                e.preventDefault();
+                if ($('#ajouterPanne').html() !== ' Modifier panne ') {
+
+                    $.ajax({
+                        url: "{{ route('arret_machine.store')}}",
+                        method: 'post',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            Machine: $('#Machine').val(),
+                            Pid: $('#Pid').val(),
+                            Did: $('#Did').val(),
+                            NumRap: $('#NumRap').val(),
+                            type_arret: $('#type_arret').val(),
+                            du: $('#du').val(),
+                            au: $('#au').val(),
+                            duree: $('#duree').val(),
+                            cause: $('#cause').val(),
+                            ndi: $('#ndi').val(),
+                            obs: $('#obs').val(),
+                            relv: $('#relv').val(),
+                        },
+                        success: function (result) {
+
+
+                            $('#ArretTable').append('<tr id="arret' + result.arret.id + '">' +
+                                '<td id="type' + result.arret.id + '"> ' + result.arret.TypeArret + '</td>' +
+                                '<td id="du' + result.arret.id + '"> ' + result.arret.Du + '</td>' +
+                                '<td id="au' + result.arret.id + '"> ' + result.arret.Au + '</td>' +
+                                '<td id="duree' + result.arret.id + '"> ' + result.arret.Durée + '</td>' +
+                                '<td id="cause' + result.arret.id + '"> ' + result.arret.Cause + '</td>' +
+                                '<td id="ndi' + result.arret.id + '"> ' + result.arret.NDI + '</td>' +
+                                '<td id="obs' + result.arret.id + '"> ' + result.arret.Obs + '</td>' +
+                                '<td id="relv' + result.arret.id + '"> ' + result.arret.Relv_Compt + '</td>' +
+                                '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
+                                '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
+
+                            addArretsListeners();
+                        },
+                        error: function (result) {
+                            alert("error");
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "{{url('/arret_machine/')}}/" + id,
+                        method: 'post',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            id: id,
+                            _method: 'put',
+                            Machine: $('#Machine').val(),
+                            Pid: $('#Pid').val(),
+                            Did: $('#Did').val(),
+                            NumRap: $('#NumRap').val(),
+                            type_arret: $('#type_arret').val(),
+                            du: $('#du').val(),
+                            au: $('#au').val(),
+                            duree: $('#duree').val(),
+                            cause: $('#cause').val(),
+                            ndi: $('#ndi').val(),
+                            obs: $('#obs').val(),
+                            relv: $('#relv').val(),
+                        },
+                        success: function (result) {
+
+                            $('#ArretTable').find('#arret' + result.arret.id).html(
+                                '<td id="type' + result.arret.id + '"> ' + result.arret.TypeArret + '</td>' +
+                                '<td id="du' + result.arret.id + '"> ' + result.arret.Du + '</td>' +
+                                '<td id="au' + result.arret.id + '"> ' + result.arret.Au + '</td>' +
+                                '<td id="duree' + result.arret.id + '"> ' + result.arret.Durée + '</td>' +
+                                '<td id="cause' + result.arret.id + '"> ' + result.arret.Cause + '</td>' +
+                                '<td id="ndi' + result.arret.id + '"> ' + result.arret.NDI + '</td>' +
+                                '<td id="obs' + result.arret.id + '"> ' + result.arret.Obs + '</td>' +
+                                '<td id="relv' + result.arret.id + '"> ' + result.arret.Relv_Compt + '</td>' +
+                                '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
+                                '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td>');
+                            $('#ajouterPanne').html(' Ajouter panne ');
+                            $('#annulerButton').hide();
+                            $('#arretForm').trigger("reset");
+                            addArretsListeners();
+                        },
+                        error: function (result) {
+                            alert("error");
+                        }
+                    });
+
+
+                }
+            }else{
+                alert('Remplir tous les champs qui sont obligatoires svp!');
+            }
+        });
+            $('#annulerButton').click(function () {
+                $('#ajouterPanne').html(' Ajouter panne ');
+                $('#annulerButton').hide();
+            });
+            function addArretsListeners(){
+                $('.arretDelete').each(function(e){
+                    $(this).click(function(e){
+
+                        tr= $(this).parent().parent();
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url:  "{{url('/arret_machine/')}}/"+id,
+                            method: 'post',
+                            data: {
+                                _token :'{{csrf_token()}}',
+                                id :id,
+                                _method :'delete'
+
+                            },
+                            success: function(result){
+                                tr.remove();
+                            },
+                            error: function(result){
+                                alert("error");
+                            }
+                        });
+                    });
+                });
+                $('.arretEdit').each(function(e){
+                    $(this).click(function(e){
+                        e.preventDefault();
+                        tr= $(this).parent().parent();
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                        $('#cause').val(tr.find('#cause'+id).html());
+                        $('#du').val(tr.find('#du'+id).html());
+                        $('#au').val(tr.find('#au'+id).html());
+                        $('#duree').val(tr.find('#duree'+id).html());
+                        $('#ndi').val(tr.find('#ndi'+id).html());
+                        $('#obs').val(tr.find('#obs'+id).html());
+                        $('#relv').val(tr.find('#relv'+id).html());
+                        $('#id').val(id);
+
+                         if($('#type'+id).html()==='panne'){
+                             $('#type_arret').find('option[value=panne]').attr('selected','selected');
+                             $('#type_arret').find('option[value=arret]').removeAttr('selected');
+
+                        }else{
+                              $('#type_arret').find('option[value=panne]').removeAttr('selected');
+                             $('#type_arret').find('option[value=arret]').attr('selected','selected');
+                         }
+                        $('#ajouterPanne').html(' Modifier panne ');
+                        $('#annulerButton').show();
+
+                    });
+                });
+            }
+
+        });
+
+    </script>
+
+    @endsection
