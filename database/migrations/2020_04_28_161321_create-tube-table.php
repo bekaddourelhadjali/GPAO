@@ -14,7 +14,7 @@ class CreateTubeTable extends Migration
     public function up()
     {
         Schema::create('tube', function (Blueprint $table) {
-            $table->string('NumTube')->unique;
+            $table->string('NumTube');
             $table->integer('Pid');
             $table->string('Machine',1);
             $table->string('NTube',4);
@@ -49,6 +49,7 @@ class CreateTubeTable extends Migration
             $table->string('Computer',50)->nullable();
             $table->string('User',50)->nullable();
             $table->dateTime('DateSaisie')->nullable();
+            $table->unique(['Pid','Did','Coulee','Bobine','Machine','NumTube']);
         });
     }
 

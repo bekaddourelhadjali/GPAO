@@ -30,7 +30,7 @@ class CreateRapprodTable extends Migration
             $table->integer('NbOpr')->nullable();
             $table->string('IdDef')->nullable();
             $table->double('Longueur');
-            $table->string('Macrd',20)->nullable();
+            $table->string('macro',20)->nullable();
             $table->string('U')->nullable();
             $table->Boolean('S')->nullable();
             $table->Boolean('AC')->nullable();
