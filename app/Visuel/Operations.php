@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Fabrication;
+namespace App\Visuel;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Operateur extends Model
+class Operations extends Model
 {   public $timestamps=false;
-    protected $table = "operateur";
+    protected $table = "operations";
 
 }

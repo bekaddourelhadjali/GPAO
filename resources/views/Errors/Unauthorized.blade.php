@@ -35,46 +35,23 @@
        text-align: center;
      }
    </style>
-  @yield('style')
 
 </head>
 
 <body id="page-top">
 
   <!-- Page Wrapper -->
-  <div id="wrapper">
+  <div id="container">
 
-
-    @yield('content')
-
+<div class="row">
+    <h1 class="text-danger col-12 text-center" style="    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);">Accès Non Autorisé</h1>
+</div>
 
   </div>
-  <!-- End of Page Wrapper -->
 
-      <!-- Footer -->
-      <div class="container-fluid">
-      <footer class="sticky-footer  ">
-          <div class="copyright  my-auto">
-          <section>
-            <div class="row ">
-              <div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">
-                <div class="row ">
-                  <img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">
-                  <div class="col-10">
-                    <h2>Projet : <b>{{$projet->Nom}}</b></h2>
-                    <h4 style="text-align: inherit; color: #000;">Client : <b>{{$projet->client->name}}</b></h4>
-                    <b  >Copyright © GPAO {{date('Y')}}</b>
-                  </div>
-                </div>
-                <br>
-
-              </div>
-            </div>
-          </section>
-          </div>
-      </footer>
-          <!-- End of Page Wrapper -->
-      </div>
 
 
   <!-- Scroll to Top Button-->
@@ -95,8 +72,6 @@
   <!-- Custom scripts for all pages-->
   <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 
- @yield('script')
- 
 
 </body>
 

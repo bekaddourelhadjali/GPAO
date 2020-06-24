@@ -19,7 +19,7 @@ class CreateRapportsTable extends Migration
             $table->integer('Did')->unsigned();
             $table->date('DateRapport');
             $table->string('Zone',10);
-            $table->string('Equipe',1);
+            $table->string('Equipe',10);
             $table->string('Machine',1);
             $table->string('Poste',2);
             $table->string('NomAgents',100);

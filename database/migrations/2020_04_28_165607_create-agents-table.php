@@ -28,6 +28,6 @@ class CreateAgentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('operateurs');
+        Schema::dropIfExists('agents');
     }
 }

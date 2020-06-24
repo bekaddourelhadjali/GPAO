@@ -1,7 +1,9 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 5/18/2020
- * Time: 23:30
- */
+@extends('layouts.dashboardTemp')
+@section('style')
+@endsection
+@section('content')
+
+
+@endsection
+@section('script')
+@endsection

@@ -4,9 +4,9 @@ namespace App\Dashboard;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Locations extends Model
+class Affectations extends Model
 {
     public $timestamps=false;
-    protected $table = "locations";
+    protected $table = "Affectations";
 
 }

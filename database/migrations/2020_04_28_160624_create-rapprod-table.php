@@ -16,7 +16,7 @@ class CreateRapprodTable extends Migration
         Schema::create('rapprod', function (Blueprint $table) {
             $table->increments('Numero');
             $table->integer('NumeroRap');
-            $table->string('NumTube',10);
+            $table->integer('NumTube')->unsigned();
             $table->string('Tube',5);
             $table->integer('Pid')->unsigned();
             $table->integer('Did')->unsigned();

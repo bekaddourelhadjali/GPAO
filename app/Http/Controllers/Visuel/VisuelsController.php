@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Fabrication;
+namespace App\Http\Controllers\Visuel;
 
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use App\Fabrication\Rapprod;
 use App\Fabrication\Tube;
 use App\Http\Controllers\Controller;
+use App\Visuel\Defauts;
+use App\Visuel\Visuels;
+use App\Visuel\DetailDefauts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class RapprodController extends Controller
+class VisuelsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,51 +21,7 @@ class RapprodController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    { $rapprod = new Rapprod();
-        $tube = new Tube();
-        $rapprod->Pid = $request->Pid;
-        $rapprod->Did = $request->Did;
-        $rapprod->Bobine = $request->bobine;
-        $rapprod->Coulee = $request->coulee;
-        $rapprod->Machine = $request->machine;
-        $rapprod->Tube = $rapprod->Machine . $request->ntube;
-        $rapprod->Ntube = $request->ntube;
-        $rapprod->IdOpr = 1;
-        $rapprod->NbOpr = 1;
-        $rapprod->NumeroRap = $request->NumeroRap;
-        if ($request->bis) $rapprod->Bis = 1;
-        else $rapprod->Bis = 0;
-        $rapprod->Longueur = $request->longueur;
-        if ($request->rb) $rapprod->RB = 1;
-        else $rapprod->RB = 0;
-        $rapprod->macro = $request->macro;
-        if ($request->sur_mas) $rapprod->Observation = $rapprod->Observation . "Sur Mas, ";
-        if ($request->test_1) $rapprod->Observation = $rapprod->Observation . "Test (1), ";
-        if ($request->test_2) $rapprod->Observation = $rapprod->Observation . "Test (2), ";
-        if ($request->test_3) $rapprod->Observation = $rapprod->Observation . "Test (3), ";
-        $rapprod->Observation = rtrim($rapprod->Observation, ', ');
-
-        $tube->Pid = $request->Pid;
-        $tube->Did = $request->Did;
-        $tube->Machine = $request->machine;
-        $tube->NTube = $request->ntube;
-        $tube->Tube = $rapprod->Machine . $request->ntube;
-        $tube->Longueur = $request->longueur;
-        $tube->Bobine = $request->bobine;
-        $tube->Coulee = $request->coulee;
-        $tube->NumTube = $request->ntube;
-        $tube->Bis = $rapprod->Bis;
-        $tube->save();
-        $rapprod->NumTube= $tube->NumTube;
-        $rapprod->DateSaisie= date('Y-m-d H:i:s');
-        if ($rapprod->save()){
-            return response()->json(array('rapprod'=> $rapprod), 200);
-
-        }else{
-            return response()->json(array('error'=> error), 404);
-
-        }
-
+    {
     }
 
     /**
@@ -84,49 +43,73 @@ class RapprodController extends Controller
      */
     public function store(Request $request)
     {
+        $visuel = new Visuels();
+        $visuel->Pid = $request->Pid;
+        $visuel->Did = $request->Did;
+        $visuel->Machine = $request->machine;
+        $visuel->Tube = $visuel->Machine . $request->ntube;
+        $visuel->Ntube = $request->ntube;
+        $visuel->IdOpr = 1;
+        $visuel->NbOpr = 1;
+        $visuel->NumeroRap = $request->NumeroRap;
+        if ($request->bis=='true') $visuel->Bis = 1;
+        else $visuel->Bis = 0;
+        if ($request->sond=='true') $visuel->Sond = 1;
+        else $visuel->Sond = 0;
+        $visuel->Longueur = $request->longueur;
+        $visuel->E = $request->E;
+        $visuel->Y = $request->Y;
+        $visuel->DiamD = $request->Diam_D;
+        $visuel->DiamF = $request->Diam_F;
+        $visuel->ObsSoudure = $request->ObsSoudure;
+        $visuel->ObsMetal = $request->ObsMetal;
+        $visuel->DateSaisie= date('Y-m-d H:i:s');
+        $visuel->Visible=1;
+          $tube=Tube::where('Tube','=',$visuel->Tube)
+              ->where('Pid','=',$visuel->Pid)
+              ->where('Did','=',$visuel->Did)->first() ;
+          if($tube!=null){
+              $tube=Tube::find($tube->NumTube);
+             $tube->DiamD = $request->Diam_D;
+             $tube->DiamF = $request->Diam_F;
+             $tube->Sond =$visuel->Sond;
+             $tube->Z02=true;
+         }else{
+             $tube=new Tube();
+             $tube->Pid = $visuel->Pid;
+             $tube->Did = $visuel->Did;
+             $tube->Machine = $visuel->Machine;
+             $tube->NTube = $request->ntube;
+             $tube->Tube = $visuel->Tube;
+             $tube->Longueur = $request->longueur;
+             $tube->Bis = $visuel->Bis;
+             $tube->DiamD = $request->Diam_D;
+             $tube->DiamF = $request->Diam_F;
+             $tube->Sond =$visuel->Sond;
+             $tube->Z02=true;
+         }
 
-
-        $rapprod = new Rapprod();
-        $tube = new Tube();
-        $rapprod->Pid = $request->Pid;
-        $rapprod->Did = $request->Did;
-        $rapprod->Bobine = $request->bobine;
-        $rapprod->Coulee = $request->coulee;
-        $rapprod->Machine = $request->machine;
-        $rapprod->Tube = $rapprod->Machine . $request->ntube;
-        $rapprod->Ntube = $request->ntube;
-        $rapprod->IdOpr = 1;
-        $rapprod->NbOpr = 1;
-        $rapprod->NumeroRap = $request->NumeroRap;
-        if ($request->bis=='true') $rapprod->Bis = 1;
-        else $rapprod->Bis = 0;
-        $rapprod->Longueur = $request->longueur;
-        if ($request->rb=='true') $rapprod->RB = 1;
-        else $rapprod->RB = 0;
-        $rapprod->macro = $request->macro;
-        if ($request->sur_mas=='true') $rapprod->Observation = $rapprod->Observation . "Sur Mas, ";
-        if ($request->test_1=='true') $rapprod->Observation = $rapprod->Observation . "Test (1), ";
-        if ($request->test_2=='true') $rapprod->Observation = $rapprod->Observation . "Test (2), ";
-        if ($request->test_3=='true') $rapprod->Observation = $rapprod->Observation . "Test (3), ";
-        $rapprod->Observation = rtrim($rapprod->Observation, ', ');
-
-        $tube->Pid = $request->Pid;
-        $tube->Did = $request->Did;
-        $tube->Machine = $request->machine;
-        $tube->NTube = $request->ntube;
-        $tube->Tube = $rapprod->Machine . $request->ntube;
-        $tube->Longueur = $request->longueur;
-        $tube->Bobine = $request->bobine;
-        $tube->Coulee = $request->coulee;
-        $tube->NumTube = $request->ntube;
-        $tube->Bis = $rapprod->Bis;
-        $tube->DateFab=date('Y-m-d');
-        $tube->DateSaisie=date('Y-m-d H:i:s');
-        $tube->save();
-        $rapprod->NumTube= $tube->NumTube;
-        $rapprod->DateSaisie= date('Y-m-d H:i:s');
-        if ($rapprod->save()){
-            return response()->json(array('rapprod'=> $rapprod), 200);
+         $tube->save();
+          $visuel->NumTube=$tube->NumTube;
+          $defauts=$request->Defauts;
+        if ($visuel->save()){
+            foreach ($defauts as $defaut){
+                $detailDefaut=new \App\Visuel\DetailDefauts();
+                $detailDefaut->Pid=$visuel->Pid;
+                $detailDefaut->Did=$visuel->Did;
+                $detailDefaut->Zone="Z02";
+                $detailDefaut->NumRap=$request->NumeroRap;
+                $detailDefaut->NumVisuel=$visuel->Numero;
+                $detailDefaut->Tube=$visuel->Tube;
+                $detailDefaut->Opr=$defaut[0];
+                $detailDefaut->IdDef=$defaut[1];
+                $detailDefaut->Defaut=$defaut[2];
+                $detailDefaut->Valeur=$defaut[3];
+                $detailDefaut->NbOpr=$defaut[4];
+                $detailDefaut->Nombre=$defaut[5];
+                $detailDefaut->save();
+            }
+            return response()->json(array('visuel'=> $visuel), 200);
 
         }else{
             return response()->json(array('error'=> error), 404);
@@ -141,26 +124,32 @@ class RapprodController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-       if($rapport =\App\Fabrication\Rapport::find($id)!=null){
+    {$rapport =\App\Fabrication\Rapport::find($id);
+        if($rapport!=null) {
+    if($rapport->Zone=='Z02'){
+           if ($rapport->Etat == 'N') {
+               $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
+               $defautsMetal= \App\Visuel\Defauts::where('Zone','=','Z02')->where('Descr','=','Metal')->get();
+               $defautsSoudure= \App\Visuel\Defauts::where('Zone','=','Z02')->where('Descr','=','Soudure')->get();
+               $operations= \App\Visuel\Operations::where('Zone','=','Z02')->get();
+               return view('visuel.rapvisuel',
+                   ['rapport' => $rapport,
+                       'visuels'=>$rapport->visuels,
+                       'projet' => $projet,
+                       'arrets'=>$rapport->arrets,
+                       'defautsMetal'=>$defautsMetal,
+                       'defautsSoudure'=>$defautsSoudure
+                       ,'operations'=>$operations]);
+           } elseif ($rapport->Etat == 'C') {
+               return redirect(route('rapports_visuels.index'));
+           }
 
-        $bobines = \App\Fabrication\Bobine::all('Bobine','Coulee');
-
-        if($rapport->Etat=='N'){
-        $rapprods= $rapport->rapprods;
-            $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-            return view('fabrication.rapprod',
-                ['rapport'=>$rapport,
-                    'bobines'=>$bobines,
-                    'rapprods'=>$rapprods,
-                    'projet'=>$projet]);
-        }elseif($rapport->Etat=='C'){
-        return redirect(route('rapports.index'));
-        }
        }else{
-           return redirect(route('rapports.index'));
+           return redirect(route('rapports_visuels.index'));
        }
-
+    }else{
+        return redirect(route('rapports_visuels.index'));
+    }
 
     }
 
@@ -184,26 +173,22 @@ class RapprodController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rapprod = Rapprod::findorFail($id);
-        $rapprod->Bobine = $request->bobine;
-        $rapprod->Coulee = $request->coulee;
-        $rapprod->Machine = $request->machine;
-        $rapprod->Tube = $rapprod->Machine . $request->ntube;
-        $rapprod->Ntube = $request->ntube;
-        if ($request->bis=='true') $rapprod->Bis = 1;
-        else $rapprod->Bis = 0;
-        $rapprod->Longueur = $request->longueur;
-        if ($request->rb=='true') $rapprod->RB = 1;
-        else $rapprod->RB = 0;
-        $rapprod->macro = $request->macro;
-        $rapprod->Observation="";
-        if ($request->sur_mas=='true') $rapprod->Observation = $rapprod->Observation . "Sur Mas, ";
-        if ($request->test_1=='true') $rapprod->Observation = $rapprod->Observation . "Test (1), ";
-        if ($request->test_2=='true') $rapprod->Observation = $rapprod->Observation . "Test (2), ";
-        if ($request->test_3=='true') $rapprod->Observation = $rapprod->Observation . "Test (3), ";
-        $rapprod->Observation = rtrim($rapprod->Observation, ', ');
-        if ($rapprod->save()){
-            return response()->json(array('rapprod'=> $rapprod), 200);
+        $visuel = Visuels::findorFail($id);
+        if ($request->bis=='true') $visuel->Bis = 1;
+        else $visuel->Bis = 0;
+        if ($request->sond=='true') $visuel->Sond = 1;
+        else $visuel->Sond = 0;
+        $visuel->Longueur = $request->longueur;
+        $visuel->E = $request->E;
+        $visuel->Y = $request->Y;
+        $visuel->DiamD = $request->Diam_D;
+        $visuel->DiamF = $request->Diam_F;
+        $tube=$visuel->tube;
+        $tube->DiamD= $request->Diam_D;
+        $tube->DiamF = $request->Diam_F;
+        $tube->save();
+        if ($visuel->save()){
+            return response()->json(array('visuel'=> $visuel), 200);
 
         }else{
             return response()->json(array('error'=> error), 404);
@@ -219,9 +204,11 @@ class RapprodController extends Controller
      */
     public function destroy($id)
     {
-        $rapprod=Rapprod::findOrFail($id);
-
-        if ($rapprod->tube->delete()&&$rapprod->delete()){
+        $visuel=\App\Visuel\Visuels::findOrFail($id);
+        foreach ($visuel->Defauts as $Defaut){
+            $Defaut->delete();
+        }
+        if ($visuel->delete()){
             return response()->json(array('success'=> true), 200);
 
         }else{

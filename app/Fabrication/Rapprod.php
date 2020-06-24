@@ -9,9 +9,9 @@ class Rapprod extends Model
     protected $table = "rapprod";
     protected $primaryKey ='Numero';
     public function rapport(){
-        return $this->belongsTo('App\Fabrication\Rapport','NumeroRap' )->select(['Numero','Pid','Did','DateRapport','Equipe','Machine','Poste','NomAgents']);
+        return $this->belongsTo('App\Fabrication\Rapport','NumeroRap' )->select(['Numero','Pid','Did','DateRapport','Equipe','Machine','Poste','NomAgents','Etat']);
     }
     public function tube(){
-        return $this->hasOne('App\Fabrication\Tube','NumTube','Ntube');
+        return $this->hasOne('App\Fabrication\Tube','NumTube','NumTube');
     }
 }

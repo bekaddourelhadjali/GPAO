@@ -14,7 +14,7 @@ class CreateTubeTable extends Migration
     public function up()
     {
         Schema::create('tube', function (Blueprint $table) {
-            $table->string('NumTube');
+            $table->increments('NumTube');
             $table->integer('Pid');
             $table->string('Machine',1);
             $table->string('NTube',4);
@@ -30,13 +30,13 @@ class CreateTubeTable extends Migration
             $table->string('NPV',10)->nullable();
             $table->string('Nord',50)->nullable();
             $table->decimal('Poids')->nullable();
-            $table->string('Coulee',50);
-            $table->string('Bobine',50);
+            $table->string('Coulee',50)->nullable();
+            $table->string('Bobine',50)->nullable();
             $table->date('DateFab')->nullable();
             $table->double('LongFab')->nullable();
             $table->double('LongProd')->nullable();
             $table->double('LongCh')->nullable();
-            $table->double('Longueur');
+            $table->double('Longueur')->nullable();
             $table->dateTime('DateRE')->nullable();
             $table->dateTime('DateRI')->nullable();
             $table->double('EpaisD')->nullable();
@@ -49,7 +49,23 @@ class CreateTubeTable extends Migration
             $table->string('Computer',50)->nullable();
             $table->string('User',50)->nullable();
             $table->dateTime('DateSaisie')->nullable();
-            $table->unique(['Pid','Did','Coulee','Bobine','Machine','NumTube']);
+            $table->Boolean('Z01')->default(false);
+            $table->Boolean('Z02')->default(false);
+            $table->Boolean('Z03')->default(false);
+            $table->Boolean('Z04')->default(false);
+            $table->Boolean('Z05')->default(false);
+            $table->Boolean('Z06')->default(false);
+            $table->Boolean('Z07')->default(false);
+            $table->Boolean('Z08')->default(false);
+            $table->Boolean('Z09')->default(false);
+            $table->Boolean('Z10')->default(false);
+            $table->Boolean('Z11')->default(false);
+            $table->Boolean('Z12')->default(false);
+            $table->Boolean('Z13')->default(false);
+            $table->Boolean('Z14')->default(false);
+            $table->Boolean('Z15')->default(false);
+            $table->Boolean('Z16')->default(false);
+            $table->unique(['Pid','Did','Machine','NumTube']);
         });
     }
 

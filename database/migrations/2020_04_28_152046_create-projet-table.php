@@ -15,7 +15,7 @@ class CreateProjetTable extends Migration
     {
         Schema::create('projet', function (Blueprint $table) {
             $table->increments('Pid');
-            $table->string('Nom', 25);
+            $table->string('Nom', 25)->unique();
             $table->date('StartDate');
             $table->date('EndDate');
             $table->char('Etat',1)->nullable();

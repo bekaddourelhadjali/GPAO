@@ -1,0 +1,13 @@
+body{
+    color:#000;
+    font-size: 18px;
+}
+.valeur{
+    font-weight: bolder;
+}
+th{
+    font-weight: bolder;
+}
+footer{
+    display: none;
+}

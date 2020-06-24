@@ -13,9 +13,12 @@ class CreateMachineTable extends Migration
      */
     public function up()
     {
-        Schema::create('machine', function (Blueprint $table) {
-            $table->string('Machine',50);
+        Schema::create('machines', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('Machine',1);
+            $table->string('Description',50)->nullable();
             $table->string('Zone',3);
+            $table->unique(['Machine','Zone']);
         });
     }
 

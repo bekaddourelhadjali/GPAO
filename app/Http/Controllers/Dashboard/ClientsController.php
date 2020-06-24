@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Dashboard\Agents;
-use App\Dashboard\Locations;
-use App\Dashboard\Machines;
+use App\Fabrication\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class AgentsController extends Controller
+class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,15 +17,11 @@ class AgentsController extends Controller
     public function index()
     {
         $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $locations=Locations::all()->sortBy("Zone");
-        $agents=Agents::all();
-        $machines=Machines::all();
-        $target="agents";
-        return view('Dashboard.Locations',["projet"=>$projet,
-            "locations"=>$locations,
-            "agents"=>$agents,
-            "machines"=>$machines,
-            "target"=>$target
+        $clients=Client::all();
+        $target="clients";
+        return view('Dashboard.Clients',["projet"=>$projet,
+            "target"=>$target,
+            "clients"=>$clients,
 
         ]);
     }
@@ -50,11 +44,19 @@ class AgentsController extends Controller
      */
     public function store(Request $request)
     {
-        $agent=new Agents();
-        $agent->NomPrenom=$request->NomPrenom;
-        $agent->Code=$request->Code;
-        if($agent->save()){
-            return response()->json(array('agent'=> $agent), 200);
+        $client=new Client();
+        $client->name=$request->name;
+        $client->address=$request->address;
+        $client->zipcode=$request->zipcode;
+        $client->city=$request->city;
+        $client->state=$request->state;
+        $client->country=$request->country;
+        $client->phone=$request->phone;
+        $client->fax=$request->fax;
+        $client->web_url=$request->web_url;
+        $client->comment=$request->comment;
+        if($client->save()){
+            return response()->json(array('client'=> $client), 200);
 
         }else{
             return response()->json(array('error'=> error), 404);
@@ -93,11 +95,19 @@ class AgentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $agent=Agents::findOrFail($id);
-        $agent->NomPrenom=$request->NomPrenom;
-        $agent->Code=$request->Code;
-        if($agent->save()){
-            return response()->json(array('agent'=> $agent), 200);
+        $client=Client::findOrFail($id);
+        $client->name=$request->name;
+        $client->address=$request->address;
+        $client->zipcode=$request->zipcode;
+        $client->city=$request->city;
+        $client->state=$request->state;
+        $client->country=$request->country;
+        $client->phone=$request->phone;
+        $client->fax=$request->fax;
+        $client->web_url=$request->web_url;
+        $client->comment=$request->comment;
+        if($client->save()){
+            return response()->json(array('client'=> $client), 200);
 
         }else{
             return response()->json(array('error'=> error), 404);
@@ -113,7 +123,7 @@ class AgentsController extends Controller
      */
     public function destroy($id)
     {
-        if(Agents::destroy($id)){
+        if(Client::destroy($id)){
             return response()->json(array('success'=> true), 200);
         }else{
 

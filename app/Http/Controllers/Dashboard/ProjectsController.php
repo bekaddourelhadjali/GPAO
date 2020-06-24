@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Fabrication\Client;
+use App\Fabrication\Projet;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller
 {
@@ -13,7 +16,15 @@ class ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { $projet = Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
+        $projects=Projet::all();
+        $clients=Client::all();
+        return view('Dashboard.Projects',["projet"=>$projet,
+            "projects"=>$projects,
+            "clients"=>$clients,
+
+
+        ]);
 
     }
 
@@ -34,7 +45,19 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
+        $project=new Projet();
+        $project->Nom=$request->nom;
+        $project->StartDate=$request->startDate;
+        $project->EndDate=$request->endDate;
+        $project->Comments=$request->comments;
+        $project->Customer=$request->customer;
+        if($project->save()){
+            return response()->json(array('project'=> $project), 200);
 
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
 
     /**
@@ -45,7 +68,14 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        //
+        $project= Projet::find($id);
+        if($project!=null){
+            return response()->json(array('project'=> $project), 200);
+
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
 
     /**
@@ -56,7 +86,7 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -68,7 +98,19 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $project= Projet::find($id);
+        $project->Nom=$request->nom;
+        $project->StartDate=$request->startDate;
+        $project->EndDate=$request->endDate;
+        $project->Comments=$request->comments;
+        $project->Customer=$request->customer;
+        if($project->save()){
+            return response()->json(array('project'=> $project), 200);
+
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
 
     /**
@@ -79,6 +121,12 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Projet::destroy($id)){
+            return response()->json(array('success'=> true), 200);
+
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
 }

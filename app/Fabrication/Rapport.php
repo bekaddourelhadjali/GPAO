@@ -17,7 +17,13 @@ class Rapport extends Model
     }
     public function rapprods(){
         return $this->hasMany('App\Fabrication\Rapprod','NumeroRap')
-            ->select(['Numero','Tube','Coulee','Bobine','Bis','Longueur','Macrd','RB','Observation']);
+            ->select(['Numero','Tube','Coulee','Bobine','Bis','Longueur','macro','RB','Observation']);
+    }
+    public function visuels(){
+        return $this->hasMany('App\Visuel\Visuels','NumeroRap') ;
+    }
+    public function rx1(){
+        return $this->hasMany('App\Visuel\RX1','NumeroRap') ;
     }
     public function arrets(){
         return $this->hasMany('App\Fabrication\ArretMachine','NumRap')
@@ -26,4 +32,5 @@ class Rapport extends Model
     public function operateurs(){
         return $this->hasMany('App\Fabrication\Operateur','NumRap');
     }
+
 }

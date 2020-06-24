@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)http://localhost/GPAO/public/visuels/43 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SB Admin 2 - Dashboard</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="./SB Admin 2 - Dashboard_files/all.min.css" rel="stylesheet" type="text/css">
+  <link href="./SB Admin 2 - Dashboard_files/css" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="./SB Admin 2 - Dashboard_files/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+  <link href="./SB Admin 2 - Dashboard_files/bootstrap-select.css" rel="stylesheet" type="text/css">
+   <style>
+       body{
+       color:#000;
+       }
+       section{
+         background-color: #fff;
+         border-radius: 10px;
+         padding: 20px;
+         box-shadow: #ddd -2px -2px 2px;
+         margin-top: 20px;
+         border: 2px solid #ddd;
+       }
+     input[type=text]{
+       padding: 0px 0px;
+       text-align: center;
+     }
+   </style>
+      <style>
+        @media (min-width: 576px){
+            .modal-dialog {
+                max-width: 1000px;
+            }
+        }
+        .obsM,.obsS{
+            width: 30%;
+        }
+        #rapportPage .valeur{
+            font-weight: bolder;
+            color:#000;
+        }
+        section.top-actions{
+        height:225px;
+        }
+        .actions .col-1{
+            margin-right: 4px;
+
+        }
+        #arretForm button{
+            margin-top: 0;
+        }
+        #annulerButton{
+            padding: 0;
+        }
+        .visuelEdit,.visuelDelete{
+            margin: 0;
+        }
+        .actions .btn{
+            padding: 0;
+            width:35px;
+            font-size: 20px;
+            font-weight: bolder;
+        }
+        button{
+            margin: 10px 0;
+        }
+        span.valeur{
+            color:red;
+        }
+
+        h5{
+            color:#0e8ce4;
+            text-align: center;
+        }
+
+        .small-td{
+          width:8%
+        }
+        .medium-td{
+            width:12%
+        }
+         input[type=checkbox]{
+            width: 18px;
+            height: 18px;
+            margin-top:  5px;
+        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+         td,th{
+               padding: 2px;
+               vertical-align: middle !important;
+               text-align: center;
+           }
+        .table {
+            table-layout: auto;
+            width: 100%;
+            word-wrap: break-word;
+            white-space: nowrap;
+        }
+        .table-container{
+            overflow: auto;
+        }
+        .table td {
+
+            overflow: hidden;
+            word-break: break-all;
+            white-space: normal;
+            text-overflow: ellipsis;
+            color : #000;
+        }
+        .large-td{
+            width: 17%;
+            vertical-align: super;
+        }
+
+
+        table button
+        ,table i.fa{
+            font-size: 20px;
+            border:none;
+            background-color: rgba(0,0,0,0);
+        }
+
+        .form-control{
+            padding: 0;
+            text-align: center;
+        }
+        #du,#au{
+            padding: .375rem .50rem;
+        }
+        input{
+            padding:0;
+        }
+        span.valeur{
+            color:red;
+        }
+        #operatuersTable td{
+            text-align: left ;
+        }
+
+        .small-td input{
+            width: 18px;
+            height: 18px;
+        }
+        td{
+            width: 20%;
+            vertical-align: middle !important;
+            text-align: center;
+        }
+
+        table button
+        ,table i.fa{
+            font-size: 20px;
+            border:none;
+            background-color: rgba(0,0,0,0);
+        }
+
+
+    </style>
+    <meta name="csrf-token" content="NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe">
+    
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    
+    
+
+      
+      
+        
+          
+        
+        
+      
+
+      
+      
+
+      
+      
+        
+          
+          
+      
+
+      
+      
+
+      
+      
+        
+      
+
+      
+      
+        
+          
+          
+          
+        
+        
+          
+            
+            
+            
+          
+        
+      
+
+      
+      
+        
+          
+          
+        
+        
+          
+            
+            
+            
+            
+            
+          
+        
+      
+
+      
+      
+
+      
+      
+        
+      
+
+      
+      
+        
+          
+          
+        
+        
+          
+            
+            
+            
+            
+            
+            
+            
+            
+          
+        
+      
+
+      
+      
+        
+          
+          
+      
+
+      
+      
+        
+          
+          
+      
+
+      
+      
+
+      
+      
+        
+      
+
+    
+    
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        
+        
+
+          
+          
+            
+          
+
+
+          
+          
+            
+            
+              
+                
+                
+              
+              
+              
+                
+                  
+                  
+                
+                
+                  
+                  
+                
+                
+                  
+                  
+                
+                
+                
+                  
+                  
+                
+              
+            
+
+          
+
+        
+        <!-- End of Topbar -->
+     <div class="container-fluid">
+     <section id="head-section">
+
+         <div class="row">
+             <div class="col-sm-12 col-md-9 col-xl-5 col-lg-5">
+                 <div class="col-12">Information Rapport:&nbsp;<span class="valeur">   <span class="valeur"> Epais: 17.27 mm -Diam : 1219.2mm</span></span></div>
+                 <div class="col-12">Machine: &nbsp;  <span class="valeur">  A </span></div>
+             </div>
+             <div class="col-sm-12 col-md-3 col-xl-2 col-lg-2">
+                 <div class="row">Nº Rapport: &nbsp; <span class="valeur">43</span></div>
+                 <div class="row">Date: &nbsp; <span class="valeur">2020-05-12 </span></div>
+             </div>
+             <div class="col-sm-12 col-md-4 col-xl-2 col-lg-2">
+                 <div class="row">Equipe: &nbsp; <span class="valeur"> A</span> </div>
+                 <div class="row">Poste: &nbsp; <span class="valeur"> 01</span></div>
+             </div>
+             <div class="col-sm-12 col-md-8 col-xl-3 col-lg-3">
+                 <div class="row">Agent1: &nbsp; <span class="valeur"> Lahreche Samir  / 1 </span></div>
+                 <div class="row">Agent2: &nbsp; <span class="valeur"> Karimi Abdo /  2</span></div>
+             </div>
+
+         </div>
+     </section>
+     <div class="row">
+         <div class="col-4">
+
+             <section class="top-actions">
+                 <h5>Info Tube</h5>
+                 <form id="visuelForm">
+                     <input name="Numero" type="hidden" id="Numero" value=" ">
+                     <input name="NumRap" type="hidden" id="NumRap" value="43">
+                     <input type="hidden" id="Pid" name="Pid" value="1">
+                     <input type="hidden" id="Did" name="Did" value="1">
+                     <input type="hidden" id="machine" name="machine" value="A">
+                     <table>
+                     <thead>
+                     <tr>
+                         <th> N°Tube</th>
+                         <th> Bis </th>
+                         <th> Longueur</th>
+                         <th> E</th>
+                         <th> Y</th>
+                         <th> Diam-D</th>
+                         <th> Diam-F</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr>
+                         <td class="large-td">  <input class="  form-control" type="text" id="ntube" name="ntube" value="" maxlength="5" minlength="5" required=""></td>
+                         <td class="small-td"> <input class=" " type="checkbox" id="bis" name="bis"></td>
+                         <td class="large-td">  <input class=" form-control" type="number" min="7500" max="13500" id="longueur" name="longueur" required=""></td>
+                         <td class="medium-td">  <input class=" form-control" type="number" id="E" name="E" required=""></td>
+                         <td class="medium-td">  <input class=" form-control" type="number" id="Y" name="Y" required=""></td>
+                         <td class="large-td"> <input class="  form-control" type="number" id="diam_d" name="diam_d" required=""></td>
+                         <td class="large-td"> <input class="  form-control" type="number" id="diam_f" name="diam_f" required=""></td>
+                     </tr>
+                     </tbody>
+                 </table>
+                 <br>
+                 <div class="row ">
+                     <label class="col-4 " for="Sond"><b> Tube Sondage</b></label>
+                    <input class=" col-1" type="checkbox" id="Sond" name="Sond">
+
+                     <button type="reset" class="col-2  btn btn-secondary" id="annulerButton" style="display: none;">Annuler</button>
+                     <button type="button" class="col-4   offset-1  btn btn-success" id="Ajouter">Ajouter</button>
+                 </div>
+                 </form>
+             </section>
+         </div>
+         <div class="col-4">
+             <section class="top-actions">
+                     <h5>Observation sur Soudure</h5>
+                 <form id="Form1">
+                     <table>
+                         <thead>
+                         <tr>
+                             <th> Nbr</th>
+                             <th> Defaut</th>
+                             <th> Val</th>
+                             <th> Operation</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         <tr>
+                             <td class=" " style="width:10%">  <input class="  form-control" type="number" id="nbr1" name="nbr1"></td>
+                             <td class=" " style="width:35%">  <select class="form-control" id="defaut1" name="defaut1">
+                                     <option hidden="" disabled="" selected="" value=""> </option>
+                                                                                                                           <option defautid="74" data-tokens="SCVE" value="SCVE" class="my-select">SCVE</option>
+                                                                                      <option defautid="79" data-tokens="SD Long Int" value="SD Long Int" class="my-select">SD Long Int</option>
+                                                                                      <option defautid="84" data-tokens="EY" value="EY" class="my-select">EY</option>
+                                                                                      <option defautid="155" data-tokens="E" value="E" class="my-select">E</option>
+                                                                                      <option defautid="156" data-tokens="Serie DF" value="Serie DF" class="my-select">Serie DF</option>
+                                                                                      <option defautid="157" data-tokens="SI" value="SI" class="my-select">SI</option>
+                                                                                      <option defautid="158" data-tokens="SD" value="SD" class="my-select">SD</option>
+                                                                                      <option defautid="159" data-tokens="F" value="F" class="my-select">F</option>
+                                                                                      <option defautid="160" data-tokens="PRC" value="PRC" class="my-select">PRC</option>
+                                                                                      <option defautid="161" data-tokens="SP" value="SP" class="my-select">SP</option>
+                                                                                      <option defautid="179" data-tokens="SCVXE" value="SCVXE" class="my-select">SCVXE</option>
+                                                                                      <option defautid="180" data-tokens="E Long" value="E Long" class="my-select">E Long</option>
+                                                                                      <option defautid="181" data-tokens="SD Long Ext" value="SD Long Ext" class="my-select">SD Long Ext</option>
+                                                                                      <option defautid="182" data-tokens="Hauteur Cord In" value="Hauteur Cord In" class="my-select">Hauteur Cord In</option>
+                                                                                      <option defautid="183" data-tokens="Hauteur Cord Ex" value="Hauteur Cord Ex" class="my-select">Hauteur Cord Ex</option>
+                                                                                      <option defautid="184" data-tokens="Y" value="Y" class="my-select">Y</option>
+                                                                                      <option defautid="185" data-tokens="Y Long" value="Y Long" class="my-select">Y Long</option>
+                                                                                      <option defautid="188" data-tokens="Rep &gt; Diam/D" value="Rep &gt; Diam/D" class="my-select">Rep &gt; Diam/D</option>
+                                                                                      <option defautid="189" data-tokens="Rep &gt; Diam/F" value="Rep &gt; Diam/F" class="my-select">Rep &gt; Diam/F</option>
+                                                                                      <option defautid="209" data-tokens="PRC/E" value="PRC/E" class="my-select">PRC/E</option>
+                                                                                      <option defautid="210" data-tokens="PRC/Y" value="PRC/Y" class="my-select">PRC/Y</option>
+                                                                                      <option defautid="211" data-tokens="PRC/EY" value="PRC/EY" class="my-select">PRC/EY</option>
+                                                                                      <option defautid="214" data-tokens="PRC Int" value="PRC Int" class="my-select">PRC Int</option>
+                                                                                      <option defautid="215" data-tokens="PRC Ext" value="PRC Ext" class="my-select">PRC Ext</option>
+                                                                                      <option defautid="224" data-tokens="F Int" value="F Int" class="my-select">F Int</option>
+                                                                                      <option defautid="226" data-tokens="F Ext" value="F Ext" class="my-select">F Ext</option>
+                                                                                      <option defautid="242" data-tokens="SI/SCVE" value="SI/SCVE" class="my-select">SI/SCVE</option>
+                                                                                                               </select></td>
+                             <td class=" " style="width:20%">  <input class=" form-control" type="number" id="valeur1" name="valeur1"></td>
+                             <td class=" " style="width:35%">   <select class="form-control" id="operation1" name="operation1" required="">
+                                     <option hidden="" disabled="" selected="" value=""></option>
+                                                                                                                           <option operationid="3" value="Déclassé" class="my-select">Déclassé</option>
+                                                                                      <option operationid="12" value="Contrôlé" class="my-select">Contrôlé</option>
+                                                                                      <option operationid="43" value="R.A.S" class="my-select">R.A.S</option>
+                                                                                      <option operationid="44" value="A Reparer" class="my-select">A Reparer</option>
+                                                                                      <option operationid="45" value="A Chuté" class="my-select">A Chuté</option>
+                                                                                      <option operationid="46" value="A Meuler" class="my-select">A Meuler</option>
+                                                                                      <option operationid="47" value="Rebut" class="my-select">Rebut</option>
+                                                                                      <option operationid="48" value="Meulé" class="my-select">Meulé</option>
+                                                                                      <option operationid="49" value="Reparé" class="my-select">Reparé</option>
+                                                                                      <option operationid="50" value="Déclassé En Epaiss" class="my-select">Déclassé En Epaiss</option>
+                                                                                      <option operationid="52" value="En Instance" class="my-select">En Instance</option>
+                                                                                      <option operationid="54" value="OK" class="my-select">OK</option>
+                                                                                      <option operationid="56" value="D.T.P" class="my-select">D.T.P</option>
+                                                                                                               </select></td>
+
+                         </tr>
+                         </tbody>
+                     </table>
+                 </form>
+                    <div class="row actions">
+                        <div class="col-1"><button id="addObsSoudure" class="btn btn-success"><b>+</b></button> </div>
+                        <div class="col-1"><button id="removeObsSoudure" class="btn btn-danger"><b>-</b></button> </div>
+                    </div>
+                 <div class="row">
+                     <input type="text" id="ObsSoudure" class=" form-control col-12" readonly="">
+
+                 </div>
+
+
+                 </section>
+         </div>
+         <div class="col-4">
+             <section class="top-actions">
+                 <h5>Observation sur metal de base</h5>
+                 <form id="Form2">
+                 <table>
+                     <thead>
+                     <tr>
+                         <th> Nbr</th>
+                         <th> Defaut</th>
+                         <th> Val</th>
+                         <th> Operation</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr>
+                         <td class=" " style="width:10%">  <input class="  form-control" type="number" id="nbr2" name="nbr2"></td>
+                         <td class=" " style="width:35%">  <select class="form-control" id="defaut2" name="defaut2">
+                                 <option hidden="" disabled="" selected="" value=""> </option>
+                                                                                                               <option defautid="1" value="N.D" class="my-select">N.D</option>
+                                                                              <option defautid="33" value="RB /D" class="my-select">RB /D</option>
+                                                                              <option defautid="39" value="AMC/D" class="my-select">AMC/D</option>
+                                                                              <option defautid="45" value="Test(1)" class="my-select">Test(1)</option>
+                                                                              <option defautid="55" value="OVL" class="my-select">OVL</option>
+                                                                              <option defautid="61" value="DT" class="my-select">DT</option>
+                                                                              <option defautid="111" value="ND HT" class="my-select">ND HT</option>
+                                                                              <option defautid="118" value="Rep &gt; Diam" class="my-select">Rep &gt; Diam</option>
+                                                                              <option defautid="125" value="FT" class="my-select">FT</option>
+                                                                              <option defautid="128" value="Corrosion" class="my-select">Corrosion</option>
+                                                                              <option defautid="131" value="Ouvert Tole" class="my-select">Ouvert Tole</option>
+                                                                              <option defautid="134" value="OXM /D" class="my-select">OXM /D</option>
+                                                                              <option defautid="137" value="Test(2)" class="my-select">Test(2)</option>
+                                                                              <option defautid="142" value="GB" class="my-select">GB</option>
+                                                                              <option defautid="145" value="GM" class="my-select">GM</option>
+                                                                              <option defautid="148" value="MM Int" class="my-select">MM Int</option>
+                                                                              <option defautid="151" value="Deformation" class="my-select">Deformation</option>
+                                                                              <option defautid="153" value="Rep &lt; Diam" class="my-select">Rep &lt; Diam</option>
+                                                                              <option defautid="154" value="Enfoncement Int" class="my-select">Enfoncement Int</option>
+                                                                              <option defautid="162" value="MB" class="my-select">MB</option>
+                                                                              <option defautid="163" value="Enfoncement Ext" class="my-select">Enfoncement Ext</option>
+                                                                              <option defautid="164" value="Empreinte Int" class="my-select">Empreinte Int</option>
+                                                                              <option defautid="165" value="Empreinte Ext" class="my-select">Empreinte Ext</option>
+                                                                              <option defautid="166" value="Arach Sur Rive" class="my-select">Arach Sur Rive</option>
+                                                                              <option defautid="167" value="DDB" class="my-select">DDB</option>
+                                                                              <option defautid="168" value="HTC Int" class="my-select">HTC Int</option>
+                                                                              <option defautid="169" value="HTC Ext" class="my-select">HTC Ext</option>
+                                                                              <option defautid="170" value="AMC /F" class="my-select">AMC /F</option>
+                                                                              <option defautid="171" value="RB /F" class="my-select">RB /F</option>
+                                                                              <option defautid="172" value="OXM /F" class="my-select">OXM /F</option>
+                                                                              <option defautid="173" value="EPT" class="my-select">EPT</option>
+                                                                              <option defautid="174" value="Diam HT (-)" class="my-select">Diam HT (-)</option>
+                                                                              <option defautid="175" value="Diam HT (+)" class="my-select">Diam HT (+)</option>
+                                                                              <option defautid="176" value="ND/Rep" class="my-select">ND/Rep</option>
+                                                                              <option defautid="177" value="Mauv Asp Cor" class="my-select">Mauv Asp Cor</option>
+                                                                              <option defautid="178" value="Ouver Tole" class="my-select">Ouver Tole</option>
+                                                                              <option defautid="186" value="Effet De Toil (B2)" class="my-select">Effet De Toil (B2)</option>
+                                                                              <option defautid="187" value="Effet De Toil (B1)" class="my-select">Effet De Toil (B1)</option>
+                                                                              <option defautid="192" value="MM Ext" class="my-select">MM Ext</option>
+                                                                              <option defautid="193" value="ND/D" class="my-select">ND/D</option>
+                                                                              <option defautid="194" value="ND/F" class="my-select">ND/F</option>
+                                                                              <option defautid="195" value="MB Int" class="my-select">MB Int</option>
+                                                                              <option defautid="196" value="MM" class="my-select">MM</option>
+                                                                              <option defautid="197" value="MB Ext" class="my-select">MB Ext</option>
+                                                                              <option defautid="198" value="MB Int" class="my-select">MB Int</option>
+                                                                              <option defautid="199" value="ND" class="my-select">ND</option>
+                                                                              <option defautid="200" value="GM Int" class="my-select">GM Int</option>
+                                                                              <option defautid="201" value="GM Ext" class="my-select">GM Ext</option>
+                                                                              <option defautid="202" value="Long" class="my-select">Long</option>
+                                                                              <option defautid="203" value="RB" class="my-select">RB</option>
+                                                                              <option defautid="204" value="Diam HT (-)/D" class="my-select">Diam HT (-)/D</option>
+                                                                              <option defautid="205" value="Diam HT (+)/D" class="my-select">Diam HT (+)/D</option>
+                                                                              <option defautid="206" value="Diam HT (-)/F" class="my-select">Diam HT (-)/F</option>
+                                                                              <option defautid="207" value="Diam HT (+)/F" class="my-select">Diam HT (+)/F</option>
+                                                                              <option defautid="208" value="EPT/F" class="my-select">EPT/F</option>
+                                                                              <option defautid="212" value="RB-â" class="my-select">RB-â</option>
+                                                                              <option defautid="213" value="Test" class="my-select">Test</option>
+                                                                              <option defautid="216" value="RB+Defor/D" class="my-select">RB+Defor/D</option>
+                                                                              <option defautid="217" value="MM HT/D" class="my-select">MM HT/D</option>
+                                                                              <option defautid="218" value="GM HT/D" class="my-select">GM HT/D</option>
+                                                                              <option defautid="219" value="MM HT/F" class="my-select">MM HT/F</option>
+                                                                              <option defautid="220" value="GM HT/F" class="my-select">GM HT/F</option>
+                                                                              <option defautid="221" value="Tube Instance" class="my-select">Tube Instance</option>
+                                                                              <option defautid="222" value="RB+Defor/F" class="my-select">RB+Defor/F</option>
+                                                                                                   </select>
+                         </td>
+                         <td class=" " style="width:20%">  <input class=" form-control" type="number" id="valeur2" name="valeur2"></td>
+                         <td class=" " style="width:35%">   <select class="form-control" id="operation2" name="operation2" required="">
+                                 <option hidden="" disabled="" selected="" value=""> </option>
+                                                                                                               <option operationid="3" value="Déclassé" class="my-select">Déclassé</option>
+                                                                              <option operationid="12" value="Contrôlé" class="my-select">Contrôlé</option>
+                                                                              <option operationid="43" value="R.A.S" class="my-select">R.A.S</option>
+                                                                              <option operationid="44" value="A Reparer" class="my-select">A Reparer</option>
+                                                                              <option operationid="45" value="A Chuté" class="my-select">A Chuté</option>
+                                                                              <option operationid="46" value="A Meuler" class="my-select">A Meuler</option>
+                                                                              <option operationid="47" value="Rebut" class="my-select">Rebut</option>
+                                                                              <option operationid="48" value="Meulé" class="my-select">Meulé</option>
+                                                                              <option operationid="49" value="Reparé" class="my-select">Reparé</option>
+                                                                              <option operationid="50" value="Déclassé En Epaiss" class="my-select">Déclassé En Epaiss</option>
+                                                                              <option operationid="52" value="En Instance" class="my-select">En Instance</option>
+                                                                              <option operationid="54" value="OK" class="my-select">OK</option>
+                                                                              <option operationid="56" value="D.T.P" class="my-select">D.T.P</option>
+                                                                                                   </select></td>
+
+                     </tr>
+                     </tbody>
+                 </table>
+                 </form>
+                 <div class="row actions">
+                     <div class="col-1"><button id="addObsMetal" class="btn btn-success"><b>+</b></button> </div>
+                     <div class="col-1"><button id="removeObsMetal" class="btn btn-danger"><b>-</b></button> </div>
+                 </div>
+                 <div class="row">
+                     <input type="text" id="ObsMetal" class=" form-control col-12" readonly="">
+
+                 </div>
+             </section>
+
+         </div>
+     </div>
+     <section class="col-12">
+         <div class="table-container">
+         <table id="visuelsTable" class="table table-striped table-hover table-bordered rapprods ">
+             <thead class="bg-primary text-white">
+             <tr>
+                 <th>Tube</th>
+                 <th>Bis</th>
+                 <th>Sond</th>
+                 <th>Longueur</th>
+                 <th>E</th>
+                 <th>Y</th>
+                 <th>DiamD</th>
+                 <th>DiamF</th>
+                 <th>ObsSoudure</th>
+                 <th>ObsMetal</th>
+
+             </tr>
+             </thead>
+             <tbody>
+                                                   <tr id="visuel8">
+                         <td id="tube8">A0002</td>
+                         <td id="bis8"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="sond8"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="longueur8">12000</td>
+                         <td id="E8">1</td>
+                         <td id="Y8">1</td>
+                         <td id="diam_d8">2</td>
+                         <td id="diam_f8">1</td>
+                         <td style="min-width: 30%" class="obsS" id="obsSoudure8">RAS</td>
+                         <td style="min-width: 30%" class="obsM" id="obsMetal8">RAS</td>
+                         <td>
+                             <button id="visuel8Edit" class="visuelEdit text-primary"><i class="fa fa-edit"></i></button>
+                             <button id="visuel8Delete" class="visuelDelete text-danger"><i class="fa fa-trash"></i></button></td>
+                         
+                     </tr>
+                                      <tr id="visuel29">
+                         <td id="tube29">A0008</td>
+                         <td id="bis29"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="sond29"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="longueur29">12000</td>
+                         <td id="E29">1</td>
+                         <td id="Y29">1</td>
+                         <td id="diam_d29">1</td>
+                         <td id="diam_f29">1</td>
+                         <td style="min-width: 30%" class="obsS" id="obsSoudure29">Serie DF|A Reparer|+E Long|Contrôlé|</td>
+                         <td style="min-width: 30%" class="obsM" id="obsMetal29">Test(1)|A Chuté|+DT|Rebut|</td>
+                         <td>
+                             <button id="visuel29Edit" class="visuelEdit text-primary"><i class="fa fa-edit"></i></button>
+                             <button id="visuel29Delete" class="visuelDelete text-danger"><i class="fa fa-trash"></i></button></td>
+                         
+                     </tr>
+                                      <tr id="visuel30">
+                         <td id="tube30">A0006</td>
+                         <td id="bis30"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="sond30"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="longueur30">12000</td>
+                         <td id="E30">1</td>
+                         <td id="Y30">1</td>
+                         <td id="diam_d30">1</td>
+                         <td id="diam_f30">1</td>
+                         <td style="min-width: 30%" class="obsS" id="obsSoudure30">R.A.S</td>
+                         <td style="min-width: 30%" class="obsM" id="obsMetal30">R.A.S</td>
+                         <td>
+                             <button id="visuel30Edit" class="visuelEdit text-primary"><i class="fa fa-edit"></i></button>
+                             <button id="visuel30Delete" class="visuelDelete text-danger"><i class="fa fa-trash"></i></button></td>
+                         
+                     </tr>
+                                      <tr id="visuel33">
+                         <td id="tube33">A0020</td>
+                         <td id="bis33"> <input type="checkbox" checked="" onclick="return false;">
+                             </td>
+                         <td id="sond33"><input type="checkbox" onclick="return false;"> </td>
+                         <td id="longueur33">12000</td>
+                         <td id="E33">1</td>
+                         <td id="Y33">1</td>
+                         <td id="diam_d33">1</td>
+                         <td id="diam_f33">1</td>
+                         <td style="min-width: 30%; max-width:30%" class="obsS" id="obsSoudure33">SD Long Ext+SD Long Ext+SD Long Ext+SD Long Ext|A Chuté|</td>
+                         <td style="min-width: 30%" class="obsM" id="obsMetal33">OVL|A Chuté|</td>
+                         <td>
+                             <button id="visuel33Edit" class="visuelEdit text-primary"><i class="fa fa-edit"></i></button>
+                             <button id="visuel33Delete" class="visuelDelete text-danger"><i class="fa fa-trash"></i></button></td>
+                         
+                     </tr>
+                                           </tbody>
+         </table>
+         </div>
+     </section>
+     <section>
+         <div class="row">
+             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
+                     Arrets Machine
+                 </button></div>
+             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">  <button type="button" id="imprimer" class="btn btn-primary">
+                    Imprimer
+                 </button></div>
+             <div class="col-xl-2 offset-xl-4 col-lg-3  col-md-4 col-sm-4">
+                 <form method="post" action="http://localhost/GPAO/public/rapports_visuels/43">
+                     <input type="hidden" name="_token" value="NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe">                     <input type="hidden" name="_method" value="delete">
+                     <button class="btn btn-warning">Quitter le rapport</button>
+                 </form>
+             </div>
+             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4"><button id="cloturer" class="btn btn-success">Clôturer Rapport</button></div>
+         </div>
+     </section>
+ </div>
+ <!-- Modal -->
+ <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     <div class="modal-dialog  " role="document" id="BobineModal">
+         <section>
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="staticBackdropLabel">Arrets Machine</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true"> </span></button><button data-dismiss="modal" onclick="$(&#39;#arretForm&#39;).trigger(&#39;reset&#39;)" class="btn btn-danger"><b>X</b></button>
+                 
+             </div>
+             <div class="modal-body">
+                     <form id="arretForm">
+                         <input name="idArret" type="hidden" id="idArret" value="">
+                         <input type="hidden" name="Pid" id="Pid" value="1">
+                         <input type="hidden" name="Did" id="Did" value="1">
+                         <input type="hidden" name="NumRap" id="NumRap" value="43">
+                         <input type="hidden" name="Machine" id="Machine" value="A">
+                         <div class="row">
+                             <div class="col-2">
+                                 <div class="form-group row">
+                                     <label class="col-12" for="type_arret">Type Arret</label>
+                                     <select class="form-control col-10" id="type_arret" name="type_arret">
+                                         <option value="panne">Panne</option>
+                                         <option value="arret" selected="">Arret</option>
+                                     </select>
+                                 </div>
+                             </div>
+                             <div class="col-3">
+                                 <div class="row">
+                                     <div class="col-6">
+                                         <div class="form-group  ">
+                                             <label class="col-12" for="du">Du</label>
+                                             <input class="col-12 form-control" type="time" id="du" name="du" value="00:00" required="">
+                                         </div></div>
+                                     <div class="col-6">
+                                         <div class="form-group  ">
+                                             <label class="col-12" for="au">Au</label>
+                                             <input class="col-12 form-control" type="time" id="au" name="au" value="00:00" required="">
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="col-1">
+                                 <div class="form-group row">
+                                     <label class="col-12" for="duree">Durée(m)</label>
+                                     <input class="col-12 form-control" type="number" id="duree" name="duree" value="" required="">
+                                 </div>
+                             </div>
+                             <div class="col-6">
+                                 <div class="form-group row">
+                                     <label class="col-11 offset-1" for="cause">Cause</label>
+                                     <input class="col-11 offset-1 form-control" type="text" id="cause" name="cause" value="" required="">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-2">
+                                 <div class="form-group row">
+                                     <label class="col-12" for="ndi">N°DI</label>
+                                     <input class="col-10 form-control" type="text" id="ndi" name="ndi" value="">
+                                 </div>
+                             </div>
+                             <div class="col-4">
+                                 <div class="form-group row">
+                                     <label class="col-12" for="obs">Obs</label>
+                                     <input class="col-11 form-control" type="text" id="obs" name="obs" value="">
+                                 </div>
+                             </div>
+                             <div class="col-2 offset">
+                                 <div class="form-group row">
+                                     <label class="col-12" for="relv">Relv_Compt</label>
+                                     <input class="col-12 form-control" type="text" id="relv" name="relv" value="">
+                                 </div>
+                             </div>
+                             <div class="col-1 " id="annulerButton">
+                                 <div class="col-10">
+                                     <label class="col-10"> &nbsp;</label>
+                                     <button type="reset" id="annulerPanne" class="btn btn-secondary" style="display: none;"> Annuler  </button></div>
+                             </div>
+                             <div class="col-3 ">
+                                 <div class="col-10"> <label class="col-12"> &nbsp;</label>
+                                 </div> <button class="col-10 btn btn-success offset-2" type="button" id="ajouterPanne"> Ajouter panne </button></div>
+                         </div>
+
+
+
+                     </form>
+                     <hr>
+                    <div class="table-container">
+                     <table class="table table-striped table-hover table-bordered" id="ArretTable">
+                         <thead class="bg-primary text-white">
+                         <tr>
+                             <th>Type Arret</th>
+                             <th>Du</th>
+                             <th>Au</th>
+                             <th>Duree</th>
+                             <th>Cause</th>
+                             <th>N°DI</th>
+                             <th>Obs</th>
+                             <th>Relv_Compt</th>
+
+                         </tr>
+                         </thead>
+                         <tbody>
+                                                                                                        </tbody>
+                     </table>
+                    </div>
+             </div>
+         </div>
+         </section>
+     </div>
+ </div>
+
+
+            
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright © GPAO 2020</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="http://localhost/GPAO/public/visuels/43#page-top" style="display: inline;">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" role="button" href="http://localhost/GPAO/public/logout" onclick="event.preventDefault();
+                                                     document.getElementById(&#39;logout-form&#39;).submit();">Logout</a>
+            <form id="logout-form" action="http://localhost/GPAO/public/logout" method="POST" style="display: none;">
+                <input type="hidden" name="_token" value="NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe">            </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="./SB Admin 2 - Dashboard_files/jquery.min.js.download"></script>
+  <script src="./SB Admin 2 - Dashboard_files/bootstrap.bundle.min.js.download"></script>
+  <script src="./SB Admin 2 - Dashboard_files/bootstrap-select.min.js.download"></script>
+
+
+  <!-- Core plugin JavaScript-->
+  <script src="./SB Admin 2 - Dashboard_files/jquery.easing.min.js.download"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="./SB Admin 2 - Dashboard_files/sb-admin-2.min.js.download"></script>
+
+ 
+    <script>
+
+        $(document).ready(function(){
+            DefautsSoudure=[];
+            DefautsMetal=[];
+            $('.my-select').selectpicker();
+            $('#annulerButton').hide();
+            $('#annulerPanne').hide();
+            addRapprodsListeners();
+
+            $('#addObsSoudure').click(function(e){
+                e.preventDefault();
+                if($('#defaut1').val()!==null && $('#operation1').val()!==null){
+                    if($('#operation1').val()!=='R.A.S'){
+                        Opr=$('#operation1').val();
+                        IdDef=$('#defaut1').find("option:selected").attr("defautId");
+                        Defaut=$('#defaut1').val();
+                        Valeur=$('#valeur1').val();
+                        NbOpr=$('#operation1').find("option:selected").attr("operationId");
+                        Nombre=$('#nbr1').val();
+                        if(Valeur==='' || Valeur===0){
+                            Valeur=null;
+                        }if(Nombre==='' || Nombre===0){
+                            Nombre=null;
+                        }
+                        DefautsSoudure.push([Opr,IdDef,Defaut,Valeur,NbOpr,Nombre]);
+                        console.log(DefautsSoudure);
+                        SetDefautsSoudure();
+
+                    }else{
+                        alert('Sélectionner une opération autre que R.A.S');
+                    }
+                }else{
+                    alert('Sélectionner un defaut et une opération svp!');
+                }
+
+            });
+            $('#addObsMetal').click(function(e){
+                e.preventDefault();
+                if($('#defaut2').val()!==null && $('#operation2').val()!==null) {
+                    if($('#operation2').val()!=='R.A.S') {
+                        Opr = $('#operation2').val();
+                        IdDef = $('#defaut2').find("option:selected").attr("defautId");
+                        Defaut = $('#defaut2').val();
+                        Valeur = $('#valeur2').val();
+                        NbOpr = $('#operation2').find("option:selected").attr("operationId");
+                        Nombre = $('#nbr2').val();
+                        if (Valeur === '' || Valeur === 0) {
+                            Valeur = null;
+                        }
+                        if (Nombre === '' || Nombre === 0) {
+                            Nombre = null;
+                        }
+                        DefautsMetal.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre]);
+                        console.log(DefautsMetal);
+                        SetDefautsMetal();
+                    }else{
+                        alert('Sélectionner une opération autre que R.A.S');
+                    }
+                }else{
+                    alert('Sélectionner un defaut et une opération svp!');
+                }
+            });
+            $('#removeObsSoudure').click(function(e){
+                e.preventDefault();
+                DefautsSoudure.shift();
+                if(DefautsSoudure.length>0){
+                SetDefautsSoudure();
+                }else{
+                    $('#ObsSoudure').val('');
+                }
+
+            });
+            $('#removeObsMetal').click(function(e){
+                e.preventDefault()
+                DefautsMetal.shift();
+                if(DefautsMetal.length>0){
+                    SetDefautsMetal();
+                }else{
+                    $('#ObsMetal').val('');
+                }
+            });
+            $('#Ajouter').click(function(e){
+                if($('#visuelForm')[0].checkValidity()){
+
+
+
+                    const id = $('#Numero').val();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    ntube=$('#ntube').val().replace(/[^0-9]/g,'');
+
+                    if ($('#Ajouter').html() !== ' Modifier ') {
+                   if((DefautsSoudure.length>0 || $('#operation1').val()==='R.A.S')
+                        && (DefautsMetal.length>0 || $('#operation2').val()==='R.A.S')) {
+                       if (DefautsSoudure.length > 0) {
+
+                           obsSoud = $('#ObsSoudure').val() + '|' + DefautsSoudure[DefautsSoudure.length - 1][0] + '|';
+                       } else if ($('#operation1').val() === 'R.A.S') {
+                           obsSoud = $('#operation1').val();
+                           DefautsSoudure.push([
+                               Opr = $('#operation1').val(), null, null, null, $('#operation1').find("option:selected").attr("operationId"), null]);
+                       }
+                       if (DefautsMetal.length > 0) {
+
+                           obsMet = $('#ObsMetal').val() + '|' + DefautsMetal[DefautsMetal.length - 1][0] + '|';
+
+                       } else if ($('#operation2').val() === 'R.A.S') {
+                           obsMet = $('#operation2').val();
+                           DefautsMetal.push([
+                               Opr = $('#operation2').val(), null, null, null, $('#operation2').find("option:selected").attr("operationId"), null]);
+                       }
+                       $.ajax({
+                           url: "http://localhost/GPAO/public/visuels",
+                           method: 'post',
+                           data: {
+                               _token: 'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe',
+                               machine: $('#machine').val(),
+                               Pid: $('#Pid').val(),
+                               Did: $('#Did').val(),
+                               NumeroRap: $('#NumRap').val(),
+                               ntube: ntube,
+                               bis: $('#bis:checked').length > 0,
+                               longueur: $('#longueur').val(),
+                               sond: $('#Sond:checked').length > 0,
+                               E: $('#E').val(),
+                               Y: $('#Y').val(),
+                               Diam_D: $('#diam_d').val(),
+                               Diam_F: $('#diam_f').val(),
+                               ObsMetal: obsMet,
+                               ObsSoudure: obsSoud,
+                               Defauts: DefautsSoudure.concat(DefautsMetal),
+                           },
+                           success: function (result) {
+                               var bis = "";
+                               var sond = "";
+                               if (result.visuel.Bis) {
+                                   bis = "checked"
+                               }
+                               if (result.visuel.Sond) {
+                                   sond = "checked"
+                               }
+                               $('#visuelsTable').append('<tr id="visuel' + result.visuel.Numero + '">' +
+                                   '                        <td id="tube' + result.visuel.Numero + '">' + result.visuel.Tube + '</td> ' +
+                                   '                        <td id="bis' + result.visuel.Numero + '">' + '<input type="checkbox" ' + bis + ' onclick="return false;">' +
+                                   '                        <td id="sond' + result.visuel.Numero + '">' + '<input type="checkbox" ' + sond + ' onclick="return false;">' +
+                                   '                        <td id="longueur' + result.visuel.Numero + '">' + result.visuel.Longueur + '</td>' +
+                                   '                        <td id="E' + result.visuel.Numero + '">' + result.visuel.E + '</td> ' +
+                                   '                        <td id="Y' + result.visuel.Numero + '">' + result.visuel.Y + '</td> ' +
+                                   '                        <td id="diam_d' + result.visuel.Numero + '">' + result.visuel.DiamD + '</td>' +
+                                   '                        <td id="diam_f' + result.visuel.Numero + '">' + result.visuel.DiamF + '</td>' +
+                                   '                        <td id="obsSoudure' + result.visuel.Numero + '">' + result.visuel.ObsSoudure + '</td>' +
+                                   '                        <td id="obsMetal' + result.visuel.Numero + '">' + result.visuel.ObsMetal + '</td>' +
+                                   '                        <td><button id="visuel' + result.visuel.Numero + 'Edit" class="visuelEdit text-primary" ><i class="fa fa-edit"></i></button>' +
+                                   '                            <button id="visuel' + result.visuel.Numero + 'Delete" class="visuelDelete text-danger" ><i class="fa fa-trash"></i></button>' +
+                                   '                             </td>' +
+                                   '                    </tr>');
+                               $('#visuelForm').trigger("reset");
+                               $('#Form1').trigger("reset");
+                               $('#Form2').trigger("reset");
+                               $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
+                               $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                               $('#ObsMetal').val('');
+                               $('#ObsSoudure').val('');
+                               DefautsSoudure = [];
+                               DefautsMetal = [];
+
+                               addRapprodsListeners();
+                           },
+                           error: function (result) {
+                               alert(result.responseJSON.message);
+                               console.log(result);
+                           }
+                       });
+                   }else{
+                       alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
+                   }
+                    } else {
+
+                        $.ajax({
+                            url:  "http://localhost/GPAO/public/visuels/"+id,
+                            method: 'post',
+                            data: {
+                                _method: 'put',
+                                _token: 'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe',
+                                machine: $('#machine').val(),
+                                Pid: $('#Pid').val(),
+                                Did: $('#Did').val(),
+                                NumeroRap: $('#NumRap').val(),
+                                ntube:  ntube,
+                                bis: $('#bis:checked').length>0,
+                                longueur: $('#longueur').val(),
+                                sond: $('#Sond:checked').length>0,
+                                E: $('#E').val(),
+                                Y: $('#Y').val(),
+                                Diam_D: $('#diam_d').val(),
+                                Diam_F: $('#diam_f').val(),
+                            },
+                            success: function (result) {
+                                console.log(result);
+                                var bis="";
+                                var sond="";
+                                if(result.visuel.Bis){
+                                    bis="checked"
+                                }
+                                if(result.visuel.Sond){
+                                    sond="checked"
+                                }
+                                $('#visuel'+id).replaceWith('<tr id="visuel'+ result.visuel.Numero+'">' +
+                                    '                        <td id="tube'+ result.visuel.Numero+'">'+ result.visuel.Tube+'</td> ' +
+                                    '                        <td id="bis'+ result.visuel.Numero+'">'+ '<input type="checkbox" '+bis+' onclick="return false;">'+
+                                    '                        <td id="sond'+ result.visuel.Numero+'">'+'<input type="checkbox" '+sond+' onclick="return false;">'+
+                                    '                        <td id="longueur'+ result.visuel.Numero+'">'+ result.visuel.Longueur+'</td>' +
+                                    '                        <td id="E'+ result.visuel.Numero+'">'+ result.visuel.E+'</td> ' +
+                                    '                        <td id="Y'+ result.visuel.Numero+'">'+result.visuel.Y+'</td> ' +
+                                    '                        <td id="diam_d'+ result.visuel.Numero+'">'+ result.visuel.DiamD+'</td>' +
+                                    '                        <td id="diam_f'+ result.visuel.Numero+'">'+ result.visuel.DiamF+'</td>' +
+                                    '                        <td id="obsSoudure'+ result.visuel.Numero+'">'+ result.visuel.ObsSoudure+'</td>' +
+                                    '                        <td id="obsMetal'+ result.visuel.Numero+'">'+ result.visuel.ObsMetal+'</td>' +
+                                    '                        <td><button id="visuel'+ result.visuel.Numero+'Edit" class="visuelEdit text-primary" ><i class="fa fa-edit"></i></button>' +
+                                    '                            <button id="visuel'+ result.visuel.Numero+'Delete" class="visuelDelete text-danger" ><i class="fa fa-trash"></i></button>' +
+                                    '                             </td>' +
+                                    '                    </tr>');
+
+
+
+                                $('#Ajouter').html(' Ajouter ');
+                                $('#annulerButton').hide();
+                                $('#visuelForm').trigger("reset");
+                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
+                                $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                                $('#ObsMetal').val('');
+                                $('#ObsSoudure').val('');
+                                EnableForms();
+                                addRapprodsListeners();
+                                DefautsSoudure=[];
+                                DefautsMetal=[];
+                            },
+                            error: function (result) {
+                                alert(result.responseJSON.message);console.log(result);
+                                
+                            }
+                        });
+
+                    }
+                }else{
+                    alert("Remplir tous les champs qui sont obligatoires svp !");
+                }
+            });
+            $('#annulerButton').click(function () {
+                $('#visuelForm').trigger("reset");
+                $('#Ajouter').html(' Ajouter ');
+                $('#annulerButton').hide();
+                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
+                $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                $('#ObsMetal').val('');
+                $('#ObsSoudure').val('');
+                $('#ntube').removeAttr("readonly");
+                EnableForms();
+            });
+            function addRapprodsListeners(){
+
+                $('#ntube').removeAttr("readonly");
+                $('.visuelDelete').each(function(e){
+                    $(this).click(function(e){
+                        tr= $(this).parent().parent();
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url:  "http://localhost/GPAO/public/visuels/"+id,
+                            method: 'post',
+                            data: {
+                                _method :'delete',
+                                _token :'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe',
+                                id :id,
+
+
+                            },
+                            success: function(result){
+                                tr.remove();
+                            },
+                            error: function(result){
+                                console.log(result);
+                                alert(result.responseJSON.message);
+                            }
+                        });
+                    });
+
+                    $('#ntube').removeAttr("readonly");
+                });
+                $('.visuelEdit').each(function(e){
+                    $(this).click(function(e){
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                        $('#Numero').val(id);
+                        $('#ntube').val($('#tube'+id).html()).attr('readonly','readonly');;
+                        if($('#bis'+id).find('input[checked]').length>0){
+
+                            $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"     checked    >');
+                        }else{
+                            $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"         >');
+                        }
+                        $('#longueur').val($('#longueur'+id).html());
+                        $('#E').val($('#E'+id).html());
+                        $('#Y').val($('#Y'+id).html());
+                        $('#diam_d').val($('#diam_f'+id).html());
+                        $('#diam_f').val($('#diam_f'+id).html());
+                        if($('#sond'+id).find('input[checked]').length>0){
+
+                            $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"     checked    >');
+                        }else{
+                            $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"         >');
+                        }
+                        $('#ObsMetal').val($('#obsMetal'+id).html());
+                        $('#ObsSoudure').val($('#obsSoudure'+id).html());
+                        $('#Ajouter').html(' Modifier ');
+                        $('#annulerButton').show();
+                        DisableForms();
+
+                });
+                });
+            }
+            $('#cloturer').click(function(e){
+                const Numero= $('#NumRap').val();
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url:  "http://localhost/GPAO/public/cloturer/"+Numero,
+                    method: 'post',
+                    data: {
+                        _token :'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe'
+                    },
+                    success: function(result){
+                        if(result.rapportState.Etat==='C'){
+                            alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
+                            window.location.href='http://localhost/GPAO/public/rapports_visuels';
+
+                        }
+
+
+                    },
+                    error: function(result){
+
+                            alert(result.responseJSON.message);
+
+                    }
+                });
+            });
+
+            function SetDefautsSoudure(){
+                $('#ObsSoudure').val('');
+
+                DefautsSoudure.forEach(function(item,index){
+
+                    if(typeof item[2] !=='undefined'){
+                    obs=item[2];
+                    if($('#nbr1').val()>0){
+                        obs=$('#nbr1').val()+' '+obs;
+                    }
+                    if($('#valeur1').val()>0){
+                        obs= obs+'('+$('#valeur1').val()+')';
+                    }
+                    if(DefautsSoudure.length>index+1){
+                        NextOp=DefautsSoudure[index+1][0];
+                    }else{
+                        NextOp=item[0];
+                    }
+                    if(NextOp===item[0]){
+                        $('#ObsSoudure').val($('#ObsSoudure').val()+'+'+obs);
+                    }else{
+                        $('#ObsSoudure').val($('#ObsSoudure').val()+'+'+obs+'|'+item[0]+'|');
+                    }
+                    ObsSoudure=$('#ObsSoudure').val();
+                    if(ObsSoudure.charAt(0)==='+')
+                    $('#ObsSoudure').val( ObsSoudure.substr(1));
+                    }
+                });
+
+
+            }
+
+            function SetDefautsMetal(){
+                $('#ObsMetal').val('');
+                DefautsMetal.forEach(function(item,index){
+                    if(typeof item[2] !=='undefined') {
+                        obs = item[2];
+                        if ($('#nbr2').val() > 0) {
+                            obs = $('#nbr2').val() + ' ' + obs;
+                        }
+                        if ($('#valeur2').val() > 0) {
+                            obs = obs + '(' + $('#valeur2').val() + ')';
+                        }
+                        if (DefautsMetal.length > index + 1) {
+                            NextOp = DefautsMetal[index + 1][0];
+                        } else {
+                            NextOp = item[0];
+                        }
+                        if (NextOp === item[0]) {
+                            $('#ObsMetal').val($('#ObsMetal').val() + '+' + obs);
+                        } else {
+                            $('#ObsMetal').val($('#ObsMetal').val() + '+' + obs + '|' + item[0] + '|');
+                        }
+                        ObsMetal = $('#ObsMetal').val();
+                        if (ObsMetal.charAt(0) === '+')
+                            $('#ObsMetal').val(ObsMetal.substr(1));
+                    }
+                });
+
+            }
+            function DisableForms(){
+                $('#nbr1').prop('disabled', true);
+                $('#nbr2').prop('disabled', true);
+                $('#defaut1').prop('disabled', true);
+                $('#defaut2').prop('disabled', true);
+                $('#valeur1').prop('disabled', true);
+                $('#valeur2').prop('disabled', true);
+                $('#operation1').prop('disabled', true);
+                $('#operation2').prop('disabled', true);
+                $('#addObsMetal').prop('disabled', true);
+                $('#addObsSoudure').prop('disabled', true);
+                $('#removeObsMetal').prop('disabled', true);
+                $('#removeObsSoudure').prop('disabled', true);
+            }function EnableForms(){
+                $('#nbr1').prop('disabled', false);
+                $('#nbr2').prop('disabled', false);
+                $('#defaut1').prop('disabled', false);
+                $('#defaut2').prop('disabled', false);
+                $('#valeur1').prop('disabled', false);
+                $('#valeur2').prop('disabled', false);
+                $('#operation1').prop('disabled', false);
+                $('#operation2').prop('disabled', false);
+                $('#addObsMetal').prop('disabled', false);
+                $('#addObsSoudure').prop('disabled', false);
+                $('#removeObsMetal').prop('disabled', false);
+                $('#removeObsSoudure').prop('disabled', false);
+            }
+        });
+        $('#imprimer').click(function(e){
+            e.preventDefault();
+
+            window.open('http://localhost/GPAO/public/printRap/43', '_blank');});
+
+    </script>
+    <script>
+        $(document).ready(function(){
+
+            addArretsListeners();
+            $('#annulerPanne').click(function () {
+            $('#ajouterPanne').html(' Ajouter panne ');
+            $('#annulerPanne').hide();
+            $('#arretForm').trigger('reset');
+        });
+        function addArretsListeners(){
+            $('.arretDelete').each(function(e){
+                $(this).click(function(e){
+
+                    tr= $(this).parent().parent();
+                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
+
+                    e.preventDefault();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url:  "http://localhost/GPAO/public/arret_machine/"+id,
+                        method: 'post',
+                        data: {
+                            _token :'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe',
+                            id :id,
+                            _method :'delete'
+
+                        },
+                        success: function(result){
+                            tr.remove();
+                        },
+                        error: function(result){
+                            alert(result.responseJSON.message);
+                        }
+                    });
+                });
+            });
+            $('.arretEdit').each(function(e){
+                $(this).click(function(e){
+                    e.preventDefault();
+                    tr= $(this).parent().parent();
+                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                    $('#cause').val(tr.find('#cause'+id).html());
+                    $('#du').val(tr.find('#du'+id).html());
+                    $('#au').val(tr.find('#au'+id).html());
+                    $('#duree').val(tr.find('#duree'+id).html());
+                    $('#ndi').val(tr.find('#ndi'+id).html());
+                    $('#obs').val(tr.find('#obs'+id).html());
+                    $('#relv').val(tr.find('#relv'+id).html());
+                    $('#idArret').val(id);
+
+                    if($('#type'+id).html()==='panne'){
+                        $('#type_arret').find('option[value=panne]').attr('selected','selected');
+                        $('#type_arret').find('option[value=arret]').removeAttr('selected');
+
+                    }else{
+                        $('#type_arret').find('option[value=panne]').removeAttr('selected');
+                        $('#type_arret').find('option[value=arret]').attr('selected','selected');
+                    }
+                    $('#ajouterPanne').html(' Modifier panne ');
+                    $('#annulerPanne').show();
+
+                });
+            });
+        }
+        $('#ajouterPanne').click(function(e){
+            if($('#arretForm')[0].checkValidity()) {
+                const id = $('#idArret').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                e.preventDefault();
+                if ($('#ajouterPanne').html() !== ' Modifier panne ') {
+
+                    $.ajax({
+                        url: "http://localhost/GPAO/public/arret_machine",
+                        method: 'post',
+                        data: {
+                            _token: 'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe',
+                            Machine: $('#Machine').val(),
+                            Pid: $('#Pid').val(),
+                            Did: $('#Did').val(),
+                            NumRap: $('#NumRap').val(),
+                            type_arret: $('#type_arret').val(),
+                            du: $('#du').val(),
+                            au: $('#au').val(),
+                            duree: $('#duree').val(),
+                            cause: $('#cause').val(),
+                            ndi: $('#ndi').val(),
+                            obs: $('#obs').val(),
+                            relv: $('#relv').val(),
+                        },
+                        success: function (result) {
+
+
+                            $('#ArretTable').append('<tr id="arret' + result.arret.id + '">' +
+                                '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
+                                '<td id="du'+ result.arret.id + '">' + result.arret.Du + '</td>' +
+                                '<td id="au'+ result.arret.id + '">' + result.arret.Au + '</td>' +
+                                '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
+                                '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
+                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
+                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
+                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
+                                '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
+                                '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
+
+                            addArretsListeners();
+                        },
+                        error: function (result) {
+                            console.log(result.responseJSON);
+                            alert(result.responseJSON.message);
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "http://localhost/GPAO/public/arret_machine/" + id,
+                        method: 'post',
+                        data: {
+                            _token: 'NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe',
+                            id: id,
+                            _method: 'put',
+                            Machine: $('#Machine').val(),
+                            Pid: $('#Pid').val(),
+                            Did: $('#Did').val(),
+                            NumRap: $('#NumRap').val(),
+                            type_arret: $('#type_arret').val(),
+                            du: $('#du').val(),
+                            au: $('#au').val(),
+                            duree: $('#duree').val(),
+                            cause: $('#cause').val(),
+                            ndi: $('#ndi').val(),
+                            obs: $('#obs').val(),
+                            relv: $('#relv').val(),
+                        },
+                        success: function (result) {
+
+                            $('#ArretTable').find('#arret' + result.arret.id).html(
+                                '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
+                                '<td id="du' + result.arret.id + '">' + result.arret.Du + '</td>' +
+                                '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
+                                '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
+                                '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
+                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
+                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
+                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt +'</td>' +
+                                '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
+                                '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td>');
+                            $('#ajouterPanne').html(' Ajouter panne ');
+                            $('#annulerPanne').hide();
+                            $('#arretForm').trigger("reset");
+                            addArretsListeners();
+                        },
+                        error: function (result) {
+                            alert(result.responseJSON.message);
+                        }
+                    });
+
+
+                }
+            }else{
+                alert('Remplir tous les champs qui sont obligatoires svp!');
+            }
+        });
+        $("#au , #du").click(function(event){
+
+
+            if ($("#du").val() != "" && $("#au").val() != "" ) {
+                var du = parseTime($("#du").val())/60000;
+                var au = parseTime($("#au").val())/60000;
+                if(du>au){
+                    au=au+(24*60);
+                }
+                $('#duree').val((au - du) );
+            }
+        });
+        function parseTime(cTime)
+        {
+            if (cTime == '') return null;
+            var d = new Date();
+            var time = cTime.match(/(\d+)(:(\d\d))?\s*(p?)/);
+            d.setHours( parseInt(time[1]) + ( ( parseInt(time[1]) < 12 && time[4] ) ? 12 : 0) );
+            d.setMinutes( parseInt(time[3]) || 0 );
+            d.setSeconds(0, 0);
+            return d;
+        }
+        });
+    </script>
+
+     
+
+
+
+
+</body></html>

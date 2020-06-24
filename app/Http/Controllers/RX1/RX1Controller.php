@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Visuel;
+namespace App\Http\Controllers\RX1;
 
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
@@ -8,12 +8,13 @@ use App\Fabrication\Rapprod;
 use App\Fabrication\Tube;
 use App\Http\Controllers\Controller;
 use App\Visuel\Defauts;
+use App\Visuel\RX1;
 use App\Visuel\Visuels;
 use App\Visuel\DetailDefauts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class VisuelsController extends Controller
+class RX1Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -43,64 +44,47 @@ class VisuelsController extends Controller
      */
     public function store(Request $request)
     {
-        $visuel = new Visuels();
-        $visuel->Pid = $request->Pid;
-        $visuel->Did = $request->Did;
-        $visuel->Machine = $request->machine;
-        $visuel->Tube = $visuel->Machine . $request->ntube;
-        $visuel->Ntube = $request->ntube;
-        $visuel->IdOpr = 1;
-        $visuel->NbOpr = 1;
-        $visuel->NumeroRap = $request->NumeroRap;
-        if ($request->bis=='true') $visuel->Bis = 1;
-        else $visuel->Bis = 0;
-        if ($request->sond=='true') $visuel->Sond = 1;
-        else $visuel->Sond = 0;
-        $visuel->Longueur = $request->longueur;
-        $visuel->E = $request->E;
-        $visuel->Y = $request->Y;
-        $visuel->DiamD = $request->Diam_D;
-        $visuel->DiamF = $request->Diam_F;
-        $visuel->ObsSoudure = $request->ObsSoudure;
-        $visuel->ObsMetal = $request->ObsMetal;
-        $visuel->DateSaisie= date('Y-m-d H:i:s');
-        $visuel->Visible=1;
-          $tube=Tube::where('Tube','=',$visuel->Tube)
-              ->where('Pid','=',$visuel->Pid)
-              ->where('Did','=',$visuel->Did)->first() ;
+        $rx1 = new RX1();
+        $rx1->Pid = $request->Pid;
+        $rx1->Did = $request->Did;
+        $rx1->Machine = $request->machine;
+        $rx1->Tube = $request->Tube;
+        $rx1->Ntube = $request->ntube;
+        $rx1->NumeroRap = $request->NumeroRap;
+        if ($request->bis=='true') $rx1->Bis = 1;
+        else $rx1->Bis=0;
+        $rx1->Defauts = $request->Obs;
+        $rx1->Observation = $request->Observation;
+        $rx1->DateSaisie= date('Y-m-d H:i:s');
+          $tube=Tube::where('Tube','=',$rx1->Tube)
+              ->where('Pid','=',$rx1->Pid)
+              ->where('Did','=',$rx1->Did)->first() ;
           if($tube!=null){
               $tube=Tube::find($tube->NumTube);
-             $tube->DiamD = $request->Diam_D;
-             $tube->DiamF = $request->Diam_F;
-             $tube->Sond =$visuel->Sond;
-             $tube->Z02=true;
+             $tube->Z03=true;
          }else{
              $tube=new Tube();
-             $tube->Pid = $visuel->Pid;
-             $tube->Did = $visuel->Did;
-             $tube->Machine = $visuel->Machine;
+             $tube->Pid = $rx1->Pid;
+             $tube->Did = $rx1->Did;
+             $tube->Machine = $rx1->Machine;
              $tube->NTube = $request->ntube;
-             $tube->Tube = $visuel->Tube;
-             $tube->Longueur = $request->longueur;
-             $tube->Bis = $visuel->Bis;
-             $tube->DiamD = $request->Diam_D;
-             $tube->DiamF = $request->Diam_F;
-             $tube->Sond =$visuel->Sond;
-             $tube->Z02=true;
+             $tube->Tube = $rx1->Tube;
+             $tube->Bis = $rx1->Bis;
+             $tube->Z03=true;
          }
 
          $tube->save();
-          $visuel->NumTube=$tube->NumTube;
+          $rx1->NumTube=$tube->NumTube;
           $defauts=$request->Defauts;
-        if ($visuel->save()){
+        if ($rx1->save()){
             foreach ($defauts as $defaut){
                 $detailDefaut=new \App\Visuel\DetailDefauts();
-                $detailDefaut->Pid=$visuel->Pid;
-                $detailDefaut->Did=$visuel->Did;
-                $detailDefaut->Zone="Z02";
+                $detailDefaut->Pid=$rx1->Pid;
+                $detailDefaut->Did=$rx1->Did;
+                $detailDefaut->Zone="Z03";
                 $detailDefaut->NumRap=$request->NumeroRap;
-                $detailDefaut->NumVisuel=$visuel->Numero;
-                $detailDefaut->Tube=$visuel->Tube;
+                $detailDefaut->NumVisuel=$rx1->Id;
+                $detailDefaut->Tube=$rx1->Tube;
                 $detailDefaut->Opr=$defaut[0];
                 $detailDefaut->IdDef=$defaut[1];
                 $detailDefaut->Defaut=$defaut[2];
@@ -109,7 +93,7 @@ class VisuelsController extends Controller
                 $detailDefaut->Nombre=$defaut[5];
                 $detailDefaut->save();
             }
-            return response()->json(array('visuel'=> $visuel), 200);
+            return response()->json(array('rx1'=> $rx1), 200);
 
         }else{
             return response()->json(array('error'=> error), 404);
@@ -123,32 +107,31 @@ class VisuelsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {$rapport =\App\Fabrication\Rapport::find($id);
+    public function show($id){
+    $rapport =\App\Fabrication\Rapport::find($id);
         if($rapport!=null) {
-    if($rapport->Zone=='Z02'){
+    if($rapport->Zone=='Z03'){
            if ($rapport->Etat == 'N') {
                $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-               $defautsMetal= \App\Visuel\Defauts::where('Zone','=','Z02')->where('Descr','=','Metal')->get();
-               $defautsSoudure= \App\Visuel\Defauts::where('Zone','=','Z02')->where('Descr','=','Soudure')->get();
-               $operations= \App\Visuel\Operations::where('Zone','=','Z02')->get();
-               return view('visuel.rapvisuel',
+               $defauts= \App\Visuel\Defauts::where('Zone', '=','Z03')->get();
+               $operations= \App\Visuel\Operations::where('Zone','=','Z03')->get();
+               return view('RX1.RX1',
                    ['rapport' => $rapport,
-                       'visuels'=>$rapport->visuels,
+                       'rx1'=>$rapport->rx1,
                        'projet' => $projet,
+                       'details' => $projet->details,
                        'arrets'=>$rapport->arrets,
-                       'defautsMetal'=>$defautsMetal,
-                       'defautsSoudure'=>$defautsSoudure
-                       ,'operations'=>$operations]);
+                       'defauts'=>$defauts,
+                       'operations'=>$operations]);
            } elseif ($rapport->Etat == 'C') {
-               return redirect(route('rapports_visuels.index'));
+               return redirect(route('rapports_RX1.index'));
            }
 
        }else{
-           return redirect(route('rapports_visuels.index'));
+           return redirect(route('rapports_RX1.index'));
        }
     }else{
-        return redirect(route('rapports_visuels.index'));
+        return redirect(route('rapports_RX1.index'));
     }
 
     }
@@ -160,8 +143,15 @@ class VisuelsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   $rx1 = RX1::findorFail($id);
+        if($rx1!=null){
+            $rx1->Defs ;
+            return response()->json(array('rx1'=> $rx1), 200);
 
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
 
     /**
@@ -173,22 +163,36 @@ class VisuelsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $visuel = Visuels::findorFail($id);
-        if ($request->bis=='true') $visuel->Bis = 1;
-        else $visuel->Bis = 0;
-        if ($request->sond=='true') $visuel->Sond = 1;
-        else $visuel->Sond = 0;
-        $visuel->Longueur = $request->longueur;
-        $visuel->E = $request->E;
-        $visuel->Y = $request->Y;
-        $visuel->DiamD = $request->Diam_D;
-        $visuel->DiamF = $request->Diam_F;
-        $tube=$visuel->tube;
-        $tube->DiamD= $request->Diam_D;
-        $tube->DiamF = $request->Diam_F;
-        $tube->save();
-        if ($visuel->save()){
-            return response()->json(array('visuel'=> $visuel), 200);
+        $rx1 = RX1::findorFail($id);
+        $rx1->Did = $request->Did;
+        if ($request->bis=='true') $rx1->Bis = 1;
+        else $rx1->Bis=0;
+        $rx1->Defauts = $request->Obs;
+        $rx1->Observation = $request->Observation;
+        $rx1->DateSaisie= date('Y-m-d H:i:s');
+        $oldDefs=$rx1->Defs;
+        $defauts=$request->Defauts;
+        if ($rx1->save()){
+            foreach ($defauts as $defaut){
+                $detailDefaut=new \App\Visuel\DetailDefauts();
+                $detailDefaut->Pid=$rx1->Pid;
+                $detailDefaut->Did=$rx1->Did;
+                $detailDefaut->Zone="Z03";
+                $detailDefaut->NumRap=$request->NumeroRap;
+                $detailDefaut->NumVisuel=$rx1->Id;
+                $detailDefaut->Tube=$rx1->Tube;
+                $detailDefaut->Opr=$defaut[0];
+                $detailDefaut->IdDef=$defaut[1];
+                $detailDefaut->Defaut=$defaut[2];
+                $detailDefaut->Valeur=$defaut[3];
+                $detailDefaut->NbOpr=$defaut[4];
+                $detailDefaut->Nombre=$defaut[5];
+                $detailDefaut->save();
+            }
+            foreach($oldDefs as $olddef){
+                DetailDefauts::destroy($olddef->id);
+            }
+            return response()->json(array('rx1'=> $rx1), 200);
 
         }else{
             return response()->json(array('error'=> error), 404);
@@ -204,11 +208,14 @@ class VisuelsController extends Controller
      */
     public function destroy($id)
     {
-        $visuel=\App\Visuel\Visuels::findOrFail($id);
-        foreach ($visuel->Defauts as $Defaut){
+        $rx1=\App\Visuel\RX1::findOrFail($id);
+        foreach ($rx1->Defs as $Defaut){
             $Defaut->delete();
         }
-        if ($visuel->delete()){
+        if ($rx1->delete()){
+            $rx1->tube->Z03=false;
+            $rx1->tube->save();
+
             return response()->json(array('success'=> true), 200);
 
         }else{

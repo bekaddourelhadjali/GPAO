@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Fabrication;
 
+use App\Dashboard\Affectations;
+use App\Dashboard\Locations;
+use App\Dashboard\Machines;
 use App\Fabrication\Bobine;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
@@ -19,14 +22,15 @@ class RapportsController extends Controller
     public function index()
     {
         $postes = DB::select('Select * from postes');
-        $machines = DB::select('Select * from machine');
-        $projet = DB::select('SELECT * FROM 	public.projet WHERE "EndDate" >= CURRENT_DATE::date')[0];
-        $details = detailprojet::all();
-        $operateurs = DB::select('Select * from operateurs');
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $machines = $location->machines;
+        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
+        $details = $projet->details;
+        $agents = $location->agents;
         return view ('Fabrication.rapports',['details'=>$details
             ,'machines'=>$machines
             ,'postes'=>$postes
-            ,'operateurs'=>$operateurs,
+            ,'agents'=>$agents,
             'projet'=>$projet]);
 
     }
@@ -53,7 +57,7 @@ class RapportsController extends Controller
         $rapport->Pid= $request->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone=1;
+        $rapport->Zone='Z01';
         $rapport->Equipe= $request->equipe;
         $rapport->Machine= $request->machine;
         $rapport->Poste= $request->poste;
@@ -66,6 +70,8 @@ class RapportsController extends Controller
         $rapport->Fil=0;
         $rapport->VSoudage=0;
         $rapport->LargCisAlge=0;
+        $rapport->Etat='N';
+        $rapport->DateSaisie=date('Y-m-d H:i:s');
         if($rapport->save()) {
              return redirect(route('rapprod.show',['id'=>$rapport->Numero]));
             }
@@ -113,6 +119,16 @@ class RapportsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $rapport=\App\Fabrication\Rapport::find($id);
+        if(sizeof($rapport->rapprods) || sizeof($rapport->arrets)){
+        }else{
+            foreach($rapport->operateurs as $operateur){
+                $operateur->delete();
+            }
+            $rapport->delete();
+        }
+        return redirect(route('rapports.index'));
+
     }
+
 }

@@ -3,10 +3,26 @@
 @section('style')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
-        /*input[type="time"]::-webkit-inner-spin-button {*/
-            /*-webkit-appearance: none;*/
-        /*}*/
-
+        .table {
+            table-layout: auto;
+            width: 100%;
+            word-wrap: break-word;
+            white-space: nowrap;
+        }
+        .table-container{
+            overflow: auto;
+        }
+        .table td {
+            overflow: hidden;
+            word-break: break-all;
+            white-space: normal;
+            text-overflow: ellipsis;
+            color : #000;
+        }
+        input[type="time"]{
+            padding-right: 2px;
+            padding-left: 2px;
+        }
         span.valeur{
             color:red;
         }
@@ -64,18 +80,6 @@
 @section('content')
 <div class="container">
     <section>
-        <div class="row ">
-            <div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">
-                <div class="row ">
-                    <img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">
-                    <div class="col-10">
-                        <h1>Project : {{$projet->Nom}}</h1>
-                        <h5>Client: {{$projet->Customer}}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
         <div class="row">
             <div class="col-sm-12 col-md-8 col-xl-4 col-lg-4">
                 <div class="col-12">Information projet:</div>
@@ -97,10 +101,7 @@
         </div>
     </section>
     <section>
-        {{--<form   method="post" @if(isset($selectedArret))action="{{route('arret_machine.update',['id'=>$selectedArret->id])}}"--}}
-              {{--@else action="{{route('arret_machine.store')}}"   @endif >--}}
-        <form id="arretForm">
-            @csrf()
+
 
             <input name="id" type="hidden" id="id" value="">
             <input type="hidden" name="Pid" id="Pid" value="{{$rapport->Pid}}">
@@ -108,42 +109,44 @@
             <input type="hidden" name="NumRap" id="NumRap" value="{{$rapport->Numero}}">
             <input type="hidden" name="Machine" id="Machine" value="{{$rapport->Machine}}">
    <div class="row">
-       <div class="col-3  col-head"  >
+       <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12  col-head"  >
            <div class="row">
                <div class="col-12 input-title text-primary ">TETE DE SOUDAGE INTERIEUR</div>
-               <div class="col-6"><input class="form-control" type="text"  value="0"  id="flux_int" name="flux_int"></div>
-               <div class="col-6"><input class="form-control" type="text"   value="0"    id="fil_int" name="fil_int"></div>
+               <div class="col-6"><input class="form-control" type="text"  value="{{$rapport->TSIFlux}}"  id="flux_int" name="flux_int"></div>
+               <div class="col-6"><input class="form-control" type="text"   value="{{$rapport->TSIFil}}"    id="fil_int" name="fil_int"></div>
            </div>
        </div>
-       <div class="col-3 col-head">
+       <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-head">
            <div class="row">
                <div class="col-12 input-title text-primary ">TETE DE SOUDAGE EXTERIEUR</div>
-               <div class="col-6"><input class="form-control" type="text"   value="0"   id="flux_ext" name="flux_ext"></div>
-               <div class="col-6"><input class="form-control" type="text"  value="0"     id="fil_ext" name="fil_ext"></div>
+               <div class="col-6"><input class="form-control" type="text"   value="{{$rapport->TSEFlux}}"   id="flux_ext" name="flux_ext"></div>
+               <div class="col-6"><input class="form-control" type="text"  value="{{$rapport->TSEFil}}"     id="fil_ext" name="fil_ext"></div>
            </div></div>
-       <div class="col-2 col-head">
+       <div class="col-xl-2 col-lg-2 col-md-4 col-sm-6 col-head">
            <div class="col-12 input-title text-primary ">V.SOUDAGE</div>
-           <div class="col-12"><input class="form-control" type="text"   value="0"   id="v_soudage" name="v_soudage"></div>
+           <div class="col-12"><input class="form-control" type="text"   value="{{$rapport->VSoudage}}"   id="v_soudage" name="v_soudage"></div>
        </div>
-       <div class="col-2 col-head">
+       <div class="col-xl-2 col-lg-2 col-md-4 col-sm-6 col-head">
            <div class="col-12 input-title text-primary ">LARGEUR CISAIge</div>
-           <div class="col-12"><input class="form-control" type="text" value="0"   id="largeur" name="largeur"></div>
+           <div class="col-12"><input class="form-control" type="text" value="{{$rapport->LargCisAlge}}"   id="largeur" name="largeur"></div>
        </div>
-       <div class="col-1 col-head">
+       <div class="col-xl-1 col-lg-1 col-md-2 col-sm-6 col-head">
                <div class="col-12 input-title text-primary ">FLUX</div>
-               <div class="col-12 input-text"><input class="form-control"  type="text"  id="flux" name="flux"></div>
+               <div class="col-12 input-text"><input class="form-control"  type="text" value="{{$rapport->Flux}}" id="flux" name="flux"></div>
        </div>
-       <div class="col-1 col-head">
+       <div class="col-xl-1 col-lg-1 col-md-2 col-sm-6 col-head">
                <div class="col-12 input-title text-primary">FIL</div>
-               <div class="col-12 input-text"><input class="form-control" type="text"  id="fil" name="fil"></div>
+               <div class="col-12 input-text"><input class="form-control" type="text" value="{{$rapport->Fil}}" id="fil" name="fil"></div>
 
        </div>
 
       </div>
 
-        <hr>
+    </section>
+    <section>
+        <form id="arretForm">
         <div class="row">
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
                 <div class="form-group row">
                     <label class="col-12" for="type_arret">Type Arret</label>
                     <select class="form-control col-10" id="type_arret" name="type_arret">
@@ -152,7 +155,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
                 <div class="row">
                 <div class="col-6">
                 <div class="form-group  ">
@@ -167,13 +170,13 @@
                 </div>
                 </div>
             </div>
-            <div class="col-1">
+            <div class="col-xl-1 col-lg-1 col-md-2 col-sm-4">
                 <div class="form-group row">
                     <label class="col-12" for="duree">Durée(m)</label>
-                    <input class="col-10 form-control" type="text" id="duree" name="duree"  value=""      required>
+                    <input class="col-10 form-control" type="number" id="duree" name="duree"  value=""      required>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-8">
                 <div class="form-group row">
                     <label class="col-12" for="cause">Cause</label>
                     <input class="col-12 form-control" type="text" id="cause" name="cause"  value=""  required>
@@ -181,30 +184,30 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
                 <div class="form-group row">
                     <label class="col-12" for="ndi">N°DI</label>
                     <input class="col-10 form-control" type="text" id="ndi" name="ndi"   value="" >
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8">
                 <div class="form-group row">
                     <label class="col-12" for="obs">Obs</label>
                     <input class="col-11 form-control" type="text" id="obs" name="obs" value=""   >
                 </div>
             </div>
-            <div class="col-2 offset">
+            <div class="col-xl-2 col-lg-2 col-md-4 col-sm-3 ">
                 <div class="form-group row">
                     <label class="col-12" for="relv">Relv_Compt</label>
                     <input class="col-12 form-control" type="text" id="relv" name="relv"   value="" >
                 </div>
             </div>
-            <div class="col-1 " id="annulerButton">
+            <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 " id="annulerButton">
                 <div class="col-10">
                     <label class="col-10"  > &nbsp;</label>
-                    <button type="reset"    class="btn btn-secondary" type="submit"> Annuler  </button></div>
+                    <button type="reset"   class="btn btn-secondary" > Annuler  </button></div>
             </div>
-             <div class="col-3 "  >
+             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"  >
                      <div class="col-10"> <label class="col-12"  > &nbsp;</label>
                      </div> <button class="col-10 btn btn-success offset-2" type="button" type="submit" id="ajouterPanne"  > Ajouter panne </button></div>
             </div>
@@ -213,9 +216,9 @@
 
     </form>
         <hr>
-
+<div class="table-container">
     <table class="table table-striped table-hover table-bordered" id="ArretTable">
-        <thead class="thead-dark">
+        <thead class="bg-primary text-white">
         <tr>
             <th>Type Arret</th>
             <th>Du</th>
@@ -248,12 +251,12 @@
         @endif
         </tbody>
     </table>
+</div>
     </section>
     <section>
     <div class="row">
-        <div class="col-4 offset-1">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 offset-lg-1">
             <div class="form-group row">
-                {{--<form method="get" action="{{route('operateur')}}">--}}
                     @csrf()
                     <input type="hidden"  id="operateur_Pid" name="Pid" value="{{$rapport->Pid}}">
                     <input type="hidden" id="operateur_Did" name="Did" value="{{$rapport->Did}}">
@@ -265,7 +268,6 @@
                         <button class="btn btn-success" id="OperateurSubmit" type="submit">Entrer</button>
                     </div>
                 </div>
-                {{--</form>--}}
                 <table id="operatuersTable" class="table">
                     @if(isset($operateurs))
                         @foreach($operateurs as $operateur)
@@ -278,19 +280,19 @@
             </div>
 
         </div>
-        <div class="col-6 offset-1">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 offset-lg-1">
             <div class="form-group row">
                 <label class="col-12" for="observation">Observation</label>
-                <textarea class="col-10 form-control" id="observation" name="observation"  rows="8" ></textarea>
+                <textarea class="col-10 form-control" id="observation" name="observation"  rows="8" >{{$rapport->ObsRap}}</textarea>
 
             </div>
         </div>
     </div>
         <hr>
-    <div class="row">
-        <div class="col-2"> <a href="{{route('rapprod.show',['id'=>$rapport->Numero])}}" role="button" class="btn btn-primary">Retour</a></div>
-        <div class="col-2 offset-6"><button class="btn btn-warning">Quitter le rapport</button></div>
-        <div class="col-2"><button class="btn btn-success">Clôturer Rapport</button></div>
+    <div class="row" >
+        <div style="margin-top:10px" class="col-xl-3 col-lg-3 col-md-4 col-sm-4"> <a href="{{route('rapprod.show',['id'=>$rapport->Numero])}}" role="button" class="btn btn-primary ">Retour</a></div>
+        <div style="margin-top:10px" class="col-xl-3 col-lg-3 col-md-4 col-sm-4 offset-lg-3"><button class="btn btn-warning">Quitter le rapport</button></div>
+        <div style="margin-top:10px" class="col-xl-3 col-lg-3 col-md-4 col-sm-4"><button class="btn btn-success" id="cloturer">Clôturer Rapport</button></div>
     </div>
 
     </section>
@@ -327,7 +329,7 @@
         addOperatorsListeners();
     },
     error: function(result){
-        alert("error");
+        alert(result.responseJSON.message);
     }
     });
     });
@@ -354,7 +356,7 @@
                                 tr.remove();
                             },
                             error: function(result){
-                                alert("error");
+                                alert(result.responseJSON.message);
                             }
                         });
                     });
@@ -365,24 +367,12 @@
 
 
             if ($("#du").val() != "" && $("#au").val() != "" ) {
-                var du = parseTime($("#du").val());
-                var au = parseTime($("#au").val());
-                var auHours=au.getHours();
-                if (auHours  > du.getHours()) {
-
-                    $('#duree').val( (auHours - du.getHours()) * 60 + (au.getMinutes() - du.getMinutes()));
+                var du = parseTime($("#du").val())/60000;
+                var au = parseTime($("#au").val())/60000;
+                if(du>au){
+                    au=au+(24*60);
                 }
-                else {
-                    if (auHours == '00'){ auHours=24;
-                    $('#duree').val( ((auHours- du.getHours()) * 60 + (au.getMinutes() - du.getMinutes())));
-                    }
-                    else {
-                        $('#duree').val( ((auHours- du.getHours()) * 60 + (au.getMinutes() - du.getMinutes()))*-1);
-                    }
-                    }
-                    if(au.getHours()=='00' && du.getHours()=='00'){
-                        $('#duree').val( ( (au.getMinutes() - du.getMinutes())));
-                    }
+                $('#duree').val((au - du) );
             }
             });
             function parseTime(cTime)
@@ -397,7 +387,7 @@
             }
 
         $('#ajouterPanne').click(function(e){
-            if($('#arretForm')[0].checkValidity()) {  
+            if($('#arretForm')[0].checkValidity()) {
                 const id = $('#id').val();
                 $.ajaxSetup({
                     headers: {
@@ -429,21 +419,21 @@
 
 
                             $('#ArretTable').append('<tr id="arret' + result.arret.id + '">' +
-                                '<td id="type' + result.arret.id + '"> ' + result.arret.TypeArret + '</td>' +
-                                '<td id="du' + result.arret.id + '"> ' + result.arret.Du + '</td>' +
-                                '<td id="au' + result.arret.id + '"> ' + result.arret.Au + '</td>' +
-                                '<td id="duree' + result.arret.id + '"> ' + result.arret.Durée + '</td>' +
-                                '<td id="cause' + result.arret.id + '"> ' + result.arret.Cause + '</td>' +
-                                '<td id="ndi' + result.arret.id + '"> ' + result.arret.NDI + '</td>' +
-                                '<td id="obs' + result.arret.id + '"> ' + result.arret.Obs + '</td>' +
-                                '<td id="relv' + result.arret.id + '"> ' + result.arret.Relv_Compt + '</td>' +
+                                '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
+                                '<td id="du'+ result.arret.id + '">' + result.arret.Du + '</td>' +
+                                '<td id="au'+ result.arret.id + '">' + result.arret.Au + '</td>' +
+                                '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
+                                '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
+                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
+                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
+                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
                                 '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
                                 '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
 
                             addArretsListeners();
                         },
                         error: function (result) {
-                            alert("error");
+                            alert(result.responseJSON.message);
                         }
                     });
                 } else {
@@ -470,14 +460,14 @@
                         success: function (result) {
 
                             $('#ArretTable').find('#arret' + result.arret.id).html(
-                                '<td id="type' + result.arret.id + '"> ' + result.arret.TypeArret + '</td>' +
-                                '<td id="du' + result.arret.id + '"> ' + result.arret.Du + '</td>' +
-                                '<td id="au' + result.arret.id + '"> ' + result.arret.Au + '</td>' +
-                                '<td id="duree' + result.arret.id + '"> ' + result.arret.Durée + '</td>' +
-                                '<td id="cause' + result.arret.id + '"> ' + result.arret.Cause + '</td>' +
-                                '<td id="ndi' + result.arret.id + '"> ' + result.arret.NDI + '</td>' +
-                                '<td id="obs' + result.arret.id + '"> ' + result.arret.Obs + '</td>' +
-                                '<td id="relv' + result.arret.id + '"> ' + result.arret.Relv_Compt + '</td>' +
+                                '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
+                                '<td id="du' + result.arret.id + '">' + result.arret.Du + '</td>' +
+                                '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
+                                '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
+                                '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
+                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
+                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
+                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt +'</td>' +
                                 '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
                                 '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td>');
                             $('#ajouterPanne').html(' Ajouter panne ');
@@ -486,7 +476,7 @@
                             addArretsListeners();
                         },
                         error: function (result) {
-                            alert("error");
+                            alert(result.responseJSON.message);
                         }
                     });
 
@@ -526,7 +516,7 @@
                                 tr.remove();
                             },
                             error: function(result){
-                                alert("error");
+                                alert(result.responseJSON.message);
                             }
                         });
                     });
@@ -545,21 +535,62 @@
                         $('#relv').val(tr.find('#relv'+id).html());
                         $('#id').val(id);
 
-                         if($('#type'+id).html()==='panne'){
-                             $('#type_arret').find('option[value=panne]').attr('selected','selected');
-                             $('#type_arret').find('option[value=arret]').removeAttr('selected');
+                        if($('#type'+id).html()==='panne'){
+                            $('#type_arret').find('option[value=panne]').attr('selected','selected');
+                            $('#type_arret').find('option[value=arret]').removeAttr('selected');
 
                         }else{
-                              $('#type_arret').find('option[value=panne]').removeAttr('selected');
-                             $('#type_arret').find('option[value=arret]').attr('selected','selected');
-                         }
+                            $('#type_arret').find('option[value=panne]').removeAttr('selected');
+                            $('#type_arret').find('option[value=arret]').attr('selected','selected');
+                        }
                         $('#ajouterPanne').html(' Modifier panne ');
                         $('#annulerButton').show();
 
                     });
                 });
             }
+            $('#cloturer').click(function(e){
+                const Numero= $('#NumRap').val();
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
+                $.ajax({
+                    url:  "{{url('/cloturer')}}/"+Numero,
+                    method: 'post',
+                    data: {
+                        _token :'{{csrf_token()}}',
+                        ObsRap:$('#observation').val(),
+                        flux_int:$('#flux_int').val(),
+                        fil_int:$('#fil_int').val(),
+                        flux_ext:$('#flux_ext').val(),
+                        fil_ext:$('#fil_ext').val(),
+                        v_soudage:$('#v_soudage').val(),
+                        largeur:$('#largeur').val(),
+                        flux:$('#flux').val(),
+                        fil:$('#fil').val(),
+                        arret_clot:'true'
+
+                    },
+                    success: function(result){
+                        if(result.rapportState.Etat==='C'){
+                            alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
+                            window.location.href='{{route("rapports.index")}}';
+
+                        }
+
+
+                    },
+                    error: function(result){
+
+                        alert(result.responseJSON.message);
+
+                    }
+                });
+            });
         });
 
     </script>

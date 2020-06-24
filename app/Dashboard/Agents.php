@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Fabrication;
+namespace App\Dashboard;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Operateur extends Model
-{   public $timestamps=false;
-    protected $table = "operateur";
+class Agents extends Model
+{
+    public $timestamps=false;
+    protected $table = "agents";
 
 }

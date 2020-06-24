@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Visuels;
+namespace App\Visuel;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Defauts extends Model
+class DetailDefauts extends Model
 {   public $timestamps=false;
-    protected $table = "defauts";
+    protected $table = "detailDef";
 
 }

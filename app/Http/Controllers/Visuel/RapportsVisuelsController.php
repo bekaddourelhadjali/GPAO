@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Fabrication;
+namespace App\Http\Controllers\Visuel;
 
+use App\Dashboard\Locations;
+use App\Dashboard\Machines;
 use App\Fabrication\Bobine;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
@@ -9,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class RapportsController extends Controller
+class RapportsVisuelsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,15 +21,18 @@ class RapportsController extends Controller
     public function index()
     {
         $postes = DB::select('Select * from postes');
-        $machines = DB::select('Select * from machine');
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $machines = $location->machines;
         $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $details = detailprojet::all();
-        $operateurs = DB::select('Select * from operateurs');
-        return view ('Fabrication.rapports',['details'=>$details
+        $details = $projet->details;
+        $agents = $location->agents;
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z02\' order by "DateSaisie" desc limit 3');
+        return view ('Visuel.rapportsV',['details'=>$details
             ,'machines'=>$machines
             ,'postes'=>$postes
-            ,'operateurs'=>$operateurs,
-            'projet'=>$projet]);
+            ,'agents'=>$agents
+            ,'rapports'=>$rapports
+            ,'projet'=>$projet]);
 
     }
 
@@ -53,11 +58,14 @@ class RapportsController extends Controller
         $rapport->Pid= $request->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone=1;
+        $rapport->Zone='Z02';
         $rapport->Equipe= $request->equipe;
         $rapport->Machine= $request->machine;
         $rapport->Poste= $request->poste;
-        $rapport->NomAgents= $request->agent;
+        $rapport->NomAgents= $request->agent ;
+        $rapport->NomAgents1= $request->agent2;
+        $rapport->CodeAgent= $request->codeAgent ;
+        $rapport->CodeAgent1= $request->codeAgent2;
         $rapport->TSIFlux=0;
         $rapport->TSIFil=0;
         $rapport->TSEFlux=0;
@@ -67,8 +75,9 @@ class RapportsController extends Controller
         $rapport->VSoudage=0;
         $rapport->LargCisAlge=0;
         $rapport->Etat='N';
+        $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
-             return redirect(route('rapprod.show',['id'=>$rapport->Numero]));
+             return redirect(route('visuels.show',['id'=>$rapport->Numero]));
             }
     }
 
@@ -115,21 +124,12 @@ class RapportsController extends Controller
     public function destroy($id)
     {
         $rapport=\App\Fabrication\Rapport::find($id);
-        if(sizeof($rapport->rapprods) || sizeof($rapport->arrets)){
-            foreach($rapport->rapprods as $rapprod){
-                $rapprod->tube->delete();
-                $rapprod->delete();
-            }
-            foreach($rapport->arrets as $arret){
-                $arret->delete();
-            }
-            foreach($rapport->operateurs as $operateur){
-                $operateur->delete();
-            }
+        if(sizeof($rapport->visuels) || sizeof($rapport->arrets)){
 
+        }else{
+            $rapport->delete();
         }
-        $rapport->delete();
-        return redirect(route('rapports.index'));
+        return redirect(route('rapports_visuels.index'));
 
     }
 

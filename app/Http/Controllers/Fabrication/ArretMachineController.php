@@ -17,29 +17,7 @@ class ArretMachineController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    { $arret_machine=new ArretMachine();
-        $arret_machine->Pid=$request->Pid;
-        $arret_machine->Did=$request->Did;
-        $arret_machine->NumRap=$request->NumRap;
-        $arret_machine->Machine=$request->Machine;
-        $arret_machine->TypeArret=$request->type_arret;
-        $arret_machine->Du=$request->du;
-        $arret_machine->Au=$request->au;
-        $arret_machine->Durée=$request->duree;
-        $arret_machine->Cause=$request->cause;
-        $arret_machine->NDI=$request->ndi;
-        $arret_machine->Obs=$request->obs;
-        $arret_machine->Relv_Compt=$request->relv;
-//        if($arret_machine->save()){
-//            return redirect(route('arret_machine.show',['id'=>$request->NumRap]));
-//        }
-        if ($arret_machine->save()){
-            return response()->json(array('arret'=> $arret_machine), 200);
-
-        }else{
-            return response()->json(array('error'=> error), 404);
-
-        }
+    {
 
     }
 
@@ -95,7 +73,7 @@ class ArretMachineController extends Controller
     public function show($id)
     {
         $rapport =  Rapport::findOrFail($id);
-        $projet = DB::select('SELECT * FROM 	public.projet WHERE "EndDate" >= CURRENT_DATE::date')[0];
+        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
         $arrets=$rapport->arrets;
         $operateurs= $rapport->operateurs;
         return view('Fabrication.arret_machine',['rapport'=>$rapport,'projet'=>$projet,'arrets'=>$arrets,'operateurs'=>$operateurs]);
@@ -108,9 +86,10 @@ class ArretMachineController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   $selectedArret = ArretMachine::findOrFail($id);
+    {
+        $selectedArret = ArretMachine::findOrFail($id);
         $rapport =  Rapport::findOrFail($selectedArret->NumRap);
-        $projet = DB::select('SELECT * FROM 	public.projet WHERE "EndDate" >= CURRENT_DATE::date')[0];
+        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
         $arrets=$rapport->arrets;
         $operateurs= $rapport->operateurs;
         return view('Fabrication.arret_machine',
@@ -163,9 +142,11 @@ class ArretMachineController extends Controller
     public function destroy($id)
     {
         $arret=ArretMachine::findOrFail($id);
-        $NumeroRap=$arret->NumRap;
-        if($arret->delete()){
-            return redirect(route('arret_machine.show',['id'=>$NumeroRap]));
+        if ($arret->delete()){
+            return response()->json(array('success'=> true), 200);
+
+        }else{
+            return response()->json(array('error'=> true), 404);
         }
     }
 }

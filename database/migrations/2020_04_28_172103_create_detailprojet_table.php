@@ -28,6 +28,7 @@ class CreateDetailProjetTable extends Migration
             $table->double('RiveG')->nullable();
             $table->double('RiveD')->nullable();
             $table->string('Libelle')->nullable();
+            $table->unique(['Did','Pid']);
         });
     }
 

@@ -34,98 +34,14 @@
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
-            <a class="nav-item nav-link active" id="nav-agents-tab" data-toggle="tab" href="#nav-affectations" role="tab" aria-controls="nav-affectations" aria-selected="false">Affectations</a>
-            <a class="nav-item nav-link  " id="nav-locations-tab" data-toggle="tab" href="#nav-locations" role="tab" aria-controls="nav-locations" aria-selected="true">Locations</a>
-            <a class="nav-item nav-link " id="nav-agents-tab" data-toggle="tab" href="#nav-agents" role="tab" aria-controls="nav-agents" aria-selected="false">Agents et Machines</a>
+            <a class="nav-item nav-link "   href="{{route('affectations.index')}}"  ><b>Affectations</b></a>
+            <a class="nav-item nav-link  @if(isset($target)&& $target=='locations') active @endif" id="nav-locations-tab" data-toggle="tab" href="#nav-locations" role="tab" aria-controls="nav-locations" aria-selected="false"><b>Locations</b></a>
+            <a class="nav-item nav-link @if(isset($target)&& $target=='agents') active @endif" id="nav-agents-tab" data-toggle="tab" href="#nav-agents" role="tab" aria-controls="nav-agents" aria-selected="true"><b>Agents et Machines</b></a>
 
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-affectations" role="tabpanel" aria-labelledby="nav-affectations-tab">
-            <div class="col-12">
-                <section style="">
-                    <h4 class="text-center bg-gradient-info text-white" ><b>Gestion Des Affectations</b></h4>
-                    @if(isset($locations))
-                        @foreach($locations as $location)
-                            <div class="col-12">
-                    <div class="card bg-gradient-light ">
-                        <div class="card-body " id="locationAff{{$location->id}}">
-                            <h5 class="card-title text-center "><b><span id="location{{$location->id}}Designation">{{$location->Designation}}</span></b></h5>
-                            <hr>
-                            <div class="row">
-                                <div class="col-lg-4 col-sm-12 text-center" >
-                                    <div>
-                                        <br><br>
-                                        <p class="card-text"><b><i class="fa fa-desktop text-warning"></i>&nbsp;&nbsp;Adresse IP : <span id="location{{$location->id}}AdresseIp">{{$location->AdresseIp}}</span> </b></p>
-                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span id="location{{$location->id}}Zone">{{$location->Zone}}</span>  </b></p>
-                                    </div> </div>
-                                <section class="col-lg-5 col-md-8 small-section bg-white">
-                                    <h6 class="text-center text-primary"><b><i class="fa fa-chalkboard-teacher"></i> &nbsp;&nbsp;Agents</b></h6>
-                                    <form id="Location{{$location->AdresseIp}}AffForm" class="row form-inline">
-                                        <input type="hidden" name="adresseIP" val="{{$location->AdresseIp}}">
-                                        <div class="input-group mb-3 col-12">
-                                            <select class="form-control col-12" name="agentSelect" id="agentSelect"  >
-                                                @if(isset($agents))
-                                                    @foreach($agents as $agent)
-                                                        <option value="{{$agent->id}}">{{$agent->NomPrenom}}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <div class="input-group-append">
-                                                <button type="button"  id="agentAff{{$location->AdresseIp}}Ajouter" class="agentAffAjouter btn btn-success"  ><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="table-container-small">
-                                         <table id="agents{{$location->AdresseIp}}Table" class="table ">
-                                             <tbody>
-                                            @foreach($location->agents as $agent)
-                                                        <tr id="agentAff{{$agent->id}}"> <td>{{$agent->NomPrenom}}</td>
-                                                            <td><button id="agentAff{{$agent->id}}Delete" class="agentAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>
-                                                        </tr>
-                                            @endforeach
-                                             </tbody>
-                                        </table>
-                                    </div>
-                                </section>
-                                <section class="col-lg-3 col-md-4 bg-white small-section">
-                                    <h6 class="text-center text-primary"><b><i class="fa fa-chalkboard "></i> &nbsp;&nbsp;Machines</b></h6>
-                                    <form >
-                                        <div class="input-group mb-3 col-12">
-                                            <select class="form-control col-12" name="machineSelect" id="machineSelect"  >
-                                                @if(isset($machines))
-                                                    @foreach($machines as $machine)
-                                                        <option value="{{$machine->id}}">{{$machine->Machine}}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <div class="input-group-append">
-                                                <button type="button" id="machineAff{{$location->AdresseIp}}Ajouter" class="machineAffAjouter btn btn-success"  ><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                         <div class="table-container-small">
-                                             <table id="machines{{$location->AdresseIp}}Table" class="table">
-                                                 <tbody>
-                                                @foreach($location->machines as $machine)
-                                                    <tr id="machineAff{{$machine->id}}"> <td> {{$machine->Machine}}</td>
-                                                        <td><button id="machineAff{{$machine->id}}Delete" class="machineAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                         </div>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-                            </div>
-                        @endforeach
-                    @endif
-                </section>
-            </div>
-        </div>
-        <div class="tab-pane fade " id="nav-locations" role="tabpanel" aria-labelledby="nav-locations-tab">  <div class="row">
+        <div class="tab-pane fade @if(isset($target)&& $target=='locations') show active @endif" id="nav-locations" role="tabpanel" aria-labelledby="nav-locations-tab">  <div class="row">
                 <div class="col-12">
                     <section style="">
 
@@ -182,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="nav-agents" role="tabpanel" aria-labelledby="nav-agents-tab">
+        <div class="tab-pane fade @if(isset($target)&& $target=='agents') show active @endif " id="nav-agents" role="tabpanel" aria-labelledby="nav-agents-tab">
             <div class="row">
                 <div class="col-lg-6  col-sm-12">
                     <section >
@@ -201,12 +117,12 @@
                             <div class="col-3 form-group  actions ">
                                 <label class="col-12">&nbsp</label>
                                 <button type="button" id="AnnulerAgent" class=" btn btn-danger" style="width:35px; height:35px; padding:0;" ><i class="fa fa-times"></i></button>
-                                <button type="button" id="AjouterAgent" style="width:35px; height:35px; padding:0;" class=" btn btn-success"><i class="fa fa-plus"></i></button>
+                                <button type="button" id="AjouterAgent" style="width:35px; height:35px; padding:0;" class=" btn btn-info"><i class="fa fa-plus"></i></button>
                             </div>
                         </form>
                         <div class="table-container">
                             <table  class="table table-striped table-hover table-bordered ">
-                                <thead class="bg-primary text-white">
+                                <thead class="bg-info text-white">
                                 <tr>
                                     <th>Nom et Prenoms</th>
                                     <th>Code</th>
@@ -234,13 +150,13 @@
 
                     </section>
                 </div>
-                <div class="col-xl-5 col-lg-6 offset-xl-1 col-sm-12">
+                <div class="col-lg-6 col-sm-12">
                     <section >
-                        <h4 class="text-center bg-gradient-info text-white"><b>Gestion Des Machines</b></h4>
+                        <h4 class="text-center bg-gradient-warning text-white"><b>Gestion Des Machines</b></h4>
                         <hr>
                         <form id="MachinesForm" class="row text-center">
                             <input type="hidden" id="MachineId" name="id" value="">
-                            <div class="form-group col-5">
+                            <div class="form-group col-3">
                                 <label   for="machine" > Machine : </label>
                                 <input class="  form-control"  name="machine" id="machine" type="text"  required >
                             </div>
@@ -248,18 +164,24 @@
                                 <label  for="zoneMachine"  > Zone : </label>
                                 <input class=" form-control"  name="zoneMachine" id="zoneMachine" type="text"  required >
                             </div>
+
+                            <div class="form-group col-4 ">
+                                <label  for="Description"  > Description : </label>
+                                <input class=" form-control"  name="Description" id="Description" type="text"   >
+                            </div>
                             <div class="col-3 form-group  actions ">
                                 <label class="col-12">&nbsp</label>
                                 <button type="button" id="AnnulerMachine" class=" btn btn-danger" style="width:35px; height:35px; padding:0;" ><i class="fa fa-times"></i></button>
-                                <button type="button" id="AjouterMachine" style="width:35px; height:35px; padding:0;" class=" btn btn-success"><i class="fa fa-plus"></i></button>
+                                <button type="button" id="AjouterMachine" style="width:35px; height:35px; padding:0;" class=" btn btn-warning"><i class="fa fa-plus"></i></button>
                             </div>
                         </form>
                         <div class="table-container">
                             <table class="table table-striped table-hover table-bordered ">
-                                <thead class="bg-primary text-white">
+                                <thead class="bg-warning text-white">
                                 <tr>
                                     <th>Machine</th>
                                     <th>Zone</th>
+                                    <th>Description</th>
                                 </tr>
                                 </thead>
                                 <tbody id="machines">
@@ -268,6 +190,7 @@
                                         <tr id="Machine{{$machine->id}}">
                                             <td id="machine{{$machine->id}}Machine">{{$machine->Machine}}</td>
                                             <td id="machine{{$machine->id}}Zone">{{$machine->Zone}}</td>
+                                            <td id="machine{{$machine->id}}Description">{{$machine->Description}}</td>
                                             <td  >
                                                 <button id="machine{{$machine->id}}Edit" class="machineEdit text-primary" ><i class="fa fa-edit"></i></button>
                                                 <button id="machine{{$machine->id}}Delete" class="machineDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>
@@ -292,158 +215,164 @@
 
 @endsection
 @section('script')
-<script>
-    $(document).ready(function(){
-        $('#AnnulerLocation').hide();
-        addLocationsListeners();
+    <script>
+        $(document).ready(function(){
+            $('#AnnulerLocation').hide();
+            addLocationsListeners();
 
 
-        $('#AjouterLocation').click(function(e){
+            $('#AjouterLocation').click(function(e){
 
-            if($('#LocationsForm')[0].checkValidity()) {
-                e.preventDefault();
-                if ($('#AjouterLocation').html() === '<i class="fa fa-plus"></i>') {
-
-                    $.ajax({
-                        url: "{{ route('Locations.store')}}",
-                        method: 'post',
-                        data: {
-                            _token: '{{csrf_token()}}',
-                            Designation: $('#designation').val(),
-                            Zone: $('#zone').val(),
-                            IPAddress: $('#ipaddress').val(),
-
-                        },
-                        success: function (result) {
-                            $('#locations').append('<div class="col-lg-3  col-md-4 col-sm-6" ><div class="card">\n' +
-                                '                                    <div class="card-body" id="location'+result.location.id+'">\n' +
-                                '                                        <h5 class="card-title text-center "><b><span id="location'+result.location.id+'Designation">'+result.location.Designation+'</span></b></h5>\n' +
-                                '                                        <hr>\n' +
-                                '                                        <p class="card-text"><b><i class="fa fa-desktop text-warning"></i>&nbsp;&nbsp;Adresse IP : <span id="location'+result.location.id+'AdresseIp">'+result.location.AdresseIp+'</span> </b></p>\n' +
-                                '                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span id="location'+result.location.id+'Zone">'+result.location.Zone+'</span></b></p>\n' +
-                                '                                        <div class="text-center">\n' +
-                                '                                        <button type="button" id="Edit'+result.location.id+'Location" class="EditLocation btn btn-primary" style="width:35px; height:35px; padding:0;" ><i class="fa fa-edit"></i></button>\n' +
-                                '                                        <button type="button" id="Supprimer'+result.location.id+'Location" style="width:35px; height:35px; padding:0;" class="SupprimerLocation btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
-                                '                                        </div>\n' +
-                                '                                    </div>\n' +
-                                '                                </div>'+
-                                '                                </div>');
-                            addLocationsListeners();
-                        },
-                        error: function (result) {
-                            if(typeof result.responseJSON.message !='undefined'){
-                                if(result.responseJSON.message.includes('Unique violation')){
-                                    alert("L'adresse IP : "+$('#ipaddress').val()+"est déjà utilisée dans une autre location");
-                                }else{
-                                    alert(result.responseJSON.message);console.log(result);
-                                }
-                            }else{
-                                console.log(result);
-
-                            }
-                        }
-                    });
-                } else {
-                    id=$('#locationId').val();
-                    $.ajax({
-                        url: "{{ url('/Locations/')}}/"+id,
-                        method: 'post',
-                        data: {
-                            _method: 'put',
-                            _token: '{{csrf_token()}}',
-                            id: id,
-                            Designation: $('#designation').val(),
-                            Zone: $('#zone').val(),
-                            IPAddress: $('#ipaddress').val(),
-                        },
-                        success: function (result) {
-                            console.log(result);
-                            $('#location'+id).html(
-                                '<h5 class="card-title text-center "><b><span id="location'+result.location.id+'Designation">'+result.location.Designation+'</span></b></h5>\n' +
-                                '                                        <hr>\n' +
-                                '                                        <p class="card-text"><b><i class="fa fa-desktop text-warning"></i>&nbsp;&nbsp;Adresse IP : <span id="location'+result.location.id+'AdresseIp">'+result.location.AdresseIp+'</span> </b></p>\n' +
-                                '                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span id="location'+result.location.id+'Zone">'+result.location.Zone+'</span></b></p>\n' +
-                                '                                        <div class="text-center">\n' +
-                                '                                        <button type="button" id="Edit'+result.location.id+'Location" class="EditLocation btn btn-primary" style="width:35px; height:35px; padding:0;"  ><i class="fa fa-edit"></i></button>\n' +
-                                '                                        <button type="button" id="Supprimer'+result.location.id+'Location" style="width:35px; height:35px; padding:0;" class="SupprimerLocation btn btn-danger"><i class="fa fa-trash"></i></button>\n' );
-                            $('#LocationsForm').trigger('reset');
-                            $('#AnnulerLocation').hide();
-                            $('#AjouterLocation').html('<i class="fa fa-plus"></i>');
-                            addLocationsListeners();
-                        },
-                        error: function (result) {
-
-                            if(typeof result.responseJSON.message !='undefined'){
-                                if(result.responseJSON.message.includes('Unique violation')){
-                                    alert("L'adresse IP : "+$('#ipaddress').val()+"est déjà utilisée dans une autre location");
-                                }else{
-                                    alert(result.responseJSON.message);console.log(result);
-                                }
-                            }else{ console.log(result);
-
-                            }
-                        }
-                    });
+                if($('#LocationsForm')[0].checkValidity()) {
+                    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test($('#ipaddress').val())) {
 
 
-                }
-            }else{
-                alert('Remplire tous les champs svp!');
-            }
-        });
-        function addLocationsListeners(){
-            $('.SupprimerLocation').each(function(e){
-                $(this).click(function(e){
-                    card= $(this).parent().parent().parent();
-                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
                     e.preventDefault();
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
+                    if ($('#AjouterLocation').html() === '<i class="fa fa-plus"></i>') {
 
-                    $.ajax({
-                        url:  "{{url('/Locations/')}}/"+id,
-                        method: 'post',
-                        data: {
-                            _method :'delete',
-                            _token :'{{csrf_token()}}',
-                            id :id,
+                        $.ajax({
+                            url: "{{ route('Locations.store')}}",
+                            method: 'post',
+                            data: {
+                                _token: '{{csrf_token()}}',
+                                Designation: $('#designation').val(),
+                                Zone: $('#zone').val(),
+                                IPAddress: $('#ipaddress').val(),
+
+                            },
+                            success: function (result) {
+                                $('#locations').append('<div class="col-lg-3  col-md-4 col-sm-6" ><div class="card">\n' +
+                                    '                                    <div class="card-body" id="location'+result.location.id+'">\n' +
+                                    '                                        <h5 class="card-title text-center "><b><span id="location'+result.location.id+'Designation">'+result.location.Designation+'</span></b></h5>\n' +
+                                    '                                        <hr>\n' +
+                                    '                                        <p class="card-text"><b><i class="fa fa-desktop text-warning"></i>&nbsp;&nbsp;Adresse IP : <span id="location'+result.location.id+'AdresseIp">'+result.location.AdresseIp+'</span> </b></p>\n' +
+                                    '                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span id="location'+result.location.id+'Zone">'+result.location.Zone+'</span></b></p>\n' +
+                                    '                                        <div class="text-center">\n' +
+                                    '                                        <button type="button" id="Edit'+result.location.id+'Location" class="EditLocation btn btn-primary" style="width:35px; height:35px; padding:0;" ><i class="fa fa-edit"></i></button>\n' +
+                                    '                                        <button type="button" id="Supprimer'+result.location.id+'Location" style="width:35px; height:35px; padding:0;" class="SupprimerLocation btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+                                    '                                        </div>\n' +
+                                    '                                    </div>\n' +
+                                    '                                </div>'+
+                                    '                                </div>');
+                                addLocationsListeners();
+                            },
+                            error: function (result) {
+                                if(typeof result.responseJSON.message !='undefined'){
+                                    if(result.responseJSON.message.includes('Unique violation')){
+                                        alert("L'adresse IP : "+$('#ipaddress').val()+"est déjà utilisée dans une autre location");
+                                    }else{
+                                        alert(result.responseJSON.message);console.log(result);
+                                    }
+                                }else{
+                                    console.log(result);
+
+                                }
+                            }
+                        });
+                    } else {
+                        id=$('#locationId').val();
+                        $.ajax({
+                            url: "{{ url('/Locations/')}}/"+id,
+                            method: 'post',
+                            data: {
+                                _method: 'put',
+                                _token: '{{csrf_token()}}',
+                                id: id,
+                                Designation: $('#designation').val(),
+                                Zone: $('#zone').val(),
+                                IPAddress: $('#ipaddress').val(),
+                            },
+                            success: function (result) {
+                                console.log(result);
+                                $('#location'+id).html(
+                                    '<h5 class="card-title text-center "><b><span id="location'+result.location.id+'Designation">'+result.location.Designation+'</span></b></h5>\n' +
+                                    '                                        <hr>\n' +
+                                    '                                        <p class="card-text"><b><i class="fa fa-desktop text-warning"></i>&nbsp;&nbsp;Adresse IP : <span id="location'+result.location.id+'AdresseIp">'+result.location.AdresseIp+'</span> </b></p>\n' +
+                                    '                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span id="location'+result.location.id+'Zone">'+result.location.Zone+'</span></b></p>\n' +
+                                    '                                        <div class="text-center">\n' +
+                                    '                                        <button type="button" id="Edit'+result.location.id+'Location" class="EditLocation btn btn-primary" style="width:35px; height:35px; padding:0;"  ><i class="fa fa-edit"></i></button>\n' +
+                                    '                                        <button type="button" id="Supprimer'+result.location.id+'Location" style="width:35px; height:35px; padding:0;" class="SupprimerLocation btn btn-danger"><i class="fa fa-trash"></i></button>\n' );
+                                $('#LocationsForm').trigger('reset');
+                                $('#AnnulerLocation').hide();
+                                $('#AjouterLocation').html('<i class="fa fa-plus"></i>');
+                                addLocationsListeners();
+                            },
+                            error: function (result) {
+
+                                if(typeof result.responseJSON.message !='undefined'){
+                                    if(result.responseJSON.message.includes('Unique violation')){
+                                        alert("L'adresse IP : "+$('#ipaddress').val()+" est déjà utilisée dans une autre location");
+                                    }else{
+                                        alert(result.responseJSON.message);console.log(result);
+                                    }
+                                }else{ console.log(result);
+
+                                }
+                            }
+                        });
 
 
-                        },
-                        success: function(result){
-                            card.remove();
-                        },
-                        error: function(result){
-                            alert(result.responseJSON.message);console.log(result)
-                        }
+                    }
+                    } else{
+                    alert("L'adresse IP : "+$('#ipaddress').val()+" n'est pas valide");
+                }
+                    }else{
+                        alert('Remplire tous les champs svp!');
+                    }
+            });
+            function addLocationsListeners(){
+                $('.SupprimerLocation').each(function(e){
+                    $(this).click(function(e){
+                        card= $(this).parent().parent().parent().parent();
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url:  "{{url('/Locations/')}}/"+id,
+                            method: 'post',
+                            data: {
+                                _method :'delete',
+                                _token :'{{csrf_token()}}',
+                                id :id,
+
+
+                            },
+                            success: function(result){
+                                card.remove();
+                            },
+                            error: function(result){
+                                alert(result.responseJSON.message);console.log(result)
+                            }
+                        });
                     });
                 });
-            });
-            $('.EditLocation').each(function(e){
-                $(this).click(function(e){
-                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
-                    card= $(this).parent().parent();
-                    $('#locationId').val(id);
-                    $('#designation').val(card.find('#location'+id+'Designation').html());
-                    $('#zone').val(card.find('#location'+id+'Zone').html());
-                    $('#ipaddress').val(card.find('#location'+id+'AdresseIp').html());
-                    $('#AnnulerLocation').show();
-                    $('#AjouterLocation').html('<i class="fa fa-check"></i>');
+                $('.EditLocation').each(function(e){
+                    $(this).click(function(e){
+                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                        card= $(this).parent().parent();
+                        $('#locationId').val(id);
+                        $('#designation').val(card.find('#location'+id+'Designation').html());
+                        $('#zone').val(card.find('#location'+id+'Zone').html());
+                        $('#ipaddress').val(card.find('#location'+id+'AdresseIp').html());
+                        $('#AnnulerLocation').show();
+                        $('#AjouterLocation').html('<i class="fa fa-check"></i>');
+                    });
                 });
+            }
+            $('#AnnulerLocation').click(function(e){
+                e.preventDefault();
+                $('#LocationsForm').trigger('reset');
+                $(this).hide();
+                $('#AjouterLocation').html('<i class="fa fa-plus"></i>');
             });
-        }
-        $('#AnnulerLocation').click(function(e){
-            e.preventDefault();
-            $('#LocationsForm').trigger('reset');
-            $(this).hide();
-            $('#AjouterLocation').html('<i class="fa fa-plus"></i>');
         });
-    });
-</script>
-        <script>
+    </script>
+    <script>
             $(document).ready(function(){
                 $('#AnnulerAgent').hide();
                 addAgentsListeners();
@@ -586,7 +515,7 @@
                 });
             });
         </script>
-<script>
+    <script>
     $(document).ready(function(){
         $('#AnnulerMachine').hide();
         addMachinesListeners();
@@ -603,13 +532,15 @@
                             _token: '{{csrf_token()}}',
                             Machine: $('#machine').val(),
                             Zone: $('#zoneMachine').val(),
+                            Description: $('#Description').val(),
 
                         },
                         success: function (result) {
                             $('#machines').append(' <tr id="Machine'+result.machine.id+'">\n' +
                                 '                                            <td id="machine'+result.machine.id+'Machine">'+result.machine.Machine+'</td>\n' +
                                 '                                            <td id="machine'+result.machine.id+'Zone">'+result.machine.Zone+'</td>\n' +
-                                '                                            <td  >\n' +
+                                '<td id="machine'+result.machine.id+'Description">'+result.machine.Description+'</td>\n' +
+                                '                                            <td  >' +
                                 '                                                <button id="machine'+result.machine.id+'Edit" class="machineEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                 '                                                <button id="machine'+result.machine.id+'Delete" class="machineDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
                                 '\n' +
@@ -618,7 +549,15 @@
                             addMachinesListeners();
                         },
                         error: function (result) {
+                            if(typeof result.responseJSON.message !='undefined'){
+                                if(result.responseJSON.message.includes('Unique violation')){
+                                    alert("La machine "+$('#machine').val()+" Exist déjà dans la zone "+$('#zoneMachine').val());
+                                }else{
+                                    alert(result.responseJSON.message);console.log(result);
+                                }
+                            }else{
                                 alert(result.responseJSON.message);console.log(result);
+                            }
 
                         }
                     });
@@ -633,11 +572,13 @@
                             id: id,
                             Machine: $('#machine').val(),
                             Zone: $('#zoneMachine').val(),
+                            Description: $('#Description').val(),
                         },
                         success: function (result) {
                             $('#machines').find("#Machine"+id).replaceWith(' <tr id="Machine'+result.machine.id+'">\n' +
                                 '                                            <td id="machine'+result.machine.id+'Machine">'+result.machine.Machine+'</td>\n' +
                                 '                                            <td id="machine'+result.machine.id+'Zone">'+result.machine.Zone+'</td>\n' +
+                                '                                            <td id="machine'+result.machine.id+'Description">'+result.machine.Description+'</td>\n' +
                                 '                                            <td  >\n' +
                                 '                                                <button id="machine'+result.machine.id+'Edit" class="machineEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                 '                                                <button id="machine'+result.machine.id+'Delete" class="machineDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
@@ -650,8 +591,15 @@
                             addMachinesListeners();
                         },
                         error: function (result) {
-                            alert(result.responseJSON.message);
-                            console.log(result);
+                            if(typeof result.responseJSON.message !='undefined'){
+                                if(result.responseJSON.message.includes('Unique violation')){
+                                    alert("La machine "+$('#machine').val()+" Exist déjà dans la zone "+$('#zoneMachine').val());
+                                }else{
+                                    alert(result.responseJSON.message);console.log(result);
+                                }
+                            }else{
+                                alert(result.responseJSON.message);console.log(result);
+                            }
                         }
                     });
 
@@ -699,6 +647,7 @@
                     $('#MachineId').val(id);
                     $('#machine').val(tr.find('#machine'+id+'Machine').html());
                     $('#zoneMachine').val(tr.find('#machine'+id+'Zone').html());
+                    $('#Description').val(tr.find('#machine'+id+'Description').html());
                     $('#AnnulerMachine').show();
                     $('#AjouterMachine').html('<i class="fa fa-check"></i>');
                 });
@@ -710,168 +659,6 @@
             $(this).hide();
             $('#AjouterMachine').html('<i class="fa fa-plus"></i>');
         });
-    });
-</script>
-<script>
-    $(document).ready(function(){
-        addAgentAffListeners();
-        $('.agentAffAjouter').each(function(){
-            $(this).click(function(e){
-                adresseIp=$(this).attr("id").replace('agentAff','').replace('Ajouter','');
-                form=$(this).parent().parent().parent();
-                tbody=form.next().find('tbody');
-                e.preventDefault();
-                $.ajax({
-                    url: "{{ route('affectations.store')}}",
-                    method: 'post',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        AdresseIp: adresseIp,
-                        idAgent: $('#agentSelect').val(),
-                        idMachine: null,
-                    },
-                    success: function (result) {
-
-                        tbody.append(' <tr id="agentAff'+result.agent.id+'"> <td>'+result.agent.NomPrenom+'</td>\n' +
-                            '                                                        <td><button  id="agentAff'+result.agent.id+'Delete" class="agentAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>\n' +
-                            '                                                    </tr>');
-                        addAgentAffListeners();
-                    },
-                    error: function (result) {
-                        if(typeof result.responseJSON.message !='undefined'){
-                            if(result.responseJSON.message.includes('Unique violation')){
-                                alert("L'agent est déjà affecté à cette location");
-                            }else{
-                                alert(result.responseJSON.message);console.log(result);
-                            }
-                        }else{
-                            console.log(result);
-
-                        }
-
-                    }
-                });
-            });
-        });
-        function addAgentAffListeners(){
-        $('.agentAffDelete').each(function(){
-        $(this).off('click');
-            $(this).click(function(e){
-                tr= $(this).parent().parent();
-                const id=$(this).attr("id").replace(/[^0-9]/g,'');
-                adresseIp=tr.parent().parent().attr("id").replace('agents','').replace('Table','');
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url:  "{{url('/affectations/')}}/"+id,
-                    method: 'post',
-                    data: {
-                        _method :'delete',
-                        _token :'{{csrf_token()}}',
-                        idAgent :id,
-                        AdresseIp:adresseIp,
-                        idMachine: null,
-
-
-                    },
-                    success: function(result){
-                        tr.remove();
-                    },
-                    error: function(result){
-                        alert('hello');console.log(result)
-                    }
-                });
-            });
-        });
-        }
-    });
-</script>
-<script>
-    $(document).ready(function(){
-        addMachineAffListeners();
-        $('.machineAffAjouter').each(function(){
-            $(this).click(function(e){
-                adresseIp=$(this).attr("id").replace('machineAff','').replace('Ajouter','');
-                form=$(this).parent().parent().parent();
-                tbody=form.next().find('tbody');
-                e.preventDefault();
-                $.ajax({
-                    url: "{{ route('affectations.store')}}",
-                    method: 'post',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        AdresseIp: adresseIp,
-                        idAgent: null,
-                        idMachine: $('#machineSelect').val(),
-                    },
-                    success: function (result) {
-
-                        tbody.append(' <tr id="machineAff'+result.machine.id+'"> <td>'+result.machine.Machine+'</td>\n' +
-                            '                                                        <td><button  id="machineAff'+result.machine.id+'Delete" class="machineAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>\n' +
-                            '                                                    </tr>');
-                        addMachineAffListeners();
-                    },
-                    error: function (result) {
-                        if(typeof result.responseJSON.message !='undefined'){
-                            if(result.responseJSON.message.includes('Unique violation')){
-                                alert("La machine est déjà affectée à cette location");
-                            }else{
-                                alert(result.responseJSON.message);console.log(result);
-                            }
-                        }else{
-                            console.log(result);
-
-                        }
-
-                    }
-                });
-            });
-        });
-        function addMachineAffListeners(){
-            $('.machineAffDelete').each(function(){
-                $(this).off('click');
-                $(this).click(function(e){
-                    tr= $(this).parent().parent();
-                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
-                    adresseIp=tr.parent().parent().attr("id").replace('machines','').replace('Table','');
-                    e.preventDefault();
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        url:  "{{url('/affectations/')}}/"+id,
-                        method: 'post',
-                        data: {
-                            _method :'delete',
-                            _token :'{{csrf_token()}}',
-                            idAgent :null,
-                            AdresseIp:adresseIp,
-                            idMachine:id ,
-
-
-                        },
-                        success: function(result){
-                            tr.remove();
-                        },
-                        error: function(result){
-                            if(typeof result.responseJSON.message !='undefined'){
-                                alert(result.responseJSON.message);console.log(result);
-                            } else{
-                                console.log(result);
-                            }
-                        }
-                    });
-                });
-            });
-        }
     });
 </script>
 @endsection
