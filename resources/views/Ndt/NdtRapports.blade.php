@@ -95,7 +95,7 @@
         <div class="row">
             <div class="body-content col-xl-6 col-lg-6 col-md-8 offset-xl-0 offset-lg-0 offset-md-2 col-sm-12 " >
                 <section class="col-12">
-                    <form method="post" action="{{route('rapports_Rep.store')}}">
+                    <form method="post" action="{{route('rapports_Ndt.store')}}">
                         @csrf
                         <fieldset>
                             <legend><h4>Information du rapport</h4> </legend>
@@ -311,7 +311,7 @@
                 });
 
                 $.ajax({
-                    url:  "{{url('/rapports_Rep/')}}/" + tube + '/edit',
+                    url:  "{{url('/rapports_Ndt/')}}/" + tube + '/edit',
                     method: 'get',
                     success: function(result){
 
@@ -343,9 +343,9 @@
                         console.log(result);
                         if(result!==undefined )
                             if(result.responseJSON.message.includes('Undefined offset: 0')){
-                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Reparation");
+                                alert("Tube n°= "+tube+" n'existe pas dans les rapports NDT");
                             }else{
-                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Reparation");
+                                alert("Tube n°= "+tube+" n'existe pas dans les rapports NDT");
                             }
                     }
                 });
@@ -361,7 +361,7 @@
                 $('.NotClot').each(function(){
                     $(this).dblclick(function(){
                         id=$(this).attr('id').replace(/[^0-9]/g,'');
-                        window.location.href='{{url("/Reparation/")}}/'+id;
+                        window.location.href='{{url("/Ndt/")}}/'+id;
                     });
                 });
             }

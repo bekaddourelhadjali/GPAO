@@ -17,7 +17,7 @@
 
   <!-- Custom styles for this template-->
   <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
-  <link href="{{asset('css/bootstrap-select.css')}}" rel="stylesheet" type="text/css">
+
    <style>
        body{
        color:#000;
@@ -26,7 +26,7 @@
          background-color: #fff;
          border-radius: 10px;
          padding: 20px;
-         box-shadow: #ddd -2px -2px 2px;
+         /*box-shadow: #ddd -2px -2px 2px;*/
          margin-top: 20px;
          border: 2px solid #ddd;
        }
@@ -39,13 +39,19 @@
          color : #000;
          table-layout: auto;
          width: 100%;
-
        }
        .table tbody{
          cursor:pointer;
        }
        .table-container  {
          overflow-x: auto;
+         max-height: 400px;
+       }
+
+       .table th{
+         position: sticky;
+         top: 0;
+         background-color: #0275d8;
        }
        table button
        ,table i.fa{
@@ -323,20 +329,6 @@
   <script src="{{asset('js/SortTable.js')}}"></script>
  @yield('script')
  <script>
-     // var tableOffset = $("#table-1").offset().top;
-     // var $header = $("#table-1 > thead").clone();
-     // var $fixedHeader = $("#header-fixed").append($header);
-     //
-     // $(window).bind("scroll", function() {
-     //     var offset = $(this).scrollTop();
-     //
-     //     if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
-     //         $fixedHeader.show();
-     //     }
-     //     else if (offset < tableOffset) {
-     //         $fixedHeader.hide();
-     //     }
-     // });
  </script>
 
 </body>

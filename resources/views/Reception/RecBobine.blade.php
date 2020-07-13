@@ -82,13 +82,15 @@
 
         .form-control {
             padding: 5px;
+            text-align: center;
         }
 
         .inputs {
             margin-top: 10px;
             text-align: center;
         }
-        .inputs label{
+
+        .inputs label {
             font-weight: bold;
         }
     </style>
@@ -96,306 +98,205 @@
 @endsection
 @section('content')
     <div class="container-fluid">
-        <section>
-            <div class="row ">
-                <div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">
-                    <div class="row ">
-                        <img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">
-                        <div class="col-10">
-                            <h1>Project : {{$rapport->Project->Nom}}</h1>
-                            <h5>Client: {{$rapport->Project->client->name}}</h5>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <section>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active text-dark" id="profile-tab" data-toggle="tab" href="#" role="tab" aria-controls="profile"
+                               aria-selected="false">Rapport De Réception</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="home-tab"
+                               href="{{route("ContBobine.show",$rapport->Numero)}}"
+                               aria-selected="true">Bobines Non Réceptionnées</a>
+                        </li>
+
+                    </ul>
+                    <br>
+                    <form id="RecBobForm" autocomplete="off">
+
+                        <div class="row">
+                            @csrf()
+                            <input name="Numero" type="hidden" id="Numero" value=" ">
+                            <input name="Pid" type="hidden" id="Pid" value="{{$rapport->Pid}}">
+                            <input name="Did" type="hidden" id="Did" value="{{$rapport->Did}}">
+                            <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="Arrivage">Arrivage</label>
+                                <input class="form-control" type="number" value="{{$maxArr}}" id="Arrivage"
+                                       name="Arrivage" min="1" disabled></div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6  inputs">
+                                <label class="form-label" for="bobine">Bobine</label>
+
+                                <input class="form-control" list="bobines" id="bobine" name="bobine" required>
+                                <datalist id="bobines">
+                                    @if(isset($bobines))
+
+
+                                        @foreach($bobines as $bobine)
+                                            <option
+                                                    value="{{$bobine->Bobine}}">{{$bobine->Bobine}}</option>
+                                        @endforeach
+                                    @endif
+                                </datalist>
+                                <datalist id="bobines2">
+                                </datalist>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs">
+                                <label class="form-label" for="coulee">Coulee</label>
+                                <input class="form-control" list="coulees" id="coulee" name="coulee" required>
+                                <datalist id="coulees">
+                                    @if(isset($coulees))
+
+                                        @foreach($coulees as $coulee)
+                                            <option
+                                                    value="{{$coulee->Coulee}}">{{$coulee->Coulee}}</option>
+                                        @endforeach
+                                    @endif
+                                </datalist>
+                                <datalist id="coulees2">
+                                </datalist>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="Poids">Poids</label>
+                                <input class="form-control" type="number" id="Poids" name="Poids" min="13000"
+                                       max="45000"
+                                       disabled></div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="Epaisseur">Epaisseur</label>
+                                <input class="form-control" type="number" value="" id="Epaisseur" name="Epaisseur"
+                                       disabled>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="Fournisseur">Fournisseur</label>
+                                <select class="form-control" id="Fournisseur" name="Fournisseur">
+                                    <option value="ARCELOR">ARCELOR</option>
+                                    <option value="THYSSEN">THYSSEN</option>
+                                    <option value="SEVERSTAL">SEVERSTAL</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="NbReception">N°Reception</label>
+                                <input class="form-control" type="number" value="{{$maxRec}}" id="NbReception"
+                                       name="NbReception" min="1"
+                                       oninput="validity.valid||(value='');" required></div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="DateRec">Date
+                                    Reception </label>
+                                <input class="form-control" type="date" value="{{date('Y-m-d')}}" id="DateRec"
+                                       name="DateRec" required max="{{date("Y-m-d") }}" min="2020-07-07"
+                                       required>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="Source">Provenance</label>
+                                <select class="form-control" id="Source" name="Source" required>
+                                    <option value="Ann">Annaba</option>
+                                    <option value="Port">Port</option>
+                                    <option value="Toug">Touggourt</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
+                                                                                           for="NbBon">N°Bon</label>
+                                <input class="form-control" type="number" value="" oninput="validity.valid||(value='');"
+                                       id="NbBon" name="NbBon" required min="1">
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 col-sm-6 offset-lg-7 offset-md-4 ">
+                                <button type="reset" id="annulerButton" class="btn btn-secondary"> Annuler</button>
+                            </div>
+
+
+                            <div class="col-lg-3 col-md-4 col-sm-6   ">
+                                <button type="submit" id="ajouter" class="btn btn-success">Ajouter</button>
+                            </div>
+
+
+                        </div>
+
+
+                    </form>
+                    <br>
+                    <div class="table-container">
+                        <table id="RecBobTable" class="table table-striped table-hover table-bordered rapprods ">
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Arrivage</th>
+                                <th>Coulee</th>
+                                <th>Bobine</th>
+                                <th>Poids</th>
+                                <th>Epaisseur</th>
+                                <th>Fournisseur</th>
+                                <th>N°Reception</th>
+                                <th>Date Reception</th>
+                                <th>Provenance</th>
+                                <th>N°Bon</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="RecBobs">
+                            @if(isset($RecBob))
+                                @foreach($RecBob as $item)
+                                    <tr id="RecBob{{$item->Id}}">
+                                        <td id="Arrivage{{$item->Id}}">{{$item->Arrivage}}</td>
+                                        <td id="Coulee{{$item->Id}}">{{$item->Coulee}}</td>
+                                        <td id="Bobine{{$item->Id}}">{{$item->Bobine}}</td>
+                                        <td id="Poids{{$item->Id}}">{{$item->Poids}}</td>
+                                        <td id="Epaisseur{{$item->Id}}">{{$item->Epaisseur}}</td>
+                                        <td id="Fournisseur{{$item->Id}}">{{$item->Fournisseur}}</td>
+                                        <td id="NbReception{{$item->Id}}">{{$item->NbReception}}</td>
+                                        <td id="DateRec{{$item->Id}}">{{$item->DateRec}}</td>
+                                        <td id="Source{{$item->Id}}">{{$item->Source}}</td>
+                                        <td id="NbBon{{$item->Id}}">{{$item->NbBon}}</td>
+                                        <td>
+                                            <button id="RecBob{{$item->Id}}Edit" class="RecBobEdit text-primary"><i
+                                                        class="fa fa-edit"></i></button>
+                                            <button id="RecBob{{$item->Id}}Delete" class="RecBobDelete text-danger"><i
+                                                        class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12 inputs row " style="margin-top:10px; font-size: 18px">
+                            <label class="col-xl-4 col-lg-4 col-sm-12" for="observation">Observation</label>
+                            <textarea class="col-xl-8 col-lg-8 col-sm-12 form-control" type="text" id="observation"
+                                      style="text-align: left" name="observation">
+                    </textarea>
+                        </div>
+                        <div class=" col-lg-3 col-md-4 col-sm-4">
+                            <form method="post" action="{{route('rapports_RecBob.destroy',["id"=>$rapport->Numero])}}">
+                                @csrf
+                                <input type="hidden" name="_method" value="delete">
+                                <button class="btn btn-secondary">
+                                    <b> <i class="fa fa-times-circle" style="font-size: 20px;"></i> &nbsp;&nbsp;Quitter</b>
+                                </button>
+                            </form>
+                        </div>
+                        <div class=" col-lg-3 col-md-4 col-sm-4">
+                            <button id="cloturer" class="btn btn-success">
+                                <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp;
+                                    Clôturer</b>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-12 col-md-8 col-xl-4 col-lg-4">
-                    <div class="col-12">Information projet:</div>
-                    <div class="col-12"><span class="valeur">   <span
-                                    class="valeur"> Epais: {{$rapport->details->Epaisseur}}
-                                mm -Diam : {{$rapport->details->Diametre}}mm</span></span></div>
-                </div>
-                <div class="col-sm-12 col-md-4 col-xl-3 col-lg-3">
-                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
-                    <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
-                </div>
-                <div class="col-sm-12 col-md-4 col-xl-2 col-lg-2">
-                    <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span></div>
-                    <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
-                </div>
-                <div class="col-sm-12 col-md-8 col-xl-3 col-lg-3">
-                    <div class="row">Agent: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}</span></div>
-                    <div class="row">Machine: &nbsp; <span class="valeur">{{$rapport->Machine}}</span></div>
-                </div>
+                </section>
 
             </div>
-        </section>
-        <section>
-            <form id="rapprodForm">
+        </div>
 
-                <div class="row">
-
-                    <input name="Numero" type="hidden" id="Numero" value=" ">
-                    <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
-                    <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
-                    <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6  inputs">
-                        <label class="form-label" for="bobine">Bobine</label>
-
-                        <input class="form-control" list="bobines" id="bobine" name="bobine" required>
-                        <datalist id="bobines">
-                            @if(isset($bobines))
-                                @php
-                                    $i=0;
-                                @endphp
-
-                                @foreach($bobines as $bobine)
-                                    <option order="{{$i++}}" value="{{$bobine->Bobine}}">{{$bobine->Bobine}}</option>
-                                @endforeach
-                            @endif
-                        </datalist>
-                        <datalist id="bobines2">
-                        </datalist>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs">
-                        <label class="form-label" for="coulee">Coulee</label>
-                        <input class="form-control" list="coulees" id="coulee" name="coulee" required>
-                        <datalist id="coulees">
-                            @if(isset($bobines))
-                                @php
-                                    $j=0;
-                                @endphp
-                                @foreach($bobines as $bobine)
-                                    <option order="{{$j++}}" value="{{$bobine->Coulee}}">{{$bobine->Coulee}}</option>
-                                @endforeach
-                            @endif
-                        </datalist>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
-                                                                                   for="Poids">Poids</label>
-                        <input class="form-control" type="text" id="Poids" name="Poids" maxlength="10" minlength="5"
-                               required></div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="LargeurD">Large
-                            Debut</label>
-                        <input class="form-control" type="number" value="" id="LargeurD" name="LargeurD" required></div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="LargeurF">Large
-                            Fin</label>
-                        <input class="form-control" type="number" value="" id="LargeurF" name="LargeurF" required></div>
-
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="EpaisseurD">Epais
-                            Debut</label>
-                        <input class="form-control" type="number" value="" id="EpaisseurD" name="EpaisseurD" required>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="EpaisseurC">Epais
-                            Centre</label>
-                        <input class="form-control" type="number" value="" id="EpaisseurC" name="EpaisseurC" required>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="EpaisseurF">Epais
-                            Fin</label>
-                        <input class="form-control" type="number" value="" id="EpaisseurF" name="EpaisseurF" required>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="ChuteT">Chute
-                            Tete</label>
-                        <input class="form-control" type="number" value="" id="ChuteT" name="ChuteT" required></div>
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label" for="ChuteQ">Chute
-                            Queue</label>
-                        <input class="form-control" type="number" value="" id="ChuteQ" name="ChuteQ" required></div>
-
-                    <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         style="margin-top:20px; font-size: 20px">
-                        <input type="checkbox" class="form-check-input" id="DDB" name="DDB"
-                               style="width:20px; height: 20px;">&nbsp;
-                        <label class="form-check-label" for="DDB">DDB</label>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         style="margin-top:20px; font-size: 20px">
-                        <input type="checkbox" class="form-check-input" id="DDB_R" name="DDB_R"
-                               style="width:20px; height: 20px;">&nbsp;
-                        <label class="form-check-label" for="DDB_R">DDB/R</label>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         style="margin-top:20px; font-size: 20px">
-                        <input type="checkbox" class="form-check-input" id="FT" name="FT"
-                               style="width:20px; height: 20px;">&nbsp;
-                        <label class="form-check-label" for="FT">FT</label>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         style="margin-top:20px; font-size: 20px">
-                        <input type="checkbox" class="form-check-input" id="GB_MB" name="GB_MB"
-                               style="width:20px; height: 20px;">&nbsp;
-                        <label class="form-check-label" for="GB_MB">GB/MB</label>
-                    </div>
-
-
-                    <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         style="margin-top:20px; font-size: 20px">
-                        <input type="checkbox" class="form-check-input" id="Test1" name="Test1"
-                               style="width:20px; height: 20px;">&nbsp;
-                        <label class="form-check-label" for="Test1">Test (1)</label>
-                    </div>
-
-                    <div class=" col-lg-6 col-md-12 col-sm-6 inputs row "
-                         style="margin-top:20px; font-size: 18px">
-                        <label class="col-xl-3 col-lg-4 col-sm-12" for="observation">Observation</label>
-                        <input class="col-xl-9 col-lg-8 col-sm-12 form-control" type="text" id="observation"
-                               name="observation">
-                    </div>
-                    <hr>
-                </div>
-                <div class="row">
-                    {{--<div class="col-xl-2 col-sm-6">--}}
-                        {{--<button type="button" class="btn btn-secondary" data-toggle="modal"--}}
-                                {{--data-target="#staticBackdrop">--}}
-                            {{--Nouvelle Bobine--}}
-                        {{--</button>--}}
-                    {{--</div>--}}
-                    <div class="col-lg-2 col-md-3 col-sm-6 offset-lg-7 offset-md-5 ">
-                        <button type="reset" id="annulerButton" class="btn btn-secondary"> Annuler</button>
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-4 col-sm-6   ">
-                        <button type="submit" id="ajouterRapprod" class="btn btn-success">Ajouter</button>
-                    </div>
-
-
-                </div>
-
-
-            </form>
-            <br>
-            <div class="table-container">
-                <table id="rapprodsTable" class="table table-striped table-hover table-bordered rapprods ">
-                    <thead class="bg-primary text-white">
-                    <tr>
-                        <th rowspan="2">Coulee</th>
-                        <th rowspan="2">Bobine</th>
-                        <th rowspan="2">Poids</th>
-                        <th colspan="2"> Largeur</th>
-                        <th colspan="3"> Epaisseur</th>
-                        <th colspan="5"> Defaut Metal</th>
-                        <th colspan="5"> Chutes</th>
-                        <th rowspan="2">Observation</th>
-
-                    </tr>
-                    <tr>
-                        <th>Deb</th>
-                        <th>Fin</th>
-                        <th>Debut</th>
-                        <th>Centre</th>
-                        <th>Fin</th>
-                        <th>DDB</th>
-                        <th>DDB/R</th>
-                        <th>FT</th>
-                        <th>GB/MB</th>
-                        <th>Test1</th>
-                        <th>Tete</th>
-                        <th>Queue</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @if(isset($rapprods))
-                        @foreach($rapprods as $rapprod)
-                            <tr id="rapprod{{$rapprod->Numero}}">
-                                <td id="coulee{{$rapprod->Numero}}">{{$rapprod->Coulee}}</td>
-                                <td id="bobine{{$rapprod->Numero}}">{{$rapprod->Bobine}}</td>
-                                <td id="tube{{$rapprod->Numero}}">{{$rapprod->Tube}}</td>
-                                <td id="bis{{$rapprod->Numero}}">@if($rapprod->Bis) <input type="checkbox" checked
-                                                                                           onclick="return false;">
-                                    @elseif(!$rapprod->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="longueur{{$rapprod->Numero}}">{{$rapprod->Longueur}}</td>
-                                <td id="macro{{$rapprod->Numero}}">{{$rapprod->macro}}</td>
-                                <td id="rb{{$rapprod->Numero}}">@if($rapprod->RB) <input type="checkbox" checked
-                                                                                         onclick="return false;">
-                                    @elseif(!$rapprod->R)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="observation{{$rapprod->Numero}}">{{$rapprod->Observation}}</td>
-                                <td>
-                                    <button id="rapprod{{$rapprod->Numero}}Edit" class="rapprodEdit text-primary"><i
-                                                class="fa fa-edit"></i></button>
-                                    <button id="rapprod{{$rapprod->Numero}}Delete" class="rapprodDelete text-danger"><i
-                                                class="fa fa-trash"></i></button>
-                                </td>
-                                </td>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        <section>
-            <div class="row">
-                <div class="col-lg-6 col-sm-12 inputs row " style="margin-top:10px; font-size: 18px">
-                    <label class="col-xl-4 col-lg-4 col-sm-12" for="observation">Observation</label>
-                    <textarea class="col-xl-8 col-lg-8 col-sm-12 form-control" type="text" id="observation"
-                              name="observation">
-                    </textarea>
-                </div>
-                <div class=" col-lg-3 col-md-4 col-sm-4">
-                    <form method="post" action="{{route('rapports.destroy',["id"=>$rapport->Numero])}}">
-                        @csrf
-                        <input type="hidden" name="_method" value="delete">
-                        <button class="btn btn-secondary">
-                            <b> <i class="fa fa-times-circle" style="font-size: 20px;"></i> &nbsp;&nbsp;Quitter</b>
-                        </button>
-                    </form>
-                </div>
-                <div class=" col-lg-3 col-md-4 col-sm-4">
-                    <button id="cloturer" class="btn btn-success">
-                        <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp; Clôturer</b>
-                    </button>
-                </div>
-            </div>
-        </section>
     </div>
 
-
-    {{--<!-- Modal -->--}}
-    {{--<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"--}}
-         {{--aria-labelledby="staticBackdropLabel" aria-hidden="true">--}}
-        {{--<div class="modal-dialog" role="document" id="BobineModal">--}}
-            {{--<div class="modal-content">--}}
-                {{--<div class="modal-header">--}}
-                    {{--<h5 class="modal-title" id="staticBackdropLabel">Ajout Bobine</h5>--}}
-                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                        {{--<span aria-hidden="true">&times;</span>--}}
-                    {{--</button>--}}
-                {{--</div>--}}
-                {{--<div class="modal-body">--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<input type="hidden" id="RapportNum" name="RapportNum" value="{{$rapport->Numero}}">--}}
-                        {{--<input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">--}}
-                        {{--<input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">--}}
-                        {{--<label class="col-4" for="coulee">Coulee</label>--}}
-                        {{--<input class="col-6 form-control" name="coulee" id="Bcoulee" type="text" required>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<label class="col-4" for="bobine">Bobine</label>--}}
-                        {{--<input class="col-6 form-control" name="bobine" id="Bbobine" type="text" required>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<label class="col-4" for="poids">Poids</label>--}}
-                        {{--<input class="col-6 form-control" name="poids" id="poids" type="text" required>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                    {{--<label class="col-4" for="fournisseur">Fournisseur</label>--}}
-                    {{--<select class="form-control col-6" id="fournisseur" name="fournisseur" required>--}}
-                    {{--<option value="1">ARCELOR</option>--}}
-                    {{--<option value="2">THYSSEN</option>--}}
-                    {{--<option value="3">SEVERSTAL</option>--}}
-                    {{--</select>--}}
-                    {{--</div>--}}
-
-                    {{--<div class="modal-footer">--}}
-                        {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>--}}
-                        {{--<button id="AjouterBobine" class="btn btn-primary">Ajouter</button>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
 
 @endsection
 @section('script')
@@ -406,168 +307,88 @@
 
             $('#annulerButton').hide();
             addRapprodsListeners();
-            $('#AjouterBobine').click(function (e) {
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: "{{route('bobine')}}",
-                    method: 'post',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        fournisseur: $('#fournisseur').val(),
-                        bobine: $('#Bbobine').val(),
-                        coulee: $('#Bcoulee').val(),
-                        poids: $('#poids').val(),
-                        Pid: $('#Pid').val(),
-                        Did: $('#Did').val()
-                    },
-                    success: function (result) {
-                        $('#bobine').append('<option value="' + result.bobine.Bobine + '">' + result.bobine.Bobine + '</option>');
-                        $('#coulee').append('<option value="' + result.bobine.Coulee + '">' + result.bobine.Coulee + '</option>')
-                        $('.modal').modal('hide');
-                        $('.modal').on('hidden.bs.modal', function (e) {
-                            $(this).removeData();
-                        });
-                    },
-                    error: function (result) {
-                        alert(result.responseJSON.message);
-                        console.log(result)
-                    }
-                });
-            });
-            $('#ajouterRapprod').click(function (e) {
-                if ($('#rapprodForm')[0].checkValidity()) {
-                    ntube = $('#ntube').val();
-                    if (ntube.length === 3) {
-                        ntube = '0' + ntube;
-                    } else if (ntube.length === 2) {
-                        ntube = '00' + ntube;
-                    } else if (ntube.length === 1) {
-                        ntube = '000' + ntube;
-                    }
+            $('#ajouter').click(function (e) {
+                if ($('#RecBobForm')[0].checkValidity()) {
                     const id = $('#Numero').val();
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
+                    var formData = new FormData(document.getElementById('RecBobForm'));
                     e.preventDefault();
-                    if ($('#ajouterRapprod').html() !== ' Modifier tube ') {
+                    if ($('#ajouter').html() !== 'Modifier') {
 
                         $.ajax({
-                            url: "{{ route('rapprod.store')}}",
+                            url: "{{ route('RecBob.store')}}",
                             method: 'post',
-                            data: {
-                                _token: '{{csrf_token()}}',
-                                machine: $('#machine').val(),
-                                Pid: $('#Pid').val(),
-                                Did: $('#Did').val(),
-                                NumeroRap: $('#NumRap').val(),
-                                bobine: $('#bobine').val(),
-                                coulee: $('#coulee').val(),
-                                ntube: ntube,
-                                bis: $('#bis:checked').length > 0,
-                                longueur: $('#longueur').val(),
-                                rb: $('#rb:checked').length > 0,
-                                macro: $('#macro').val(),
-                                sur_mas: $('#sur_mas:checked').length > 0,
-                                test_1: $('#test_1:checked').length > 0,
-                                test_2: $('#test_2:checked').length > 0,
-                                test_3: $('#test_3:checked').length > 0
-                            },
+                            data: formData,
+                            processData: false,
+                            contentType: false,
                             success: function (result) {
-                                var bis = "";
-                                var rb = "";
-                                if (result.rapprod.Bis) {
-                                    bis = "checked"
-                                }
-                                if (result.rapprod.RB) {
-                                    rb = "checked"
-                                }
-                                $('#rapprodsTable').append('<tr id="rapprod' + result.rapprod.Numero + '">' +
-                                    '                        <td id="coulee' + result.rapprod.Numero + '">' + result.rapprod.Coulee + '</td> ' +
-                                    '                        <td id="bobine' + result.rapprod.Numero + '">' + result.rapprod.Bobine + '</td> ' +
-                                    '                        <td id="tube' + result.rapprod.Numero + '">' + result.rapprod.Tube + '</td>' +
-                                    '                        <td id="bis' + result.rapprod.Numero + '">' + '<input type="checkbox" ' + bis + ' onclick="return false;">' +
-                                    '                        <td id="longueur' + result.rapprod.Numero + '">' + result.rapprod.Longueur + '</td>' +
-                                    '                        <td id="macro' + result.rapprod.Numero + '">' + result.rapprod.macro + '</td> ' +
-                                    '                        <td id="rb' + result.rapprod.Numero + '">' + '<input type="checkbox" ' + rb + ' onclick="return false;">' +
-                                    '                        <td id="observation' + result.rapprod.Numero + '">' + result.rapprod.Observation + '</td>' +
-                                    '                        <td><button id="rapprod' + result.rapprod.Numero + 'Edit" class="rapprodEdit text-primary" ><i class="fa fa-edit"></i></button>' +
-                                    '                            <button id="rapprod' + result.rapprod.Numero + 'Delete" class="rapprodDelete text-danger" ><i class="fa fa-trash"></i></button>' +
-                                    '                             </td>' +
-                                    '                    </tr>');
-
+                                item = result.RecBob;
+                                $('#RecBobTable').append(' <tr id="RecBob' + item.Id + '">\n' +
+                                    '                                <td id="Arrivage' + item.Id + '">' + item.Arrivage + '</td>\n' +
+                                    '                                <td id="Coulee' + item.Id + '">' + item.Coulee + '</td>\n' +
+                                    '                                <td id="Bobine' + item.Id + '">' + item.Bobine + '</td>\n' +
+                                    '                                <td id="Poids' + item.Id + '">' + item.Poids + '</td>\n' +
+                                    '                                <td id="Epaisseur' + item.Id + '">' + item.Epaisseur + '</td>\n' +
+                                    '                                <td id="Fournisseur' + item.Id + '">' + item.Fournisseur + '</td>\n' +
+                                    '                                <td id="NbReception' + item.Id + '">' + item.NbReception + '</td>\n' +
+                                    '                                <td id="DateRec' + item.Id + '">' + item.DateRec + '</td>\n' +
+                                    '                                <td id="Source' + item.Id + '">' + item.Source + '</td>\n' +
+                                    '                                <td id="NbBon' + item.Id + '">' + item.NbBon + '</td>\n' +
+                                    '                                <td>\n' +
+                                    '                                    <button id="RecBob' + item.Id + 'Edit" class="RecBobEdit text-primary"><i\n' +
+                                    '                                                class="fa fa-edit"></i></button>\n' +
+                                    '                                    <button id="RecBob' + item.Id + 'Delete" class="RecBobDelete text-danger"><i\n' +
+                                    '                                                class="fa fa-trash"></i></button>\n' +
+                                    '                                </td> \n' +
+                                    '                            </tr>');
+                                $('#RecBobForm').trigger("reset");
+                                $('#bobines').find('option[value=' + item.Bobine + ']').remove();
+                                $('#coulees').find('option[value=' + item.Coulee + ']').remove();
+                                $('#NbReception').val(parseInt($('#NbReception').val()) + 1);
                                 addRapprodsListeners();
                             },
                             error: function (result) {
-                                if (typeof result.responseJSON.message != 'undefined') {
-                                    if (result.responseJSON.message.includes('tube_pid_did_machine_numtube_unique')) {
-                                        alert('Le tube n°=' + $('#machine').val() + ntube + ' existe dejà');
-                                    } else {
-                                        alert(result.responseJSON.message);
-                                        console.log(result);
-                                    }
-                                } else {
-                                    alert(result.responseJSON.error);
-
-                                }
+                                console.log(result);
+                                alert(result.responseJSON.error);
                             }
                         });
                     } else {
-
+                        formData.append('_method', 'put');
                         $.ajax({
-                            url: "{{ url('/rapprod/')}}/" + id,
+                            url: "{{ url('/RecBob/')}}/" + id,
                             method: 'post',
-                            data: {
-                                _method: 'put',
-                                _token: '{{csrf_token()}}',
-                                id: id,
-                                machine: $('#machine').val(),
-                                Pid: $('#Pid').val(),
-                                Did: $('#Did').val(),
-                                NumeroRap: $('#NumRap').val(),
-                                bobine: $('#bobine').val(),
-                                coulee: $('#coulee').val(),
-                                ntube: ntube,
-                                bis: $('#bis:checked').length > 0,
-                                longueur: $('#longueur').val(),
-                                rb: $('#rb:checked').length > 0,
-                                macro: $('#macro').val(),
-                                Z01: true,
-                                sur_mas: $('#sur_mas:checked').length > 0,
-                                test_1: $('#test_1:checked').length > 0,
-                                test_2: $('#test_2:checked').length > 0,
-                                test_3: $('#test_3:checked').length > 0
-                            },
+                            data: formData,
+                            processData: false,
+                            contentType: false,
                             success: function (result) {
-                                var bis = "";
-                                var rb = "";
-                                if (result.rapprod.Bis) {
-                                    bis = "checked"
-                                }
-                                if (result.rapprod.RB) {
-                                    rb = "checked"
-                                }
-                                $('#rapprodsTable').find('#rapprod' + result.rapprod.Numero).replaceWith('<tr id="rapprod' + result.rapprod.Numero + '">' +
-                                    '                        <td id="coulee' + result.rapprod.Numero + '">' + result.rapprod.Coulee + '</td> ' +
-                                    '                        <td id="bobine' + result.rapprod.Numero + '">' + result.rapprod.Bobine + '</td> ' +
-                                    '                        <td id="tube' + result.rapprod.Numero + '">' + result.rapprod.Tube + '</td>' +
-                                    '                        <td id="bis' + result.rapprod.Numero + '">' + '<input type="checkbox" ' + bis + ' onclick="return false;">' +
-                                    '                        <td id="longueur' + result.rapprod.Numero + '">' + result.rapprod.Longueur + '</td>' +
-                                    '                        <td id="macro' + result.rapprod.Numero + '">' + result.rapprod.macro + '</td> ' +
-                                    '                        <td id="rb' + result.rapprod.Numero + '">' + '<input type="checkbox" ' + rb + ' onclick="return false;">' +
-                                    '                        <td id="observation' + result.rapprod.Numero + '">' + result.rapprod.Observation + '</td>' +
-                                    '                        <td><button id="rapprod' + result.rapprod.Numero + 'Edit" class="rapprodEdit text-primary" ><i class="fa fa-edit"></i></button>' +
-                                    '                            <button id="rapprod' + result.rapprod.Numero + 'Delete" class="rapprodDelete text-danger" ><i class="fa fa-trash"></i></button>' +
-                                    '                             </td>' +
-                                    '                    </tr>');
-                                $('#ajouterRapprod').html(' Ajouter ');
-                                $('#annulerButton').hide();
+                                item = result.RecBob;
+                                $('#RecBob' + item.Id).replaceWith(' <tr id="RecBob' + item.Id + '">\n' +
+                                    '                                <td id="Arrivage' + item.Id + '">' + item.Arrivage + '</td>\n' +
+                                    '                                <td id="Coulee' + item.Id + '">' + item.Coulee + '</td>\n' +
+                                    '                                <td id="Bobine' + item.Id + '">' + item.Bobine + '</td>\n' +
+                                    '                                <td id="Poids' + item.Id + '">' + item.Poids + '</td>\n' +
+                                    '                                <td id="Epaisseur' + item.Id + '">' + item.Epaisseur + '</td>\n' +
+                                    '                                <td id="Fournisseur' + item.Id + '">' + item.Fournisseur + '</td>\n' +
+                                    '                                <td id="NbReception' + item.Id + '">' + item.NbReception + '</td>\n' +
+                                    '                                <td id="DateRec' + item.Id + '">' + item.DateRec + '</td>\n' +
+                                    '                                <td id="Source' + item.Id + '">' + item.Source + '</td>\n' +
+                                    '                                <td id="NbBon' + item.Id + '">' + item.NbBon + '</td>\n' +
+                                    '                                <td>\n' +
+                                    '                                    <button id="RecBob' + item.Id + 'Edit" class="RecBobEdit text-primary"><i\n' +
+                                    '                                                class="fa fa-edit"></i></button>\n' +
+                                    '                                    <button id="RecBob' + item.Id + 'Delete" class="RecBobDelete text-danger"><i\n' +
+                                    '                                                class="fa fa-trash"></i></button>\n' +
+                                    '                                </td> \n' +
+                                    '                            </tr>');
+                                $('#RecBobForm').trigger("reset");
+                                $("#ajouter").html("Ajouter");
+                                $("#annulerButton").hide();
+                                $("#bobine").prop('disabled', false);
+                                $("#coulee").prop('disabled', false);
                                 addRapprodsListeners();
                             },
                             error: function (result) {
@@ -579,20 +400,13 @@
 
                     }
                 } else {
-
+                    alert('Remplir tous les champs qui sont obligatoires svp!');
                 }
             });
-            $('#annulerButton').click(function () {
 
-                refreshData();
-                getLatestTube($('#machine').val());
-            });
 
             function addRapprodsListeners() {
-                refreshData();
-                getLatestTube($('#machine').val());
-                $('.rapprodDelete').each(function (e) {
-                    refreshData();
+                $('.RecBobDelete').each(function (e) {
                     $(this).off('click');
                     $(this).click(function (e) {
                         tr = $(this).parent().parent();
@@ -605,7 +419,7 @@
                         });
 
                         $.ajax({
-                            url: "{{url('/rapprod/')}}/" + id,
+                            url: "{{url('/RecBob/')}}/" + id,
                             method: 'post',
                             data: {
                                 _method: 'delete',
@@ -615,9 +429,14 @@
 
                             },
                             success: function (result) {
+                                $('#bobines').append($('<option>').attr('value', $('#Bobine' + id).html()).text($('#Bobine' + id).html()));
+                                $('#coulees').append($('<option>').attr('value', $('#Coulee' + id).html()).text($('#Coulee' + id).html()));
                                 tr.remove();
-                                refreshData();
-                                getLatestTube($('#machine').val());
+                                $('#RecBobForm').trigger("reset");
+                                $("#ajouter").html("Ajouter");
+                                $("#annulerButton").hide();
+                                $("#bobine").prop('disabled', false);
+                                $("#coulee").prop('disabled', false);
                             },
                             error: function (result) {
                                 alert(result.responseJSON.message);
@@ -626,70 +445,37 @@
                         });
                     });
                 });
-                $('.rapprodEdit').each(function (e) {
+                $('.RecBobEdit').each(function (e) {
                     $(this).off('click');
                     $(this).click(function (e) {
-
-                        $('#bobine').find('option[selected=selected]').removeAttr('selected');
-                        $('#coulee').find('option[selected=selected]').removeAttr('selected');
-                        e.preventDefault();
-                        tr = $(this).parent().parent();
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
-                        $('#bobine').find('option[value=' + tr.find('#bobine' + id).html() + ']').first()
-                            .replaceWith('<option value=' + tr.find('#bobine' + id).html() + ' selected >' + tr.find('#bobine' + id).html() + '</option>');
-                        $('#coulee').find('option[value=' + tr.find('#coulee' + id).html() + ']').first()
-                            .replaceWith('<option value=' + tr.find('#coulee' + id).html() + ' selected >' + tr.find('#coulee' + id).html() + '</option>');
-                        $('#ntube').val(tr.find('#tube' + id).html().replace(/[^0-9]/g, '')).attr('readonly', 'readonly');
-                        if ($('#bis' + id).find('input[checked]').length > 0) {
-
-                            $('#bis').parent().html('<input class="form-check-input"  type="checkbox"  id="bis" name="bis" checked    >');
-                        } else {
-                            $('#bis').parent().html('<input class="form-check-input"  type="checkbox"  id="bis" name="bis"     >');
-                        }
-                        if ($('#rb' + id).find('input[checked]').length > 0) {
-                            $('#rb').parent().html('<input class="form-check-input"  type="checkbox"  id="rb" name="rb"  checked   >');
-                        } else {
-                            $('#rb').parent().html('<input class="form-check-input"  type="checkbox"  id="rb" name="rb"     >');
-                        }
-                        $('#longueur').val(tr.find('#longueur' + id).html());
-                        $('#macro').val(tr.find('#macro' + id).html());
-                        $('#relv').val(tr.find('#relv' + id).html());
+                        $("#Arrivage").val($("#Arrivage" + id).html());
+                        $("#bobine").val($("#Bobine" + id).html());
+                        $("#coulee").val($("#Coulee" + id).html());
+                        $("#Poids").val($("#Poids" + id).html());
+                        $("#Epaisseur").val($("#Epaisseur" + id).html());
+                        $("#Fournisseur").val($("#Fournisseur" + id).html());
+                        $("#NbReception").val($("#NbReception" + id).html());
+                        $("#DateRec").val($("#DateRec" + id).html());
+                        $("#Source").val($("#Source" + id).html());
+                        $("#NbBon").val($("#NbBon" + id).html());
                         $('#Numero').val(id);
-                        $('#ajouterRapprod').html(' Modifier tube ');
-                        $('#annulerButton').show();
-                        if ($('#observation' + id).html().includes('Sur Mas')) {
-
-                            $('#sur_mas').parent().html('<input class="form-check-input" type="checkbox"  id="sur_mas" name="sur_mas" checked >' +
-                                '<label class="form-check-label" for="sur_mas" >Sur Mas</label>');
-                        } else {
-                            $('#sur_mas').parent().html('<input class="form-check-input" type="checkbox"  id="sur_mas" name="sur_mas"  >' +
-                                '<label class="form-check-label" for="sur_mas" >Sur Mas</label>');
-                        }
-                        if ($('#observation' + id).html().includes('Test (1)')) {
-                            $('#test_1').parent().html('<input class="form-check-input" type="checkbox" id="test_1" name="test_1" checked >' +
-                                '<label for="test_1">Test (1)</label>');
-                        } else {
-                            $('#test_1').parent().html('<input class="form-check-input" type="checkbox" id="test_1" name="test_1"  >' +
-                                '<label for="test_1">Test (1)</label>');
-                        }
-                        if ($('#observation' + id).html().includes('Test (2)')) {
-                            $('#test_2').parent().html('<input class="form-check-input" type="checkbox" id="test_2" name="test_2" checked >' +
-                                '<label for="test_2">Test (2)</label>');
-                        } else {
-                            $('#test_2').parent().html('<input class="form-check-input" type="checkbox" id="test_2" name="test_2"  >' +
-                                '<label for="test_2">Test (2)</label>');
-                        }
-                        if ($('#observation' + id).html().includes('Test (3)')) {
-                            $('#test_3').parent().html('<input class="form-check-input" type="checkbox" id="test_3" name="test_3" checked >' +
-                                '<label for="test_3">Test (3)</label>');
-                        } else {
-                            $('#test_3').parent().html('<input class="form-check-input" type="checkbox" id="test_3" name="test_3"  >' +
-                                '<label for="test_3">Test (3)</label>');
-                        }
+                        $("#ajouter").html("Modifier");
+                        $("#annulerButton").show();
+                        $("#bobine").prop('disabled', true);
+                        $("#coulee").prop('disabled', true);
                     });
+
                 });
             }
 
+            $('#annulerButton').click(function () {
+                $('#RecBobForm').trigger("reset");
+                $("#ajouter").html("Ajouter");
+                $("#annulerButton").hide();
+                $("#bobine").prop('disabled', false);
+                $("#coulee").prop('disabled', false);
+            });
             $('#cloturer').click(function (e) {
                 const Numero = $('#NumRap').val();
                 e.preventDefault();
@@ -703,12 +489,13 @@
                     url: "{{url('/cloturer')}}/" + Numero,
                     method: 'post',
                     data: {
-                        _token: '{{csrf_token()}}'
+                        _token: '{{csrf_token()}}',
+                        observation: $('#observation').val()
                     },
                     success: function (result) {
                         if (result.rapportState.Etat === 'C') {
                             alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
-                            window.location.href = '{{route("rapports.index")}}';
+                            window.location.href = '{{route("rapports_RecBob.index")}}';
 
                         }
 
@@ -723,78 +510,21 @@
                 });
             });
 
-            function getLatestTube(machine) {
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url: "{{url('/dernierTube/')}}/" + machine,
-                    method: 'get',
-                    data: {},
-                    success: function (result) {
-                        if (typeof result.dernierTubetab !== 'undefined') {
-                            ntube = parseInt(result.dernierTubetab.Tube.replace(/[^0-9]/g, '')) + 1;
-                            ntube = ntube + '';
-                            if (ntube.length === 3) {
-                                ntube = '0' + ntube;
-                            } else if (ntube.length === 2) {
-                                ntube = '00' + ntube;
-                            } else if (ntube.length === 1) {
-                                ntube = '000' + ntube;
-                            }
-                        } else {
-                            ntube = '0001';
-                        }
-                        $('#ntube').val(ntube);
-                    },
-                    error: function (result) {
-                        console.log(result);
-                        if (result.responseJSON.message.includes('Undefined offset: 0')) {
-                            $('#ntube').val('0001');
-                        } else {
-                            alert(result.responseJSON.message);
-                            console.log(result)
-                        }
-                    }
-                });
-
-            }
-
-            function refreshData() {
-                $('#ntube').removeAttr('readonly');
-                $('#ajouterRapprod').html(' Ajouter ');
-                $('#annulerButton').hide();
-                $('#bobine').find('option[selected=selected]').removeAttr('selected');
-                $('#coulee').find('option[selected=selected]').removeAttr('selected');
-                $('#bis').parent().html('<input class="form-check-input"  type="checkbox"  id="bis" name="bis"     >');
-                $('#rb').parent().html('<input class="form-check-input"  type="checkbox"  id="rb" name="rb"     >');
-                $('#sur_mas').parent().html('<input class="form-check-input" type="checkbox"  id="sur_mas" name="sur_mas"  >' +
-                    '<label class="form-check-label" for="sur_mas" >Sur Mas</label>');
-
-                $('#test_1').parent().html('<input class="form-check-input" type="checkbox" id="test_1" name="test_1"  >' +
-                    '<label for="test_1">Test (1)</label>');
-                $('#test_2').parent().html('<input class="form-check-input" type="checkbox" id="test_2" name="test_2"  >' +
-                    '<label for="test_2">Test (2)</label>');
-                $('#test_3').parent().html('<input class="form-check-input" type="checkbox" id="test_3" name="test_3"  >' +
-                    '<label for="test_3">Test (3)</label>');
-                $('#bobine').find('option:selected').removeAttr('selected');
-                $('#coulee').find('option:selected').removeAttr('selected');
-            }
-
             $('#bobine').keydown(function () {
                 if ($(this).val() === "") {
                     $(this).attr('list', "bobines");
                 }
             });
+            $('#coulee').keydown(function () {
+                if ($(this).val() === "") {
+                    $(this).attr('list', "coulees");
+                }
+            });
             $('#bobine').on('change', function () {
+
                 if ($(this).val() !== "") {
+
                     const bobine = $(this).val();
-                    var Pid = $('#Pid').val();
-                    var Did = $("#Did").val();
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -807,26 +537,33 @@
                         data: {
                             _token: '{{csrf_token()}}',
                             bobine: bobine,
-                            Pid: Pid,
-                            Did: Did,
+                            etat: 'NonREC',
                         },
                         success: function (result) {
-                            if (result.bobine != null) {
-                                $('#coulee').val(result.bobine.Coulee);
-                                $('#Poids').val(result.bobine.Poids);
+                            if (result.coulee != null) {
+                                var coulee = result.coulee;
+                                $('#coulee').val(coulee.Coulee);
+                                $('#Poids').val(coulee.Poids);
+                                $('#Epaisseur').val(coulee.Epaisseur);
+                                $('#Arrivage').val(coulee.Arrivage);
                             }
                         },
                         error: function (result) {
                             alert(result.responseJSON.error);
                             console.log(result);
+                            if (result.responseJSON.error === "Bobine n'existe pas") {
+                                $('#coulee').val('');
+                                $('#Poids').val('');
+                                $('#bobine').val('');
+                                $('#Epaisseur').val('');
+                                $('#Arrivage').val('');
+                            }
                         }
                     });
                 }
             });
             $('#coulee').on('change', function () {
                 const coulee = $(this).val();
-                var Pid = $('#Pid').val();
-                var Did = $("#Did").val();
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -839,17 +576,23 @@
                     data: {
                         _token: '{{csrf_token()}}',
                         coulee: coulee,
-                        Pid: Pid,
-                        Did: Did,
+                        etat: 'NonREC',
                     },
                     success: function (result) {
-                        if (result.bobines != null) {
+                        if (result.bobines.length !== 0) {
                             var bobines = result.bobines;
+                            $('#bobines2').html("");
                             bobines.forEach(function (item, index) {
                                 $('#bobines2').append('<option order="' + index + '" value="' + item.Bobine + '" >' + item.Bobine + '</option>');
                                 $('#bobine').attr('list', 'bobines2');
                             });
-                            //  $('#bobine').val(result.bobines);
+                        } else {
+                            alert("Coulee n'existe pas");
+                            $('#coulee').val('');
+                            $('#Poids').val('');
+                            $('#bobine').val('');
+                            $('#Epaisseur').val('');
+                            $('#Arrivage').val('');
                         }
                     },
                     error: function (result) {

@@ -322,7 +322,7 @@
             });
             function addLocationsListeners(){
                 $('.SupprimerLocation').each(function(e){
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         card= $(this).parent().parent().parent().parent();
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         e.preventDefault();
@@ -352,7 +352,7 @@
                     });
                 });
                 $('.EditLocation').each(function(e){
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         card= $(this).parent().parent();
                         $('#locationId').val(id);
@@ -466,7 +466,7 @@
                 });
                 function addAgentsListeners(){
                     $('.AgentDelete').each(function(e){
-                        $(this).click(function(e){
+                        $(this).off('click');$(this).click(function(e){
                             tr= $(this).parent().parent();
                             const id=$(this).attr("id").replace(/[^0-9]/g,'');
                             e.preventDefault();
@@ -496,7 +496,7 @@
                         });
                     });
                     $('.AgentEdit').each(function(e){
-                        $(this).click(function(e){
+                        $(this).off('click');$(this).click(function(e){
                             const id=$(this).attr("id").replace(/[^0-9]/g,'');
                             tr= $(this).parent().parent();
                             $('#AgentId').val(id);
@@ -611,7 +611,7 @@
         });
         function addMachinesListeners(){
             $('.machineDelete').each(function(e){
-                $(this).click(function(e){
+                $(this).off('click');$(this).click(function(e){
                     tr= $(this).parent().parent();
                     const id=$(this).attr("id").replace(/[^0-9]/g,'');
                     e.preventDefault();
@@ -641,7 +641,7 @@
                 });
             });
             $('.machineEdit').each(function(e){
-                $(this).click(function(e){
+                $(this).off('click');$(this).click(function(e){
                     const id=$(this).attr("id").replace(/[^0-9]/g,'');
                     tr= $(this).parent().parent();
                     $('#MachineId').val(id);

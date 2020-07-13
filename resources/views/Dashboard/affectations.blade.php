@@ -149,7 +149,7 @@
     $(document).ready(function(){
         addAgentAffListeners();
         $('.agentAffAjouter').each(function(){
-            $(this).click(function(e){
+            $(this).off('click');$(this).click(function(e){
                 adresseIp=$(this).attr("id").replace('agentAff','').replace('Ajouter','');
                 form=$(this).parent().parent().parent();
                 tbody=form.next().find('tbody');
@@ -189,7 +189,7 @@
         function addAgentAffListeners(){
         $('.agentAffDelete').each(function(){
         $(this).off('click');
-            $(this).click(function(e){
+            $(this).off('click');$(this).click(function(e){
                 tr= $(this).parent().parent();
                 const id=$(this).attr("id").replace(/[^0-9]/g,'');
                 adresseIp=tr.parent().parent().attr("id").replace('agents','').replace('Table','');
@@ -228,7 +228,7 @@
     $(document).ready(function(){
         addMachineAffListeners();
         $('.machineAffAjouter').each(function(){
-            $(this).click(function(e){
+            $(this).off('click');$(this).click(function(e){
                 adresseIp=$(this).attr("id").replace('machineAff','').replace('Ajouter','');
                 form=$(this).parent().parent().parent();
                 tbody=form.next().find('tbody');
@@ -268,7 +268,7 @@
         function addMachineAffListeners(){
             $('.machineAffDelete').each(function(){
                 $(this).off('click');
-                $(this).click(function(e){
+                $(this).off('click');$(this).click(function(e){
                     tr= $(this).parent().parent();
                     const id=$(this).attr("id").replace(/[^0-9]/g,'');
                     adresseIp=tr.parent().parent().attr("id").replace('machines','').replace('Table','');

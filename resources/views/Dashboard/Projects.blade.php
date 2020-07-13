@@ -233,7 +233,7 @@
             });
             function addProjectsListeners(){
                 $('.SupprimerProject').each(function(e){
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         card= $(this).parent().parent().parent().parent();
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         e.preventDefault();
@@ -263,7 +263,7 @@
                     });
                 });
                 $('.EditProject').each(function(e){
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         card= $(this).parent().parent();
                         $.ajax({

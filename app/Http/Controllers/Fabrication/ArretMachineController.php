@@ -51,10 +51,6 @@ class ArretMachineController extends Controller
         $arret_machine->Cause=$request->cause;
         $arret_machine->NDI=$request->ndi;
         $arret_machine->Obs=$request->obs;
-        $arret_machine->Relv_Compt=$request->relv;
-//        if($arret_machine->save()){
-//            return redirect(route('arret_machine.show',['id'=>$request->NumRap]));
-//        }
         if ($arret_machine->save()){
         return response()->json(array('arret'=> $arret_machine), 200);
 
@@ -73,10 +69,9 @@ class ArretMachineController extends Controller
     public function show($id)
     {
         $rapport =  Rapport::findOrFail($id);
-        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $arrets=$rapport->arrets;
+         $arrets=$rapport->arrets;
         $operateurs= $rapport->operateurs;
-        return view('Fabrication.arret_machine',['rapport'=>$rapport,'projet'=>$projet,'arrets'=>$arrets,'operateurs'=>$operateurs]);
+        return view('Fabrication.arret_machine',['rapport'=>$rapport ,'arrets'=>$arrets,'operateurs'=>$operateurs]);
     }
 
     /**
@@ -89,12 +84,10 @@ class ArretMachineController extends Controller
     {
         $selectedArret = ArretMachine::findOrFail($id);
         $rapport =  Rapport::findOrFail($selectedArret->NumRap);
-        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
         $arrets=$rapport->arrets;
         $operateurs= $rapport->operateurs;
         return view('Fabrication.arret_machine',
             ['rapport'=>$rapport
-                ,'projet'=>$projet
                 ,'arrets'=>$arrets
                 ,'selectedArret'=>$selectedArret
                 ,'operateurs'=>$operateurs
@@ -121,7 +114,6 @@ class ArretMachineController extends Controller
         $arret_machine->Cause=$request->cause;
         $arret_machine->NDI=$request->ndi;
         $arret_machine->Obs=$request->obs;
-        $arret_machine->Relv_Compt=$request->relv;
 
         if ($arret_machine->save()){
             return response()->json(array('arret'=> $arret_machine), 200);

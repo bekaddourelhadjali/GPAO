@@ -16,26 +16,19 @@ class CreateTubeTable extends Migration
         Schema::create('tube', function (Blueprint $table) {
             $table->increments('NumTube');
             $table->integer('Pid');
+            $table->integer('Did')->unsigned();
             $table->string('Machine',1);
             $table->string('NTube',4);
-            $table->Boolean('Bis');
+            $table->Boolean('Bis')->default(0);
             $table->Boolean('Sond')->nullable();
-            $table->string('Mil',2)->nullable();
             $table->string('Tube',50);
             $table->string('NRecept',50)->nullable();
-            $table->integer('Did')->unsigned();
-            $table->string('NBord',50)->nullable();
             $table->date('DateRecept')->nullable();
             $table->string('Obs',50)->nullable();
-            $table->string('NPV',10)->nullable();
-            $table->string('Nord',50)->nullable();
             $table->decimal('Poids')->nullable();
             $table->string('Coulee',50)->nullable();
             $table->string('Bobine',50)->nullable();
             $table->date('DateFab')->nullable();
-            $table->double('LongFab')->nullable();
-            $table->double('LongProd')->nullable();
-            $table->double('LongCh')->nullable();
             $table->double('Longueur')->nullable();
             $table->dateTime('DateRE')->nullable();
             $table->dateTime('DateRI')->nullable();
@@ -44,7 +37,6 @@ class CreateTubeTable extends Migration
             $table->double('DiamD')->nullable();
             $table->double('DiamF')->nullable();
             $table->double('Pression')->nullable();
-            $table->Boolean('Envoye')->nullable();
             $table->dateTime('DateExped')->nullable();
             $table->string('Computer',50)->nullable();
             $table->string('User',50)->nullable();
@@ -65,7 +57,7 @@ class CreateTubeTable extends Migration
             $table->Boolean('Z14')->default(false);
             $table->Boolean('Z15')->default(false);
             $table->Boolean('Z16')->default(false);
-            $table->unique(['Pid','Did','Machine','NumTube']);
+            $table->unique(['Pid','Did','Machine','NumTube','Bis']);
         });
     }
 

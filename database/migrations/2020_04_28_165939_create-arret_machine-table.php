@@ -20,20 +20,12 @@ class CreateArretMachineTable extends Migration
             $table->integer('NumRap');
             $table->string('Machine',50);
             $table->string('TypeArret',10);
-            $table->string('Stand',50)->nullable();
             $table->string('Du',6);
             $table->string('Au',6);
             $table->string('Durée',5);
             $table->string('Cause',255)->nullable();
             $table->string('NDI',10)->nullable();
             $table->string('Obs',255)->nullable();
-            $table->string('Flux_Int',50)->nullable();
-            $table->string('Fil_Int',50)->nullable();
-            $table->string('Flux_Ext',50)->nullable();
-            $table->string('Fil_Ext',50)->nullable();
-            $table->double('V_Soudage',50)->nullable();
-            $table->double('Larg_CisAlge',50)->nullable();
-            $table->string('Relv_Compt',50)->nullable();
 
         });
     }

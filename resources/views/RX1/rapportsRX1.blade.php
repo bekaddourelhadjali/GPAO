@@ -314,14 +314,15 @@
             });
 
             $.ajax({
-                url:  "{{url('/reprendreVisuels')}}/"+tube,
+                url:  "{{url('/rapports_RX1/')}}/" + tube + '/edit',
                 method: 'get',
                 data: {
                     Zone:"Z03"
                 },
                 success: function(result){
+                    $('#tbodyReprendre').html('');
                     result.rapports.forEach(function(rapport,index){
-                        $('#tbodyReprendre').html('');
+
                         if(rapport.Etat==='C'){
                             $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
                             '                   <td>'+rapport.DateRapport+'</td>\n' +

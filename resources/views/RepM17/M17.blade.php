@@ -1,683 +1,570 @@
 @extends('layouts.app')
 
 @section('style')
+    {{--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />--}}
     <style>
-        @media (min-width: 576px){
+        @media (min-width: 576px) {
             .modal-dialog {
                 max-width: 1000px;
             }
         }
-        .obsM,.obsS{
+
+        .obsM, .obsS {
             width: 25% !important;
         }
-        #rapportPage .valeur{
+
+        #rapportPage .valeur {
             font-weight: bolder;
-            color:#000;
+            color: #000;
         }
-        section.top-actions{
 
+        select {
+            font-family: 'FontAwesome', 'Arial';
+        }
+
+        section.top-actions {
 
         }
-        .actions .col-1{
+
+        .actions .col-1 {
             margin-right: 4px;
 
         }
-        #arretForm button{
+
+        #arretForm button {
             margin-top: 0;
         }
 
-        .rx1Edit,.rx1Delete{
+        .rx1Edit, .rx1Delete {
             margin: 0;
         }
-        .actions .btn{
+
+        .actions .btn {
             padding: 0;
-            width:35px;
+            width: 35px;
             font-size: 20px;
             font-weight: bolder;
         }
-        button{
+
+        button {
             margin: 10px 0;
         }
-        span.valeur{
-            color:red;
+
+        span.valeur {
+            color: red;
         }
 
-        h5{
-            color:#0e8ce4;
+        h5 {
+            color: #0e8ce4;
             text-align: center;
             width: 100%;
             border-bottom: 1px solid #ddd;
         }
 
-        .small-td{
-          width:8%
-        }
-        .medium-td{
-            width:12%
-        }
-         input[type=checkbox]{
+        input[type=checkbox] {
             min-width: 18px;
-             min-height: 18px;
-            margin-top:  5px;
+            min-height: 18px;
+            margin-top: 5px;
         }
+
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-         td,th{
-               padding: 2px;
-               vertical-align: middle !important;
-               text-align: center;
-           }
+        th {
+            padding: 8px 4px !important;
+            vertical-align: middle !important;
+            text-align: center !important;
+        }
+
         .table {
             min-width: 800px;
             table-layout: auto;
             width: 100%;
             word-wrap: break-word;
-            white-space: nowrap;
         }
-        .table-container{
+
+        .table-container {
             overflow: auto;
         }
+
         .table td {
+            padding: 2px !important;
             overflow: hidden;
             word-break: break-all;
-            white-space: normal;
             text-overflow: ellipsis;
-            color : #000;
+            white-space: normal;
+            color: #000;
+            vertical-align: middle !important;
+            text-align: center !important;
         }
-        .large-td{
-            width: 17%;
-            vertical-align: super;
-        }
-        .form-group label{
+
+        .form-group label {
             font-weight: bold;
         }
 
-        table button
-        ,table i.fa{
+        table button, table i.fa {
             font-size: 20px;
-            border:none;
-            background-color: rgba(0,0,0,0);
+            border: none;
+            background-color: rgba(0, 0, 0, 0);
         }
 
-        .form-control{
+        .form-control {
             padding: 0;
             text-align: center;
         }
-        #du,#au{
+
+        #du, #au {
             padding: .375rem .50rem;
         }
-        input{
-            padding:0;
-        }
-        span.valeur{
-            color:red;
-        }
-        #operatuersTable td{
-            text-align: left ;
+
+        input {
+            padding: 0;
         }
 
-        .small-td input{
+        span.valeur {
+            color: red;
+        }
+
+        #operatuersTable td {
+            text-align: left;
+        }
+
+        .small-td input {
             width: 18px;
             height: 18px;
         }
-        td{
-            vertical-align: middle !important;
-            text-align: center;
-        }
 
-        table button
-        ,table i.fa{
+        table button, table i.fa {
             font-size: 20px;
-            border:none;
-            background-color: rgba(0,0,0,0);
+            border: none;
+            background-color: rgba(0, 0, 0, 0);
         }
 
+        #defauts span {
+            margin-right: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border-width: 2px;
+        }
 
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @endsection
+@endsection
 @section('content')
 
- <div class="container-fluid">
+    <div class="container-fluid">
 
-     <section id="head-section">
-         <div class="row">
-             <div class="col-6 col-sm-4 col-lg-2">
-                 <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
-                 <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
-             </div>
-             <div class="col-6 col-sm-2  col-lg-2">
-                 <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span> </div>
-                 <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
-             </div>
-             <div class="col-6 col-sm-6  col-lg-3">
-                 <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}} / {{$rapport->CodeAgent}}</span></div>
-                 <div class="row">Agent2: &nbsp; <span class="valeur">{{$rapport->NomAgents1}} / {{$rapport->CodeAgent1}}</span></div>
-             </div>
-             <div class="col-6 col-sm-6  col-lg-2">
-                 <div class="row">TENSION: &nbsp; <span class="valeur"> {{$rapport->Tension}}  </span></div>
-                 <div class="row">INTENSITE: &nbsp; <span class="valeur">{{$rapport->Intensite}}  </span></div>
-             </div>
-             <div class="col-6 col-sm-6  col-lg-3">
-                 <div class="row">TEMPS DE POSE: &nbsp; <span class="valeur"> {{$rapport->TmpPose}}  </span></div>
-                 <div class="row">DISTANCE DU BRAS: &nbsp; <span class="valeur">{{$rapport->DisBras}}  </span></div>
-             </div>
+        <section id="head-section">
+            <div class="row">
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
+                    <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
+                </div>
+                <div class="col-6 col-sm-2  col-lg-2">
+                    <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span></div>
+                    <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
+                </div>
+                <div class="col-6 col-sm-6  col-lg-3">
+                    <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}
+                            / {{$rapport->CodeAgent}}</span></div>
+                    <div class="row">Agent2: &nbsp; <span class="valeur">{{$rapport->NomAgents1}}
+                            / {{$rapport->CodeAgent1}}</span></div>
+                </div>
 
-         </div>
-     </section>
-     <div class="row">
-         <div class="col-xl-5 col-lg-6 col-md-8 offset-md-2 offset-lg-0 col-sm-12 ">
+            </div>
+        </section>
+        <div class="row">
+            <div class="col-xl-4 col-lg-5 col-md-8 offset-md-2 offset-lg-0 col-sm-12 ">
 
-             <section class="top-actions">
-                 <h5>Info Tube</h5>
-                 <form id="rx1Form">
-                     <input name="Numero" type="hidden" id="Numero" value="">
-                     <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
-                     <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
-                     <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
-                     <div class="row">
-                         <div class=" col-lg-9 col-sm-12">
-                             <div class="form-group ">
-                                 <label class="col-lg-12"  style="padding-left: 0">Detail Projet</label>
-                                 <select class="form-control col-12" id="detail_project" name="detail_project">
-                                     @foreach($details as $detail)
-                                         <option value="{{$detail->Did}}">Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
-                                     @endforeach
-                                 </select>
-                             </div>
-                         </div>
-                         <div class=" col-lg-2 col-sm-4 col-4">
-                             <div class="form-group ">
-                                 <label class="col-12" for="ntube" style="padding-left: 0">N°Tube</label>
-                                 <input class=" col-12 form-control" pattern="[A-Z]\d{4}" type="text" id="ntube" pattern="[A-Z]\d{4}" name="ntube"  value=""   maxlength="5" minlength="5"   required>
-                             </div>
-                         </div>
-                         <div class=" col-1">
-                             <div class="form-group ">
-                                 <label class="col-12" for="bis" style="padding-left: 0">Bis</label>
-                                 <input class=" col-12" type="checkbox" id="bis" name="bis"         >
-                             </div>
-                         </div>
-                         <div class="form-group col-2 ">
-                             <label for="" class="col-12"></label>
-                         <button type="reset" class="  btn btn-secondary" type="button" id="annulerButton" >Annuler</button>
-                         </div>
-                         <div class="form-group col-4  " >
-                             <label for=""   class="col-12"></label>
-                             <button type="submit" class="    btn btn-success" type="button" id="Ajouter" >Ajouter</button>
-                         </div>
-                     </div>
+                <section class="top-actions">
+                    <h5>Info Tube</h5>
+                    <form id="msForm">
+                        <input name="Numero" type="hidden" id="Numero" value="">
+                        <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
+                        <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
+                        <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
+                        <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
+                        <div class="row">
+                            <div class=" col-5">
+                                <div class="form-group ">
+                                    <label class="col-lg-12" style="padding-left: 0">Tube</label>
+                                    <select class="form-control col-12" style="color:#00f" id="ntube" name="ntube"
+                                            required>
+                                        <option disabled>Tube &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bis</option>
+                                        @foreach($tubes as $tube)
+                                            <option value="{{$tube->Tube}}"> {{$tube->Tube}} &nbsp;
+                                                &nbsp;&nbsp; @if($tube->Bis) &#xf14a; @else &#xf0c8;  @endif </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
-                 <br>
-                 <div class="row ">
-
-                      </div>
-                 </form>
-             </section>
-         </div>
-
-         <div class="col-xl-7 col-lg-6 col-sm-12">
-             <section class="top-actions">
-                 <h5>Désignation des anomalies</h5>
-                 <form  id="Form">
-                     <div class="row">
-                         <div class=" col-sm-2">
-                             <div class="form-group ">
-                                 <label class="col-12" for="nbr">Nbr</label>
-                                 <input class="  form-control" type="number"  id="nbr" name="nbr"     >
-                             </div>
-                         </div>
-                         <div class="   col-sm-4">
-                             <div class="form-group ">
-                                 <label class="col-12" for="defaut">Defaut</label>
-                                 <select class="form-control" id="defaut" name="defaut"    >
-                                 <option hidden disabled selected value> </option>
-                                 @if(isset($defauts ))
-                                 @foreach($defauts as $defaut )
-                                 <option defautId="{{$defaut->id}}" value="{{$defaut->Defaut}}" class="my-select">{{$defaut->Defaut}}</option>
-                                 @endforeach
-                                 @endif
-                                 </select>
-                             </div>
-                         </div>
-                         <div class=" col-sm-2">
-                             <div class="form-group ">
-                                 <label class="col-12" for="valeur">Valeur</label>
-                                 <input class=" form-control" type="number" id="valeur" name="valeur"       >
-                             </div>
-                         </div>
-                         <div class=" col-sm-4">
-                             <div class="form-group ">
-                                 <label class="col-12" for="operation">Operation</label>
-                                 <select class="form-control" id="operation" name="operation"   required>
-                                 <option hidden disabled selected value> </option>
-                                 @if(isset($operations))
-                                 @foreach($operations as $operation)
-                                 <option operationId="{{$operation->id}}"  value="{{$operation->Operation}}" class="my-select" >{{$operation->Operation}}</option>
-                                 @endforeach
-                                 @endif
-                                 </select>
-                         </div>
-
-                     </div>
-
-                     </div>
-                     <div class="row actions">
-                         <div class=" col-xl-4 col-lg-6  col-sm-5"  >
-                             <div class=" form-group bg-danger text-white text-center" style="padding: 5px 0 ; "  >
-                                 <label class="col-12  " for="defautRx">Defaut Signalé par RX </label>
-                             <input  class=" "type="checkbox"  id="defautRx" name="defautRx"  >
-                             </div>
-                         </div >
-                         <div class="col-xl-5 col-lg-6 col-sm-6 ">
-                             <div class="form-group  ">
-                                 <label class="col-12" for="observation">Observation</label>
-                                 <input class=" form-control" type="text" id="observation" name="observation"       >
-                             </div>
-                         </div>
-                     <div class="col-1">   <label class="col-12" for=""> </label><button id="addDefaut" class="btn btn-success"><b>+</b></button> </div>
-                     <div class="col-1">   <label class="col-12" for=""> </label><button id="removeDefaut" class="btn btn-danger"><b>-</b></button> </div>
-                     </div>
-                     <div class="row">
-                         <input type="text" id="defauts" class=" form-control col-12" readonly>
-
-                     </div>
-                 </form>
-
-             </section>
-
-         </div>
-     </div>
-     <section class="col-12">
-         <div class="table-container">
-         <table id="rx1sTable"  class="table table-striped table-hover table-bordered rapprods ">
-             <thead class="bg-primary text-white">
-             <tr>
-                 <th>Tube</th>
-                 <th>Bis</th>
-                 <th>Defauts</th>
-                 <th>Observation</th>
-
-             </tr>
-             </thead>
-             <tbody id="rxs">
-             @if(isset($rx1))
-                 @foreach($rx1 as $item)
-                     <tr id="rx{{$item->Id}}">
-                         <td id="tube{{$item->Id}}">{{$item->Tube}}</td>
-                         <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked  onclick="return false;">
-                             @elseif(!$item->Bis)<input type="checkbox"  onclick="return false;"> @endif</td>
-                         <td   class="obsS" id="Defaut{{$item->Id}}">{{$item->Defauts}}</td>
-                         <td   class="obsS" id="Observation{{$item->Id}}">{{$item->Observation}}</td>
-                         <td>
-                             <button id="rx{{$item->Id}}Edit" class="rx1Edit text-primary" ><i class="fa fa-edit"></i></button>
-                             <button id="rx{{$item->Id}}Delete" class="rx1Delete text-danger" ><i class="fa fa-trash"></i></button>
-                         </td>
-                     </tr>
-                 @endforeach
-             @endif
-             </tbody>
-         </table>
-         </div>
-     </section>
-     <section>
-         <div class="row">
-             <div class=" col-lg-3 col-md-6 col-sm-12">  <button  type="button" class="btn btn-outline-danger col-12"  data-toggle="modal" data-target="#staticBackdrop">
-                     <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets Machine</b>
-                 </button></div>
-             <div class=" col-lg-3 col-md-6 col-sm-12">  <button   type="button" id="imprimer" class="btn btn-outline-primary col-12"   >
-                     <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
-                 </button></div>
-             <div class="  col-lg-3  col-md-6 col-sm-12">
-                 <form method="post" action="{{route('rapports_RX1.destroy',["id"=>$rapport->Numero])}}">
-                     @csrf
-                     <input type="hidden" name="_method" value="delete">
-                     <button class="btn btn-secondary col-12"><b> <i class="fa fa-times-circle" style="font-size: 20px;"></i> &nbsp;&nbsp;Quitter le rapport</b></button>
-                 </form>
-             </div>
-             <div class=" col-lg-3 col-md-6 col-sm-12"><button id="cloturer" class="btn btn-success col-12">
-                     <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp; Clôturer Rapport</b></button></div>
-         </div>
-     </section>
- </div>
- <!-- Modal -->
- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-     <div class="modal-dialog  " role="document" id="BobineModal">
-         <section>
-         <div class="modal-content">
-             <div class="modal-header"  >
-                 <h5 class="modal-title" id="staticBackdropLabel" >Arrets Machine</h5>
-                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true" > <button data-dismiss="modal" onclick="$('#arretForm').trigger('reset')" class="btn btn-danger"><b>X</b></button></span>
-                 </button>
-             </div>
-             <div class="modal-body">
-                     <form id="arretForm">
-                         <input name="idArret" type="hidden" id="idArret" value="">
-                         <input type="hidden" name="Pid" id="Pid" value="{{$rapport->Pid}}">
-                         <input type="hidden" name="Did" id="Did" value="{{$rapport->Did}}">
-                         <input type="hidden" name="NumRap" id="NumRap" value="{{$rapport->Numero}}">
-                         <input type="hidden" name="Machine" id="Machine" value="{{$rapport->Machine}}">
-                         <div class="row">
-                             <div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
-                                 <div class="form-group row">
-                                     <label class="col-12" for="type_arret">Type Arret</label>
-                                     <select class="form-control col-10" id="type_arret" name="type_arret">
-                                         <option value="panne" >Panne</option>
-                                         <option value="arret"  selected >Arret</option>
-                                     </select>
-                                 </div>
-                             </div>
-                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                                 <div class="row">
-                                     <div class="col-6">
-                                         <div class="form-group  ">
-                                             <label class="col-12" for="du" >Du</label>
-                                             <input class="col-12 form-control" type="time" id="du" name="du"   value="00:00"   required >
-                                         </div></div>
-                                     <div class="col-6">
-                                         <div class="form-group  ">
-                                             <label class="col-12" for="au">Au</label>
-                                             <input class="col-12 form-control" type="time" id="au" name="au"      value="00:00"    required>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-xl-1 col-lg-1 col-md-2 col-sm-4">
-                                 <div class="form-group row">
-                                     <label class="col-12" for="duree">Durée(m)</label>
-                                     <input class="col-12 form-control" type="number" id="duree" name="duree"  value=""      required>
-                                 </div>
-                             </div>
-                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-8">
-                                 <div class="form-group row">
-                                     <label class="col-11 offset-1" for="cause">Cause</label>
-                                     <input class="col-11 offset-1 form-control" type="text" id="cause" name="cause"  value=""  required>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
-                                 <div class="form-group row">
-                                     <label class="col-12" for="ndi">N°DI</label>
-                                     <input class="col-10 form-control" type="text" id="ndi" name="ndi"   value="" >
-                                 </div>
-                             </div>
-                             <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8">
-                                 <div class="form-group row">
-                                     <label class="col-12" for="obs">Obs</label>
-                                     <input class="col-11 form-control" type="text" id="obs" name="obs" value=""   >
-                                 </div>
-                             </div>
-                             <div class="col-xl-2 col-lg-2 col-md-4 col-sm-3">
-                                 <div class="form-group row">
-                                     <label class="col-12" for="relv">Relv_Compt</label>
-                                     <input class="col-12 form-control" type="text" id="relv" name="relv"   value="" >
-                                 </div>
-                             </div>
-                             <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 " id="annulerButton">
-                                 <div class="col-10">
-                                     <label class="col-10"  > &nbsp;</label>
-                                     <button type="reset" id="annulerPanne"   class="btn btn-secondary" > Annuler  </button></div>
-                             </div>
-                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"  >
-                                 <div class="col-10"> <label class="col-12"  > &nbsp;</label>
-                                 </div> <button class="col-10 btn btn-success offset-2" type="button" type="submit" id="ajouterPanne"  > Ajouter panne </button></div>
-                         </div>
+                            <div class=" col-1">
+                                <div class="form-group ">
+                                    <label class="col-12" for="bis" style="padding-left: 0">Bis</label>
+                                    <input class=" col-12" type="checkbox" id="bis" name="bis">
+                                </div>
+                            </div>
+                            <div class="  col-6">
+                                <div class="form-group text-center">
+                                    <label class="col-12" for="LongCh" style="padding-left: 0">Long Chute</label>
+                                    <input class="form-control col-12" type="number" id="LongCh" name="LongCh" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-12  ">
+                                <label for="observation" class="col-12">Observation</label>
+                                <input type="text" class="form-control" name="observation" id="observation">
+                            </div>
 
 
+                        </div>
+                    </form>
+                </section>
+            </div>
 
-                     </form>
-                     <hr>
-                    <div class="table-container">
-                     <table class="table table-striped table-hover table-bordered" id="ArretTable">
-                         <thead class="bg-primary text-white">
-                         <tr>
-                             <th>Type Arret</th>
-                             <th>Du</th>
-                             <th>Au</th>
-                             <th>Duree</th>
-                             <th>Cause</th>
-                             <th>N°DI</th>
-                             <th>Obs</th>
-                             <th>Relv_Compt</th>
+            <div class="col-xl-8 col-lg-7 col-sm-12">
+                <section class="top-actions">
+                    <h5>Désignation des anomalies</h5>
+                    <form id="Form">
+                        <div class="row" id="defauts">
+                            <span class="mb-3 col-5 col-lg-2 col-md-3 col-sm-3 btn btn-outline-secondary" id="Oxyc">OXYC.M</span>
+                            <span class="mb-3 col-5 col-lg-2 col-md-2 col-sm-3 btn btn-outline-secondary"
+                                  id="RB">RB</span>
+                            <span class="mb-3 col-5 col-lg-2 col-md-3 col-sm-3 btn btn-outline-secondary" id="Eprouv">Eprouv</span>
+                            <span class="mb-3 col-5 col-lg-3 col-md-3 col-sm-3 btn btn-outline-secondary" id="NdHt">Q ND HT</span>
+                            <span class="mb-3 col-5 col-lg-2 col-md-3 col-sm-3 btn btn-outline-secondary" id="Vis">VISUEL</span>
+                            <span class="mb-3 col-5 col-lg-2 col-md-3 col-sm-3 btn btn-outline-secondary" id="Scop">SCOPE</span>
+                            <span class="mb-3 col-5 col-lg-2 col-md-3 col-sm-3 btn btn-outline-secondary" id="Final">FINAL</span>
+                            <span class="mb-3 col-5 col-lg-3 col-md-3 col-sm-3 btn btn-outline-secondary" id="DdbFt">MD DDB FT</span>
 
-                         </tr>
-                         </thead>
-                         <tbody>
-                         @if(isset($arrets))
-                             @foreach($arrets as $arret)
-                                 <tr id="arret{{$arret->id}}">
-                                     <td id="type{{$arret->id}}">{{$arret->TypeArret}}</td>
-                                     <td id="du{{$arret->id}}">{{$arret->Du}}</td>
-                                     <td id="au{{$arret->id}}">{{$arret->Au}}</td>
-                                     <td id="duree{{$arret->id}}">{{$arret->Durée}}</td>
-                                     <td id="cause{{$arret->id}}">{{$arret->Cause}}</td>
-                                     <td id="ndi{{$arret->id}}"> {{$arret->NDI}}</td>
-                                     <td id="obs{{$arret->id}}">{{$arret->Obs}}</td>
-                                     <td id="relv{{$arret->id}}">{{$arret->Relv_Compt}}</td>
-                                     <td class="actions">
-                                         <button id="arret{{$arret->id}}Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>
-                                         <button id="arret{{$arret->id}}Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>
-                                 </tr>
-                             @endforeach
-                         @endif
-                         </tbody>
-                     </table>
-                    </div>
-             </div>
-         </div>
-         </section>
-     </div>
- </div>
+                        </div>
+                        <div class="row   flex-row-reverse">
+                            <button style="margin-right: 10px;" type="submit" class=" mb-3 col-2    btn btn-success"
+                                    id="Ajouter">Ajouter
+                            </button>
+                            <button style="margin-right: 10px;" type="reset"
+                                    class=" mb-3 col-2 btn btn-outline-secondary " id="annulerButton">Annuler
+                            </button>
 
 
-    @endsection
+                        </div>
+                    </form>
+
+                </section>
+
+            </div>
+        </div>
+        <section class="col-12">
+            <div class="table-container">
+                <table id="rx1sTable" class="table table-striped table-hover table-bordered rapprods ">
+                    <thead class="bg-primary text-white">
+                    <tr>
+                        <th>Tube</th>
+                        <th>Bis</th>
+                        <th>opération</th>
+                        <th>Long Chute</th>
+                        <th>OXYC.M</th>
+                        <th>RB</th>
+                        <th>EPROUV</th>
+                        <th>Q ND HT</th>
+                        <th>VISUEL</th>
+                        <th>SCOPE</th>
+                        <th>FINAL</th>
+                        <th>MD DDB FT</th>
+                        <th>Observation</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ms">
+                    @if(isset($m17))
+                        @foreach($m17 as $item)
+                            <tr id="ms{{$item->Id}}">
+                                <td id="tube{{$item->Id}}">{{$item->Tube}}</td>
+                                <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
+                                                                                 onclick="return false;">
+                                    @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="operation{{$item->Id}}">{{$item->Operation}}</td>
+                                <td id="longChute{{$item->Id}}">{{$item->LongCh}}</td>
+                                <td id="Oxyc{{$item->Id}}">@if($item->Oxyc) <input type="checkbox" checked
+                                                                                   onclick="return false;">
+                                    @elseif(!$item->Oxyc)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="RB{{$item->Id}}">@if($item->RB) <input type="checkbox" checked
+                                                                               onclick="return false;">
+                                    @elseif(!$item->RB)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="Eprouv{{$item->Id}}">@if($item->Eprouv) <input type="checkbox" checked
+                                                                                       onclick="return false;">
+                                    @elseif(!$item->Eprouv)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="NdHt{{$item->Id}}">@if($item->NdHt) <input type="checkbox" checked
+                                                                                   onclick="return false;">
+                                    @elseif(!$item->NdHt)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="Vis{{$item->Id}}">@if($item->Vis) <input type="checkbox" checked
+                                                                                 onclick="return false;">
+                                    @elseif(!$item->Vis)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="Scop{{$item->Id}}">@if($item->Scop) <input type="checkbox" checked
+                                                                                   onclick="return false;">
+                                    @elseif(!$item->Scop)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="Final{{$item->Id}}">@if($item->Final) <input type="checkbox" checked
+                                                                                     onclick="return false;">
+                                    @elseif(!$item->Final)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="Ddbft{{$item->Id}}">@if($item->DdbFt) <input type="checkbox" checked
+                                                                                     onclick="return false;">
+                                    @elseif(!$item->DdbFt)<input type="checkbox" onclick="return false;"> @endif</td>
+
+                                <td class="obsS" id="Observation{{$item->Id}}">{{$item->Observation}}</td>
+                                <td>
+                                    <button id="ms{{$item->Id}}Edit" class="msEdit text-primary"><i
+                                                class="fa fa-edit"></i></button>
+                                    <button id="ms{{$item->Id}}Delete" class="msDelete text-danger"><i
+                                                class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section>
+            <div class="row" id="bottom-actions">
+
+                <div class=" col-lg-2 col-md-4 col-sm-6">
+                    <button type="button" type="button" id="imprimer" class="btn btn-warning col-12"
+                            onclick="window.location.href='{{route('Rep_M17')}}'">
+                        <b><i class="fa fa-arrow-circle-left" style="font-size: 20px;"></i> &nbsp;Rapport
+                            Réparation</b>
+                    </button>
+                </div>
+                <div class=" col-lg-2 col-md-4 col-sm-6">
+                    <button type="button" class="btn btn-outline-danger col-12" data-toggle="modal"
+                            data-target="#staticBackdrop">
+                        <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets
+                            Machine</b>
+                    </button>
+                </div>
+                <div class=" col-lg-2 col-md-4 col-sm-6">
+                    <button type="button" id="imprimer" class="btn btn-outline-primary col-12">
+                        <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
+                    </button>
+                </div>
+                <div class=" col-lg-2 col-md-4 col-sm-6">
+                    <button type="button" class="btn btn-info col-12" data-toggle="modal" data-target="#cardBackdrop">
+                        <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b></button>
+                </div>
+                <div class="  col-lg-2 col-md-4 col-sm-6">
+                    <form method="post" action="{{route('rapports_M17.destroy',["id"=>$rapport->Numero])}}">
+                        @csrf
+                        <input type="hidden" name="_method" value="delete">
+                        <button class="btn btn-secondary col-12"><b> <i class="fa fa-times-circle"
+                                                                        style="font-size: 20px;"></i> &nbsp;&nbsp;Quitter
+                                le rapport</b></button>
+                    </form>
+                </div>
+                <div class=" col-lg-2 col-md-4 col-sm-6">
+                    <button id="cloturer" class="btn btn-success col-12">
+                        <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp; Clôturer
+                            Rapport</b></button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Modal -->
+
+    @include('layouts.ArretsLayout');
+    @include('layouts.CarteTubeLayout');
+
+@endsection
 @section('script')
 
     <script>
 
-        $(document).ready(function(){
-            rxdef=0;
-            Defauts=[];
+        $(document).ready(function () {
+
             $('#annulerButton').hide();
             $('#annulerPanne').hide();
             addRapprodsListeners();
+            var defauts = [];
+            initDefauts();
 
-            $('#addDefaut').click(function(e){
-                e.preventDefault();
-                if($('#defaut').val()!==null && $('#operation').val()!==null) {
-                    if($('#operation').val()!=='R.A.S') {
-                        Opr = $('#operation').val();
-                        IdDef = $('#defaut').find("option:selected").attr("defautId");
-                        if( $('#defautRx:checked').length > 0){
-                            ++rxdef;
-                        Defaut = 'U'+rxdef+'. '+$('#defaut').val();}
-                        else     {Defaut = $('#defaut').val();}
+            function initDefauts() {
+                defauts["Oxyc"] = 0;
+                defauts["RB"] = 0;
+                defauts["Eprouv"] = 0;
+                defauts["NdHt"] = 0;
+                defauts["Vis"] = 0;
+                defauts["Scop"] = 0;
+                defauts["Final"] = 0;
+                defauts["DdbFt"] = 0;
+                $('#defauts span').each(function () {
 
-                        Valeur = $('#valeur').val();
-                        NbOpr = $('#operation').find("option:selected").attr("operationId");
-                        Nombre = $('#nbr').val();
-                        if (Valeur === '' || Valeur === 0) {
-                            Valeur = null;
-                        }
-                        if (Nombre === '' || Nombre === 0) {
-                            Nombre = null;
-                        }
-                        Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre]);
-                        SetDefauts();
-                    }else{
-                        alert('Sélectionner une opération autre que R.A.S');
-                    }
-                }else{
-                    alert('Sélectionner un defaut et une opération svp!');
-                }
+                    $(this).addClass('btn-outline-secondary');
+                    $(this).removeClass('btn-danger');
+
+                });
+
+            }
+
+            $('#defauts span').each(function () {
+
+                $(this).click(function () {
+                    defauts[$(this).attr("id")] = !defauts[$(this).attr("id")];
+                    $(this).toggleClass('btn-outline-secondary');
+                    $(this).toggleClass('btn-danger');
+
+                });
             });
-
-            $('#removeDefaut').click(function(e){
+            $('#Ajouter').click(function (e) {
                 e.preventDefault();
-                latDefaut=Defauts.pop(); 
-                if(latDefaut[2].includes('. '))
-                    --rxdef;
-                if(Defauts.length>0){
-                    SetDefauts();
-                }else{
-                    $('#defauts').val('');
-                }
-            });
-            $('#Ajouter').click(function(e){
-                e.preventDefault();
-                if($('#rx1Form')[0].checkValidity()){
-
-
-
+                if ($('#msForm')[0].checkValidity()) {
                     const id = $('#Numero').val();
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    ntube=$('#ntube').val().replace(/[^0-9]/g,'');
-                    machine=$('#ntube').val().replace(ntube,'');
-                    if(Defauts.length>0 || $('#operation').val()==='R.A.S' ) {
-                        if (Defauts.length > 0) {
-
-                            obs = $('#defauts').val() + '|' + Defauts[Defauts.length - 1][0] + '|';
-                        } else if ($('#operation').val() === 'R.A.S') {
-                            obs = $('#operation').val();
-                            Defauts.push([
-                                Opr = $('#operation').val(), null, null, null, $('#operation').find("option:selected").attr("operationId"), null]);
-                        }
-                    }else{
-                        alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
-                    }
                     if ($('#Ajouter').html() !== ' Modifier ') {
-
-                       $.ajax({
-                           url: "{{ route('RX1.store')}}",
-                           method: 'post',
-                           data: {
-                               _token: '{{csrf_token()}}',
-                               machine: machine,
-                               Pid: $('#Pid').val(),
-                               Did: $('#detail_project').val(),
-                               NumeroRap: $('#NumRap').val(),
-                               ntube: ntube,
-                               Tube: $('#ntube').val(),
-                               bis: $('#bis:checked').length > 0,
-                               Obs: obs,
-                               Observation: $('#observation').val(),
-                               Defauts: Defauts,
-                           },
-                           success: function (result) {
-                               var bis = "";
-                               var item=result.rx1;
-                               if (item.Bis) {
-                                   bis = "checked"
-                               }
-                               $('#rxs').append('<tr id="rx'+item.Id+'">\n' +
-                                   '                         <td id="tube'+item.Id+'">'+item.Tube+'</td>\n' +
-                                   '                         <td id="bis'+item.Id+'"> <input type="checkbox" '+bis+'  onclick="return false;">\n'+
-                                   '                         <td   class="obsS" id="Defaut'+item.Id+'">'+item.Defauts+'</td>\n' +
-                                   '                         <td   class="obsS" id="Observation'+item.Id+'">'+$('#observation').val()+'</td>\n' +
-                                   '                         <td>\n' +
-                                   '                             <button id="rx'+item.Id+'Edit" class="rx1Edit text-primary" ><i class="fa fa-edit"></i></button>\n' +
-                                   '                             <button id="rx'+item.Id+'Delete" class="rx1Delete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
-                                   '                         </td>\n' +
-                                   '                     </tr> ');
-                               $('#rx1Form').trigger("reset");
-                               $('#Form').trigger("reset");
-                               $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
-                               $('#Defauts').val('');  
-                               Defauts = [];
-
-                               addRapprodsListeners();
-                           },
-                           error: function (result) {
-                               alert(result.responseJSON.message);
-                               console.log(result);
-                           }
-                       });
+                        $.ajax({
+                            url: "{{ route('M17.store')}}",
+                            method: 'post',
+                            data: {
+                                _token: '{{csrf_token()}}',
+                                Pid: $('#Pid').val(),
+                                Did: $('#Did').val(),
+                                NumeroRap: $('#NumRap').val(),
+                                ntube: $('#ntube').val(),
+                                bis: $('#bis:checked').length > 0,
+                                Observation: $('#observation').val(),
+                                LongCh: $('#LongCh').val(),
+                                oxyc: defauts["Oxyc"],
+                                rb: defauts["RB"],
+                                Eprouv: defauts["Eprouv"],
+                                ndht: defauts["NdHt"],
+                                vis: defauts["Vis"],
+                                scope: defauts["Scop"],
+                                final: defauts["Final"],
+                                DdbFt: defauts["DdbFt"],
+                            },
+                            success: function (result) {
+                                var item = result.m17;
+                                $('#ms').append('<tr id="ms' + item.Id + '">\n' +
+                                    '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
+                                    '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
+                                    '                                <td    id="operation' + item.Id + '">' + item.Operation + '</td>\n' +
+                                    '                                <td     id="longChute' + item.Id + '">' + item.LongCh + '</td>\n' +
+                                    '                                <td id="Oxyc' + item.Id + '"><input type="checkbox" ' + item.Oxyc_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="RB' + item.Id + '"><input type="checkbox" ' + item.RB_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="Eprouv' + item.Id + '"><input type="checkbox" ' + item.Eprouv_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="NdHt' + item.Id + '"><input type="checkbox" ' + item.NdHt_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="Vis' + item.Id + '"><input type="checkbox" ' + item.Vis_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="Scop' + item.Id + '"><input type="checkbox" ' + item.Scop_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="Final' + item.Id + '"><input type="checkbox" ' + item.Final_t + '  onclick="return false;"></td>' +
+                                    '                                <td id="Ddbft' + item.Id + '"><input type="checkbox" ' + item.DdbFt_t + '  onclick="return false;"></td>' +
+                                    '\n' +
+                                    '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
+                                    '                                <td>\n' +
+                                    '                                    <button id="ms' + item.Id + 'Edit" class="msEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
+                                    '                                    <button id="ms' + item.Id + 'Delete" class="msDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
+                                    '                                </td>\n' +
+                                    '                            </tr>');
+                                $('#msForm').trigger("reset");
+                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
+                                defauts = [];
+                                initDefauts();
+                                addRapprodsListeners();
+                            },
+                            error: function (result) {
+                                alert(result.responseJSON.message);
+                                console.log(result);
+                            }
+                        });
 
                     } else {
-
                         $.ajax({
-                            url:  "{{url('/RX1/')}}/"+id,
+                            url: "{{url('/M17/')}}/" + id,
                             method: 'post',
                             data: {
                                 _method: 'put',
                                 _token: '{{csrf_token()}}',
-                                machine: machine,
                                 Pid: $('#Pid').val(),
-                                Did: $('#detail_project').val(),
+                                Did: $('#Did').val(),
                                 NumeroRap: $('#NumRap').val(),
-                                ntube: ntube,
-                                Tube: $('#ntube').val(),
+                                ntube: $('#ntube').val(),
                                 bis: $('#bis:checked').length > 0,
-                                Obs: obs,
                                 Observation: $('#observation').val(),
-                                Defauts: Defauts,
-                                id:id
+                                LongCh: $('#LongCh').val(),
+                                oxyc: defauts["Oxyc"],
+                                rb: defauts["RB"],
+                                Eprouv: defauts["Eprouv"],
+                                ndht: defauts["NdHt"],
+                                vis: defauts["Vis"],
+                                scope: defauts["Scop"],
+                                final: defauts["Final"],
+                                DdbFt: defauts["DdbFt"],
+                                id: id
                             },
                             success: function (result) {
-                                console.log(result.rx1);
-                                var bis = "";
-                                var item=result.rx1;
-                                if (item.Bis) {
-                                    bis = "checked"
-                                }
-                                $('#rx'+id).replaceWith('<tr id="rx'+item.Id+'">\n' +
-                                    '                         <td id="tube'+item.Id+'">'+item.Tube+'</td>\n' +
-                                    '                         <td id="bis'+item.Id+'"> <input type="checkbox" '+bis+'  onclick="return false;">\n'+
-                                    '                         <td   class="obsS" id="Defaut'+item.Id+'">'+item.Defauts+'</td>\n' +
-                                    '                         <td   class="obsS" id="Observation'+item.Id+'">'+$('#observation').val()+'</td>\n' +
-                                    '                         <td>\n' +
-                                    '                             <button id="rx'+item.Id+'Edit" class="rx1Edit text-primary" ><i class="fa fa-edit"></i></button>\n' +
-                                    '                             <button id="rx'+item.Id+'Delete" class="rx1Delete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
-                                    '                         </td>\n' +
-                                    '                     </tr> ');
-                                $('#rx1Form').trigger("reset");
+                                var item = result.m17;
+                                $('#ms' + id).replaceWith('<tr id="ms' + item.Id + '">\n' +
+                                    '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
+                                    '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
+                                    '                                <td    id="operation' + item.Id + '">' + item.Operation + '</td>\n' +
+                                    '                                <td     id="longChute' + item.Id + '">' + item.LongCh + '</td>\n' +
+                                    '                                 <td id="Oxyc' + item.Id + '"><input type="checkbox" ' + item.Oxyc_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="RB' + item.Id + '"><input type="checkbox" ' + item.RB_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="Eprouv' + item.Id + '"><input type="checkbox" ' + item.Eprouv_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="NdHt' + item.Id + '"><input type="checkbox" ' + item.NdHt_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="Vis' + item.Id + '"><input type="checkbox" ' + item.Vis_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="Scop' + item.Id + '"><input type="checkbox" ' + item.Scop_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="Final' + item.Id + '"><input type="checkbox" ' + item.Final_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td id="Ddbft' + item.Id + '"><input type="checkbox" ' + item.DdbFt_t + '  onclick="return false;"></td>\n' +
+                                    '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
+                                    '                                <td>\n' +
+                                    '                                    <button id="ms' + item.Id + 'Edit" class="msEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
+                                    '                                    <button id="ms' + item.Id + 'Delete" class="msDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
+                                    '                                </td>\n' +
+                                    '                            </tr>');
+                                $('#msForm').trigger("reset");
                                 $('#Ajouter').html(' Ajouter ');
                                 $('#annulerButton').hide();
                                 $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
-                                $('#defauts').val('');
+                                defauts = [];
+                                initDefauts();
                                 $('#ntube').prop('disabled', false);
-                                Defauts=[];
-
                                 addRapprodsListeners();
-                                $('#ntube').prop('disabled', false);
                             },
                             error: function (result) {
-                                alert(result.responseJSON.message);console.log(result);
-                                
+                                alert(result.responseJSON.message);
+                                console.log(result);
+
                             }
                         });
 
                     }
-                }else{
+                } else {
                     alert("Remplir tous les champs qui sont obligatoires svp !");
                 }
             });
             $('#annulerButton').click(function () {
-                $('#rx1Form').trigger("reset");
+                $('#msForm').trigger("reset");
                 $('#Ajouter').html(' Ajouter ');
                 $('#annulerButton').hide();
                 $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                 $('#defauts').val('');
                 $('#ntube').prop('disabled', false);
-                Defauts=[];
+                defauts = [];
+                initDefauts();
             });
-            function addRapprodsListeners(){
+
+            function addRapprodsListeners() {
 
                 $('#ntube').removeAttr("readonly");
-                $('.rx1Delete').each(function(e){
-                    $(this).click(function(e){
-                        tr= $(this).parent().parent();
-                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
+                $('.msDelete').each(function (e) {
+
+                    $(this).off('click');
+                    $(this).click(function (e) {
+                        tr = $(this).parent().parent();
+                        const id = $(this).attr("id").replace(/[^0-9]/g, '');
                         e.preventDefault();
                         $.ajaxSetup({
                             headers: {
@@ -686,85 +573,130 @@
                         });
 
                         $.ajax({
-                            url:  "{{url('/RX1/')}}/"+id,
+                            url: "{{url('/M17/')}}/" + id,
                             method: 'post',
                             data: {
-                                _method :'delete',
-                                _token :'{{csrf_token()}}',
-                                id :id,
+                                _method: 'delete',
+                                _token: '{{csrf_token()}}',
+                                id: id,
 
 
                             },
-                            success: function(result){
+                            success: function (result) {
                                 tr.remove();
                             },
-                            error: function(result){
+                            error: function (result) {
                                 console.log(result);
                                 alert(result.responseJSON.message);
                             }
                         });
                     });
 
-                    $('#rx1Form').trigger("reset");
+                    $('#msForm').trigger("reset");
                     $('#Ajouter').html(' Ajouter ');
                     $('#annulerButton').hide();
                     $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
-                    $('#defauts').val('');
                     $('#ntube').prop('disabled', false);
-                    Defauts=[];
+                    defauts = [];
+                    initDefauts();
                 });
-                $('.rx1Edit').each(function(e){
-                    $(this).click(function(e){
-                        tr= $(this).parent().parent();
-                        const id=$(this).attr("id").replace(/[^0-9]/g,'');
-                        e.preventDefault();
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-
-                        $.ajax({
-                            url:  "{{url('/RX1/')}}/"+id+ '/edit',
-                            method: 'get',
-                            data: {
-                                id :id,
+                $('.msEdit').each(function (e) {
+                    $(this).off('click');
+                    $(this).click(function (e) {
+                        const id = $(this).attr("id").replace(/[^0-9]/g, '');
+                        $('#Numero').val(id);
+                        $('#ntube').val($("#tube" + id).html());
+                        $('#LongCh').val($("#longChute" + id).html());
+                        $('#observation').val($("#Observation" + id).html());
+                        if ($('#bis' + id).html().includes('checked'))
+                            $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"   checked      >');
+                        else
+                            $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"          >');
 
 
-                            },
-                            success: function(result){
-                                $('#Numero').val(id);
-                                rxdef=0;
-                                rx1=result.rx1;
-                                $('#detail_project').val(rx1.Did);
-                                $('#ntube').val(rx1.Tube);
-                                Defauts=[];
-                                rx1.defs.forEach(function(item,index){
-                                    if(item.Defaut.includes('. ')) ++rxdef;
-                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre]);
-                                });
-                                if(rx1.Bis)
-                                $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"   checked      >' );
-                                else{
-                                    $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"          >' );
-                                }
-                               SetDefauts();
-                                $('#operation').val(Defauts[Defauts.length-1][0]);
-                                $('#Ajouter').html(' Modifier ');
-                                $('#annulerButton').show();
-                                $('#ntube').prop('disabled', true);
+                        if ($('#Oxyc' + id).html().includes('checked')) {
+                            $('#Oxyc').removeClass('btn-outline-secondary');
+                            $('#Oxyc').addClass('btn-danger');
+                            defauts['Oxyc'] = 1;
+                        } else {
+                            $('#Oxyc').addClass('btn-outline-secondary');
+                            $('#Oxyc').removeClass('btn-danger');
+                            defauts['Oxyc'] = 0;
+                        }
+                        if ($('#RB' + id).html().includes('checked')) {
+                            $('#RB').removeClass('btn-outline-secondary');
+                            $('#RB').addClass('btn-danger');
+                            defauts['RB'] = 1;
+                        } else {
+                            $('#RB').addClass('btn-outline-secondary');
+                            $('#RB').removeClass('btn-danger');
+                            defauts['RB'] = 0;
+                        }
+                        if ($('#Eprouv' + id).html().includes('checked')) {
+                            $('#Eprouv').removeClass('btn-outline-secondary');
+                            $('#Eprouv').addClass('btn-danger');
+                            defauts['Eprouv'] = 1;
+                        } else {
+                            $('#Eprouv').addClass('btn-outline-secondary');
+                            $('#Eprouv').removeClass('btn-danger');
+                            defauts['Eprouv'] = 0;
+                        }
+                        if ($('#NdHt' + id).html().includes('checked')) {
+                            $('#NdHt').removeClass('btn-outline-secondary');
+                            $('#NdHt').addClass('btn-danger');
+                            defauts['NdHt'] = 1;
+                        } else {
+                            $('#NdHt').addClass('btn-outline-secondary');
+                            $('#NdHt').removeClass('btn-danger');
+                            defauts['NdHt'] = 0;
+                        }
 
-                            },
-                            error: function(result){
-                                console.log(result);
-                                alert(result.responseJSON.message);
-                            }
-                        });
-                });
+                        if ($('#Vis' + id).html().includes('checked')) {
+                            $('#Vis').removeClass('btn-outline-secondary');
+                            $('#Vis').addClass('btn-danger');
+                            defauts['Vis'] = 1;
+                        } else {
+                            $('#Vis').addClass('btn-outline-secondary');
+                            $('#Vis').removeClass('btn-danger');
+                            defauts['Vis'] = 0;
+                        }
+                        if ($('#Scop' + id).html().includes('checked')) {
+                            $('#Scop').removeClass('btn-outline-secondary');
+                            $('#Scop').addClass('btn-danger');
+                            defauts['Scop'] = 1;
+                        } else {
+                            $('#Scop').addClass('btn-outline-secondary');
+                            $('#Scop').removeClass('btn-danger');
+                            defauts['Scop'] = 0;
+                        }
+                        if ($('#Final' + id).html().includes('checked')) {
+                            $('#Final').removeClass('btn-outline-secondary');
+                            $('#Final').addClass('btn-danger');
+                            defauts['Final'] = 1;
+                        } else {
+                            $('#Final').addClass('btn-outline-secondary');
+                            $('#Final').removeClass('btn-danger');
+                            defauts['Final'] = 0;
+                        }
+                        if ($('#Ddbft' + id).html().includes('checked')) {
+                            $('#DdbFt').removeClass('btn-outline-secondary');
+                            $('#DdbFt').addClass('btn-danger');
+                            defauts['DdbFt'] = 1;
+                        } else {
+                            $('#DdbFt').addClass('btn-outline-secondary');
+                            $('#DdbFt').removeClass('btn-danger');
+                            defauts['DdbFt'] = 0;
+                        }
+
+                        $('#Ajouter').html(' Modifier ');
+                        $('#annulerButton').show();
+                        $('#ntube').prop('disabled', true);
+                    });
                 });
             }
-            $('#cloturer').click(function(e){
-                const Numero= $('#NumRap').val();
+
+            $('#cloturer').click(function (e) {
+                const Numero = $('#NumRap').val();
                 e.preventDefault();
                 $.ajaxSetup({
                     headers: {
@@ -773,257 +705,37 @@
                 });
 
                 $.ajax({
-                    url:  "{{url('/cloturer')}}/"+Numero,
+                    url: "{{url('/cloturer')}}/" + Numero,
                     method: 'post',
                     data: {
-                        _token :'{{csrf_token()}}'
+                        _token: '{{csrf_token()}}'
                     },
-                    success: function(result){
-                        if(result.rapportState.Etat==='C'){
+                    success: function (result) {
+                        if (result.rapportState.Etat === 'C') {
                             alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
-                            window.location.href='{{route("rapports_RX1.index")}}';
+                            window.location.href = '{{route("rapports_RX1.index")}}';
 
                         }
 
 
                     },
-                    error: function(result){
+                    error: function (result) {
 
-                            alert(result.responseJSON.message);
+                        alert(result.responseJSON.message);
 
                     }
                 });
             });
-
-
-
-            function SetDefauts(){
-                $('#defauts').val('');
-                Defauts.forEach(function(item,index){
-                    if(typeof item[2] !=='undefined') {
-                        obs = item[2];
-                        if (item[5] > 0) {
-                            obs = item[5] + ' ' + obs;
-                        }
-                        if (item[3] > 0) {
-                            obs = obs + '(' + item[3] + ')';
-                        }
-                        if (Defauts.length > index + 1) {
-                            NextOp = Defauts[index + 1][0];
-                        } else {
-                            NextOp = item[0];
-                        }
-                        if (NextOp === item[0]) {
-                            $('#defauts').val($('#defauts').val() + '+' + obs);
-                        } else {
-                            $('#defauts').val($('#defauts').val() + '+' + obs + '|' + item[0] + '|');
-                        }
-                        ObsMetal = $('#defauts').val();
-                        if (ObsMetal.charAt(0) === '+')
-                            $('#defauts').val(ObsMetal.substr(1));
-                    }
-                });
-
-            }
-        });
-        $('#imprimer').click(function(e){
-            e.preventDefault();
-
-            window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');});
-
-    </script>
-    <script>
-        $(document).ready(function(){
-
-            addArretsListeners();
-            $('#annulerPanne').click(function () {
-            $('#ajouterPanne').html(' Ajouter ');
-            $('#annulerPanne').hide();
-            $('#rx1Form').trigger('reset');
-        });
-        function addArretsListeners(){
-            $('.arretDelete').each(function(e){
-                $(this).click(function(e){
-
-                    tr= $(this).parent().parent();
-                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
-
-                    e.preventDefault();
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        url:  "{{url('/arret_machine/')}}/"+id,
-                        method: 'post',
-                        data: {
-                            _token :'{{csrf_token()}}',
-                            id :id,
-                            _method :'delete'
-
-                        },
-                        success: function(result){
-                            tr.remove();
-                        },
-                        error: function(result){
-                            alert(result.responseJSON.message);
-                        }
-                    });
-                });
-            });
-            $('.arretEdit').each(function(e){
-                $(this).click(function(e){
-                    e.preventDefault();
-                    tr= $(this).parent().parent();
-                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
-                    $('#cause').val(tr.find('#cause'+id).html());
-                    $('#du').val(tr.find('#du'+id).html());
-                    $('#au').val(tr.find('#au'+id).html());
-                    $('#duree').val(tr.find('#duree'+id).html());
-                    $('#ndi').val(tr.find('#ndi'+id).html());
-                    $('#obs').val(tr.find('#obs'+id).html());
-                    $('#relv').val(tr.find('#relv'+id).html());
-                    $('#idArret').val(id);
-
-                    if($('#type'+id).html()==='panne'){
-                        $('#type_arret').find('option[value=panne]').attr('selected','selected');
-                        $('#type_arret').find('option[value=arret]').removeAttr('selected');
-
-                    }else{
-                        $('#type_arret').find('option[value=panne]').removeAttr('selected');
-                        $('#type_arret').find('option[value=arret]').attr('selected','selected');
-                    }
-                    $('#ajouterPanne').html(' Modifier panne ');
-                    $('#annulerPanne').show();
-
-                });
-            });
-        }
-        $('#ajouterPanne').click(function(e){
-            if($('#arretForm')[0].checkValidity()) {
-                const id = $('#idArret').val();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+            $('#imprimer').click(function (e) {
                 e.preventDefault();
-                if ($('#ajouterPanne').html() !== ' Modifier panne ') {
 
-                    $.ajax({
-                        url: "{{ route('arret_machine.store')}}",
-                        method: 'post',
-                        data: {
-                            _token: '{{csrf_token()}}',
-                            Machine: $('#Machine').val(),
-                            Pid: $('#Pid').val(),
-                            Did: $('#Did').val(),
-                            NumRap: $('#NumRap').val(),
-                            type_arret: $('#type_arret').val(),
-                            du: $('#du').val(),
-                            au: $('#au').val(),
-                            duree: $('#duree').val(),
-                            cause: $('#cause').val(),
-                            ndi: $('#ndi').val(),
-                            obs: $('#obs').val(),
-                            relv: $('#relv').val(),
-                        },
-                        success: function (result) {
+                window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');
+            });
 
-
-                            $('#ArretTable').append('<tr id="arret' + result.arret.id + '">' +
-                                '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
-                                '<td id="du'+ result.arret.id + '">' + result.arret.Du + '</td>' +
-                                '<td id="au'+ result.arret.id + '">' + result.arret.Au + '</td>' +
-                                '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
-                                '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
-                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
-                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
-                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
-                                '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
-                                '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
-
-                            addArretsListeners();
-                        },
-                        error: function (result) {
-                            console.log(result.responseJSON);
-                            alert(result.responseJSON.message);
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        url: "{{url('/arret_machine/')}}/" + id,
-                        method: 'post',
-                        data: {
-                            _token: '{{csrf_token()}}',
-                            id: id,
-                            _method: 'put',
-                            Machine: $('#Machine').val(),
-                            Pid: $('#Pid').val(),
-                            Did: $('#Did').val(),
-                            NumRap: $('#NumRap').val(),
-                            type_arret: $('#type_arret').val(),
-                            du: $('#du').val(),
-                            au: $('#au').val(),
-                            duree: $('#duree').val(),
-                            cause: $('#cause').val(),
-                            ndi: $('#ndi').val(),
-                            obs: $('#obs').val(),
-                            relv: $('#relv').val(),
-                        },
-                        success: function (result) {
-
-                            $('#ArretTable').find('#arret' + result.arret.id).html(
-                                '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
-                                '<td id="du' + result.arret.id + '">' + result.arret.Du + '</td>' +
-                                '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
-                                '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
-                                '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
-                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
-                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
-                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt +'</td>' +
-                                '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
-                                '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td>');
-                            $('#ajouterPanne').html(' Ajouter panne ');
-                            $('#annulerPanne').hide();
-                            $('#arretForm').trigger("reset");
-                            addArretsListeners();
-                        },
-                        error: function (result) {
-                            alert(result.responseJSON.message);
-                        }
-                    });
-
-
-                }
-            }else{
-                alert('Remplir tous les champs qui sont obligatoires svp!');
-            }
         });
-        $("#au , #du").click(function(event){
 
 
-            if ($("#du").val() != "" && $("#au").val() != "" ) {
-                var du = parseTime($("#du").val())/60000;
-                var au = parseTime($("#au").val())/60000;
-                if(du>au){
-                    au=au+(24*60);
-                }
-                $('#duree').val((au - du) );
-            }
-        });
-        function parseTime(cTime)
-        {
-            if (cTime == '') return null;
-            var d = new Date();
-            var time = cTime.match(/(\d+)(:(\d\d))?\s*(p?)/);
-            d.setHours( parseInt(time[1]) + ( ( parseInt(time[1]) < 12 && time[4] ) ? 12 : 0) );
-            d.setMinutes( parseInt(time[3]) || 0 );
-            d.setSeconds(0, 0);
-            return d;
-        }
-        });
     </script>
-
-    @endsection
+    @include('layouts.ArretScript');
+    @include('layouts.CarteTubeScript');
+@endsection

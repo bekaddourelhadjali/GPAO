@@ -13,8 +13,25 @@ class CreateReparationTable extends Migration
      */
     public function up()
     {
-        Schema::table('reparation', function (Blueprint $table) {
-            //NumTube	Pid	Did	Machine	NTube	Tube	Bis	Nord	IdOpr	NbOpr	IdDef	Longueur	LongCh	DfInt	DfExt	Rep1	Rep2	Rep3	Observation	NumRap	Computer	User	DateSaisie	Visible
+        Schema::create('reparation', function (Blueprint $table) {
+            $table->increments('Id');
+            $table->integer('NumTube')->unsigned();
+            $table->integer('Pid')->unsigned();
+            $table->integer('Did')->unsigned();
+            $table->string('Machine',1);
+            $table->string('Ntube',4);
+            $table->string('Tube',5);
+            $table->Boolean('Bis');
+            $table->double('Longueur');
+            $table->Boolean('DfInt')->default(0);
+            $table->Boolean('DfExt')->default(0);
+            $table->Boolean('Rep1')->default(0);
+            $table->Boolean('Rep2')->default(0);
+            $table->Boolean('Rep3')->default(0);
+            $table->string('Observation')->nullable();
+            $table->string('Defauts')->nullable();
+            $table->integer('NumeroRap')->unsigned();
+            $table->dateTime('DateSaisie');
         });
     }
 

@@ -31,7 +31,7 @@
         }
         #settings{
 
-            font-size: 15vw;
+            font-size: 14.9vw;
             padding:   50px 0;
             width:100%;
         }
@@ -109,7 +109,7 @@
 <div class="container">
 <div class="row text-center">
 
-    <section class="col-4 offset-2" id="settings-section" onclick="window.location.href='https://www.google.com';">
+    <section class="col-4 offset-2" id="settings-section" onclick="window.location.href='{{route("rapports_Rep.index")}}';">
 
         <div class="  pane " >
             <i class="fa fa-cog " id="settings" ></i>
@@ -117,12 +117,10 @@
         </div>
     </section>
 
-<section class="col-4 " id="M17-section">
+<section class="col-4 " id="M17-section" onclick="window.location.href='{{route("rapports_M17.index")}}';">
         <div class="  pane"  id="M17" >
             <div id="img-div"></div>
-            {{--<img id="img-out" class="col-12" src="{{asset('img/img-out.png')}}" height="100%" alt="">--}}
-            {{--<img id="img-hover" class="col-12" src1="{{asset('img/img-hover.png')}}" src2="{{asset('img/img-hover2.png')}}" src="{{asset('img/img-hover.png')}}" height="100%" alt="">--}}
-            <p class=""><b>RAPPORT M17</b></p>
+             <p class=""><b>RAPPORT M17</b></p>
         </div>
 
 </section>

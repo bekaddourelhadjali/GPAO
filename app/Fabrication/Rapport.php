@@ -12,12 +12,12 @@ class Rapport extends Model
     public function details(){
         return $this->belongsTo('App\Fabrication\detailprojet', 'Did');
     }
-    public function currentProject(){
-        return DB::select('select * from projet where EndDate> now()');
+    public function Project(){
+        return $this->belongsTo('App\Fabrication\Projet','Pid');
     }
     public function rapprods(){
         return $this->hasMany('App\Fabrication\Rapprod','NumeroRap')
-            ->select(['Numero','Tube','Coulee','Bobine','Bis','Longueur','macro','RB','Observation']);
+            ->select(['Numero','Ntube','Coulee','Bobine','Longueur','Macro','RB','Observation']);
     }
     public function visuels(){
         return $this->hasMany('App\Visuel\Visuels','NumeroRap') ;
@@ -25,12 +25,31 @@ class Rapport extends Model
     public function rx1(){
         return $this->hasMany('App\Visuel\RX1','NumeroRap') ;
     }
+    public function m3(){
+        return $this->hasMany('App\Fabrication\M3','NumeroRap') ;
+    }
+    public function m17(){
+        return $this->hasMany('App\Visuel\M17','NumeroRap') ;
+    }
+    public function m24(){
+        return $this->hasMany('App\Visuel\M24','NumeroRap') ;
+    }
+    public function m25(){
+        return $this->hasMany('App\Visuel\M25','NumeroRap') ;
+    }
+    public function ndt(){
+        return $this->hasMany('App\Visuel\Ndt','NumeroRap') ;
+    }
+    public function RecBob(){
+        return $this->hasMany('App\Fabrication\Bobine','NumeroRap') ;
+    }
+    public function Reparations(){
+        return $this->hasMany('App\Visuel\Rep','NumeroRap') ;
+    }
     public function arrets(){
-        return $this->hasMany('App\Fabrication\ArretMachine','NumRap')
-            ->select(['id','TypeArret','Du','Au','Durée','Cause','NDI','Obs','Relv_Compt']);
+        return $this->hasMany('App\Fabrication\ArretMachine','NumRap');
     }
     public function operateurs(){
         return $this->hasMany('App\Fabrication\Operateur','NumRap');
     }
-
 }

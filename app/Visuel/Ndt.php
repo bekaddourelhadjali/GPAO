@@ -4,9 +4,9 @@ namespace App\Visuel;
 
 use Illuminate\Database\Eloquent\Model;
 
-class M17 extends Model
+class Ndt extends Model
 {   public $timestamps=false;
-    protected $table = "m17";
+    protected $table = "ndt";
     protected $primaryKey ='Id';
     public function rapport(){
         return $this->belongsTo('App\Fabrication\Rapport','NumeroRap' )->select(['Numero','Pid','Did','DateRapport','Equipe','Machine','Poste','NomAgents','CodeAgents','Etat']);

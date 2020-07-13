@@ -19,14 +19,13 @@ class M3RapportsController extends Controller
     public function index()
     {
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $projets= \App\Fabrication\Projet::where('Etat','!=','C')->get();
-        $details = detailprojet::all();
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
         $rapports=DB::select('select * from rapports where "Zone"=\'Z00\' order by "DateSaisie" desc limit 3');
         return view ('M3.M3Rapports',['details'=>$details
             ,'agents'=>$agents
-            ,'rapports'=>$rapports
-            ,'projets'=>$projets]);
+            ,'rapports'=>$rapports ]);
     }
 
     /**
@@ -48,11 +47,11 @@ class M3RapportsController extends Controller
     public function store(Request $request)
     {
         $rapport = new Rapport();
-        $rapport->Pid= $request->Pid;
+        $rapport->Pid=detailprojet::find($request->detail_project)->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
         $rapport->Zone='Z00';
-        $rapport->Machine='0 ';
+        $rapport->Machine='0';
         $rapport->Equipe= $request->equipe;
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
@@ -84,7 +83,13 @@ class M3RapportsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $rapport= Rapport::where('Numero','=',$id)->where('Zone','=','Z00')->first();
+        if (!empty($rapport)){
+            return response()->json(array('rapport'=> $rapport), 200);
+        }else{
+            return response()->json(array('error'=> "Rapport N'existe Pas"), 404);
+
+        }
     }
 
     /**
@@ -107,6 +112,11 @@ class M3RapportsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $rapport=\App\Fabrication\Rapport::find($id);
+        if(sizeof($rapport->m3) ){
+        }else{
+            $rapport->delete();
+        }
+        return redirect(route('rapports_M3.index'));
     }
 }

@@ -28,9 +28,9 @@
             color : #000;
         }
         .table-container{
-              width: 100%;
-              overflow: auto;
-          }
+            width: 100%;
+            overflow: auto;
+        }
         .top-content img{
             height: 100px;
         }
@@ -80,9 +80,9 @@
         }
         @media only screen and (min-width:1366px) and (max-width:769px) {
 
-           .top-content{
-               margin-left:0;
-           }
+            .top-content{
+                margin-left:0;
+            }
 
         }
     </style>
@@ -95,74 +95,71 @@
         <div class="row">
             <div class="body-content col-xl-6 col-lg-6 col-md-8 offset-xl-0 offset-lg-0 offset-md-2 col-sm-12 " >
                 <section class="col-12">
-                <form method="post" action="{{route('rapports_RX1.store')}}">
-                    @csrf
-                    <fieldset>
-                        <legend ><h4>Information du rapport</h4> </legend>
-                        <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
-                        <input name="Did" type="hidden" id="Did" value="0">
-                        <input name="machine" type="hidden" id="machine" value="0">
-                        <div class="row ">
-                            <div class="col-6">
-                                <div class="form-group row">
-                                    <label class="col-6" for="date" >Date du rapport</label>
-                                    <input class="col-6 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" required>
+                    <form method="post" action="{{route('rapports_Rep.store')}}">
+                        @csrf
+                        <fieldset>
+                            <legend><h4>Information du rapport</h4> </legend>
+                            <div class="form-group  row">
+                                <label class="col-4" for="detail_project ">Detail Projet</label>
+                                <select class="form-control col-8" id="detail_project " name="detail_project">
+                                    @foreach($details as $detail)
+                                        <option value="{{$detail->Did}}">Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
+                            <div class="row ">
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <label class="col-4" for="date" >Date du rapport</label>
+                                        <input class="col-4 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" >
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-4" for="equipe ">Equipe</label>
+                                        <select class="form-control col-4" id="equipe" name="equipe">
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-4" for="poste ">Poste</label>
+                                        <select class="form-control col-4" id="poste" name="poste">
+                                            @if(isset($postes))
+                                                @foreach($postes as $poste)
+                                                    <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-4" for="machine">Machine</label>
+                                        <select class="form-control col-4" id="machine" name="machine">
+                                            @if(isset($machines))
+                                                @foreach($machines as $machine)
+                                                    <option value="{{$machine->Machine}}">{{$machine->Machine}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-6" for="equipe ">Equipe</label>
-                                    <select class="form-control col-6" id="equipe" name="equipe" required>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                    </select>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="poste ">Poste</label>
-                                    <select class="form-control col-6" id="poste" name="poste" required>
-                                        @if(isset($postes))
-                                        @foreach($postes as $poste)
-                                            <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
-                                        @endforeach
-                                        @endif
-                                    </select>
-                                </div>
+
 
                             </div>
-                            <div class="col-6">
-                                <div class="form-group row">
-                                    <label class="col-6" for="tension" >Tension</label>
-                                    <input class="col-6 form-control"  name="tension" id="tension" type="number" required >
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="intensite" >Intensité</label>
-                                    <input class="col-6 form-control"  name="intensite" id="intensite" type="number" required >
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="tmpPose" >Temps de pose</label>
-                                    <input class="col-6 form-control"  name="tmpPose" id="tmpPose" type="number" required >
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="disBras" >Distance du bras</label>
-                                    <input class="col-6 form-control"  name="disBras" id="disBras" type="number" required >
-                                </div>
-                            </div>
-
-
-
-                        </div>
 
                             <div class="form-group row">
                                 <label class="col-3" for="agent">Agent 01</label>
-                                <select class="form-control col-6" id="agent" name="agent" required>
+                                <select class="form-control col-6" id="agent" name="agent">
                                     @if(isset($agents))
                                         @php
                                             $i=0;
                                         @endphp
-                                    @foreach($agents as $agent)
-                                        <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
-                                    @endforeach
+                                        @foreach($agents as $agent)
+                                            <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
+                                        @endforeach
                                     @endif
                                 </select>
                                 <input type="hidden" id="codeAgent" name="codeAgent" value="">
@@ -179,10 +176,10 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-3" for="agent2">Agent 02</label>
-                                <select class="form-control col-6" id="agent2" name="agent2" required>
+                                <select class="form-control col-6" id="agent2" name="agent2">
                                     @if(isset($agents))
                                         @php
-                                        $i=0;
+                                            $i=0;
                                         @endphp
                                         @foreach($agents as $agent)
                                             <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
@@ -202,57 +199,57 @@
                                 </select>
                             </div>
 
-                        <hr>
-                        <div class="form-group row">
-                            <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
-                                Reprendre un rapport
-                            </button>
+                            <hr>
+                            <div class="form-group row">
+                                <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
+                                    Reprendre un rapport
+                                </button>
 
-                            <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
-                        </div>
-                    </fieldset>
+                                <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
+                            </div>
+                        </fieldset>
 
-                </form>
+                    </form>
                 </section>
             </div>
-        <div class=" col-xl-6 col-lg-6 col-md-12  col-sm-12">
-           <section>
-           <h4>
-               Liste des derniers rapports
-           </h4>
-               <br>
-               <div class="row">
-                   <div class="  table-container ">
-               <table class=" table table-striped table-hover table-bordered">
-                   <thead class="bg-primary text-white">
-                   <tr>
-                       <th>Date</th>
-                       <th>Poste</th>
-                       <th>Machine</th>
-                       <th>Agent 1</th>
-                       <th>Agent 2</th>
-                       <th>Clôturé</th>
-                   </tr>
-                   </thead>
-                   <tbody>
-                   @if(isset($rapports))
-                       @foreach($rapports as $rapport)
-                   <tr id="rapport{{$rapport->Numero}}" @if($rapport->Etat=='C')class="Clot bg-success text-white" @else class="NotClot  " @endif >
-                   <td>{{$rapport->DateRapport}}</td>
-                   <td>{{$rapport->Poste}}</td>
-                   <td>{{$rapport->Machine}}</td>
-                       <td>{{$rapport->NomAgents}} / {{$rapport->CodeAgent}}</td>
-                       <td>{{$rapport->NomAgents1}} / {{$rapport->CodeAgent1}}</td>
-                       @if($rapport->Etat=='C')<td>Oui</td>   @else <td>Non</td>  @endif
-                   </tr>
-                    @endforeach
-                   @endif
-                   </tbody>
-               </table>
-                   </div>
-               </div>
-           </section>
-        </div>
+            <div class=" col-xl-6 col-lg-6 col-md-12  col-sm-12">
+                <section>
+                    <h4>
+                        Liste des derniers rapports
+                    </h4>
+                    <br>
+                    <div class="row">
+                        <div class="  table-container ">
+                            <table class=" table table-striped table-hover table-bordered">
+                                <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Poste</th>
+                                    <th>Machine</th>
+                                    <th>Agent 1</th>
+                                    <th>Agent 2</th>
+                                    <th>Clôturé</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if(isset($rapports))
+                                    @foreach($rapports as $rapport)
+                                        <tr id="rapport{{$rapport->Numero}}" @if($rapport->Etat=='C')class="Clot bg-success text-white" @else class="NotClot  " @endif >
+                                            <td>{{$rapport->DateRapport}}</td>
+                                            <td>{{$rapport->Poste}}</td>
+                                            <td>{{$rapport->Machine}}</td>
+                                            <td>{{$rapport->NomAgents}} / {{$rapport->CodeAgent}}</td>
+                                            <td>{{$rapport->NomAgents1}} / {{$rapport->CodeAgent1}}</td>
+                                            @if($rapport->Etat=='C')<td>Oui</td>   @else <td>Non</td>  @endif
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
 
     </div>
@@ -269,7 +266,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                   <div class="row"></div>
+                    <div class="row"></div>
                     <div class="form-group  form-inline">
                         <label class="col-2" for="tube" ><h5>Tube :</h5></label>
                         <input class="col-3 form-control"  name="tube" id="tube" type="text" minlength="5" maxlength="5"  required >
@@ -298,92 +295,91 @@
     </div>
 @endsection
 @section('script')
-<script>
-    $(document).ready(function(){
+    <script>
+        $(document).ready(function(){
 
-        $('#codeAgent').val($('#code').val());
-        $('#codeAgent2').val($('#code2').val());
-        AddListeners();
-        $('#reprendreButton').click(function(e){
-            const tube= $('#tube').val();
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url:  "{{url('/reprendreVisuels')}}/"+tube,
-                method: 'get',
-                data: {
-                    Zone:"Z03"
-                },
-                success: function(result){
-                    result.rapports.forEach(function(rapport,index){
-                        $('#tbodyReprendre').html('');
-                        if(rapport.Etat==='C'){
-                            $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
-                            '                   <td>'+rapport.DateRapport+'</td>\n' +
-                            '                   <td>'+rapport.Poste+'</td>\n' +
-                            '                   <td>'+rapport.Machine+'</td>\n' +
-                                '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                                '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
-                            '                            <td>Oui</td>   ;');
-                        }else{
-                            $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'"  class="NotClot  "> ' +
-                                '                   <td>'+rapport.DateRapport+'</td>\n' +
-                                '                   <td>'+rapport.Poste+'</td>\n' +
-                                '                   <td>'+rapport.Machine+'</td>\n' +
-                                '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                                '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
-                            '                             <td>Non</td>   ;');
-                        }
-
-                    });
-                    AddListeners();
-                },
-                error: function(result){
-                    console.log(result);
-                    if(result!==undefined )
-                    if(result.responseJSON.message.includes('Undefined offset: 0')){
-                        alert("Tube n°= "+tube+" n'existe pas dans les rapports RX1");
-                    }else{
-                        alert("Tube n°= "+tube+" n'existe pas dans les rapports RX1");
+            $('#codeAgent').val($('#code').val());
+            $('#codeAgent2').val($('#code2').val());
+            AddListeners();
+            $('#reprendreButton').click(function(e){
+                const tube= $('#tube').val();
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
-                }
-            });
-        });
-        function AddListeners(){
-        $('.Clot').each(function(){
+                });
 
-            id=$(this).attr('id').replace(/[^0-9]/g,'');
-            $(this).dblclick(function(){
-                alert('Rapport N°='+id+' est CLoturé');
+                $.ajax({
+                    url:  "{{url('/rapports_Rep/')}}/" + tube + '/edit',
+                    method: 'get',
+                    success: function(result){
+
+                        $('#tbodyReprendre').html('');
+                        result.rapports.forEach(function(rapport,index){
+
+                            if(rapport.Etat==='C'){
+                                $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
+                                    '                   <td>'+rapport.DateRapport+'</td>\n' +
+                                    '                   <td>'+rapport.Poste+'</td>\n' +
+                                    '                   <td>'+rapport.Machine+'</td>\n' +
+                                    '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
+                                    '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
+                                    '                            <td>Oui</td>    </tr>');
+                            }else{
+                                $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'"  class="NotClot  "> ' +
+                                    '                   <td>'+rapport.DateRapport+'</td>\n' +
+                                    '                   <td>'+rapport.Poste+'</td>\n' +
+                                    '                   <td>'+rapport.Machine+'</td>\n' +
+                                    '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
+                                    '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
+                                    '                             <td>Non</td>   </tr>');
+                            }
+
+                        });
+                        AddListeners();
+                    },
+                    error: function(result){
+                        console.log(result);
+                        if(result!==undefined )
+                            if(result.responseJSON.message.includes('Undefined offset: 0')){
+                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Reparation");
+                            }else{
+                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Reparation");
+                            }
+                    }
+                });
             });
-        });
-        $('.NotClot').each(function(){
-            $(this).dblclick(function(){
-                id=$(this).attr('id').replace(/[^0-9]/g,'');
-                window.location.href='{{url("/RX1/")}}/'+id;
+            function AddListeners(){
+                $('.Clot').each(function(){
+
+                    $(this).dblclick(function(){
+                        id=$(this).attr('id').replace(/[^0-9]/g,'');
+                        alert('Rapport N°='+id+' est CLoturé');
+                    });
+                });
+                $('.NotClot').each(function(){
+                    $(this).dblclick(function(){
+                        id=$(this).attr('id').replace(/[^0-9]/g,'');
+                        window.location.href='{{url("/Reparation/")}}/'+id;
+                    });
+                });
+            }
+            $('#agent').on('change',function(){
+                order=$(this).children("option:selected").attr('order');
+                val=$('#code').find('option[order='+order+']').val();
+                $('#code').val(val);
+                $('#codeAgent').val(val);
+
             });
-        });
-        }
-        $('#agent').on('change',function(){
-            order=$(this).children("option:selected").attr('order');
-            val=$('#code').find('option[order='+order+']').val();
-            $('#code').val(val);
-            $('#codeAgent').val(val);
+            $('#agent2').on('change',function(){
+                order=$(this).children("option:selected").attr('order');
+                val=$('#code2').find('option[order='+order+']').val();
+                $('#code2').val(val);
+                $('#codeAgent2').val(val);
+            });
 
         });
-        $('#agent2').on('change',function(){
-            order=$(this).children("option:selected").attr('order');
-            val=$('#code2').find('option[order='+order+']').val();
-            $('#code2').val(val);
-            $('#codeAgent2').val(val);
-        });
-
-    });
-</script>
+    </script>
 
 @endsection

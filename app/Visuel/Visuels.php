@@ -15,6 +15,6 @@ class Visuels extends Model
         return $this->hasOne('App\Fabrication\Tube','NumTube','NumTube');
     }
     public function Defauts(){
-        return $this->hasMany('App\Visuel\DetailDefauts','NumVisuel','Numero');
+        return $this->hasMany('App\Visuel\DetailDefauts','NumVisuel','Numero')->where("Zone","=","Z02")->get();
     }
 }

@@ -4,14 +4,14 @@ namespace App\Fabrication;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rapprod extends Model
+class M3 extends Model
 {   public $timestamps=false;
-    protected $table = "rapprod";
-    protected $primaryKey ='Numero';
+    protected $table = "m3";
+    protected $primaryKey ='Id';
     public function rapport(){
         return $this->belongsTo('App\Fabrication\Rapport','NumeroRap' )->select(['Numero','Pid','Did','DateRapport','Equipe','Machine','Poste','NomAgents','Etat']);
     }
-    public function tube(){
-        return $this->hasOne('App\Fabrication\Tube','NumTube','NumTube');
+    public function Bobine(){
+        return $this->hasOne('App\Fabrication\Bobine','Id','IdBobine');
     }
 }

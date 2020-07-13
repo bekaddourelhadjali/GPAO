@@ -102,210 +102,328 @@ Auth::routes();
 });*/
 //Route::get('rapport',function(){
 //   return view('Fabrication.rapport_info');});
-Route::post('/bobine',function( ){
-    $bobine= new \App\Fabrication\Bobine();
-    $bobine->Bobine=$_POST['bobine'];
-    $bobine->Coulee=$_POST['coulee'];
-    $bobine->CodeFournis=$_POST['fournisseur'];
-    $bobine->Poids=$_POST['poids'];
-    $bobine->Did=$_POST['Did'];
-    $bobine->Pid=$_POST['Pid'];
-//    if( $bobine->insertBobine()) {
-//        return redirect(route('rapprod.show',['id'=>$_POST['RapportNum']]));
-//    }
-    if ($bobine->insertBobine()){
-        return response()->json(array('bobine'=> $bobine), 200);
 
-    }else{
-        return response()->json(array('error'=> error), 404);
+Route::post('/bobine', function () {
+    $bobine = new \App\Fabrication\Bobine();
+    $bobine->Bobine = $_POST['bobine'];
+    $bobine->Coulee = $_POST['coulee'];
+    $bobine->Poids = $_POST['poids'];
+    if (isset($_POST['poids_b'])) {
+        $bobine->Poids_b = $_POST['poids_b'];
+    }
+    if (isset($_POST['epaisseur'])) {
+        $bobine->Epaisseur = $_POST['epaisseur'];
+    }
+    if (isset($_POST['arrivage'])) {
+        $bobine->Arrivage = $_POST['arrivage'];
+    }
+    if (isset($_POST['largeur_bande'])) {
+        $bobine->LargeurBande = $_POST['largeur_bande'];
+    }
+    $bobine->DateSaisie = date('Y-m-d H:i:s');
+    if (isset($_POST['source'])) if ($_POST['source'] == 'M3') {
+        $bobine->Etat = 'M3';
+    } else if ($_POST['source'] == 'MasE') {
+        $bobine->Etat = 'MasE';
+    }
+    $bobine->Pid = $_POST["Pid"];
+    $bobine->Did = $_POST["Did"];
+    if ($bobine->save()) {
+        if (isset($_POST['source'])) if ($_POST['source'] == 'M3') {
+            $bobines = \App\Fabrication\Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
+            $coulees = \App\Fabrication\Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
+            return response()->json(array('bobine' => $bobine, "bobines" => $bobines, "coulees" => $coulees), 200);
+        } else if ($_POST['source'] == 'MasE') {
+            $bobines = \App\Fabrication\Bobine::where('Etat', '=', 'MasE')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
+            $coulees = \App\Fabrication\Bobine::where('Etat', '=', 'MasE')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
+            return response()->json(array('bobine' => $bobine, "bobines" => $bobines, "coulees" => $coulees), 200);
+        }
+
+        $bobinesCount = \App\Fabrication\Bobine::where('NbReception', '=', null)->select('Bobine')->count();
+        return response()->json(array('bobine' => $bobine, 'Count' => $bobinesCount), 200);
+    } else {
+        return response()->json(array('error' => error), 404);
 
     }
 })->name('bobine');
+Route::resource('details_project', 'Dashboard\ProjectDetailsController');
+Route::resource('ContBobine', 'Controle\ContBobineController');
+Route::resource('ContM3', 'Controle\ContM3Controller');
+Route::resource('ContRecBob', 'Controle\ContRecBobController');
+Route::resource('rapports_M3', 'M3\M3RapportsController');
+Route::resource('M3', 'M3\M3Controller');
+Route::resource('MasEPrep', 'Fabrication\MasEPrepController');
+Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController');
+Route::resource('RecBob', 'Reception\RecBobController');
+Route::resource('rapports', 'Fabrication\RapportsController');
 
-Route::resource('details_project','Dashboard\ProjectDetailsController');
-Route::resource('rapports','Fabrication\RapportsController');
+//->middleware('UnAuthorized:Z01');
+Route::resource('rapprod', 'Fabrication\RapprodController');
+//->middleware('UnAuthorized:Z01');
+Route::resource('arret_machine', 'Fabrication\ArretMachineController');
+Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController');
+Route::resource('visuels', 'Visuel\VisuelsController');
+Route::resource('affectations', 'Dashboard\AffectationsController');
+Route::resource('agents', 'Dashboard\AgentsController');
+Route::resource('Locations', 'Dashboard\LocationsController');
+Route::resource('machines', 'Dashboard\MachinesController');
+Route::resource('clients', 'Dashboard\ClientsController');
+Route::resource('projects', 'Dashboard\ProjectsController');
+Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller');
+Route::resource('RX1', 'RX1\RX1Controller');
+Route::resource('Reparation', 'RepM17\ReparationController');
+Route::resource('rapports_Rep', 'RepM17\ReparationRapportController');
+Route::resource('rapports_M17', 'RepM17\M17RapportController');
+Route::resource('M17', 'RepM17\M17Controller');
+Route::resource('rapports_M24', 'Hydro\M24RapportController');
+Route::resource('M24', 'Hydro\M24Controller');
+Route::resource('rapports_M25', 'Chanf\M25RapportController');
+Route::resource('M25', 'Chanf\M25Controller');
+Route::resource('rapports_Ndt', 'Ndt\NdtRapportController');
+Route::resource('Ndt', 'Ndt\NdtController');
 
-    //->middleware('UnAuthorized:Z01');
-Route::resource('rapprod','Fabrication\RapprodController');
-    //->middleware('UnAuthorized:Z01');
-Route::resource('arret_machine','Fabrication\ArretMachineController');
-Route::resource('rapports_visuels','Visuel\RapportsVisuelsController');
-Route::resource('visuels','Visuel\VisuelsController');
-Route::resource('affectations','Dashboard\AffectationsController');
-Route::resource('agents','Dashboard\AgentsController');
-Route::resource('Locations','Dashboard\LocationsController');
-Route::resource('machines','Dashboard\MachinesController');
-Route::resource('clients','Dashboard\ClientsController');
-Route::resource('projects','Dashboard\ProjectsController');
-Route::resource('rapports_RX1','RX1\RapportsRX1Controller');
-Route::resource('RX1','RX1\RX1Controller');
-Route::get('Rep_M17',function(){
+Route::get('CarteTube/{tube}', function ($tube) {
+
+});
+Route::get('Rep_M17', function () {
     $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
 
-    return view('RepM17.index',['projet'=>$projet]);
-});
-Route::get('rapprodsRapport/{id}',function($id){
-    $rapport=\App\Fabrication\Rapport::find($id);
-//    if(sizeof($rapport->rx1) || sizeof($rapport->arrets)){
-//
-//    }
-    return $rapport->rx1 ;
-})/*->middleware('UnAuthorized:Z01')*/;
-Route::get('UnAuthorized',function(){
+    return view('RepM17.index', ['projet' => $projet]);
+})->name('Rep_M17');
+
+
+Route::get('rapprodsRapport/{id}', function ($id) {
+    $m3 = \App\Fabrication\M3::find(1);
+    $bobine = $m3->Bobine;
+    return $m3->Bobine;
+
+})/*->middleware('UnAuthorized:Z01')*/
+;
+
+
+Route::get('UnAuthorized', function () {
     return view('Errors.Unauthorized');
 })->name('UnAuthorized');
-Route::get('dernierTube/{id}',function($id){
-    $result=DB::select('SELECT "Numero"  FROM public.rapprod where (select max("DateSaisie") from public.rapprod)="DateSaisie"  and "Machine"=?',[$id])[0];
-    $dernierTube = \App\Fabrication\Rapprod::find($result->Numero );
-    if($dernierTube->Tube!=""){
-        $dernierTubetab= ['Tube'=>$dernierTube->Tube
-            ,'Observation'=>$dernierTube->Observation
-            ,'Numero'=>$dernierTube->rapport->Numero
-            ,'Date'=>$dernierTube->rapport->DateRapport
-            ,'Equipe'=>$dernierTube->rapport->Equipe
-            ,'Poste'=>$dernierTube->rapport->Poste
-        ];
-        if ($dernierTube->Tube!=""&&$dernierTube->Tube!=null){
-            return response()->json(array('dernierTubetab'=> $dernierTubetab), 200);
+Route::get('dernierTube/{id}', function ($id) {
+    $dernierTube = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Machine', '=', $id)->orderBy('DateSaisie', 'desc')->first();
+    if ($dernierTube)
+        if ($dernierTube->Tube != "") {
+            $dernierTubetab = ['Tube' => $dernierTube->Tube
+                , 'Observation' => $dernierTube->Observation
+                , 'Numero' => $dernierTube->rapport->Numero
+                , 'Date' => $dernierTube->rapport->DateRapport
+                , 'Equipe' => $dernierTube->rapport->Equipe
+                , 'Poste' => $dernierTube->rapport->Poste
+            ];
+            if ($dernierTube->Tube != "" && $dernierTube->Tube != null) {
+                return response()->json(array('dernierTubetab' => $dernierTubetab), 200);
 
-        }else{
-            return response()->json(array('error'=> error), 404);
+            } else {
+                return response()->json(array('error' => error), 404);
 
+            }
         }
-    }
+    return response()->json(array('message' => "Tube N'existe Pas"), 404);
 
 });
-Route::post('/operateur',function( ){
+Route::post('/operateur', function () {
     $operateur = new \App\Fabrication\Operateur();
     $operateur->Pid = $_POST['Pid'];
     $operateur->Did = $_POST['Did'];
     $operateur->NumRap = $_POST['NumRap'];
     $operateur->Nom = $_POST['Nom'];
-    if ($operateur->save()){
-        return response()->json(array('operateur'=> $operateur), 200);
+    if ($operateur->save()) {
+        return response()->json(array('operateur' => $operateur), 200);
 
-    }else{
-       return response()->json(array('error'=> error), 404);
+    } else {
+        return response()->json(array('error' => error), 404);
 
     }
 
 })->name('operateur');
-Route::post('/delete_operateur',function( ){
-    $operateur = \App\Fabrication\Operateur::find( $_POST['id']);
-    if ($operateur->delete()){
-        return response()->json(array('success'=> true), 200);
+Route::post('/delete_operateur', function () {
+    $operateur = \App\Fabrication\Operateur::find($_POST['id']);
+    if ($operateur->delete()) {
+        return response()->json(array('success' => true), 200);
 
-    }else{
-       return response()->json(array('error'=> true), 404);
+    } else {
+        return response()->json(array('error' => true), 404);
     }
 
 })->name('delete_operateur');
 
-Route::get('reprendreTube/{id}',function($id){
-    $result=DB::select('SELECT "Numero"  FROM public.rapprod where  "Tube"=?',[$id])[0];
-    $dernierTube = \App\Fabrication\Rapprod::find($result->Numero );
-    if ($dernierTube->Tube!=""&&$dernierTube->Tube!=null){
-        if($dernierTube->rapport->Etat=='C'){
+Route::get('reprendreTube/{id}', function ($id) {
+    $rapprod = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Tube', '=', $id)->first();
+    if ($rapprod) {
+        if ($rapprod->rapport->Etat == 'C') {
 
             $rapportState = [
-                'Etat'=>'C',
-                'Numero'=> $dernierTube->rapport->Numero
+                'Etat' => 'C',
+                'Numero' => $rapprod->rapport->Numero
             ];
-           return response()->json(array('rapportState'=> $rapportState), 200);
-        }elseif($dernierTube->rapport->Etat=='N'){
+            return response()->json(array('rapportState' => $rapportState), 200);
+        } elseif ($rapprod->rapport->Etat == 'N') {
             $rapportState = [
-                'Etat'=>'N',
-                'Numero'=> $dernierTube->rapport->Numero
+                'Etat' => 'N',
+                'Numero' => $rapprod->rapport->Numero
             ];
-            return response()->json(array('rapportState'=> $rapportState), 200);
-        }else{
-            return response()->json(array('error'=> error), 404);
+            return response()->json(array('rapportState' => $rapportState), 200);
+        } else {
+            return response()->json(array('error' => error), 404);
         }
-        }else{
-            return response()->json(array('error'=> error), 404);
-
-        }
+    } else {
+        return response()->json(array('message' => "Tube N'existe Pas"), 404);
+    }
 
 });
-Route::post('cloturer/{id}',function($id){
-    $rapport=\App\Fabrication\Rapport::find($id);
-     $rapport->Etat='C';
-     if(isset($_POST['arret_clot'])){
-         $rapport->ObsRap=$_POST['ObsRap'];
-         $rapport->TSIFlux=$_POST['flux_int'];
-         $rapport->TSIFil=$_POST['fil_int'];
-         $rapport->TSEFlux=$_POST['flux_ext'];
-         $rapport->TSEFil=$_POST['fil_ext'];
-         $rapport->VSoudage=$_POST['v_soudage'];
-         $rapport->LargCisAlge=$_POST['largeur'];
-         $rapport->Flux=$_POST['flux'];
-         $rapport->Fil=$_POST['fil'];
-     }
-    if($rapport->save()){
+Route::post('cloturer/{id}', function ($id, \Illuminate\Http\Request $request) {
+    $rapport = \App\Fabrication\Rapport::find($id);
+    $rapport->Etat = 'C';
+    if ($rapport->Zone == 'Z01') {
+        $rapport->ObsRap = $request->ObsRap;
+        $rapport->TSI1V = $request->TSI1V;
+        $rapport->TSI1A = $request->TSI1A;
+        $rapport->TSI2V = $request->TSI2V;
+        $rapport->TSI2A = $request->TSI2A;
+        $rapport->TSE1V = $request->TSE1V;
+        $rapport->TSE1A = $request->TSE1A;
+        $rapport->TSE2V = $request->TSE2V;
+        $rapport->TSE2A = $request->TSE2A;
+        $rapport->TSE3V = $request->TSE3V;
+        $rapport->TSE3A = $request->TSE3A;
+        $rapport->TSIFlux = $request->TSIFlux;
+        $rapport->TSIFil = $request->TSIFil;
+        $rapport->TSEFlux = $request->TSEFlux;
+        $rapport->TSEFil = $request->TSEFil;
+        $rapport->RelComptF = $request->RelComptF;
+        $rapport->RelComptD = $request->RelComptD;
+        $rapport->VSoudage = $request->v_soudage;
+        $rapport->LargCisAlge = $request->largeur;
+    }
+    if (isset($_POST['observation'])) {
+        $rapport->ObsRap = $_POST['observation'];
+    }
+    if ($rapport->save()) {
         $rapportState = [
-            'Etat'=>'C',
-            'Numero'=> $id
+            'Etat' => 'C',
+            'Numero' => $id
         ];
-        return response()->json(array('rapportState'=> $rapportState), 200);
-    }else{
-        return response()->json(array('error'=> error), 404);
+        return response()->json(array('rapportState' => $rapportState), 200);
+    } else {
+        return response()->json(array('error' => error), 404);
+    }
+});
+Route::post('Decloturer/{id}', function ($id) {
+    $rapport = \App\Fabrication\Rapport::find($id);
+    $rapport->Etat = 'N';
+    if ($rapport->save()) {
+        $rapportState = [
+            'Etat' => 'N',
+            'Numero' => $id
+        ];
+        return response()->json(array('rapportState' => $rapportState), 200);
+    } else {
+        return response()->json(array('error' => error), 404);
     }
 });
 
-Route::get('reprendreVisuels/{id}',function( \Illuminate\Http\Request $request,$id){
-    $tab="";
-    if($request->Zone=="Z02"){
-        $tab ='visuels';
-    }elseif($request->Zone=="Z03"){
-        $tab ='rx1';
-    }
-    $results=DB::select('Select * from public.rapports where "Numero" in (SELECT "NumeroRap"  FROM public.'.$tab.' where  "Tube"=?)',[$id]);
-    if ($results!=null){
-            return response()->json(array('rapports'=> $results), 200);
-    }else{
-        return response()->json(array('error'=> error), 404);
+Route::get('printRap/{id}', function ($id) {
+    $rapport = \App\Fabrication\Rapport::find($id);
+    if ($rapport != null) {
+        if ($rapport->Zone == 'Z02') {
+            $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
 
-    }
-
-});
-Route::get('printRap/{id}',function($id){
-    $rapport =\App\Fabrication\Rapport::find($id);
-    if($rapport!=null) {
-        if($rapport->Zone=='Z02'){
-                $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-
-                return view('visuel.RapVPrint',
-                    ['rapport' => $rapport,
-                        'visuels'=>$rapport->visuels,
-                        'projet' => $projet,
-                        'arrets'=>$rapport->arrets, ]);
-        }else{
+            return view('visuel.RapVPrint',
+                ['rapport' => $rapport,
+                    'visuels' => $rapport->visuels,
+                    'projet' => $projet,
+                    'arrets' => $rapport->arrets,]);
+        } else {
             return redirect(route('rapports_visuels.index'));
         }
-    }else{
+    } else {
         return redirect(route('rapports_visuels.index'));
     }
 })->name('printRap');
-Route::get('printRX1Rap/{id}',function($id){
-    $rapport =\App\Fabrication\Rapport::find($id);
-    if($rapport!=null) {
-        if($rapport->Zone=='Z03'){
+Route::get('printRX1Rap/{id}', function ($id) {
+    $rapport = \App\Fabrication\Rapport::find($id);
+    if ($rapport != null) {
+        if ($rapport->Zone == 'Z03') {
             $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
 
             return view('RX1.RX1Print',
                 ['rapport' => $rapport,
-                    'rxs'=>$rapport->rx1,
+                    'rxs' => $rapport->rx1,
                     'projet' => $projet,
-                    'arrets'=>$rapport->arrets, ]);
-        }else{
+                    'arrets' => $rapport->arrets,]);
+        } else {
             return redirect(route('rapports_RX1.index'));
         }
-    }else{
+    } else {
         return redirect(route('rapports_RX1.index'));
     }
 })->name('printRX1Rap');
 
-Route::get('users',function(){
+Route::get('users', function () {
     $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-    return view('Dashboard.users',["projet"=>$projet]);
+    return view('Dashboard.users', ["projet" => $projet]);
 });
+
+Route::post('couleeGet', function (\Illuminate\Http\Request $request) {
+    if (isset($request->source)) {
+        if ($request->source == "M3") {
+            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
+                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'M3');
+            })->first();
+        } else if ($request->source == "MasE") {
+            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
+                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
+            })->first();
+        }
+    } else if (isset($request->machine)) {
+        if ($request->machine == "E") {
+            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', 'MasEPrep')->where('Did', '=', $request->Did)->first();
+        } else {
+            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', 'Prep')->where('Did', '=', $request->Did)->first();
+        }
+
+    } else if ($request->etat == "NonREC") {
+        $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('NbReception', '=', null)->first();
+    } else
+        $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', $request->etat)->first();
+    if (!empty($coulee)) {
+        return response()->json(array('coulee' => $coulee), 200);
+    } else {
+        return response()->json(array('error' => "Bobine n'existe pas"), 404);
+    }
+})->name('couleeGet');
+Route::post('bobineGet', function (\Illuminate\Http\Request $request) {
+    if (isset($request->test))
+        $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Test', '=', $request->test)->get();
+    else if (isset($request->source)) {
+        if ($request->source == "M3") {
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
+                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'M3');
+            })->get();
+        } else if ($request->source == "MasE") {
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
+                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
+            })->get();
+        }
+    } else if (isset($request->machine)) {
+        if ($request->machine == "E") {
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Etat', '=', 'MasEPrep')->where('Did', '=', $request->Did)->get();
+
+        } else {
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Etat', '=', 'Prep')->where('Did', '=', $request->Did)->get();
+        }
+
+    } else if ($request->etat == "NonREC") {
+        $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('NbReception', '=', null)->get();
+    } else   $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Etat', '=', $request->etat)->get();
+    if ($bobines) {
+        return response()->json(array('bobines' => $bobines), 200);
+    } else {
+        return response()->json(array('error' => "Coulee n'existe pas"), 404);
+    }
+})->name('bobineGet');

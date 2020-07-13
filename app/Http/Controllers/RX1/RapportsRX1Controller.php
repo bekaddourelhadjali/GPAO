@@ -91,8 +91,15 @@ class RapportsRX1Controller extends Controller
      */
     public function edit($id)
     {
-        //
+        $results=DB::select('Select * from public.rapports where "Numero" in (SELECT "NumeroRap"  FROM public.rx1 where  "Tube"=?)',[$id]);
+        if ($results!=null){
+            return response()->json(array('rapports'=> $results), 200);
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
+
 
     /**
      * Update the specified resource in storage.

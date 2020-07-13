@@ -322,7 +322,7 @@
             function addDetail_projectsListeners(){
                 $('.detail_projectDelete').each(function(e){
                     $(this).off('click');
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         tr= $(this).parent().parent().find('#detail_project'+id);
                         e.preventDefault();
@@ -358,7 +358,7 @@
                 $('.detail_projectEdit').each(function(e){
 
                     $(this).off('click');
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         $('#DetailProjectId').val(id);
                         $('#project').val($('#detail_project'+id+'project').html());

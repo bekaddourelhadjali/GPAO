@@ -95,74 +95,71 @@
         <div class="row">
             <div class="body-content col-xl-6 col-lg-6 col-md-8 offset-xl-0 offset-lg-0 offset-md-2 col-sm-12 " >
                 <section class="col-12">
-                <form method="post" action="{{route('rapports_RX1.store')}}">
-                    @csrf
-                    <fieldset>
-                        <legend ><h4>Information du rapport</h4> </legend>
-                        <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
-                        <input name="Did" type="hidden" id="Did" value="0">
-                        <input name="machine" type="hidden" id="machine" value="0">
-                        <div class="row ">
-                            <div class="col-6">
-                                <div class="form-group row">
-                                    <label class="col-6" for="date" >Date du rapport</label>
-                                    <input class="col-6 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" required>
+                    <form method="post" action="{{route('rapports_M17.store')}}">
+                        @csrf
+                        <fieldset>
+                            <legend><h4>Information du rapport</h4> </legend>
+                            <div class="form-group  row">
+                                <label class="col-4" for="detail_project ">Detail Projet</label>
+                                <select class="form-control col-8" id="detail_project " name="detail_project">
+                                    @foreach($details as $detail)
+                                        <option value="{{$detail->Did}}">Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
+                            <div class="row ">
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <label class="col-4" for="date" >Date du rapport</label>
+                                        <input class="col-4 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" >
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-4" for="equipe ">Equipe</label>
+                                        <select class="form-control col-4" id="equipe" name="equipe">
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-4" for="poste ">Poste</label>
+                                        <select class="form-control col-4" id="poste" name="poste">
+                                            @if(isset($postes))
+                                                @foreach($postes as $poste)
+                                                    <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-4" for="machine">Machine</label>
+                                        <select class="form-control col-4" id="machine" name="machine">
+                                            @if(isset($machines))
+                                                @foreach($machines as $machine)
+                                                    <option value="{{$machine->Machine}}">{{$machine->Machine}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-6" for="equipe ">Equipe</label>
-                                    <select class="form-control col-6" id="equipe" name="equipe" required>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                    </select>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="poste ">Poste</label>
-                                    <select class="form-control col-6" id="poste" name="poste" required>
-                                        @if(isset($postes))
-                                        @foreach($postes as $poste)
-                                            <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
-                                        @endforeach
-                                        @endif
-                                    </select>
-                                </div>
+
 
                             </div>
-                            <div class="col-6">
-                                <div class="form-group row">
-                                    <label class="col-6" for="tension" >Tension</label>
-                                    <input class="col-6 form-control"  name="tension" id="tension" type="number" required >
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="intensite" >Intensité</label>
-                                    <input class="col-6 form-control"  name="intensite" id="intensite" type="number" required >
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="tmpPose" >Temps de pose</label>
-                                    <input class="col-6 form-control"  name="tmpPose" id="tmpPose" type="number" required >
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-6" for="disBras" >Distance du bras</label>
-                                    <input class="col-6 form-control"  name="disBras" id="disBras" type="number" required >
-                                </div>
-                            </div>
-
-
-
-                        </div>
 
                             <div class="form-group row">
                                 <label class="col-3" for="agent">Agent 01</label>
-                                <select class="form-control col-6" id="agent" name="agent" required>
+                                <select class="form-control col-6" id="agent" name="agent">
                                     @if(isset($agents))
                                         @php
                                             $i=0;
                                         @endphp
-                                    @foreach($agents as $agent)
-                                        <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
-                                    @endforeach
+                                        @foreach($agents as $agent)
+                                            <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
+                                        @endforeach
                                     @endif
                                 </select>
                                 <input type="hidden" id="codeAgent" name="codeAgent" value="">
@@ -179,10 +176,10 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-3" for="agent2">Agent 02</label>
-                                <select class="form-control col-6" id="agent2" name="agent2" required>
+                                <select class="form-control col-6" id="agent2" name="agent2">
                                     @if(isset($agents))
                                         @php
-                                        $i=0;
+                                            $i=0;
                                         @endphp
                                         @foreach($agents as $agent)
                                             <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
@@ -202,17 +199,17 @@
                                 </select>
                             </div>
 
-                        <hr>
-                        <div class="form-group row">
-                            <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
-                                Reprendre un rapport
-                            </button>
+                            <hr>
+                            <div class="form-group row">
+                                <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
+                                    Reprendre un rapport
+                                </button>
 
-                            <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
-                        </div>
-                    </fieldset>
+                                <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
+                            </div>
+                        </fieldset>
 
-                </form>
+                    </form>
                 </section>
             </div>
         <div class=" col-xl-6 col-lg-6 col-md-12  col-sm-12">
@@ -314,14 +311,12 @@
             });
 
             $.ajax({
-                url:  "{{url('/reprendreVisuels')}}/"+tube,
+                url:  "{{url('/rapports_M17/')}}/" + tube + '/edit',
                 method: 'get',
-                data: {
-                    Zone:"Z03"
-                },
                 success: function(result){
+                    $('#tbodyReprendre').html('');
                     result.rapports.forEach(function(rapport,index){
-                        $('#tbodyReprendre').html('');
+
                         if(rapport.Etat==='C'){
                             $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
                             '                   <td>'+rapport.DateRapport+'</td>\n' +
@@ -347,9 +342,9 @@
                     console.log(result);
                     if(result!==undefined )
                     if(result.responseJSON.message.includes('Undefined offset: 0')){
-                        alert("Tube n°= "+tube+" n'existe pas dans les rapports RX1");
+                        alert("Tube n°= "+tube+" n'existe pas dans les rapports M17");
                     }else{
-                        alert("Tube n°= "+tube+" n'existe pas dans les rapports RX1");
+                        alert("Tube n°= "+tube+" n'existe pas dans les rapports M17");
                     }
                 }
             });
@@ -357,15 +352,15 @@
         function AddListeners(){
         $('.Clot').each(function(){
 
-            id=$(this).attr('id').replace(/[^0-9]/g,'');
             $(this).dblclick(function(){
+                id=$(this).attr('id').replace(/[^0-9]/g,'');
                 alert('Rapport N°='+id+' est CLoturé');
             });
         });
         $('.NotClot').each(function(){
             $(this).dblclick(function(){
                 id=$(this).attr('id').replace(/[^0-9]/g,'');
-                window.location.href='{{url("/RX1/")}}/'+id;
+                window.location.href='{{url("/M17/")}}/'+id;
             });
         });
         }

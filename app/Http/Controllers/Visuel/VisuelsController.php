@@ -22,6 +22,7 @@ class VisuelsController extends Controller
      */
     public function index(Request $request)
     {
+
     }
 
     /**
@@ -205,10 +206,11 @@ class VisuelsController extends Controller
     public function destroy($id)
     {
         $visuel=\App\Visuel\Visuels::findOrFail($id);
-        foreach ($visuel->Defauts as $Defaut){
-            $Defaut->delete();
-        }
+
         if ($visuel->delete()){
+            foreach ($visuel->Defauts() as $Defaut){
+                $Defaut->delete();
+            }
             return response()->json(array('success'=> true), 200);
 
         }else{

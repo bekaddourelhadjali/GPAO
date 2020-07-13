@@ -480,8 +480,8 @@
                      </table>
                  </form>
                     <div class="row actions">
-                        <div class="col-1"><button id="addObsSoudure" class="btn btn-success"><b>+</b></button> </div>
-                        <div class="col-1"><button id="removeObsSoudure" class="btn btn-danger"><b>-</b></button> </div>
+                        <div class="col-1"><button id="addObsSoudure" class="btn btn-success"><b><i class="fa fa-plus"></i></b></button> </div>
+                        <div class="col-1"><button id="removeObsSoudure" class="btn btn-danger"><b><i class="fa fa-minus "></i></b></button> </div>
                     </div>
                  <div class="row">
                      <input type="text" id="ObsSoudure" class=" form-control col-12" readonly="">
@@ -598,8 +598,8 @@
                  </table>
                  </form>
                  <div class="row actions">
-                     <div class="col-1"><button id="addObsMetal" class="btn btn-success"><b>+</b></button> </div>
-                     <div class="col-1"><button id="removeObsMetal" class="btn btn-danger"><b>-</b></button> </div>
+                     <div class="col-1"><button id="addObsMetal" class="btn btn-success"><b><i class="fa fa-plus"></i></b></button> </div>
+                     <div class="col-1"><button id="removeObsMetal" class="btn btn-danger"><b><i class="fa fa-minus "></i></b></button> </div>
                  </div>
                  <div class="row">
                      <input type="text" id="ObsMetal" class=" form-control col-12" readonly="">
@@ -714,10 +714,10 @@
              <div class="col-xl-2 offset-xl-4 col-lg-3  col-md-4 col-sm-4">
                  <form method="post" action="http://localhost/GPAO/public/rapports_visuels/43">
                      <input type="hidden" name="_token" value="NoAgTMvVylGR13fisenZF72rx7CQzDtHl7G7kuOe">                     <input type="hidden" name="_method" value="delete">
-                     <button class="btn btn-warning">Quitter le rapport</button>
+                     <button class="btn btn-warning">Quitter</button>
                  </form>
              </div>
-             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4"><button id="cloturer" class="btn btn-success">Clôturer Rapport</button></div>
+             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4"><button id="cloturer" class="btn btn-success">Clôturer</button></div>
          </div>
      </section>
  </div>
@@ -1165,7 +1165,7 @@
 
                 $('#ntube').removeAttr("readonly");
                 $('.visuelDelete').each(function(e){
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         tr= $(this).parent().parent();
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         e.preventDefault();
@@ -1198,7 +1198,7 @@
                     $('#ntube').removeAttr("readonly");
                 });
                 $('.visuelEdit').each(function(e){
-                    $(this).click(function(e){
+                    $(this).off('click');$(this).click(function(e){
                         const id=$(this).attr("id").replace(/[^0-9]/g,'');
                         $('#Numero').val(id);
                         $('#ntube').val($('#tube'+id).html()).attr('readonly','readonly');;
@@ -1365,7 +1365,7 @@
         });
         function addArretsListeners(){
             $('.arretDelete').each(function(e){
-                $(this).click(function(e){
+                $(this).off('click');$(this).click(function(e){
 
                     tr= $(this).parent().parent();
                     const id=$(this).attr("id").replace(/[^0-9]/g,'');
@@ -1395,7 +1395,7 @@
                 });
             });
             $('.arretEdit').each(function(e){
-                $(this).click(function(e){
+                $(this).off('click');$(this).click(function(e){
                     e.preventDefault();
                     tr= $(this).parent().parent();
                     const id=$(this).attr("id").replace(/[^0-9]/g,'');
