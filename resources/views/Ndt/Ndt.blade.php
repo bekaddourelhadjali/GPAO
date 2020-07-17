@@ -69,8 +69,8 @@
 
         /*input[type=number]::-webkit-inner-spin-button,*/
         /*input[type=number]::-webkit-outer-spin-button {*/
-            /*-webkit-appearance: none;*/
-            /*margin: 0;*/
+        /*-webkit-appearance: none;*/
+        /*margin: 0;*/
         /*}*/
 
         th {
@@ -160,26 +160,29 @@
     <div class="container-fluid">
 
         <section id="head-section">
-            <div class="row">
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
+            <div class="row text-center" style="padding-left: 10px">
+                <h5>Info Rapport</h5>
+                <div class="col-md-6 col-12">
+                    <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}}
+                            : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span>
+                    </div>
+
                     <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
                 </div>
-                <div class="col-6 col-sm-2  col-lg-2">
+                <div class="col-md-3 col-sm-6 ">
                     <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span></div>
                     <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
                 </div>
-                <div class="col-6 col-sm-6  col-lg-3">
+                <div class="col-md-3 col-sm-6">
                     <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}
                             / {{$rapport->CodeAgent}}</span></div>
-                    <div class="row">Agent2: &nbsp; <span class="valeur">{{$rapport->NomAgents1}}
-                            / {{$rapport->CodeAgent1}}</span></div>
+                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                 </div>
 
             </div>
         </section>
-        <form class="row" id="ndtForm">
-            <div class="col-xl-10 offset-xl-1 col-lg-11 offset-lg-1 col-sm-12 ">
+        <form class="row" id="ndtForm" autocomplete="off">
+            <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-sm-12 ">
 
                 <section class="top-actions">
                     <h5>Info Tube</h5>
@@ -192,37 +195,36 @@
                     <div class="row">
                         <div class=" col-6   col-sm-3 col-lg-2">
                             <div class="form-group ">
-                                <label class="col-12" style="padding-left: 0"></label>
                                 <label class="col-lg-12" style="padding-left: 0">Tube</label>
-                                <select class="form-control col-12" style="color:#00f" id="ntube" name="ntube"
-                                        required>
-                                    <option disabled>Tube &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bis</option>
+                                <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
+                                       name="ntube"
+                                       required list="tubes">
+                                <datalist id="tubes">
+                                    <option disabled selected></option>
                                     @foreach($tubes as $tube)
-                                        <option value="{{$tube->Tube}}"> {{$tube->Tube}} &nbsp;
-                                            &nbsp;&nbsp; @if($tube->Bis) &#xf14a; @else &#xf0c8;  @endif </option>
+                                        @if($tube->Bis)
+                                            <option value="{{$tube->Tube}}bis">{{$tube->Tube}}bis</option>
+                                        @else
+                                            <option value="{{$tube->Tube}}"> {{$tube->Tube}}  </option>
+                                            &nbsp; @endif
                                     @endforeach
-                                </select>
+                                </datalist>
                             </div>
                         </div>
 
-                        <div class=" col-2 col-sm-1 ">
-                            <div class="form-group ">
-                                <label class="col-12" style="padding-left: 0"></label>
-                                <label class="col-12" for="bis" style="padding-left: 0">Bis</label>
-                                <input class=" col-5" type="checkbox" id="bis" name="bis">
-                            </div>
-                        </div>
-                        <div class="  col-6   col-sm-4 col-md-3 col-lg-3 col-xl-2">
+                        <div class="  col-6   col-sm-4 col-md-3 col-lg-3 ">
                             <div class="form-group text-center ">
-                                <label class="col-12 text-warning" style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000; " >SNUP</label>
+                                <label class="col-12 text-warning"
+                                       style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000; ">SNUP</label>
                                 <label class="col-12" for="Snup" style="padding-left: 0; ">N de K/Soudure</label>
                                 <input class="form-control col-12" type="number" id="Snup" name="Snup"
                                        value="0" min="0" required>
                             </div>
                         </div>
-                        <div class="  col-6 col-sm-4 col-md-3  col-lg-2">
+                        <div class="  col-6 col-sm-4 col-md-3  col-lg-3">
                             <div class="form-group text-center">
-                                <label class="col-12 text-warning" style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000;">O.P.R</label>
+                                <label class="col-12 text-warning"
+                                       style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000;">O.P.R</label>
                                 <label class="col-12" for="OPR" style="padding-left: 0">N de W/Métal</label>
                                 <input class="form-control col-12" type="number" id="OPR" name="OPR" value="0"
                                        min="0" required>
@@ -230,7 +232,8 @@
                         </div>
                         <div class="  col-6 col-sm-4 col-md-3  col-lg-2">
                             <div class="form-group text-center">
-                                <label class="col-12 text-warning" style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000;">REP.D</label>
+                                <label class="col-12 text-warning"
+                                       style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000;">REP.D</label>
                                 <label class="col-12" for="Repd" style="padding-left: 0">N de W/D</label>
                                 <input class="form-control col-12" type="number" id="Repd" name="Repd"
                                        value="0" min="0" required>
@@ -238,7 +241,8 @@
                         </div>
                         <div class="  col-6 col-sm-4 col-md-3  col-lg-2">
                             <div class="form-group text-center">
-                                <label class="col-12 text-warning" style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000;">REP.G</label>
+                                <label class="col-12 text-warning"
+                                       style="padding-left: 0; margin-bottom:0; border-bottom:1px solid #000;">REP.G</label>
                                 <label class="col-12" for="Repg" style="padding-left: 0">N de W/G</label>
                                 <input class="form-control col-12" type="number" id="Repg" name="Repg"
                                        value="0" min="0" required>
@@ -251,18 +255,15 @@
                         </div>
                         <div class="col-12 col-md-4">
 
-                                <button style="margin:32px 10px 0 0;" type="reset"
-                                        class=" col-5 btn btn-outline-secondary " id="annulerButton">Annuler
-                                </button>
-                                </button>
-                                <button style="margin:32px 10px 0 0;" type="submit" class=" col-5 btn btn-success"
-                                        id="Ajouter">Ajouter
-                                </button>
+                            <button style="margin:32px 10px 0 0;" type="reset"
+                                    class=" col-5 btn btn-outline-secondary " id="annulerButton">Annuler
+                            </button>
+                            </button>
+                            <button style="margin:32px 10px 0 0;" type="submit" class=" col-5 btn btn-success"
+                                    id="Ajouter">Ajouter
+                            </button>
                         </div>
                     </div>
-
-
-
 
 
                 </section>
@@ -271,18 +272,17 @@
         </form>
         <section class="col-12">
             <div class="table-container">
-                <table id="rx1sTable" class="table table-striped table-hover table-bordered rapprods ">
+                <table id="rx1sTable" class="table table-striped table-hover table-borderless rapprods ">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th>Tube</th>
                         <th>Bis</th>
-                        <th>Operation</th>
-                        <th>N° Opération</th>
                         <th>SNUP</th>
                         <th>O.P.R</th>
                         <th>REP.D</th>
                         <th>REP.G</th>
                         <th>Observation</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody id="ndts">
@@ -293,13 +293,11 @@
                                 <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
                                                                                  onclick="return false;">
                                     @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="Operation{{$item->Id}}">{{$item->Operation}}</td>
-                                <td id="NbOpr{{$item->Id}}">{{$item->NbOpr}}</td>
                                 <td id="Snup{{$item->Id}}">{{$item->Snup}}</td>
                                 <td id="OPR{{$item->Id}}">{{$item->OPR}}</td>
                                 <td id="Repd{{$item->Id}}">{{$item->Repd}}</td>
                                 <td id="Repg{{$item->Id}}">{{$item->Repg}}</td>
-                                <td  id="Observation{{$item->Id}}">{{$item->Observation}}</td>
+                                <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
                                 <td>
                                     <button id="ndt{{$item->Id}}Edit" class="ndtEdit text-primary"><i
                                                 class="fa fa-edit"></i></button>
@@ -315,23 +313,18 @@
         </section>
         <section>
             <div class="row" id="bottom-actions">
-                <div class=" col-lg-2 col-md-6 col-sm-12">
-                    <button type="button" class="btn btn-info col-12" data-toggle="modal"                             data-target="#cardBackdrop">                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b>                     </button>
+                <div class=" col-md-3 col-sm-6">
+                    <button type="button" class="btn btn-info col-12" data-toggle="modal" data-target="#cardBackdrop">
+                        <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b></button>
                 </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
+                <div class=" col-md-3 col-sm-6">
                     <button type="button" class="btn btn-outline-danger col-12" data-toggle="modal"
                             data-target="#staticBackdrop">
                         <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets
                             Machine</b>
                     </button>
                 </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
-                    <button type="button" id="imprimer" class="btn btn-outline-primary col-12">
-                        <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
-                    </button>
-                </div>
-
-                <div class="  col-lg-3  col-md-6 col-sm-6 " >
+                <div class="  col-md-3 col-sm-6 ">
                     <form method="post" action="{{route('rapports_Ndt.destroy',["id"=>$rapport->Numero])}}">
                         @csrf
                         <input type="hidden" name="_method" value="delete">
@@ -340,7 +333,7 @@
                                 le rapport</b></button>
                     </form>
                 </div>
-                <div class=" col-lg-3 col-md-6 col-sm-6">
+                <div class=" col-md-3 col-sm-6">
                     <button id="cloturer" class="btn btn-success col-12">
                         <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp; Clôturer
                             Rapport</b></button>
@@ -365,7 +358,7 @@
 
             //Ajouter Ndt
             $('#Ajouter').click(function (e) {
-                if ($('#ndtForm')[0].checkValidity()) {
+                if ($('#ndtForm')[0].checkValidity()&& $('#tubes option[value=' + $('#ntube').val() + ']').val() !== undefined) {
                     e.preventDefault();
 
                     const id = $('#Numero').val();
@@ -384,8 +377,7 @@
                                 Did: $('#Did').val(),
                                 NumeroRap: $('#NumRap').val(),
                                 ntube: $('#ntube').val(),
-                                bis: $('#bis:checked').length > 0,
-                                Observation: $('#observation').val()+"",
+                                Observation: $('#observation').val() + "",
                                 Snup: $('#Snup').val(),
                                 OPR: $('#OPR').val(),
                                 Repd: $('#Repd').val(),
@@ -396,8 +388,6 @@
                                 $('#ndts').append('<tr id="ndt' + item.Id + '">\n' +
                                     '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                    '                                <td    id="Operation' + item.Id + '">' + item.Operation + '</td>\n' +
-                                    '                                <td    id="NbOpr' + item.Id + '">' + item.NbOpr + '</td>\n' +
                                     '                                <td    id="Snup' + item.Id + '">' + item.Snup + '</td>\n' +
                                     '                                <td    id="OPR' + item.Id + '">' + item.OPR + '</td>\n' +
                                     '                                <td    id="Repd' + item.Id + '">' + item.Repd + '</td>\n' +
@@ -409,7 +399,6 @@
                                     '                                </td>\n' +
                                     '                            </tr>');
                                 $('#ndtForm').trigger("reset");
-                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                 addRapprodsListeners();
                             },
                             error: function (result) {
@@ -429,8 +418,7 @@
                                 Did: $('#Did').val(),
                                 NumeroRap: $('#NumRap').val(),
                                 ntube: $('#ntube').val(),
-                                bis: $('#bis:checked').length > 0,
-                                Observation: $('#observation').val()+"",
+                                Observation: $('#observation').val() + "",
                                 Snup: $('#Snup').val(),
                                 OPR: $('#OPR').val(),
                                 Repd: $('#Repd').val(),
@@ -441,24 +429,21 @@
                                 var item = result.ndt;
                                 console.log(item);
                                 $('#ndt' + id).replaceWith('<tr id="ndt' + item.Id + '">\n' +
-                                '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
-                                '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                '                                <td    id="Operation' + item.Id + '">' + item.Operation + '</td>\n' +
-                                '                                <td    id="NbOpr' + item.Id + '">' + item.NbOpr + '</td>\n' +
-                                '                                <td    id="Snup' + item.Id + '">' + item.Snup + '</td>\n' +
-                                '                                <td    id="OPR' + item.Id + '">' + item.OPR + '</td>\n' +
-                                '                                <td    id="Repd' + item.Id + '">' + item.Repd + '</td>\n' +
-                                '                                <td    id="Repg' + item.Id + '">' + item.Repg + '</td>\n' +
-                                '                                <td     id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
-                                '                                <td>\n' +
-                                '                                    <button id="ndt' + item.Id + 'Edit" class="ndtEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
-                                '                                    <button id="ndt' + item.Id + 'Delete" class="ndtDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
-                                '                                </td>\n' +
-                                '                            </tr>');
+                                    '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
+                                    '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
+                                    '                                <td    id="Snup' + item.Id + '">' + item.Snup + '</td>\n' +
+                                    '                                <td    id="OPR' + item.Id + '">' + item.OPR + '</td>\n' +
+                                    '                                <td    id="Repd' + item.Id + '">' + item.Repd + '</td>\n' +
+                                    '                                <td    id="Repg' + item.Id + '">' + item.Repg + '</td>\n' +
+                                    '                                <td     id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
+                                    '                                <td>\n' +
+                                    '                                    <button id="ndt' + item.Id + 'Edit" class="ndtEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
+                                    '                                    <button id="ndt' + item.Id + 'Delete" class="ndtDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
+                                    '                                </td>\n' +
+                                    '                            </tr>');
                                 $('#ndtForm').trigger("reset");
                                 $('#Ajouter').html(' Ajouter ');
                                 $('#annulerButton').hide();
-                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                 $('#ntube').prop('disabled', false);
                                 addRapprodsListeners();
                             },
@@ -472,7 +457,10 @@
                     }
 
 
-                } else {
+                } else {if ($('#tubes option[value=' + $('#ntube').val() + ']').val() === undefined) {
+                    alert("Sélectionner le tube qui existe dans la liste svp!");
+                    $('#ntube').val('');
+                } else
                     alert("Remplir tous les champs qui sont obligatoires svp !");
                 }
             });
@@ -480,7 +468,6 @@
                 $('#ndtForm').trigger("reset");
                 $('#Ajouter').html(' Ajouter ');
                 $('#annulerButton').hide();
-                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                 $('#ntube').prop('disabled', false);
             });
 
@@ -512,6 +499,11 @@
                             },
                             success: function (result) {
                                 tr.remove();
+
+                                $('#ndtForm').trigger("reset");
+                                $('#Ajouter').html(' Ajouter ');
+                                $('#annulerButton').hide();
+                                $('#ntube').prop('disabled', false);
                             },
                             error: function (result) {
                                 console.log(result);
@@ -519,35 +511,25 @@
                             }
                         });
                     });
-
-                    $('#ndtForm').trigger("reset");
-                    $('#Ajouter').html(' Ajouter ');
-                    $('#annulerButton').hide();
-                    $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
-                    $('#ntube').prop('disabled', false);
                 });
                 $('.ndtEdit').each(function (e) {
                     $(this).off('click');
                     $(this).click(function (e) {
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
 
-                                $('#Numero').val(id);
-                                $('#ntube').prop('disabled', true);
-                                $('#ntube').val($("#tube" + id).html());
-                                $('#Snup').val($("#Snup" + id).html());
-                                $('#OPR').val($("#OPR" + id).html());
-                                $('#Repd').val($("#Repd" + id).html());
-                                $('#Repg').val($("#Repg" + id).html());
-                                $('#observation').val($("#Observation" + id).html());
-                                if ($('#bis' + id).html().includes('checked'))
-                                    $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"   checked      >');
-                                else
-                                    $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"          >');
-
-
-
-                                $('#Ajouter').html(' Modifier ');
-                                $('#annulerButton').show();
+                        $('#Numero').val(id);
+                        $('#ntube').prop('disabled', true);
+                        $('#Snup').val($("#Snup" + id).html());
+                        $('#OPR').val($("#OPR" + id).html());
+                        $('#Repd').val($("#Repd" + id).html());
+                        $('#Repg').val($("#Repg" + id).html());
+                        $('#observation').val($("#Observation" + id).html());
+                        if ($('#bis' + id).html().includes('checked'))
+                            $('#ntube').val($("#tube" + id).html() + "bis");
+                        else
+                            $('#ntube').val($("#tube" + id).html());
+                        $('#Ajouter').html(' Modifier ');
+                        $('#annulerButton').show();
                     });
 
                 });
@@ -583,11 +565,6 @@
 
                     }
                 });
-            });
-            $('#imprimer').click(function (e) {
-                e.preventDefault();
-
-                window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');
             });
 
         });

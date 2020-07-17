@@ -95,13 +95,13 @@
         <div class="row">
             <div class="body-content col-xl-6 col-lg-6 col-md-8 offset-xl-0 offset-lg-0 offset-md-2 col-sm-12 " >
                 <section class="col-12">
-                    <form method="post" action="{{route('rapports_M24.store')}}">
+                    <form method="post" action="{{route('rapports_RX2.store')}}">
                         @csrf
                         <fieldset>
                             <legend><h4>Information du rapport</h4> </legend>
                             <div class="form-group  row">
                                 <label class="col-4" for="detail_project ">Detail Projet</label>
-                                <select class="form-control col-xl-8 col-lg-9 col-md-8 col-sm-8" id="detail_project" name="detail_project">
+                                <select class="form-control col-xl-8 col-lg-8 col-md-8 col-sm-8" id="detail_project" name="detail_project">
                                     @foreach($details as $detail)
                                         <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                     @endforeach
@@ -110,12 +110,12 @@
                             <div class="row ">
                                 <div class="col-12">
                                     <div class="form-group row">
-                                        <label class="col-4" for="date" >Date du rapport</label>
+                                        <label class="col-5" for="date" >Date du rapport</label>
                                         <input class="col-4 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" >
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-4" for="equipe ">Equipe</label>
+                                        <label class="col-5" for="equipe ">Equipe</label>
                                         <select class="form-control col-4" id="equipe" name="equipe">
                                             <option value="A">A</option>
                                             <option value="B">B</option>
@@ -124,7 +124,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-4" for="poste ">Poste</label>
+                                        <label class="col-5" for="poste ">Poste</label>
                                         <select class="form-control col-4" id="poste" name="poste">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -149,16 +149,20 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="text" id="codeAgent" name="codeAgent" class="col-2 offset-1 form-control" placeholder="Code" required>
+                                <input type="text" class="col-2 offset-1 form-control" id="codeAgent" placeholder="Code" name="codeAgent" required>
                             </div>
 
                             <hr>
                             <div class="form-group row">
-                                <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
+
+                                <div class="col-5">
+                                <button type="button" class="col-12   btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
                                     Reprendre un rapport
                                 </button>
-
-                                <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
+                                </div>
+                                <div class="col-4">
+                                <button   type="submit" class="col-12  btn btn-success"> Valider</button>
+                                </div>
                             </div>
                         </fieldset>
 
@@ -258,7 +262,7 @@
                 });
 
                 $.ajax({
-                    url:  "{{url('/rapports_M24/')}}/" + tube + '/edit',
+                    url:  "{{url('/rapports_RX2/')}}/" + tube + '/edit',
                     method: 'get',
                     success: function(result){
 
@@ -286,42 +290,28 @@
                         console.log(result);
                         if(result!==undefined )
                             if(result.responseJSON.message.includes('Undefined offset: 0')){
-                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Hydro-M24");
+                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Reparation");
                             }else{
-                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Hydro-M24");
+                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Reparation");
                             }
                     }
                 });
             });
             function AddListeners(){
                 $('.Clot').each(function(){
-                    $(this).off('dblclick');
+
                     $(this).dblclick(function(){
                         id=$(this).attr('id').replace(/[^0-9]/g,'');
                         alert('Rapport N°='+id+' est CLoturé');
                     });
                 });
                 $('.NotClot').each(function(){
-                    $(this).off('dblclick');
                     $(this).dblclick(function(){
                         id=$(this).attr('id').replace(/[^0-9]/g,'');
-                        window.location.href='{{url("/M24/")}}/'+id;
+                        window.location.href='{{url("/RX2/")}}/'+id;
                     });
                 });
             }
-            $('#agent').on('change',function(){
-                order=$(this).children("option:selected").attr('order');
-                val=$('#code').find('option[order='+order+']').val();
-                $('#code').val(val);
-                $('#codeAgent').val(val);
-
-            });
-            $('#agent2').on('change',function(){
-                order=$(this).children("option:selected").attr('order');
-                val=$('#code2').find('option[order='+order+']').val();
-                $('#code2').val(val);
-                $('#codeAgent2').val(val);
-            });
 
         });
     </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Chanf;
 
 use App\Dashboard\Locations;
+use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,19 +18,14 @@ class M25RapportController extends Controller
      */
     public function index()
     {
-        $postes = DB::select('Select * from postes');
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $details = $projet->details;
         $agents = $location->agents;
-        $machines = $location->machines;
-        $rapports=DB::select('select * from rapports where "Zone"=\'Z06\' order by "DateSaisie" desc limit 3');
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z07\' order by "DateSaisie" desc limit 3');
         return view ('Chanf.M25Rapports',['details'=>$details
-            ,'postes'=>$postes
-            ,'machines'=>$machines
             ,'agents'=>$agents
-            ,'rapports'=>$rapports
-            ,'projet'=>$projet]);
+            ,'rapports'=>$rapports]);
     }
 
     /**
@@ -51,18 +47,18 @@ class M25RapportController extends Controller
     public function store(Request $request)
     {
         $rapport = new Rapport();
-        $rapport->Pid= $request->Pid;
+        $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone='Z06';
+        $rapport->Zone='Z07';
         $rapport->Equipe= $request->equipe;
-        $rapport->Machine= $request->machine;
+        $rapport->Machine= '7';
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
-        $rapport->NomAgents1= $request->agent2;
         $rapport->CodeAgent= $request->codeAgent ;
-        $rapport->CodeAgent1= $request->codeAgent2;
         $rapport->Etat='N';
+        $rapport->Computer=gethostname();
+        $rapport->User=$request->agent;
         $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
             return redirect(route('M25.show',['id'=>$rapport->Numero]));

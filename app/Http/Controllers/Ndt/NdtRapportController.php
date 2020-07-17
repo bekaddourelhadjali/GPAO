@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ndt;
 
 use App\Dashboard\Locations;
+use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,7 @@ class NdtRapportController extends Controller
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        $rapports=DB::select('select * from rapports where "Zone"=\'Z07\' order by "DateSaisie" desc limit 3');
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z08\' order by "DateSaisie" desc limit 3');
         return view ('Ndt.NdtRapports',['details'=>$details
             ,'agents'=>$agents
             ,'rapports'=>$rapports]);
@@ -46,18 +47,18 @@ class NdtRapportController extends Controller
     public function store(Request $request)
     {
         $rapport = new Rapport();
-        $rapport->Pid= $request->Pid;
+        $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone='Z07';
+        $rapport->Zone='Z08';
         $rapport->Equipe= $request->equipe;
-        $rapport->Machine= $request->machine;
+        $rapport->Machine= '8';
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
-        $rapport->NomAgents1= $request->agent2;
         $rapport->CodeAgent= $request->codeAgent ;
-        $rapport->CodeAgent1= $request->codeAgent2;
         $rapport->Etat='N';
+        $rapport->Computer=gethostname();
+        $rapport->User=$request->agent;
         $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
             return redirect(route('Ndt.show',['id'=>$rapport->Numero]));

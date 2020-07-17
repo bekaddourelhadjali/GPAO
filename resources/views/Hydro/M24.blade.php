@@ -158,20 +158,23 @@
     <div class="container-fluid">
 
         <section id="head-section">
-            <div class="row">
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
+            <div class="row text-center" style="padding-left: 10px">
+                <h5>Info Rapport</h5>
+                <div class="col-md-6 col-12">
+                    <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}}
+                            : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span>
+                    </div>
+
                     <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
                 </div>
-                <div class="col-6 col-sm-2  col-lg-2">
+                <div class="col-md-3 col-sm-6 ">
                     <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span></div>
                     <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
                 </div>
-                <div class="col-6 col-sm-6  col-lg-3">
+                <div class="col-md-3 col-sm-6">
                     <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}
                             / {{$rapport->CodeAgent}}</span></div>
-                    <div class="row">Agent2: &nbsp; <span class="valeur">{{$rapport->NomAgents1}}
-                            / {{$rapport->CodeAgent1}}</span></div>
+                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                 </div>
 
             </div>
@@ -181,31 +184,29 @@
 
                 <section class="top-actions">
                     <h5>Info Tube</h5>
-                    <form id="msForm">
+                    <form id="msForm" autocomplete="off">
                         <input name="Numero" type="hidden" id="Numero" value="">
                         <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
                         <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
                         <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                         <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                         <div class="row">
-                            <div class=" col-5">
+                            <div class=" col-6">
                                 <div class="form-group ">
                                     <label class="col-lg-12" style="padding-left: 0">Tube</label>
-                                    <select class="form-control col-12" style="color:#00f" id="ntube" name="ntube"
-                                            required>
-                                        <option disabled>Tube &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bis</option>
+                                    <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
+                                           name="ntube"
+                                           required list="tubes">
+                                    <datalist id="tubes">
+                                        <option disabled selected></option>
                                         @foreach($tubes as $tube)
-                                            <option value="{{$tube->Tube}}"> {{$tube->Tube}} &nbsp;
-                                                &nbsp;&nbsp; @if($tube->Bis) &#xf14a; @else &#xf0c8;  @endif </option>
+                                            @if($tube->Bis)
+                                                <option value="{{$tube->Tube}}bis">{{$tube->Tube}}bis</option>
+                                            @else
+                                                <option value="{{$tube->Tube}}"> {{$tube->Tube}}  </option>
+                                                &nbsp; @endif
                                         @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class=" col-1">
-                                <div class="form-group ">
-                                    <label class="col-12" for="bis" style="padding-left: 0">Bis</label>
-                                    <input class=" col-12" type="checkbox" id="bis" name="bis">
+                                    </datalist>
                                 </div>
                             </div>
                             <div class="  col-6">
@@ -240,8 +241,6 @@
                             <tr>
                                 <th>Tube</th>
                                 <th>Bis</th>
-                                <th>opération</th>
-                                <th>N°Opr</th>
                                 <th>Pression</th>
                                 <th>Observation</th>
                             </tr>
@@ -255,8 +254,6 @@
                                                                                          onclick="return false;">
                                             @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif
                                         </td>
-                                        <td id="Operation{{$item->Id}}">{{$item->Operation}}</td>
-                                        <td id="NbOpr{{$item->Id}}">{{$item->NbOpr}}</td>
                                         <td id="Pression{{$item->Id}}">{{$item->Pression}}</td>
                                         <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
                                         <td>
@@ -278,23 +275,18 @@
         </div>
         <section>
             <div class="row" id="bottom-actions">
-                <div class=" col-lg-2 col-md-6 col-sm-12">
+                <div class=" col-lg-3 col-md-3 col-sm-6">
                     <button type="button" class="btn btn-info col-12" data-toggle="modal" data-target="#cardBackdrop">                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b>                     </button>
                 </div>
 
-                <div class=" col-lg-2 col-md-4 col-sm-6">
+                <div class=" col-lg-3 col-md-3 col-sm-6">
                     <button type="button" class="btn btn-outline-danger col-12" data-toggle="modal"
                             data-target="#staticBackdrop">
                         <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets
                             Machine</b>
                     </button>
                 </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
-                    <button type="button" id="imprimer" class="btn btn-outline-primary col-12">
-                        <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
-                    </button>
-                </div>
-                <div class="  col-lg-2 col-md-4 col-sm-6">
+                <div class="  col-lg-3 col-md-3 col-sm-6">
                     <form method="post" action="{{route('rapports_M24.destroy',["id"=>$rapport->Numero])}}">
                         @csrf
                         <input type="hidden" name="_method" value="delete">
@@ -303,7 +295,7 @@
                         </button>
                     </form>
                 </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
+                <div class=" col-lg-3 col-md-3 col-sm-6">
                     <button id="cloturer" class="btn btn-success col-12">
                         <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp; Clôturer le Rapport</b>
                     </button>
@@ -329,7 +321,7 @@
 
             $('#Ajouter').click(function (e) {
                 e.preventDefault();
-                if ($('#msForm')[0].checkValidity()) {
+                if ($('#msForm')[0].checkValidity()&& $('#tubes option[value=' + $('#ntube').val() + ']').val() !== undefined) {
                     const id = $('#Numero').val();
                     $.ajaxSetup({
                         headers: {
@@ -346,7 +338,6 @@
                                 Did: $('#Did').val(),
                                 NumeroRap: $('#NumRap').val(),
                                 ntube: $('#ntube').val(),
-                                bis: $('#bis:checked').length > 0,
                                 Observation: $('#observation').val(),
                                 Pression: $('#Pression').val(),
 
@@ -356,8 +347,6 @@
                                 $('#ms').append('<tr id="ms' + item.Id + '">\n' +
                                     '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                    '                                <td    id="operation' + item.Id + '">' + item.Operation + '</td>\n' +
-                                    '                                <td    id="NbOpr' + item.Id + '">' + item.NbOpr + '</td>\n' +
                                     '                                <td     id="Pression' + item.Id + '">' + item.Pression + '</td>\n' +
                                     '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                     '                                <td>\n' +
@@ -366,7 +355,6 @@
                                     '                                </td>\n' +
                                     '                            </tr>');
                                 $('#msForm').trigger("reset");
-                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                 addRapprodsListeners();
                             },
                             error: function (result) {
@@ -386,7 +374,6 @@
                                 Did: $('#Did').val(),
                                 NumeroRap: $('#NumRap').val(),
                                 ntube: $('#ntube').val(),
-                                bis: $('#bis:checked').length > 0,
                                 Observation: $('#observation').val(),
                                 Pression: $('#Pression').val(),
                                 id: id
@@ -396,8 +383,6 @@
                                 $('#ms' + id).replaceWith('<tr id="ms' + item.Id + '">\n' +
                                     '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                    '                                <td    id="operation' + item.Id + '">' + item.Operation + '</td>\n' +
-                                    '                                <td    id="NbOpr' + item.Id + '">' + item.NbOpr + '</td>\n' +
                                     '                                <td     id="Pression' + item.Id + '">' + item.Pression + '</td>\n' +
                                     '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                     '                                <td>\n' +
@@ -408,7 +393,6 @@
                                 $('#msForm').trigger("reset");
                                 $('#Ajouter').html(' Ajouter ');
                                 $('#annulerButton').hide();
-                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                 $('#ntube').prop('disabled', false);
                                 addRapprodsListeners();
                             },
@@ -421,6 +405,10 @@
 
                     }
                 } else {
+                    if ($('#tubes option[value=' + $('#ntube').val() + ']').val() === undefined) {
+                        alert("Sélectionner le tube qui existe dans la liste svp!");
+                        $('#ntube').val('');
+                    } else
                     alert("Remplir tous les champs qui sont obligatoires svp !");
                 }
             });
@@ -428,7 +416,6 @@
                 $('#msForm').trigger("reset");
                 $('#Ajouter').html(' Ajouter ');
                 $('#annulerButton').hide();
-                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                 $('#ntube').prop('disabled', false);
             });
 
@@ -458,6 +445,10 @@
                             },
                             success: function (result) {
                                 tr.remove();
+                                $('#msForm').trigger("reset");
+                                $('#Ajouter').html(' Ajouter ');
+                                $('#annulerButton').hide();
+                                $('#ntube').prop('disabled', false);
                             },
                             error: function (result) {
                                 console.log(result);
@@ -465,25 +456,18 @@
                             }
                         });
                     });
-
-                    $('#msForm').trigger("reset");
-                    $('#Ajouter').html(' Ajouter ');
-                    $('#annulerButton').hide();
-                    $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
-                    $('#ntube').prop('disabled', false);
                 });
                 $('.msEdit').each(function (e) {
                     $(this).off('click');
                     $(this).click(function (e) {
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
                         $('#Numero').val(id);
-                        $('#ntube').val($("#tube" + id).html());
                         $('#Pression').val($("#Pression" + id).html());
                         $('#observation').val($("#Observation" + id).html());
                         if ($('#bis' + id).html().includes('checked'))
-                            $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"   checked      >');
+                            $('#ntube').val($("#tube" + id).html() + "bis");
                         else
-                            $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"          >');
+                            $('#ntube').val($("#tube" + id).html());
                         $('#Ajouter').html(' Modifier ');
                         $('#annulerButton').show();
                         $('#ntube').prop('disabled', true);
@@ -521,11 +505,6 @@
 
                     }
                 });
-            });
-            $('#imprimer').click(function (e) {
-                e.preventDefault();
-
-                window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');
             });
 
         });

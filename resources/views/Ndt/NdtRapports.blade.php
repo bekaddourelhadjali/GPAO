@@ -149,43 +149,8 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="hidden" id="codeAgent" name="codeAgent" value="">
-                                <select class="form-control col-2 offset-1"  id="code" name="code" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                <input type="text" id="codeAgent" name="codeAgent" class="col-2 offset-1 form-control" placeholder="Code" required>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-3" for="agent2">Agent 02</label>
-                                <select class="form-control col-6" id="agent2" name="agent2">
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <input type="hidden" id="codeAgent2" name="codeAgent2" value="">
-                                <select class="form-control col-2 offset-1"  id="code2" name="code2" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-
                             <hr>
                             <div class="form-group row">
                                 <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">

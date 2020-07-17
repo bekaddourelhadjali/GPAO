@@ -161,7 +161,7 @@
                                     @endforeach
                                     @endif
                                 </select>
-                                <input type="text" class="form-control col-3" id="codeAgent" name="codeAgent" placeholder="Code"  required>
+                                <input type="text" class="form-control col-2 offset-1" id="codeAgent" name="codeAgent" placeholder="Code"  required>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3" for="agent2">Agent 02</label>
@@ -175,7 +175,7 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="text" id="codeAgent2"class="form-control col-3" name="codeAgent2" placeholder="Code"  required>
+                                <input type="text" id="codeAgent2"class="form-control col-2 offset-1" name="codeAgent2" placeholder="Code"  required>
                             </div>
 
                         <hr>

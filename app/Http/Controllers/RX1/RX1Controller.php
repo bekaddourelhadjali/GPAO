@@ -52,7 +52,9 @@ class RX1Controller extends Controller
         if ($request->bis == 'true') $rx1->Bis = 1;
         else $rx1->Bis = 0;
         $rx1->Defauts = $request->Obs;
-        $rx1->Observation = $request->Observation;
+        $rx1->Observation = $request->ObsTube;
+        $rx1->User = $rapport->NomAgents;
+        $rx1->Computer = gethostname();
         $rx1->DateSaisie = date('Y-m-d H:i:s');
         $tube = Tube::where('Tube', '=', $rx1->Tube)
             ->where('Bis', '=', $rx1->Bis)
@@ -93,6 +95,7 @@ class RX1Controller extends Controller
                 $detailDefaut->Valeur = $defaut[3];
                 $detailDefaut->NbOpr = $defaut[4];
                 $detailDefaut->Nombre = $defaut[5];
+                $detailDefaut->Observation = $defaut[6];
                 $detailDefaut->save();
             }
             return response()->json(array('rx1' => $rx1), 200);
@@ -170,7 +173,7 @@ class RX1Controller extends Controller
         $rx1 = RX1::findorFail($id);
         $rx1->Did = $request->Did;
         $rx1->Defauts = $request->Obs;
-        $rx1->Observation = $request->Observation;
+        $rx1->Observation = $request->ObsTube;
         $rx1->DateSaisie = date('Y-m-d H:i:s');
         $oldDefs = $rx1->Defs;
         $defauts = $request->Defauts;
@@ -189,6 +192,7 @@ class RX1Controller extends Controller
                 $detailDefaut->Valeur = $defaut[3];
                 $detailDefaut->NbOpr = $defaut[4];
                 $detailDefaut->Nombre = $defaut[5];
+                $detailDefaut->Observation = $defaut[6];
                 $detailDefaut->save();
             }
             foreach ($oldDefs as $olddef) {

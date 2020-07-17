@@ -222,13 +222,17 @@
                                     <input class=" col-12" type="checkbox" id="bis" name="bis">
                                 </div>
                             </div>
+                            <div class="form-group  col-8  ">
+                                <label for="ObsTube" class="col-12">Observation</label>
+                                <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
+                            </div>
                             <div class="form-group col-2 ">
                                 <label for="" class="col-12"></label>
                                 <button type="reset" class="  btn btn-secondary" type="button" id="annulerRX1Button">
                                     Annuler
                                 </button>
                             </div>
-                            <div class="form-group col-4  ">
+                            <div class="form-group col-2  ">
                                 <label for="" class="col-12"></label>
                                 <button type="submit" class="    btn btn-success" type="button" id="Ajouter">Ajouter
                                 </button>
@@ -428,7 +432,8 @@
                         if (Nombre === '' || Nombre === 0) {
                             Nombre = null;
                         }
-                        Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre]);
+                        observation=$('#observation').val();
+                        Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre,observation]);
                         SetDefauts();
                     } else {
                         alert('Sélectionner une opération autre que R.A.S');
@@ -483,7 +488,7 @@
                                     ntube: ntube,
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
-                                    Observation: $('#observation').val(),
+                                    Observation: $('#ObsTube').val(),
                                     Defauts: Defauts,
                                 },
                                 success: function (result) {
@@ -496,7 +501,7 @@
                                         '                         <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                         <td id="bis' + item.Id + '"> <input type="checkbox" ' + bis + '  onclick="return false;"> </td>\n' +
                                         '                         <td   class="obsS" id="Defaut' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                        '                         <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
+                                        '                         <td   class="obsS" id="Observation' + item.Id + '">' + $('#ObsTube').val() + '</td>\n' +
                                         '                         <td>\n' +
                                         '                             <button id="rx' + item.Id + 'Edit" class="rx1Edit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                         '                             <button id="rx' + item.Id + 'Delete" class="rx1Delete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
@@ -527,7 +532,7 @@
                                     ntube: ntube,
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
-                                    Observation: $('#observation').val(),
+                                    Observation: $('#ObsTube').val(),
                                     Defauts: Defauts,
                                     id: id
                                 },
@@ -542,7 +547,7 @@
                                         '                         <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                         <td id="bis' + item.Id + '"> <input type="checkbox" ' + bis + '  onclick="return false;">\n' +
                                         '                         <td   class="obsS" id="Defaut' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                        '                         <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
+                                        '                         <td   class="obsS" id="Observation' + item.Id + '">' + $('#ObsTube').val() + '</td>\n' +
                                         '                         <td>\n' +
                                         '                             <button id="rx' + item.Id + 'Edit" class="rx1Edit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                         '                             <button id="rx' + item.Id + 'Delete" class="rx1Delete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
@@ -654,9 +659,10 @@
                                 $('#detail_project').val(rx1.Did);
                                 $('#ntube').val(rx1.Tube);
                                 Defauts = [];
+                                $('#ObsTube').val($('#Observation'+id).html());
                                 rx1.defs.forEach(function (item, index) {
                                     if (item.Defaut.includes('. ')) ++rxdef;
-                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre]);
+                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,item.Observation]);
                                 });
                                 if (rx1.Bis)
                                     $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"   checked      >');
@@ -665,6 +671,8 @@
                                 }
                                 SetDefauts();
                                 $('#operation').val(Defauts[Defauts.length - 1][0]);
+                                $('#defaut').val(Defauts[Defauts.length - 1][2]);
+                                $('#observation').val(Defauts[Defauts.length - 1][8]);
                                 $('#Ajouter').html(' Modifier ');
                                 $('#annulerRX1Button').show();
                                 $('#ntube').prop('disabled', true);
@@ -740,11 +748,6 @@
                 });
 
             }
-        });
-        $('#imprimer').click(function (e) {
-            e.preventDefault();
-
-            window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');
         });
 
     </script>

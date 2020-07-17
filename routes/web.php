@@ -192,6 +192,8 @@ Route::resource('rapports_M25', 'Chanf\M25RapportController');
 Route::resource('M25', 'Chanf\M25Controller');
 Route::resource('rapports_Ndt', 'Ndt\NdtRapportController');
 Route::resource('Ndt', 'Ndt\NdtController');
+Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller');
+Route::resource('RX2', 'RX2\RX2Controller');
 
 Route::get('CarteTube/{tube}', function ($tube) {
 

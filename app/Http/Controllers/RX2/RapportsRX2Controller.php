@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\RepM17;
+namespace App\Http\Controllers\RX2;
 
 use App\Dashboard\Locations;
 use App\Fabrication\detailprojet;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class ReparationRapportController extends Controller
+class RapportsRX2Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +18,13 @@ class ReparationRapportController extends Controller
      */
     public function index()
     {
+
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        $rapports=DB::select('select * from rapports where "Zone"=\'Z04\' order by "DateSaisie" desc limit 3');
-        return view ('RepM17.RepRapports',['details'=>$details
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z09\' order by "DateSaisie" desc limit 3');
+        return view ('RX2.RX2Rapports',['details'=>$details
             ,'agents'=>$agents
             ,'rapports'=>$rapports ]);
     }
@@ -50,11 +51,10 @@ class ReparationRapportController extends Controller
         $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone='Z04';
+        $rapport->Zone='Z09';
         $rapport->Equipe= $request->equipe;
-        $rapport->Machine= '4';
+        $rapport->Machine= '9';
         $rapport->Poste= $request->poste;
-        $rapport->ZoneRep= $request->ZoneRep;
         $rapport->NomAgents= $request->agent;
         $rapport->CodeAgent= $request->codeAgent ;
         $rapport->Etat='N';
@@ -62,9 +62,9 @@ class ReparationRapportController extends Controller
         $rapport->User=$request->agent;
         $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
-            return redirect(route('Reparation.show',['id'=>$rapport->Numero]));
+            return redirect(route('RX2.show', ['id' => $rapport->Numero]));
         }else{
-            return redirect(route('rapports_Rep.index'));
+            return redirect(route('rapports_RX2.index'));
         }
     }
 
@@ -76,7 +76,6 @@ class ReparationRapportController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -117,11 +116,11 @@ class ReparationRapportController extends Controller
     public function destroy($id)
     {
         $rapport=\App\Fabrication\Rapport::find($id);
-        if(sizeof($rapport->Reparations) || sizeof($rapport->arrets)){
+        if(sizeof($rapport->rx2) || sizeof($rapport->arrets)){
 
         }else{
             $rapport->delete();
         }
-        return redirect(route('rapports_Rep.index'));
+        return redirect(route('rapports_RX2.index'));
     }
 }

@@ -22,7 +22,7 @@ class M24RapportController extends Controller
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        $rapports=DB::select('select * from rapports where "Zone"=\'Z05\' order by "DateSaisie" desc limit 3');
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z06\' order by "DateSaisie" desc limit 3');
         return view ('Hydro.M24Rapports',['details'=>$details,'agents'=>$agents
             ,'rapports'=>$rapports]);
     }

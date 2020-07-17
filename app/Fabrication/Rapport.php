@@ -40,6 +40,9 @@ class Rapport extends Model
     public function ndt(){
         return $this->hasMany('App\Visuel\Ndt','NumeroRap') ;
     }
+    public function rx2(){
+        return $this->hasMany('App\Visuel\RX2','NumeroRap') ;
+    }
     public function RecBob(){
         return $this->hasMany('App\Fabrication\Bobine','NumeroRap') ;
     }

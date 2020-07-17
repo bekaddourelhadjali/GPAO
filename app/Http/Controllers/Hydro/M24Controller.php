@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hydro;
 
+use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\M24;
 use Illuminate\Http\Request;
@@ -39,7 +40,13 @@ class M24Controller extends Controller
     public function store(Request $request)
     {
         $m24 = new M24();
-        $tube = Tube::where('Tube', '=', $request->ntube)->where('Pid', '=', $request->Pid)->where('Did', '=', $request->Did)->first();
+        $tubeBis=false;
+        $tubeBisStr=substr($request->ntube,5,3);
+        if($tubeBisStr=='bis'){
+            $tubeBis=true;
+        }
+        $tube = Tube::where('Tube', '=', substr($request->ntube,0,5))->where('Bis','=',$tubeBis)->where('Did', '=', $request->Did)->first();
+        $rapport=Rapport::find($request->NumeroRap);
         $m24->NumTube = $tube->NumTube;
         $m24->Pid = $request->Pid;
         $m24->Did = $request->Did;
@@ -47,18 +54,14 @@ class M24Controller extends Controller
         $m24->Machine = $tube->Machine;
         $m24->Ntube = $tube->NTube;
         $m24->Tube = $tube->Tube;
-        $m24->Bis = $request->bis;
-        if((DB::select('select max("NbOpr") as "NbOpr" from "m24" where "Tube"=? and "Pid"=? and "Did"=?',[$m24->Tube,$request->Pid,$request->Did])[0]->NbOpr)!=null)
-        $m24->NbOpr=DB::select('select max("NbOpr")+1 as "NbOpr" from "m24" where "Tube"=? and "Pid"=? and "Did"=?',[$m24->Tube,$request->Pid,$request->Did])[0]->NbOpr;
-        else{
-            $m24->NbOpr=1;
-        }
+        $m24->Bis = $tube->Bis;
         $m24->Pression = $request->Pression;
         $m24->Observation = $request->Observation;
-        $m24->Operation = "Testé";
+        $m24->Computer = gethostname();
+        $m24->User = $rapport->NomAgents;
         $m24->DateSaisie = date('Y-m-d H:i:s');
         if ($m24->save()) {
-            $tube->Z05 = true;
+            $tube->Z06 = true;
             $tube->save();
             if ($m24->Bis == "true") $m24->Bis_t = 'checked'; else $m24->Bis_t = "";
            
@@ -80,13 +83,13 @@ class M24Controller extends Controller
         if ($rapport != null) {
             if ($rapport->Zone == 'Z06') {
                 if ($rapport->Etat == 'N') {
-                    $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->where('Pid', '=', $rapport->Pid)->select(['NumTube', 'Tube', 'Bis'])->get();
-
+                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
+                    $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                     return view('Hydro.M24',
                         ['rapport' => $rapport,
                             'm24' => $rapport->m24,
-                            'projet' => $projet,
+                            'detailP' => $detailP,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);
                 } elseif ($rapport->Etat == 'C') {
@@ -122,7 +125,6 @@ class M24Controller extends Controller
     public function update(Request $request, $id)
     {
         $m24 = M24::find($id);
-        $m24->Bis = $request->bis;
         $m24->Pression = $request->Pression;
         $m24->Observation = $request->Observation;
         $m24->DateSaisie = date('Y-m-d H:i:s');
@@ -145,7 +147,7 @@ class M24Controller extends Controller
         $m24 = \App\Visuel\M24::findOrFail($id);
 
         if ($m24->delete()) {
-            $m24->tube->Z05 = false;
+            $m24->tube->Z06 = false;
             $m24->tube->save();
 
             return response()->json(array('success' => true), 200);

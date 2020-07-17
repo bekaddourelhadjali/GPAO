@@ -225,6 +225,7 @@
                             <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
                         </div>
 
+
                     </div>
                 </section>
             </div>
@@ -278,8 +279,8 @@
                         <div class="col-6 col-sm-4 col-md-4 col-lg-3 ">
                             <div class="form-group text-center">
                                 <label class="col-12">Defaut</label>
-                                <span class="  col-5 btn btn-outline-secondary defs" id="Int">Int</span>
-                                <span class="  col-5 btn btn-outline-secondary defs" id="Ext">Ext</span>
+                                <span class="  col-5 btn btn-outline-secondary defs" id="Int">Debut</span>
+                                <span class="  col-5 btn btn-outline-secondary defs" id="Ext">Fin</span>
                             </div>
                         </div>
                         <div class="form-group col-md-8 col-sm-8 col-12  ">
@@ -321,8 +322,8 @@
                     </tr>
                     </thead>
                     <tbody id="reps">
-                    @if(isset($reps))
-                        @foreach($reps as $item)
+                    @if(isset($rxs))
+                        @foreach($rxs as $item)
                             <tr id="rep{{$item->Id}}">
                                 <td id="tube{{$item->Id}}">{{$item->Tube}}</td>
                                 <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
@@ -347,14 +348,7 @@
         </section>
         <section>
             <div class="row" id="bottom-actions">
-
-                <div class=" col-lg-2 col-md-4 col-sm-6">
-                    <button type="button" type="button" id="imprimer" class="btn btn-warning col-12"
-                            onclick="window.location.href='{{route('Rep_M17')}}'">
-                        <b><i class="fa fa-arrow-circle-left" style="font-size: 20px;"></i> &nbsp;&nbsp;Rapport M17</b>
-                    </button>
-                </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
+                <div class=" col-lg-3 col-md-4 col-sm-6">
                     <button type="button" class="btn btn-outline-danger col-12" data-toggle="modal"
                             data-target="#staticBackdrop">
                         <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets
@@ -367,7 +361,7 @@
                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b></button>
                 </div>
                 <div class="  col-lg-3  col-md-4 col-sm-6 ">
-                    <form method="post" action="{{route('rapports_Rep.destroy',["id"=>$rapport->Numero])}}">
+                    <form method="post" action="{{route('rapports_RX2.destroy',["id"=>$rapport->Numero])}}">
                         @csrf
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-secondary col-12"><b> <i class="fa fa-times-circle"
@@ -375,7 +369,7 @@
                                 le rapport</b></button>
                     </form>
                 </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
+                <div class=" col-lg-3 col-md-4 col-sm-6">
                     <button id="cloturer" class="btn btn-success col-12">
                         <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp; Clôturer
                             Rapport</b></button>
@@ -403,7 +397,7 @@
             $('#addDefaut').click(function (e) {
                 e.preventDefault();
                 if ($('#defaut').val() !== null && $('#operation').val() !== null) {
-                    if (defauts["Int"] || defauts["Ext"]) {
+
                         Opr = $('#operation').val();
                         IdDef = $('#defaut').find("option:selected").attr("defautId");
 
@@ -425,9 +419,7 @@
                         Obs=$('#observation').val();
                         Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, Int, Ext,Obs]);
                         SetDefauts();
-                    } else {
-                        alert("Sélectionner l'emplacement de defaut Int ou Ext");
-                    }
+
                 } else {
                     alert('Sélectionner un defaut et une opération svp!');
                 }
@@ -526,7 +518,7 @@
                             }
                             if ($('#Ajouter').html() !== ' Modifier ') {
                                 $.ajax({
-                                    url: "{{ route('Reparation.store')}}",
+                                    url: "{{ route('RX2.store')}}",
                                     method: 'post',
                                     data: {
                                         _token: '{{csrf_token()}}',
@@ -534,17 +526,17 @@
                                         Did: $('#Did').val(),
                                         NumeroRap: $('#NumRap').val(),
                                         ntube: $('#ntube').val(),
-                                        ObsTube: $('#ObsTube').val(),
                                         Defauts: Defauts,
+                                        ObsTube: $('#ObsTube').val(),
                                         Obs: obs,
                                     },
                                     success: function (result) {
-                                        var item = result.rep;
+                                        var item = result.rx2;
                                         $('#reps').append('<tr id="rep' + item.Id + '">\n' +
                                             '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                             '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                             '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                            '                                <td    id="Observation' + item.Id + '">' + $('#ObsTube').val()+ '</td>\n' +
+                                            '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
                                             '                                <td>\n' +
                                             '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                             '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
@@ -564,7 +556,7 @@
 
                             } else {
                                 $.ajax({
-                                    url: "{{url('/Reparation/')}}/" + id,
+                                    url: "{{url('/RX2/')}}/" + id,
                                     method: 'post',
                                     data: {
                                         _method: 'put',
@@ -572,19 +564,19 @@
                                         Pid: $('#Pid').val(),
                                         Did: $('#Did').val(),
                                         NumeroRap: $('#NumRap').val(),
-                                        ObsTube: $('#ObsTube').val(),
                                         ntube: $('#ntube').val(),
                                         Defauts: Defauts,
+                                        ObsTube: $('#ObsTube').val(),
                                         Obs: obs,
                                         id: id
                                     },
                                     success: function (result) {
-                                        var item = result.rep;
+                                        var item = result.rx2;
                                         console.log(item);
                                         $('#rep' + id).html('<td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                             '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                             '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                            '                                <td    id="Observation' + item.Id + '">' + $('#ObsTube').val()+ '</td>\n' +
+                                            '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
                                             '                                <td>\n' +
                                             '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                             '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
@@ -646,7 +638,7 @@
                         });
 
                         $.ajax({
-                            url: "{{url('/Reparation/')}}/" + id,
+                            url: "{{url('/RX2/')}}/" + id,
                             method: 'post',
                             data: {
                                 _method: 'delete',
@@ -657,6 +649,14 @@
                             },
                             success: function (result) {
                                 tr.remove();
+                                $('#repForm').trigger("reset");
+                                $('#Ajouter').html(' Ajouter ');
+                                $('#annulerButton').hide();
+                                $('#defauts').val('');
+                                $('#ntube').prop('disabled', false);
+                                defauts = [];
+                                initDefauts();
+                                Defauts = [];
                             },
                             error: function (result) {
                                 console.log(result);
@@ -665,14 +665,7 @@
                         });
                     });
 
-                    $('#repForm').trigger("reset");
-                    $('#Ajouter').html(' Ajouter ');
-                    $('#annulerButton').hide();
-                    $('#defauts').val('');
-                    $('#ntube').prop('disabled', false);
-                    defauts = [];
-                    initDefauts();
-                    Defauts = [];
+
                 });
                 $('.repEdit').each(function (e) {
                     $(this).off('click');
@@ -685,7 +678,7 @@
                         });
 
                         $.ajax({
-                            url: "{{url('/Reparation/')}}/" + id + '/edit',
+                            url: "{{url('/RX2/')}}/" + id + '/edit',
                             method: 'get',
                             data: {
                                 id: id,
@@ -694,7 +687,7 @@
                             },
                             success: function (result) {
                                 $('#Numero').val(id);
-                                rep = result.rep;
+                                rep = result.rx2;
                                 Defauts = [];
                                 rep.defs.forEach(function (item, index) {
                                     Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,item.Int,item.Ext,item.Observation]);
@@ -702,6 +695,7 @@
                                 SetDefauts();
                                 $('#operation').val(Defauts[Defauts.length - 1][0]);
                                 $('#defaut').val(Defauts[Defauts.length - 1][2]);
+                                $('#observation').val(Defauts[Defauts.length - 1][8]);
                                 if(Defauts[Defauts.length - 1][6]){
                                     defauts["Int"]=1;
                                     $("#Int").removeClass('btn-outline-secondary');
@@ -721,7 +715,6 @@
                                     $("#Ext").addClass('btn-outline-secondary');
                                     $("#Ext").removeClass('btn-danger');
                                 }
-                                $('#observation').val(Defauts[Defauts.length - 1][8]);
                                 $('#ntube').prop('disabled', true);
                                 $('#Numero').val(id);
                                 $('#ObsTube').val($('#Observation'+id).html());

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ndt;
 
+use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Ndt;
 use Illuminate\Http\Request;
@@ -39,7 +40,13 @@ class NdtController extends Controller
     public function store(Request $request)
     {
         $ndt = new Ndt();
-        $tube = Tube::where('Tube', '=', $request->ntube)->where('Pid', '=', $request->Pid)->where('Did', '=', $request->Did)->first();
+        $tubeBis=false;
+        $tubeBisStr=substr($request->ntube,5,3);
+        if($tubeBisStr=='bis'){
+            $tubeBis=true;
+        }
+        $tube = Tube::where('Tube', '=', substr($request->ntube,0,5))->where('Bis','=',$tubeBis)->where('Did', '=', $request->Did)->first();
+        $rapport=Rapport::find($request->NumeroRap);
         $ndt->NumTube = $tube->NumTube;
         $ndt->Pid = $request->Pid;
         $ndt->Did = $request->Did;
@@ -47,21 +54,17 @@ class NdtController extends Controller
         $ndt->Machine = $tube->Machine;
         $ndt->Ntube = $tube->NTube;
         $ndt->Tube = $tube->Tube;
-        $ndt->Bis = $request->bis;
+        $ndt->Bis = $tube->Bis;
         $ndt->Snup = $request->Snup;
         $ndt->OPR = $request->OPR;
         $ndt->Repd = $request->Repd;
         $ndt->Repg = $request->Repg;
-        if((DB::select('select max("NbOpr") as "NbOpr" from "ndt" where "Tube"=? and "Pid"=? and "Did"=?',[$ndt->Tube,$request->Pid,$request->Did])[0]->NbOpr)!=null)
-            $ndt->NbOpr=DB::select('select max("NbOpr")+1 as "NbOpr" from "ndt" where "Tube"=? and "Pid"=? and "Did"=?',[$ndt->Tube,$request->Pid,$request->Did])[0]->NbOpr;
-        else{
-            $ndt->NbOpr=1;
-        }
         $ndt->Observation = $request->Observation;
-        $ndt->Operation = "Contrôlé";
+        $ndt->Computer = gethostname();
+        $ndt->User = $rapport->NomAgents;
         $ndt->DateSaisie = date('Y-m-d H:i:s');
         if ($ndt->save()) {
-            $tube->Z07 = true;
+            $tube->Z08 = true;
             $tube->save();
             if ($ndt->Bis == "true") $ndt->Bis_t = 'checked'; else $ndt->Bis_t = "";
 
@@ -81,15 +84,15 @@ class NdtController extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z07') {
+            if ($rapport->Zone == 'Z08') {
                 if ($rapport->Etat == 'N') {
-                    $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->where('Pid', '=', $rapport->Pid)->select(['NumTube', 'Tube', 'Bis'])->get();
-
+                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
+                    $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                     return view('Ndt.Ndt',
                         ['rapport' => $rapport,
                             'ndts' => $rapport->Ndt,
-                            'projet' => $projet,
+                            'detailP' => $detailP,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);
                 } elseif ($rapport->Etat == 'C') {
@@ -125,7 +128,6 @@ class NdtController extends Controller
     public function update(Request $request, $id)
     {
         $ndt = Ndt::find($id);
-        $ndt->Bis = $request->bis;
         $ndt->Snup = $request->Snup;
         $ndt->OPR = $request->OPR;
         $ndt->Repd = $request->Repd;
@@ -151,7 +153,7 @@ class NdtController extends Controller
         $ndt = \App\Visuel\Ndt::findOrFail($id);
 
         if ($ndt->delete()) {
-            $ndt->tube->Z07 = false;
+            $ndt->tube->Z08 = false;
             $ndt->tube->save();
 
             return response()->json(array('success' => true), 200);
