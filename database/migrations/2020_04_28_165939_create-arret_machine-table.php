@@ -18,7 +18,7 @@ class CreateArretMachineTable extends Migration
             $table->integer('Pid');
             $table->integer('Did');
             $table->integer('NumRap');
-            $table->string('Machine',50);
+            $table->string('Machine',10)->nullable();
             $table->string('TypeArret',10);
             $table->string('Du',6);
             $table->string('Au',6);

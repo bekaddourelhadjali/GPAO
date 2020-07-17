@@ -153,6 +153,9 @@
                                 @endforeach
                             @endif
                         </datalist>
+                        <datalist id="coulees2">
+
+                        </datalist>
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
                                                                                    for="Poids">Poids (kg)</label>
@@ -237,7 +240,10 @@
                                 Nouvelle Bobine</b>
                         </button>
                     </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6 offset-lg-4 offset-md-1 ">
+                    <div class="col-lg-3 col-md-6 col-sm-6  col-6">
+                        <button type="button" id="NonRecBob" class="btn btn-warning">Bobine Non Réceptionné</button>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-6  ">
                         <button type="reset" id="annulerButton" class="btn btn-secondary"> Annuler</button>
                     </div>
 
@@ -348,6 +354,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="BId" name="BId" value="">
+                    <input name="BNumRap" type="hidden" id="BNumRap" value="{{$rapport->Numero}}">
                     <input name="Pid" type="hidden" id="BPid" value="{{$rapport->Pid}}">
                     <input name="Did" type="hidden" id="BDid" value="{{$rapport->Did}}">
                     <div class="form-group row">
@@ -413,7 +420,7 @@
     <script>
 
         $(document).ready(function () {
-
+            var bobinesEtat = 'REC';
             $('#annulerButton').hide();
             addMssListeners();
 
@@ -463,6 +470,8 @@
                                     '                            </tr>');
                                 $('#bobines').html('');
                                 $('#coulees').html('');
+                                $('#bobine').attr('list','bobines');
+                                $('#coulee').attr('list','coulees');
                                 result.coulees.forEach(function (item, index) {
                                     $('#coulees').append('<option value="' + item.Coulee + '">' + item.Coulee + '</option>');
                                 });
@@ -709,7 +718,8 @@
                         data: {
                             _token: '{{csrf_token()}}',
                             bobine: bobine,
-                            source: 'MasE'
+                            source: 'MasE',
+                            etat:bobinesEtat
                         },
                         success: function (result) {
                             console.log(result);
@@ -747,7 +757,8 @@
                         data: {
                             _token: '{{csrf_token()}}',
                             coulee: coulee,
-                            source: 'MasE'
+                            source: 'MasE',
+                            etat:bobinesEtat
                         },
                         success: function (result) {
                             if (result.bobines.length !== 0) {
@@ -794,6 +805,7 @@
                             largeur_bande: $('#BLargeurBande').val(),
                             Did: $('#BDid').val(),
                             Pid: $('#BPid').val(),
+                            NumRap: $('#BNumRap').val(),
                             source: "MasE"
                         },
                         success: function (result) {
@@ -830,6 +842,51 @@
                 } else {
                     alert('Remplir tous les champs qui sont obligatoires svp!');
                 }
+            });
+            $('#NonRecBob').click(function () {
+                $('#Poids').val('');
+                $('#coulee').val('');
+                $('#bobine').val('');
+                bobinesEtat = 'NonREC';
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var did = $('#Did').val();
+                $.ajax({
+                    url: "{{url('/MasEPrep/')}}/" + did + '/edit',
+                    method: 'get',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                    },
+                    success: function (result) {
+                        if (result.bobines.length !== 0) {
+                            var bobines = result.bobines;
+                            $('#bobines2').html("");
+                            bobines.forEach(function (item, index) {
+
+                                $('#bobines2').append('<option  value="' + item.Bobine + '" >' + item.Bobine + '</option>');
+                                $('#bobine').attr('list', 'bobines2');
+                            });
+                            var coulees = result.coulees;
+                            $('#coulees2').html("");
+                            coulees.forEach(function (item, index) {
+
+                                $('#coulees2').append('<option  value="' + item.Coulee + '" >' + item.Coulee + '</option>');
+                                $('#coulee').attr('list', 'coulees2');
+                            });
+
+                        } else {
+                            alert("Pas de bobines Non réceptionnées dans ce Détail Projet");
+                            bobinesEtat = 'REC';
+                        }
+                    },
+                    error: function (result) {
+                        alert(result.responseJSON.error);
+                        console.log(result);
+                    }
+                });
             });
         });
 

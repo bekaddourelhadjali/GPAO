@@ -39,6 +39,7 @@ class ContBobineController extends Controller
      */
     public function store(Request $request)
     {
+        $rapport=Rapport::find($request->NumRap);
         $path = $request->file('ListeColisage')->getRealPath();
 
         $data = Excel::load($path)->get();
@@ -60,6 +61,10 @@ class ContBobineController extends Controller
                         'User'   =>gethostname(),
 			'Computer'    =>gethostname(),
 			'DateSaisie'  =>date('Y-m-d H:i:s'),
+			'AgentAddSaisie'  =>$rapport->NomAgents,
+			'RapportAddSaisie'  =>$rapport->Numero,
+			'ZoneAddSaisie' =>'RecBob',
+			'DateAddSaisie'  =>date('Y-m-d H:i:s'),
                     );
             }
 

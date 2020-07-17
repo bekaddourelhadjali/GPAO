@@ -23,17 +23,11 @@ class CreateM17Table extends Migration
             $table->string('Tube',5);
             $table->Boolean('Bis');
             $table->double('LongCh');
-            $table->string('Operation',30);
-            $table->Boolean('Oxyc')->default(0);
-            $table->Boolean('RB')->default(0);
-            $table->Boolean('Eprouv')->default(0);
-            $table->Boolean('NdHt')->default(0);
-            $table->Boolean('Vis')->default(0);
-            $table->Boolean('Scop')->default(0);
-            $table->Boolean('Final')->default(0);
-            $table->Boolean('DdbFt')->default(0);
-            $table->string('Observation')->nullable();
+            $table->string('Defauts',50);
+            $table->string('Observation',50)->nullable();
             $table->integer('NumeroRap')->unsigned();
+            $table->string('User',50);
+            $table->string('Computer',50);
             $table->dateTime('DateSaisie');
         });
     }

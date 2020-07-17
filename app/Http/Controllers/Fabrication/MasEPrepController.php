@@ -114,7 +114,9 @@ class MasEPrepController extends Controller
      */
     public function edit($id)
     {
-        //
+        $bobines = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Bobine')->get();
+        $coulees = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Coulee')->distinct('Coulee')->get();
+        return response()->json(array('bobines' => $bobines, 'coulees' => $coulees), 200);
     }
 
     /**

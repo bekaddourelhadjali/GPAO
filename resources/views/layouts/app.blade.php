@@ -20,6 +20,8 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/bootstrap-select.css')}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/selectize.css')}}" />
+
     <style>
         body {
             color: #000;
@@ -140,7 +142,7 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
-
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 @yield('script')
 
 

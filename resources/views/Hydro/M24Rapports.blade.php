@@ -101,13 +101,12 @@
                             <legend><h4>Information du rapport</h4> </legend>
                             <div class="form-group  row">
                                 <label class="col-4" for="detail_project ">Detail Projet</label>
-                                <select class="form-control col-8" id="detail_project " name="detail_project">
+                                <select class="form-control col-xl-8 col-lg-9 col-md-8 col-sm-8" id="detail_project" name="detail_project">
                                     @foreach($details as $detail)
-                                        <option value="{{$detail->Did}}">Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
+                                        <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
                             <div class="row ">
                                 <div class="col-12">
                                     <div class="form-group row">
@@ -127,21 +126,9 @@
                                     <div class="form-group row">
                                         <label class="col-4" for="poste ">Poste</label>
                                         <select class="form-control col-4" id="poste" name="poste">
-                                            @if(isset($postes))
-                                                @foreach($postes as $poste)
-                                                    <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-4" for="machine">Machine</label>
-                                        <select class="form-control col-4" id="machine" name="machine">
-                                            @if(isset($machines))
-                                                @foreach($machines as $machine)
-                                                    <option value="{{$machine->Machine}}">{{$machine->Machine}}</option>
-                                                @endforeach
-                                            @endif
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
                                         </select>
                                     </div>
                                 </div>
@@ -162,41 +149,7 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="hidden" id="codeAgent" name="codeAgent" value="">
-                                <select class="form-control col-2 offset-1"  id="code" name="code" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-3" for="agent2">Agent 02</label>
-                                <select class="form-control col-6" id="agent2" name="agent2">
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <input type="hidden" id="codeAgent2" name="codeAgent2" value="">
-                                <select class="form-control col-2 offset-1"  id="code2" name="code2" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                <input type="text" id="codeAgent" name="codeAgent" class="col-2 offset-1 form-control" placeholder="Code" required>
                             </div>
 
                             <hr>

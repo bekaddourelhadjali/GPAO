@@ -39,7 +39,14 @@ class CreateBobineTable extends Migration
             $table->string('Computer',50)->nullable();
             $table->dateTime('DateSaisie')->nullable();
             $table->integer('NumeroRap')->nullable();
+            $table->string('NumTest',10)->nullable();
+            $table->string('Observation',10)->nullable();
+            $table->string('AgentAddSaisie');
+            $table->string('RapportAddSaisie');
+            $table->dateTime('DateAddSaisie');
+            $table->string('ZoneAddSaisie');
             $table->unique(['Coulee','Bobine']);
+
         });
     }
 

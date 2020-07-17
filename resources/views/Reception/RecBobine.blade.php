@@ -187,8 +187,13 @@
                             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
                                                                                            for="DateRec">Date
                                     Reception </label>
+                                @php
+                                    $date=new DateTime();
+                                    $date->sub(new DateInterval('P3D'));
+                                    $minDate=$date->format('Y-m-d');
+                                @endphp
                                 <input class="form-control" type="date" value="{{date('Y-m-d')}}" id="DateRec"
-                                       name="DateRec" required max="{{date("Y-m-d") }}" min="2020-07-07"
+                                       name="DateRec" required max="{{date("Y-m-d") }}" min="{{$minDate}}"
                                        required>
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"

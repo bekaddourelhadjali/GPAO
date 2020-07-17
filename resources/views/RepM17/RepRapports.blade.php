@@ -101,22 +101,21 @@
                             <legend><h4>Information du rapport</h4> </legend>
                             <div class="form-group  row">
                                 <label class="col-4" for="detail_project ">Detail Projet</label>
-                                <select class="form-control col-8" id="detail_project " name="detail_project">
+                                <select class="form-control col-xl-8 col-lg-8 col-md-8 col-sm-8" id="detail_project" name="detail_project">
                                     @foreach($details as $detail)
-                                        <option value="{{$detail->Did}}">Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
+                                        <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
                             <div class="row ">
                                 <div class="col-12">
                                     <div class="form-group row">
-                                        <label class="col-4" for="date" >Date du rapport</label>
+                                        <label class="col-5" for="date" >Date du rapport</label>
                                         <input class="col-4 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" >
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-4" for="equipe ">Equipe</label>
+                                        <label class="col-5" for="equipe ">Equipe</label>
                                         <select class="form-control col-4" id="equipe" name="equipe">
                                             <option value="A">A</option>
                                             <option value="B">B</option>
@@ -125,23 +124,20 @@
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-4" for="poste ">Poste</label>
+                                        <label class="col-5" for="poste ">Poste</label>
                                         <select class="form-control col-4" id="poste" name="poste">
-                                            @if(isset($postes))
-                                                @foreach($postes as $poste)
-                                                    <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
-                                                @endforeach
-                                            @endif
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-4" for="machine">Machine</label>
-                                        <select class="form-control col-4" id="machine" name="machine">
-                                            @if(isset($machines))
-                                                @foreach($machines as $machine)
-                                                    <option value="{{$machine->Machine}}">{{$machine->Machine}}</option>
-                                                @endforeach
-                                            @endif
+                                        <label class="col-5" for="ZoneRep ">Zone de Réparation</label>
+                                        <select class="form-control col-4" id="ZoneRep" name="ZoneRep" required>
+                                            <option value="M18">M18</option>
+                                            <option value="M19">M19</option>
+                                            <option value="M20">M20</option>
+                                            <option value="M21">M21</option>
                                         </select>
                                     </div>
                                 </div>
@@ -162,50 +158,26 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="hidden" id="codeAgent" name="codeAgent" value="">
-                                <select class="form-control col-2 offset-1"  id="code" name="code" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-3" for="agent2">Agent 02</label>
-                                <select class="form-control col-6" id="agent2" name="agent2">
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <input type="hidden" id="codeAgent2" name="codeAgent2" value="">
-                                <select class="form-control col-2 offset-1"  id="code2" name="code2" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                <input type="text" class="col-2 offset-1 form-control" id="codeAgent" placeholder="Code" name="codeAgent" required>
                             </div>
 
                             <hr>
                             <div class="form-group row">
-                                <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
+
+                                <div class="col-3 ">
+                                    <button type="button" type="button" id="imprimer" class="col-12 btn btn-outline-danger   "
+                                            onclick="window.location.href='{{route('Rep_M17')}}'">
+                                        <b><i class="fa fa-arrow-circle-left" style="font-size: 20px;"></i> &nbsp;Retour</b>
+                                    </button>
+                                </div>
+                                <div class="col-5">
+                                <button type="button" class="col-12   btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
                                     Reprendre un rapport
                                 </button>
-
-                                <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
+                                </div>
+                                <div class="col-4">
+                                <button   type="submit" class="col-12  btn btn-success"> Valider</button>
+                                </div>
                             </div>
                         </fieldset>
 
@@ -225,9 +197,7 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Poste</th>
-                                    <th>Machine</th>
                                     <th>Agent 1</th>
-                                    <th>Agent 2</th>
                                     <th>Clôturé</th>
                                 </tr>
                                 </thead>
@@ -237,9 +207,7 @@
                                         <tr id="rapport{{$rapport->Numero}}" @if($rapport->Etat=='C')class="Clot bg-success text-white" @else class="NotClot  " @endif >
                                             <td>{{$rapport->DateRapport}}</td>
                                             <td>{{$rapport->Poste}}</td>
-                                            <td>{{$rapport->Machine}}</td>
                                             <td>{{$rapport->NomAgents}} / {{$rapport->CodeAgent}}</td>
-                                            <td>{{$rapport->NomAgents1}} / {{$rapport->CodeAgent1}}</td>
                                             @if($rapport->Etat=='C')<td>Oui</td>   @else <td>Non</td>  @endif
                                         </tr>
                                     @endforeach
@@ -279,9 +247,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Poste</th>
-                            <th>Machine</th>
                             <th>Agent 1</th>
-                            <th>Agent 2</th>
                             <th>Clôturé</th>
                         </tr>
                         </thead>
@@ -322,17 +288,13 @@
                                 $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
                                     '                   <td>'+rapport.DateRapport+'</td>\n' +
                                     '                   <td>'+rapport.Poste+'</td>\n' +
-                                    '                   <td>'+rapport.Machine+'</td>\n' +
                                     '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                                    '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
                                     '                            <td>Oui</td>    </tr>');
                             }else{
                                 $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'"  class="NotClot  "> ' +
                                     '                   <td>'+rapport.DateRapport+'</td>\n' +
                                     '                   <td>'+rapport.Poste+'</td>\n' +
-                                    '                   <td>'+rapport.Machine+'</td>\n' +
                                     '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                                    '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
                                     '                             <td>Non</td>   </tr>');
                             }
 
@@ -365,19 +327,6 @@
                     });
                 });
             }
-            $('#agent').on('change',function(){
-                order=$(this).children("option:selected").attr('order');
-                val=$('#code').find('option[order='+order+']').val();
-                $('#code').val(val);
-                $('#codeAgent').val(val);
-
-            });
-            $('#agent2').on('change',function(){
-                order=$(this).children("option:selected").attr('order');
-                val=$('#code2').find('option[order='+order+']').val();
-                $('#code2').val(val);
-                $('#codeAgent2').val(val);
-            });
 
         });
     </script>

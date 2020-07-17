@@ -22,15 +22,11 @@ class CreateReparationTable extends Migration
             $table->string('Ntube',4);
             $table->string('Tube',5);
             $table->Boolean('Bis');
-            $table->double('Longueur');
-            $table->Boolean('DfInt')->default(0);
-            $table->Boolean('DfExt')->default(0);
-            $table->Boolean('Rep1')->default(0);
-            $table->Boolean('Rep2')->default(0);
-            $table->Boolean('Rep3')->default(0);
             $table->string('Observation')->nullable();
             $table->string('Defauts')->nullable();
             $table->integer('NumeroRap')->unsigned();
+            $table->string('User',50);
+            $table->string('Computer',50);
             $table->dateTime('DateSaisie');
         });
     }

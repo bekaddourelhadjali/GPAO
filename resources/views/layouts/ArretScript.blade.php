@@ -1,11 +1,12 @@
 <script>
     $(document).ready(function () {
 
+        $('#annulerPanne').hide();
         addArretsListeners();
         $('#annulerPanne').click(function () {
             $('#ajouterPanne').html(' Ajouter ');
             $('#annulerPanne').hide();
-            $('#rx1Form').trigger('reset');
+            $('#arretForm').trigger("reset");
         });
 
         function addArretsListeners() {
@@ -33,6 +34,9 @@
                         },
                         success: function (result) {
                             tr.remove();
+                            $('#ajouterPanne').html(' Ajouter ');
+                            $('#annulerPanne').hide();
+                            $('#arretForm').trigger("reset");
                         },
                         error: function (result) {
                             alert(result.responseJSON.message);
@@ -47,32 +51,23 @@
                     tr = $(this).parent().parent();
                     const id = $(this).attr("id").replace(/[^0-9]/g, '');
                     $('#cause').val(tr.find('#cause' + id).html());
+                    $('#type_arret').val(tr.find('#type' + id).html());
                     $('#du').val(tr.find('#du' + id).html());
                     $('#au').val(tr.find('#au' + id).html());
                     $('#duree').val(tr.find('#duree' + id).html());
                     $('#ndi').val(tr.find('#ndi' + id).html());
                     $('#obs').val(tr.find('#obs' + id).html());
                     $('#relv').val(tr.find('#relv' + id).html());
-                    $('#idArret').val(id);
-
-                    if ($('#type' + id).html() === 'panne') {
-                        $('#type_arret').find('option[value=panne]').attr('selected', 'selected');
-                        $('#type_arret').find('option[value=arret]').removeAttr('selected');
-
-                    } else {
-                        $('#type_arret').find('option[value=panne]').removeAttr('selected');
-                        $('#type_arret').find('option[value=arret]').attr('selected', 'selected');
-                    }
+                    $('#id').val(id);
                     $('#ajouterPanne').html(' Modifier panne ');
                     $('#annulerPanne').show();
 
                 });
             });
         }
-
         $('#ajouterPanne').click(function (e) {
             if ($('#arretForm')[0].checkValidity()) {
-                const id = $('#idArret').val();
+                const id = $('#id').val();
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -97,7 +92,6 @@
                             cause: $('#cause').val(),
                             ndi: $('#ndi').val(),
                             obs: $('#obs').val(),
-                            relv: $('#relv').val(),
                         },
                         success: function (result) {
 
@@ -108,16 +102,15 @@
                                 '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
                                 '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
                                 '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
-                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
-                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
-                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
+                                '<td id="ndi' + result.arret.id + '">' + $('#ndi').val() + '</td>' +
+                                '<td id="obs' + result.arret.id + '">' + $('#obs').val() + '</td>' +
                                 '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
                                 '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
 
+                            $('#arretForm').trigger("reset");
                             addArretsListeners();
                         },
                         error: function (result) {
-                            console.log(result.responseJSON);
                             alert(result.responseJSON.message);
                         }
                     });
@@ -140,7 +133,6 @@
                             cause: $('#cause').val(),
                             ndi: $('#ndi').val(),
                             obs: $('#obs').val(),
-                            relv: $('#relv').val(),
                         },
                         success: function (result) {
 
@@ -150,9 +142,8 @@
                                 '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
                                 '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
                                 '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
-                                '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
-                                '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
-                                '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
+                                '<td id="ndi' + result.arret.id + '">' + $('#ndi').val() + '</td>' +
+                                '<td id="obs' + result.arret.id + '">' + $('#obs').val() + '</td>' +
                                 '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
                                 '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td>');
                             $('#ajouterPanne').html(' Ajouter panne ');
@@ -171,7 +162,7 @@
                 alert('Remplir tous les champs qui sont obligatoires svp!');
             }
         });
-        $("#au , #du").click(function (event) {
+        $("#au , #du").change(function (event) {
 
 
             if ($("#du").val() != "" && $("#au").val() != "") {
@@ -193,5 +184,21 @@
             d.setSeconds(0, 0);
             return d;
         }
+        $('#type_arret').change(function () {
+            if($(this).val()==="P1"){
+                $('#cause').attr('list','panneP1List');
+                $('#ndi').prop('required',true);
+            }
+            else if($(this).val()==="Arret"||$(this).val()==="Autres"){
+                $('#ndi').prop('required',false);
+                $('#cause').attr('list','pannesList');
+            }else if($(this).val()==="P3"||$(this).val()==="P4"){
+                $('#ndi').prop('required',true);
+                $('#cause').removeAttr('list');
+            }else{
+                $('#ndi').prop('required',false);
+                $('#cause').removeAttr('list');
+            }
+        });
     });
 </script>

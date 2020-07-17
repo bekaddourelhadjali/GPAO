@@ -30,8 +30,6 @@ class CreateRapportsTable extends Migration
             $table->string('Intensite',10)->nullable();
             $table->string('TmpPose',10)->nullable();
             $table->string('DisBras',10)->nullable();
-            $table->string('NLot',10)->nullable();
-            $table->string('Proc',10)->nullable();
             $table->string('TSI1V',20)->nullable();
             $table->string('TSI1A',20)->nullable();
             $table->string('TSI2V',20)->nullable();
@@ -50,14 +48,12 @@ class CreateRapportsTable extends Migration
             $table->string('LargCisAlge',20)->nullable();
             $table->string('RelComptF',20)->nullable();
             $table->string('RelComptD',20)->nullable();
+            $table->string('ZoneRep',3)->nullable();
             $table->string('Computer',50)->nullable();
             $table->string('User',50)->nullable();
             $table->dateTime('DateSaisie')->nullable();
             $table->string('Etat',1)->nullable();
             $table->text('ObsRap')->nullable();
-            $table->double('MinNRecep')->nullable();
-            $table->double('MaxNRecep')->nullable();
-            $table->string('MaxTube',5)->nullable();
         });
     }
 

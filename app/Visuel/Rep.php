@@ -15,6 +15,7 @@ class Rep extends Model
         return $this->hasOne('App\Fabrication\Tube','NumTube','NumTube');
     }
     public function Defs(){
-        return $this->hasMany('App\Visuel\DetailDefauts','NumVisuel','Id')->where("Zone","=","Z04")->select(['id','Opr', 'IdDef', 'Defaut', 'Valeur', 'NbOpr', 'Nombre']);
+        return $this->hasMany('App\Visuel\DetailDefauts','NumVisuel','Id')->where("Zone","=","Z04")
+            ->select(['id','Opr', 'IdDef', 'Defaut', 'Valeur', 'NbOpr', 'Nombre','Int','Ext','Observation']);
     }
 }

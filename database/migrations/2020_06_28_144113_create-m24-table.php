@@ -22,11 +22,11 @@ class CreateM24Table extends Migration
             $table->string('Ntube',4);
             $table->string('Tube',5);
             $table->Boolean('Bis');
-            $table->integer('NbOpr');
-            $table->string('Operation',30);
             $table->double('Pression');
-            $table->string('Observation')->nullable();
+            $table->string('Observation')->phpnullable();
             $table->integer('NumeroRap')->unsigned();
+            $table->string('User',50);
+            $table->string('Computer',50);
             $table->dateTime('DateSaisie');
         });
     }

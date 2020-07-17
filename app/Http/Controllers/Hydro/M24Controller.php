@@ -78,7 +78,7 @@ class M24Controller extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z05') {
+            if ($rapport->Zone == 'Z06') {
                 if ($rapport->Etat == 'N') {
                     $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
                     $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->where('Pid', '=', $rapport->Pid)->select(['NumTube', 'Tube', 'Bis'])->get();

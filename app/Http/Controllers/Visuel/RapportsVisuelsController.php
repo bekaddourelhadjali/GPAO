@@ -20,19 +20,15 @@ class RapportsVisuelsController extends Controller
      */
     public function index()
     {
-        $postes = DB::select('Select * from postes');
+
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $machines = $location->machines;
-        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $details = $projet->details;
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
         $rapports=DB::select('select * from rapports where "Zone"=\'Z02\' order by "DateSaisie" desc limit 3');
         return view ('Visuel.rapportsV',['details'=>$details
-            ,'machines'=>$machines
-            ,'postes'=>$postes
             ,'agents'=>$agents
-            ,'rapports'=>$rapports
-            ,'projet'=>$projet]);
+            ,'rapports'=>$rapports ]);
 
     }
 
@@ -55,26 +51,20 @@ class RapportsVisuelsController extends Controller
     public function store(Request $request)
     {
         $rapport = new Rapport();
-        $rapport->Pid= $request->Pid;
+        $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
         $rapport->Zone='Z02';
         $rapport->Equipe= $request->equipe;
-        $rapport->Machine= $request->machine;
+        $rapport->Machine= 'V';
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent ;
         $rapport->NomAgents1= $request->agent2;
         $rapport->CodeAgent= $request->codeAgent ;
-        $rapport->CodeAgent1= $request->codeAgent2;
-        $rapport->TSIFlux=0;
-        $rapport->TSIFil=0;
-        $rapport->TSEFlux=0;
-        $rapport->TSEFil=0;
-        $rapport->Flux=0;
-        $rapport->Fil=0;
-        $rapport->VSoudage=0;
-        $rapport->LargCisAlge=0;
+        $rapport->CodeAgent1= $request->codeAgent2; 
         $rapport->Etat='N';
+        $rapport->Computer=gethostname();
+        $rapport->User=$request->agent.'/'.$request->agent2;
         $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
              return redirect(route('visuels.show',['id'=>$rapport->Numero]));

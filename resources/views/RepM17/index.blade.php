@@ -100,6 +100,9 @@
             box-shadow: none;
             backdrop-filter: blur(5px);
         }
+        #div-center{
+            margin:100px 0;
+        }
     </style>
 
     @endsection
@@ -107,7 +110,7 @@
 @section('content')
 
 <div class="container">
-<div class="row text-center">
+<div class="row text-center" id="div-center">
 
     <section class="col-4 offset-2" id="settings-section" onclick="window.location.href='{{route("rapports_Rep.index")}}';">
 

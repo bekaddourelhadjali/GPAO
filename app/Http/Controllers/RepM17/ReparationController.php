@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\RepM17;
 
+use App\Fabrication\Rapport;
+use App\Fabrication\Rapprod;
 use App\Fabrication\Tube;
 use App\Visuel\DetailDefauts;
 use App\Visuel\Rep;
@@ -40,7 +42,13 @@ class ReparationController extends Controller
     public function store(Request $request)
     {
         $rep = new Rep();
-        $tube = Tube::where('Tube', '=', $request->ntube)->where('Pid', '=', $request->Pid)->where('Did', '=', $request->Did)->first();
+        $tubeBis=false;
+        $tubeBisStr=substr($request->ntube,5,3);
+        if($tubeBisStr=='bis'){
+            $tubeBis=true;
+        }
+        $tube = Tube::where('Tube', '=', substr($request->ntube,0,5))->where('Bis','=',$tubeBis)->where('Did', '=', $request->Did)->first();
+        $rapport=Rapport::find($request->NumeroRap);
         $rep->NumTube = $tube->NumTube;
         $rep->Pid = $request->Pid;
         $rep->Did = $request->Did;
@@ -48,20 +56,16 @@ class ReparationController extends Controller
         $rep->Machine = $tube->Machine;
         $rep->Ntube = $tube->NTube;
         $rep->Tube = $tube->Tube;
-        $rep->Bis = $request->bis;
-        $rep->Longueur = $request->Longueur;
-        $rep->Observation = $request->Observation; 
-        $rep->DfInt = $request->Int;
-        $rep->DfExt = $request->Ext;
-        $rep->Rep1 = $request->Rep1;
-        $rep->Rep2 = $request->Rep2;
-        $rep->Rep3 = $request->Rep3;
+        $rep->Bis = $tube->Bis;
         $rep->Defauts=$request->Obs;
+        $rep->User=$rapport->NomAgents;
+        $rep->Computer=gethostname();
         $rep->DateSaisie = date('Y-m-d H:i:s');
         $defauts=$request->Defauts;
         if ($rep->save()) {
             $tube->Z04 = true;
             $tube->save();
+            if ($rep->Bis=="true" || $rep->Bis=="1") $rep->Bis_t = "checked"; else $rep->Bis_t = "";
                 foreach ($defauts as $defaut) {
                     $detailDefaut = new \App\Visuel\DetailDefauts();
                     $detailDefaut->Pid = $rep->Pid;
@@ -76,14 +80,11 @@ class ReparationController extends Controller
                     $detailDefaut->Valeur = $defaut[3];
                     $detailDefaut->NbOpr = $defaut[4];
                     $detailDefaut->Nombre = $defaut[5];
+                    $detailDefaut->Int = $defaut[6];
+                    $detailDefaut->Ext = $defaut[7];
+                    $detailDefaut->Observation = $defaut[8];
                     $detailDefaut->save();
                 }
-            if ($rep->Bis=="true" || $rep->Bis=="1") $rep->Bis_t = "checked"; else $rep->Bis_t = "";
-            if ($rep->DfInt=="true" || $rep->DfInt=="1") $rep->Int_t = "checked"; else $rep->Int_t = "";
-            if ($rep->DfExt=="true"  || $rep->DfExt=="1") $rep->Ext_t = "checked"; else $rep->Ext_t = "";
-            if ($rep->Rep1=="true" || $rep->Rep1=="1") $rep->Rep1_t = "checked"; else $rep->Rep1_t = "";
-            if ($rep->Rep2=="true" || $rep->Rep2=="1") $rep->Rep2_t = "checked"; else $rep->Rep2_t = "";
-            if ($rep->Rep3=="true" || $rep->Rep3=="1") $rep->Rep3_t = "checked"; else $rep->Rep3_t = "";
             return response()->json(array('rep' => $rep), 200);
         } else {
             return response()->json(array('error' => error), 404);
@@ -102,14 +103,15 @@ class ReparationController extends Controller
         if ($rapport != null) {
             if ($rapport->Zone == 'Z04') {
                 if ($rapport->Etat == 'N') {
-                    $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->where('Pid', '=', $rapport->Pid)->select(['NumTube', 'Tube', 'Bis'])->get();
+                    $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
+                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
                     $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z04')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z04')->get();
                     return view('RepM17.Rep',
                         ['rapport' => $rapport,
                             'reps' => $rapport->Reparations,
-                            'projet' => $projet,
+                            'detailP' => $detailP,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,
                             'defauts' => $defauts,
@@ -155,14 +157,6 @@ class ReparationController extends Controller
     public function update(Request $request, $id)
     {
         $rep =  Rep::find($id);
-        $rep->Bis = $request->bis;
-        $rep->Longueur = $request->Longueur;
-        $rep->Observation = $request->Observation;
-        $rep->DfInt = $request->Int;
-        $rep->DfExt = $request->Ext;
-        $rep->Rep1 = $request->Rep1;
-        $rep->Rep2 = $request->Rep2;
-        $rep->Rep3 = $request->Rep3;
         $rep->Defauts=$request->Obs;
         $rep->DateSaisie = date('Y-m-d H:i:s');
         $oldDefs = $rep->Defs;
@@ -182,6 +176,9 @@ class ReparationController extends Controller
                 $detailDefaut->Valeur = $defaut[3];
                 $detailDefaut->NbOpr = $defaut[4];
                 $detailDefaut->Nombre = $defaut[5];
+                $detailDefaut->Int = $defaut[6];
+                $detailDefaut->Ext = $defaut[7];
+                $detailDefaut->Observation = $defaut[8];
                 $detailDefaut->save();
             }
             foreach ($oldDefs as $olddef) {
@@ -189,11 +186,6 @@ class ReparationController extends Controller
             }
 
             if ($rep->Bis=="true" || $rep->Bis=="1") $rep->Bis_t = "checked"; else $rep->Bis_t = "";
-            if ($rep->DfInt=="true" || $rep->DfInt=="1") $rep->Int_t = "checked"; else $rep->Int_t = "";
-            if ($rep->DfExt=="true"  || $rep->DfExt=="1") $rep->Ext_t = "checked"; else $rep->Ext_t = "";
-            if ($rep->Rep1=="true" || $rep->Rep1=="1") $rep->Rep1_t = "checked"; else $rep->Rep1_t = "";
-            if ($rep->Rep2=="true" || $rep->Rep2=="1") $rep->Rep2_t = "checked"; else $rep->Rep2_t = "";
-            if ($rep->Rep3=="true" || $rep->Rep3=="1") $rep->Rep3_t = "checked"; else $rep->Rep3_t = "";
             return response()->json(array('rep' => $rep), 200);
         } else {
             return response()->json(array('error' => error), 404);

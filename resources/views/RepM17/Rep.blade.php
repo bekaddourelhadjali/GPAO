@@ -161,7 +161,8 @@
 
         <section id="head-section">
             <div class="row">
-                <div class="col-6 col-sm-4 col-lg-2">
+                <div class="col-12 col-sm-12 col-lg-6">
+                    <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}} : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span></div>
                     <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                     <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
                 </div>
@@ -172,75 +173,65 @@
                 <div class="col-6 col-sm-6  col-lg-3">
                     <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}
                             / {{$rapport->CodeAgent}}</span></div>
-                    <div class="row">Agent2: &nbsp; <span class="valeur">{{$rapport->NomAgents1}}
-                            / {{$rapport->CodeAgent1}}</span></div>
+                    <div class="row">Zone De Reparation: &nbsp; <span class="valeur">{{$rapport->ZoneRep}} </span></div>
                 </div>
 
             </div>
         </section>
-        <form class="row" id="repForm">
-            <div class="col-xl-4 col-lg-5 col-md-8 offset-md-2 offset-lg-0 col-sm-12 ">
+        <form class="row" id="repForm" autocomplete="off">
+            <div class="col-xl-4 col-lg-4 col-md-8 offset-md-2 offset-lg-0 col-sm-12 ">
 
                 <section class="top-actions">
                     <h5>Info Tube</h5>
-
+                    @php  @endphp
                     <input name="Numero" type="hidden" id="Numero" value="">
                     <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
                     <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
                     <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                     <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                     <div class="row">
-                        <div class=" col-5">
+                        <div class=" col-4">
                             <div class="form-group ">
                                 <label class="col-lg-12" style="padding-left: 0">Tube</label>
-                                <select class="form-control col-12" style="color:#00f" id="ntube" name="ntube"
-                                        required>
-                                    <option disabled>Tube &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bis</option>
+                                <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
+                                       name="ntube"
+                                       required list="tubes">
+                                <datalist id="tubes">
+                                    <option disabled selected></option>
                                     @foreach($tubes as $tube)
-                                        <option value="{{$tube->Tube}}"> {{$tube->Tube}} &nbsp;
-                                            &nbsp;&nbsp; @if($tube->Bis) &#xf14a; @else &#xf0c8;  @endif </option>
+                                        @if($tube->Bis)
+                                            <option value="{{$tube->Tube}}bis">{{$tube->Tube}}bis</option>
+                                        @else
+                                            <option value="{{$tube->Tube}}"> {{$tube->Tube}}  </option>
+                                            &nbsp; @endif
                                     @endforeach
-                                </select>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="col-8 ">
+                            <div class="form-group ">
+                                <label class="col-lg-12" style="padding-left: 0">&nbsp;</label>
+                                <button style=" margin-top: 0; " type="reset"
+                                        class=" col-5 btn btn-outline-secondary " id="annulerButton">Annuler
+                                </button>
+                                </button>
+                                <button style="  margin-top: 0;" type="submit" class=" col-6 btn btn-success"
+                                        id="Ajouter">Ajouter
+                                </button>
                             </div>
                         </div>
 
-                        <div class=" col-1">
-                            <div class="form-group ">
-                                <label class="col-12" for="bis" style="padding-left: 0">Bis</label>
-                                <input class=" col-12" type="checkbox" id="bis" name="bis">
-                            </div>
-                        </div>
-                        <div class="  col-6">
-                            <div class="form-group text-center">
-                                <label class="col-12" for="Longueur" style="padding-left: 0">Longueur</label>
-                                <input class="form-control col-12" type="number" id="Longueur" name="Longueur"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="form-group col-12  ">
-                            <label for="observation" class="col-12">Observation</label>
-                            <input type="text" class="form-control" name="observation" id="observation">
-                        </div>
-                        <div class="col-12 ">
-                            <button style="margin-right: 10px;" type="reset"
-                                    class=" col-5 btn btn-outline-secondary " id="annulerButton">Annuler
-                            </button>
-                            </button>
-                            <button style="margin-right: 10px;" type="submit" class=" col-5 btn btn-success"
-                                    id="Ajouter">Ajouter
-                            </button>
-                        </div>
 
                     </div>
                 </section>
             </div>
 
-            <div class="col-xl-8 col-lg-7 col-sm-12">
+            <div class="col-xl-8 col-lg-8 col-sm-12">
                 <section class="top-actions">
                     <h5>Désignation des anomalies</h5>
 
                     <div class="row">
-                        <div class="col-4 col-sm-2 col-lg-2">
+                        <div class="col-4 col-sm-2 col-lg-1">
                             <div class="form-group ">
                                 <label class="col-12" for="nbr">Nbr</label>
                                 <input class="  form-control" type="number" id="nbr" name="nbr">
@@ -280,9 +271,18 @@
                                     @endif
                                 </select>
                             </div>
-
                         </div>
-
+                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 ">
+                            <div class="form-group text-center">
+                                <label class="col-12">Defaut</label>
+                                <span class="  col-5 btn btn-outline-secondary defs" id="Int">Int</span>
+                                <span class="  col-5 btn btn-outline-secondary defs" id="Ext">Ext</span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-8 col-sm-8 col-12  ">
+                            <label for="observation" class="col-12">Observation</label>
+                            <input type="text" class="form-control" name="observation" id="observation">
+                        </div>
                         <div class="col-sm-1 col-2">
 
                             <label class="col-12" for=""> </label>
@@ -294,27 +294,9 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="row">
                         <input type="text" id="defauts" class=" form-control col-12" readonly>
-
-                    </div>
-                    <div class="row ">
-                        <div class="col-5 col-sm-6 col-md-4 ">
-                            <div class="form-group text-center">
-                                <label class="col-12">Defaut</label>
-                                <span class="  col-5 btn btn-outline-secondary defs" id="Int">Int</span>
-                                <span class="  col-5 btn btn-outline-secondary defs" id="Ext">Ext</span>
-                            </div>
-                        </div>
-                        <div class="col-7 col-sm-6 col-md-5 col-lg-6">
-                            <div class="form-group text-center">
-                                <label class="col-12">Réparation</label>
-                                <span class=" col-3 btn btn-outline-secondary defs" id="Rep1">1</span>
-                                <span class="  col-3 btn btn-outline-secondary defs" id="Rep2">2</span>
-                                <span class="  col-3 btn btn-outline-secondary defs" id="Rep3">3 +</span>
-                            </div>
-                        </div>
-
 
                     </div>
 
@@ -330,15 +312,8 @@
                     <tr>
                         <th>Tube</th>
                         <th>Bis</th>
-                        <th>Longueur</th>
-                        <th>Operation</th>
-                        <th>Defaut</th>
-                        <th>Int</th>
-                        <th>Ext</th>
-                        <th>1 Rép</th>
-                        <th>2 Rép</th>
-                        <th>3 Rép</th>
-                        <th>Observation</th>
+                        <th>Defauts</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody id="reps">
@@ -349,26 +324,9 @@
                                 <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
                                                                                  onclick="return false;">
                                     @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="Longueur{{$item->Id}}">{{$item->Longueur}}</td>
-                                <td id="Operation{{$item->Id}}"> {{$item->Defauts}} </td>
-                                <td id="Defaut{{$item->Id}}">{{$item->Defauts}} </td>
-                                <td id="Int{{$item->Id}}">@if($item->DfInt) <input type="checkbox" checked
-                                                                                   onclick="return false;">
-                                    @elseif(!$item->DfInt)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="Ext{{$item->Id}}">@if($item->DfExt) <input type="checkbox" checked
-                                                                                   onclick="return false;">
-                                    @elseif(!$item->DfExt)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="Rep1_{{$item->Id}}">@if($item->Rep1) <input type="checkbox" checked
-                                                                                    onclick="return false;">
-                                    @elseif(!$item->Rep1)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="Rep2_{{$item->Id}}">@if($item->Rep2) <input type="checkbox" checked
-                                                                                    onclick="return false;">
-                                    @elseif(!$item->Rep2)<input type="checkbox" onclick="return false;"> @endif</td>
-                                <td id="Rep3_{{$item->Id}}">@if($item->Rep3) <input type="checkbox" checked
-                                                                                    onclick="return false;">
-                                    @elseif(!$item->Rep3)<input type="checkbox" onclick="return false;"> @endif</td>
 
-                                <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
+                                <td id="Defaut{{$item->Id}}">{{$item->Defauts}} </td>
+
                                 <td>
                                     <button id="rep{{$item->Id}}Edit" class="repEdit text-primary"><i
                                                 class="fa fa-edit"></i></button>
@@ -398,21 +356,18 @@
                             Machine</b>
                     </button>
                 </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
-                    <button type="button" id="imprimer" class="btn btn-outline-primary col-12">
-                        <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
-                    </button>
-                </div>
-                <div class=" col-lg-2 col-md-4 col-sm-6">
+
+                <div class=" col-lg-3 col-md-4 col-sm-6">
                     <button type="button" class="btn btn-info col-12" data-toggle="modal" data-target="#cardBackdrop">
                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b></button>
                 </div>
-                <div class="  col-lg-2  col-md-4 col-sm-6 ">
+                <div class="  col-lg-3  col-md-4 col-sm-6 ">
                     <form method="post" action="{{route('rapports_Rep.destroy',["id"=>$rapport->Numero])}}">
                         @csrf
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-secondary col-12"><b> <i class="fa fa-times-circle"
-                                                                        style="font-size: 20px;"></i> &nbsp;&nbsp;Quitter le rapport</b></button>
+                                                                        style="font-size: 20px;"></i> &nbsp;&nbsp;Quitter
+                                le rapport</b></button>
                     </form>
                 </div>
                 <div class=" col-lg-2 col-md-4 col-sm-6">
@@ -436,7 +391,6 @@
             $('#annulerButton').hide();
             $('#annulerPanne').hide();
             addRapprodsListeners();
-            var Reps = [];
             var defauts = [];
             initDefauts();
             var Defauts = [];
@@ -444,23 +398,31 @@
             $('#addDefaut').click(function (e) {
                 e.preventDefault();
                 if ($('#defaut').val() !== null && $('#operation').val() !== null) {
-                    Opr = $('#operation').val();
-                    IdDef = $('#defaut').find("option:selected").attr("defautId");
+                    if (defauts["Int"] || defauts["Ext"]) {
+                        Opr = $('#operation').val();
+                        IdDef = $('#defaut').find("option:selected").attr("defautId");
 
-                    Defaut = $('#defaut').val();
+                        Defaut = $('#defaut').val();
 
-                    Valeur = $('#valeur').val();
-                    NbOpr = $('#operation').find("option:selected").attr("operationId");
-                    Nombre = $('#nbr').val();
-                    if (Valeur === '' || Valeur === 0) {
-                        Valeur = null;
+                        Valeur = $('#valeur').val();
+                        NbOpr = $('#operation').find("option:selected").attr("operationId");
+                        Nombre = $('#nbr').val();
+                        if (Valeur === '' || Valeur === 0) {
+                            Valeur = null;
+                        }
+                        if (Nombre === '' || Nombre === 0) {
+                            Nombre = null;
+                        }
+
+                        Int = defauts["Int"];
+                        Ext = defauts["Ext"];
+
+                        Obs=$('#observation').val();
+                        Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, Int, Ext,Obs]);
+                        SetDefauts();
+                    } else {
+                        alert("Sélectionner l'emplacement de defaut Int ou Ext");
                     }
-                    if (Nombre === '' || Nombre === 0) {
-                        Nombre = null;
-                    }
-                    Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre]);
-                    SetDefauts();
-
                 } else {
                     alert('Sélectionner un defaut et une opération svp!');
                 }
@@ -487,6 +449,13 @@
                         if (item[3] > 0) {
                             obs = obs + '(' + item[3] + ')';
                         }
+                        if (item[6] && item[7]) {
+                            obs = obs + '(Int et Ext)';
+                        } else if (item[6]) {
+                            obs = obs + '(Int)';
+                        } else if (item[7]) {
+                            obs = obs + '(Ext)';
+                        }
                         if (Defauts.length > index + 1) {
                             NextOp = Defauts[index + 1][0];
                         } else {
@@ -509,10 +478,6 @@
             function initDefauts() {
                 defauts["Int"] = 0;
                 defauts["Ext"] = 0;
-                Reps = [];
-                Reps["Rep1"] = 0;
-                Reps["Rep2"] = 0;
-                Reps["Rep3"] = 0;
                 $('.defs').each(function () {
 
                     $(this).addClass('btn-outline-secondary');
@@ -522,61 +487,23 @@
 
             }
 
-            function initReps() {
-                for (const [key, value] of Object.entries(Reps)) {
-                    if (Reps[key]) {
-                        $("#" + key).removeClass('btn-outline-secondary');
-                        $("#" + key).addClass('btn-danger');
-                    } else {
-                        $("#" + key).addClass('btn-outline-secondary');
-                        $("#" + key).removeClass('btn-danger');
-                    }
-                }
 
-            }
-
-            $('#Rep1').click(function () {
-                Reps["Rep1"] = !Reps["Rep1"];
-                if (Reps["Rep1"]) {
-                    Reps["Rep2"] = !Reps["Rep1"];
-                    Reps["Rep3"] = !Reps["Rep1"];
-                }
-                initReps();
-            });
-            $('#Rep2').click(function () {
-                Reps["Rep2"] = !Reps["Rep2"];
-                if (Reps["Rep2"]) {
-                    Reps["Rep1"] = !Reps["Rep2"];
-                    Reps["Rep3"] = !Reps["Rep2"];
-                }
-                initReps();
-            });
-            $('#Rep3').click(function () {
-                Reps["Rep3"] = !Reps["Rep3"];
-                if (Reps["Rep3"]) {
-                    Reps["Rep1"] = !Reps["Rep3"];
-                    Reps["Rep2"] = !Reps["Rep3"];
-                }
-                initReps();
-            });
             $('#Ext').click(function () {
                 defauts["Ext"] = !defauts["Ext"];
-                    $("#Ext").toggleClass('btn-outline-secondary');
-                    $("#Ext").toggleClass('btn-danger');
+                $("#Ext").toggleClass('btn-outline-secondary');
+                $("#Ext").toggleClass('btn-danger');
 
             });
             $('#Int').click(function () {
                 defauts["Int"] = !defauts["Int"];
-                    $("#Int").toggleClass('btn-outline-secondary');
-                    $("#Int").toggleClass('btn-danger');
+                $("#Int").toggleClass('btn-outline-secondary');
+                $("#Int").toggleClass('btn-danger');
             });
 
             //Ajouter Reparation
             $('#Ajouter').click(function (e) {
-                if ($('#repForm')[0].checkValidity()) {
+                if ($('#repForm')[0].checkValidity() && $('#tubes option[value=' + $('#ntube').val() + ']').val() !== undefined) {
                     e.preventDefault();
-                    if ((defauts["Ext"] || defauts["Int"]) && (Reps["Rep1"] || Reps["Rep2"] || Reps["Rep3"])) {
-
                         const id = $('#Numero').val();
                         $.ajaxSetup({
                             headers: {
@@ -602,14 +529,6 @@
                                         Did: $('#Did').val(),
                                         NumeroRap: $('#NumRap').val(),
                                         ntube: $('#ntube').val(),
-                                        bis: $('#bis:checked').length > 0,
-                                        Observation: $('#observation').val() + "",
-                                        Longueur: $('#Longueur').val(),
-                                        Int: defauts["Int"],
-                                        Ext: defauts["Ext"],
-                                        Rep1: Reps["Rep1"],
-                                        Rep2: Reps["Rep2"],
-                                        Rep3: Reps["Rep3"],
                                         Defauts: Defauts,
                                         Obs: obs,
                                     },
@@ -618,22 +537,13 @@
                                         $('#reps').append('<tr id="rep' + item.Id + '">\n' +
                                             '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                             '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                            '                                <td     id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
-                                            '                                <td    id="Operation' + item.Id + '">' + item.Defauts + '</td>\n' +
                                             '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                            '                                <td id="Int' + item.Id + '"><input type="checkbox" ' + item.Int_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Ext' + item.Id + '"><input type="checkbox" ' + item.Ext_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Rep1_' + item.Id + '"><input type="checkbox" ' + item.Rep1_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Rep2_' + item.Id + '"><input type="checkbox" ' + item.Rep2_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Rep3_' + item.Id + '"><input type="checkbox" ' + item.Rep3_t + '  onclick="return false;"></td>' +
-                                            '                                <td     id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                             '                                <td>\n' +
                                             '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                             '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
                                             '                                </td>\n' +
                                             '                            </tr>');
                                         $('#repForm').trigger("reset");
-                                        $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                         defauts = [];
                                         initDefauts();
                                         Defauts = [];
@@ -656,14 +566,6 @@
                                         Did: $('#Did').val(),
                                         NumeroRap: $('#NumRap').val(),
                                         ntube: $('#ntube').val(),
-                                        bis: $('#bis:checked').length > 0,
-                                        Observation: $('#observation').val() + "",
-                                        Longueur: $('#Longueur').val(),
-                                        Int: defauts["Int"],
-                                        Ext: defauts["Ext"],
-                                        Rep1: Reps["Rep1"],
-                                        Rep2: Reps["Rep2"],
-                                        Rep3: Reps["Rep3"],
                                         Defauts: Defauts,
                                         Obs: obs,
                                         id: id
@@ -673,26 +575,14 @@
                                         console.log(item);
                                         $('#rep' + id).html('<td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                             '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                            '                                <td     id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
-                                            '                                <td    id="Operation' + item.Id + '">' + item.Defauts + '</td>\n' +
                                             '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                            '                                <td id="Int' + item.Id + '"><input type="checkbox" ' + item.Int_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Ext' + item.Id + '"><input type="checkbox" ' + item.Ext_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Rep1_' + item.Id + '"><input type="checkbox" ' + item.Rep1_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Rep2_' + item.Id + '"><input type="checkbox" ' + item.Rep2_t + '  onclick="return false;"></td>' +
-                                            '                                <td id="Rep3_' + item.Id + '"><input type="checkbox" ' + item.Rep3_t + '  onclick="return false;"></td>' +
-                                            '                                <td   id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                             '                                <td>\n' +
                                             '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                             '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
                                             '                                </td>');
-                                        // $('#rep' + id).replaceWith('<tr id="rep' + item.Id + '">\n' +
-                                        // '                                \n' +
-                                        // '                            </tr>');
                                         $('#repForm').trigger("reset");
                                         $('#Ajouter').html(' Ajouter ');
                                         $('#annulerButton').hide();
-                                        $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                         defauts = [];
                                         Defauts = [];
                                         initDefauts();
@@ -710,18 +600,19 @@
                         } else {
                             alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
                         }
-                    } else {
-                        alert("Choisir Le type de defaut Ext ou Int et Le nombre de réparations");
-                    }
+
                 } else {
-                    alert("Remplir tous les champs qui sont obligatoires svp !");
+                    if ($('#tubes option[value=' + $('#ntube').val() + ']').val() === undefined) {
+                        alert("Sélectionner le tube qui existe dans la liste svp!");
+                        $('#ntube').val('');
+                    } else
+                        alert("Remplir tous les champs qui sont obligatoires svp !");
                 }
             });
             $('#annulerButton').click(function () {
                 $('#repForm').trigger("reset");
                 $('#Ajouter').html(' Ajouter ');
                 $('#annulerButton').hide();
-                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                 $('#defauts').val('');
                 $('#ntube').prop('disabled', false);
                 defauts = [];
@@ -768,7 +659,6 @@
                     $('#repForm').trigger("reset");
                     $('#Ajouter').html(' Ajouter ');
                     $('#annulerButton').hide();
-                    $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                     $('#defauts').val('');
                     $('#ntube').prop('disabled', false);
                     defauts = [];
@@ -798,67 +688,38 @@
                                 rep = result.rep;
                                 Defauts = [];
                                 rep.defs.forEach(function (item, index) {
-                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre]);
+                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,item.Int,item.Ext,item.Observation]);
                                 });
                                 SetDefauts();
                                 $('#operation').val(Defauts[Defauts.length - 1][0]);
                                 $('#defaut').val(Defauts[Defauts.length - 1][2]);
+                                if(Defauts[Defauts.length - 1][6]){
+                                    defauts["Int"]=1;
+                                    $("#Int").removeClass('btn-outline-secondary');
+                                    $("#Int").addClass('btn-danger');
+
+                                }else{
+                                    defauts["Int"]=0;
+                                    $("#Int").addClass('btn-outline-secondary');
+                                    $("#Int").removeClass('btn-danger');
+                                }
+                                if(Defauts[Defauts.length - 1][7]){
+                                    defauts["Ext"]=1;
+                                    $("#Ext").removeClass('btn-outline-secondary');
+                                    $("#Ext").addClass('btn-danger');
+                                }else{
+                                    defauts["Ext"]=0;
+                                    $("#Ext").addClass('btn-outline-secondary');
+                                    $("#Ext").removeClass('btn-danger');
+                                }
+                                $('#observation').val(Defauts[Defauts.length - 1][8]);
                                 $('#ntube').prop('disabled', true);
                                 $('#Numero').val(id);
-                                $('#ntube').val($("#tube" + id).html());
-                                $('#Longueur').val($("#Longueur" + id).html());
-                                $('#observation').val($("#Observation" + id).html());
+
                                 if ($('#bis' + id).html().includes('checked'))
-                                    $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"   checked      >');
+                                    $('#ntube').val($("#tube" + id).html()+"bis");
                                 else
-                                    $('#bis').replaceWith('<input class=" col-12" type="checkbox" id="bis" name="bis"          >');
-
-                                if ($('#Int' + id).html().includes('checked')) {
-                                    $('#Int').removeClass('btn-outline-secondary');
-                                    $('#Int').addClass('btn-danger');
-                                    defauts['Int'] = 1;
-                                } else {
-                                    $('#Int').addClass('btn-outline-secondary');
-                                    $('#Int').removeClass('btn-danger');
-                                    defauts['Int'] = 0;
-                                }
-                                if ($('#Ext' + id).html().includes('checked')) {
-                                    $('#Ext').removeClass('btn-outline-secondary');
-                                    $('#Ext').addClass('btn-danger');
-                                    defauts['Ext'] = 1;
-                                } else {
-                                    $('#Ext').addClass('btn-outline-secondary');
-                                    $('#Ext').removeClass('btn-danger');
-                                    defauts['Ext'] = 0;
-                                }
-                                if ($('#Rep1_' + id).html().includes('checked')) {
-                                    $('#Rep1').removeClass('btn-outline-secondary');
-                                    $('#Rep1').addClass('btn-danger');
-                                    Reps['Rep1'] = 1;
-                                } else {
-                                    $('#Rep1').addClass('btn-outline-secondary');
-                                    $('#Rep1').removeClass('btn-danger');
-                                    Reps['Rep1'] = 0;
-                                }
-                                if ($('#Rep2_' + id).html().includes('checked')) {
-                                    $('#Rep2').removeClass('btn-outline-secondary');
-                                    $('#Rep2').addClass('btn-danger');
-                                    Reps['Rep2'] = 1;
-                                } else {
-                                    $('#Rep2').addClass('btn-outline-secondary');
-                                    $('#Rep2').removeClass('btn-danger');
-                                    Reps['Rep2'] = 0;
-                                }
-
-                                if ($('#Rep3_' + id).html().includes('checked')) {
-                                    $('#Rep3').removeClass('btn-outline-secondary');
-                                    $('#Rep3').addClass('btn-danger');
-                                    Reps['Rep3'] = 1;
-                                } else {
-                                    $('#Rep3').addClass('btn-outline-secondary');
-                                    $('#Rep3').removeClass('btn-danger');
-                                    Reps['Rep3'] = 0;
-                                }
+                                    $('#ntube').val($("#tube" + id).html());
 
                                 $('#Ajouter').html(' Modifier ');
                                 $('#annulerButton').show();
@@ -904,14 +765,8 @@
                     }
                 });
             });
-            $('#imprimer').click(function (e) {
-                e.preventDefault();
-
-                window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');
-            });
 
         });
-
 
     </script>
     @include('layouts.ArretScript');

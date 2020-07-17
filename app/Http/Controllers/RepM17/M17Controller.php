@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\RepM17;
 
+use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
+use App\Visuel\Defauts;
 use App\Visuel\M17;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,7 +49,13 @@ class M17Controller extends Controller
     public function store(Request $request)
     {
         $m17 = new M17();
-        $tube = Tube::where('Tube', '=', $request->ntube)->where('Pid', '=', $request->Pid)->where('Did', '=', $request->Did)->first();
+        $tubeBis=false;
+        $tubeBisStr=substr($request->ntube,5,3);
+        if($tubeBisStr=='bis'){
+            $tubeBis=true;
+        }
+        $tube = Tube::where('Tube', '=', substr($request->ntube,0,5))->where('Bis','=',$tubeBis)->where('Did', '=', $request->Did)->first();
+        $rapport=Rapport::find($request->NumeroRap);
         $m17->NumTube = $tube->NumTube;
         $m17->Pid = $request->Pid;
         $m17->Did = $request->Did;
@@ -55,31 +63,17 @@ class M17Controller extends Controller
         $m17->Machine = $tube->Machine;
         $m17->Ntube = $tube->NTube;
         $m17->Tube = $tube->Tube;
-        $m17->Bis = $request->bis;
+        $m17->Bis = $tube->Bis;
         $m17->LongCh = $request->LongCh;
         $m17->Observation = $request->Observation;
-        $m17->Operation = "Chuté";
-        $m17->Oxyc = $request->oxyc;
-        $m17->RB = $request->rb;
-        $m17->Eprouv = $request->Eprouv;
-        $m17->NdHt = $request->ndht;
-        $m17->Vis = $request->vis;
-        $m17->Scop = $request->scope;
-        $m17->Final = $request->final;
-        $m17->DdbFt = $request->DdbFt;
+        $m17->Defauts = implode($request->Defauts,',');
+        $m17->User=$rapport->NomAgents;
+        $m17->Computer=gethostname();
         $m17->DateSaisie = date('Y-m-d H:i:s');
         if ($m17->save()) {
-            $tube->Z11 = true;
+            $tube->Z05 = true;
             $tube->save();
             if ($m17->Bis == "true") $m17->Bis_t = 'checked'; else $m17->Bis_t = "";
-            if ($m17->Oxyc == "true") $m17->Oxyc_t = 'checked'; else $m17->Oxyc_t = "";
-            if ($m17->RB == "true") $m17->RB_t = "checked"; else $m17->RB_t = "";
-            if ($m17->Eprouv == "true") $m17->Eprouv_t = "checked"; else $m17->Eprouv_t = "";
-            if ($m17->NdHt == "true") $m17->NdHt_t = "checked"; else $m17->NdHt_t = "";
-            if ($m17->Vis == "true") $m17->Vis_t = "checked"; else $m17->Vis_t = "";
-            if ($m17->Scop == "true") $m17->Scop_t = "checked"; else $m17->Scop_t = "";
-            if ($m17->Final == "true") $m17->Final_t = "checked"; else $m17->Final_t = "";
-            if ($m17->DdbFt == "true") $m17->DdbFt_t = "checked"; else $m17->DdbFt_t = "";
             return response()->json(array('m17' => $m17), 200);
         } else {
             return response()->json(array('error' => error), 404);
@@ -96,15 +90,17 @@ class M17Controller extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z11') {
+            if ($rapport->Zone == 'Z05') {
                 if ($rapport->Etat == 'N') {
-                    $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->where('Pid', '=', $rapport->Pid)->select(['NumTube', 'Tube', 'Bis'])->get();
-
+                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
+                    $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
+                    $defauts=Defauts::where('Zone',"=",'Z05')->where('Descr','=',null)->get();
                     return view('RepM17.M17',
                         ['rapport' => $rapport,
                             'm17' => $rapport->m17,
-                            'projet' => $projet,
+                            'defauts' => $defauts,
+                            'detailP' => $detailP,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);
                 } elseif ($rapport->Etat == 'C') {
@@ -141,28 +137,12 @@ class M17Controller extends Controller
     public function update(Request $request, $id)
     {
         $m17 = M17::find($id);
-        $m17->Bis = $request->bis;
+        $m17->Defauts = implode($request->Defauts,',');
         $m17->LongCh = $request->LongCh;
         $m17->Observation = $request->Observation;
-        $m17->Oxyc = $request->oxyc;
-        $m17->RB = $request->rb;
-        $m17->Eprouv = $request->Eprouv;
-        $m17->NdHt = $request->ndht;
-        $m17->Vis = $request->vis;
-        $m17->Scop = $request->scope;
-        $m17->Final = $request->final;
-        $m17->DdbFt = $request->DdbFt;
         $m17->DateSaisie = date('Y-m-d H:i:s');
         if ($m17->save()) {
             if ($m17->Bis == "true") $m17->Bis_t = 'checked'; else $m17->Bis_t = "";
-            if ($m17->Oxyc == "true") $m17->Oxyc_t = 'checked'; else $m17->Oxyc_t = "";
-            if ($m17->RB == "true") $m17->RB_t = "checked"; else $m17->RB_t = "";
-            if ($m17->Eprouv == "true") $m17->Eprouv_t = "checked"; else $m17->Eprouv_t = "";
-            if ($m17->NdHt == "true") $m17->NdHt_t = "checked"; else $m17->NdHt_t = "";
-            if ($m17->Vis == "true") $m17->Vis_t = "checked"; else $m17->Vis_t = "";
-            if ($m17->Scop == "true") $m17->Scop_t = "checked"; else $m17->Scop_t = "";
-            if ($m17->Final == "true") $m17->Final_t = "checked"; else $m17->Final_t = "";
-            if ($m17->DdbFt == "true") $m17->DdbFt_t = "checked"; else $m17->DdbFt_t = "";
             return response()->json(array('m17' => $m17), 200);
         } else {
             return response()->json(array('error' => error), 404);
@@ -180,7 +160,7 @@ class M17Controller extends Controller
         $m17 = \App\Visuel\M17::findOrFail($id);
 
         if ($m17->delete()) {
-            $m17->tube->Z11 = false;
+            $m17->tube->Z05 = false;
             $m17->tube->save();
 
             return response()->json(array('success' => true), 200);

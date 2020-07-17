@@ -127,21 +127,9 @@
                                     <div class="form-group row">
                                         <label class="col-4" for="poste ">Poste</label>
                                         <select class="form-control col-4" id="poste" name="poste">
-                                            @if(isset($postes))
-                                                @foreach($postes as $poste)
-                                                    <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-4" for="machine">Machine</label>
-                                        <select class="form-control col-4" id="machine" name="machine">
-                                            @if(isset($machines))
-                                                @foreach($machines as $machine)
-                                                    <option value="{{$machine->Machine}}">{{$machine->Machine}}</option>
-                                                @endforeach
-                                            @endif
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
                                         </select>
                                     </div>
                                 </div>

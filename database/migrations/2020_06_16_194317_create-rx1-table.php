@@ -26,6 +26,8 @@ class CreateRx1Table extends Migration
             $table->Boolean('Bis');
             $table->string('Defauts');
             $table->string('Observation')->nullable();
+            $table->string('User',50);
+            $table->string('Computer',50);
             $table->dateTime('DateSaisie');
         });
     }

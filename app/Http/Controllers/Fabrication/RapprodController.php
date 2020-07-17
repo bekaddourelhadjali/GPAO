@@ -41,9 +41,11 @@ class RapprodController extends Controller
      */
     public function store(Request $request)
     {
-        if (DB::select('select (("langueur"+5)>=("LangCons"+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
-      and bd."Coulee"=? and  bd."Did"=?', [$request->longueur, $request->bobine, $request->coulee, $request->Did])[0]->valid) {
-
+        $validity=DB::select('select "PoidsCons","LangCons",(("langueur"+5)>=("LangCons"+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
+      and bd."Coulee"=? and  bd."Did"=?', [$request->longueur, $request->bobine, $request->coulee, $request->Did])[0];
+        $valid=$validity->valid;
+        if ($valid || ($validity->PoidsCons==null&&$validity->LangCons==null)) {
+            $rapport=Rapport::find($request->NumeroRap);
 
             $rapprod = Rapprod::where('Tube', '=', $request->machine . $request->ntube)
                 ->where('NumeroRap', '=', $request->NumeroRap)->first();
@@ -95,19 +97,24 @@ class RapprodController extends Controller
                     $tube->Bobine = $request->bobine;
                     $tube->Coulee = $request->coulee;
                     $tube->DateFab = date('Y-m-d');
+                    $tube->User = $rapport->NomAgents.'/'.$rapport->NomAgents1;
+                    $tube->Computer = gethostname();
                     $tube->DateSaisie = date('Y-m-d H:i:s');
                     $tube->Z01 = true;
                     $tube->save();
                 }
 
                 $rapprod->NumTube = $tube->NumTube;
+                $rapprod->User = $rapport->NomAgents.'/'.$rapport->NomAgents1;
+                $rapprod->Computer = gethostname();
                 $rapprod->DateSaisie = date('Y-m-d H:i:s');
                 if ($rapprod->save()) {
                     $bobine=Bobine::where('Bobine','=',$rapprod->Bobine)->where('Coulee','=',$rapprod->Coulee)
                         ->where('Did','=',$rapprod->Did)->first();
                     if(!$bobine->Cons){
+                        $bobine->Machine=$rapprod->Machine;
                         $bobine->Cons=true;
-                        $bobineConsMax=Bobine::where('Did','=',$rapprod->Did)->max(NbCons);
+                        $bobineConsMax=Bobine::where('Did','=',$rapprod->Did)->max("NbCons");
                         $bobine->NbCons=$bobineConsMax+1;
                         $bobine->DateCons=date('Y-m-d');
                         $bobine->save();
@@ -138,11 +145,11 @@ class RapprodController extends Controller
         if ($rapport != null) {
             if ($rapport->Zone == 'Z01') {
                 if ($rapport->Machine == "E") {
-                    $bobines = Bobine::where('Etat', '=', 'MasEPrep')->where('Did', '=', $rapport->Did)->select('Bobine')->get();
-                    $coulees = Bobine::where('Etat', '=', 'MasEPrep')->where('Did', '=', $rapport->Did)->select('Coulee')->distinct('Coulee')->get();
+                    $bobines = Bobine::where('Etat', '=', 'MasEPrep')->where('Did','=',$rapport->Did)->select('Bobine')->get();
+                    $coulees = Bobine::where('Etat', '=', 'MasEPrep')->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();
                 } else {
-                    $bobines = Bobine::where('Etat', '=', 'Prep')->where('Did', '=', $rapport->Did)->select('Bobine')->get();
-                    $coulees = Bobine::where('Etat', '=', 'Prep')->where('Did', '=', $rapport->Did)->select('Coulee')->distinct('Coulee')->get();
+                    $bobines = Bobine::where('Etat', '=', 'Prep')->where('Did','=',$rapport->Did)->select('Bobine')->get();
+                    $coulees = Bobine::where('Etat', '=', 'Prep')->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();
                 }
 
                 if ($rapport->Etat == 'N') {
@@ -186,9 +193,11 @@ class RapprodController extends Controller
     public function update(Request $request, $id)
     {
         $rapprod = Rapprod::findorFail($id);
-        if (DB::select('select (("langueur"+5)>=(("LangCons"-round(cast(?/1000 as numeric)))+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
+        $validity=DB::select('select (("langueur"+5)>=(("LangCons"-round(cast(?/1000 as numeric)))+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
            and bd."Coulee"=? and  bd."Did"=?',
-            [$rapprod->Longueur, $request->longueur, $rapprod->Bobine, $rapprod->Coulee, $rapprod->Did])[0]->valid) {
+            [$rapprod->Longueur, $request->longueur, $rapprod->Bobine, $rapprod->Coulee, $rapprod->Did])[0];
+        $valid=$validity->valid;
+        if ($valid || ($validity->PoidsCons==null&&$validity->LangCons==null)) {
             $rapprod->Longueur = $request->longueur;
             if ($request->rb == 'true') $rapprod->RB = 1;
             else $rapprod->RB = 0;
@@ -247,6 +256,7 @@ class RapprodController extends Controller
                 ->where('Coulee', '=',  $bobine->Coulee)
                 ->where('Did', '=',  $bobine->Did)->count();
             if($tubesNb==0){
+                $bobine->Machine=null;
                 $bobine->Cons=false;
                 $bobine->NbCons=null;
                 $bobine->DateCons=null;

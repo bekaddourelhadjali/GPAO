@@ -365,7 +365,7 @@
                     <div class="col-xl-6 col-lg-6 col-md-8 col-6">
                         <div class="form-group row">
                             <label class="col-12" for="cause">Cause</label>
-                            <input class="form-control col-12" id="cause" name="cause" list="pannesList" required>
+                            <input class="form-control col-12" id="cause" name="cause" required>
                             <datalist id="panneP1List">
                                 <option value="PE">PE</option>
                                 <option value="PH">PH</option>
@@ -867,8 +867,20 @@
                 }
             });
             $('#type_arret').change(function () {
-               if($(this).val()==="P1") $('#cause').attr('list','panneP1List');
-               else $('#cause').attr('list','pannesList');
+               if($(this).val()==="P1"){
+                   $('#cause').attr('list','panneP1List');
+                   $('#ndi').prop('required',true);
+               }
+               else if($(this).val()==="Arret"||$(this).val()==="Autres"){
+                   $('#ndi').prop('required',false);
+                   $('#cause').attr('list','pannesList');
+               }else if($(this).val()==="P3"||$(this).val()==="P4"){
+                   $('#ndi').prop('required',true);
+                   $('#cause').removeAttr('list');
+               }else{
+                   $('#ndi').prop('required',false);
+                   $('#cause').removeAttr('list');
+               }
             });
         });
 

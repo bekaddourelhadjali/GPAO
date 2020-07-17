@@ -122,6 +122,7 @@
                                            style="margin-bottom:0; font-size: 25px; font-weight: bolder">Liste Colisage : <span
                                                 id="tubeTop"></span></label>
                                     <form id="ListForm" class="col-sm-6 col-6">
+                                        <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
                                         <input name="Pid" type="hidden" id="Pid" value="{{$rapport->Pid}}">
                                         <input name="Did" type="hidden" id="Did" value="{{$rapport->Did}}">
                                         @csrf()
@@ -177,6 +178,7 @@
                         </div>
                         <div class="modal-body">
                             <input type="hidden" id="BId" name="BId" value="">
+                            <input name="BNumRap" type="hidden" id="BNumRap" value="{{$rapport->Numero}}">
                             <input name="Pid" type="hidden" id="Pid" value="{{$rapport->Pid}}">
                             <input name="Did" type="hidden" id="Did" value="{{$rapport->Did}}">
                             <div class="form-group row">
@@ -351,6 +353,8 @@
                                 largeur_bande: $('#BLargeurBande').val(),
                                 Did: $('#Did').val(),
                                 Pid: $('#Pid').val(),
+                                NumRap: $('#BNumRap').val(),
+                                source:'RecBob'
                             },
                             success: function (result) {
                                var item=result.bobine;
@@ -382,6 +386,7 @@
                                 $("#Bpoids_b").val("");
                                 $("#BEpaisseur").val("");
                                 $("#BLargeurBande").val("");
+
                                 $("#BId").val("");
                                 $("#AjouterBobine").html("Ajouter");
                                 AddContBobsListeners();

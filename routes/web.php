@@ -104,6 +104,7 @@ Auth::routes();
 //   return view('Fabrication.rapport_info');});
 
 Route::post('/bobine', function () {
+    $rapport=\App\Fabrication\Rapport::find($_POST['NumRap']);
     $bobine = new \App\Fabrication\Bobine();
     $bobine->Bobine = $_POST['bobine'];
     $bobine->Coulee = $_POST['coulee'];
@@ -123,24 +124,34 @@ Route::post('/bobine', function () {
     $bobine->DateSaisie = date('Y-m-d H:i:s');
     if (isset($_POST['source'])) if ($_POST['source'] == 'M3') {
         $bobine->Etat = 'M3';
+        $bobine->ZoneAddSaisie = 'M3';
     } else if ($_POST['source'] == 'MasE') {
         $bobine->Etat = 'MasE';
+        $bobine->ZoneAddSaisie = 'MasE';
+    }else if($_POST['source'] == 'RecBob'){
+        $bobine->ZoneAddSaisie = 'RecBob';
     }
     $bobine->Pid = $_POST["Pid"];
     $bobine->Did = $_POST["Did"];
+    $bobine->AgentAddSaisie  =$rapport->NomAgents;
+	$bobine->RapportAddSaisie  =$rapport->Numero;
+	$bobine->DateAddSaisie  =date('Y-m-d H:i:s');
     if ($bobine->save()) {
-        if (isset($_POST['source'])) if ($_POST['source'] == 'M3') {
-            $bobines = \App\Fabrication\Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
-            $coulees = \App\Fabrication\Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
-            return response()->json(array('bobine' => $bobine, "bobines" => $bobines, "coulees" => $coulees), 200);
-        } else if ($_POST['source'] == 'MasE') {
-            $bobines = \App\Fabrication\Bobine::where('Etat', '=', 'MasE')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
-            $coulees = \App\Fabrication\Bobine::where('Etat', '=', 'MasE')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
-            return response()->json(array('bobine' => $bobine, "bobines" => $bobines, "coulees" => $coulees), 200);
-        }
 
-        $bobinesCount = \App\Fabrication\Bobine::where('NbReception', '=', null)->select('Bobine')->count();
-        return response()->json(array('bobine' => $bobine, 'Count' => $bobinesCount), 200);
+        if (isset($_POST['source'])) {
+            if ($_POST['source'] == 'M3') {
+                $bobines = \App\Fabrication\Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
+                $coulees = \App\Fabrication\Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
+                return response()->json(array('bobine' => $bobine, "bobines" => $bobines, "coulees" => $coulees), 200);
+            } else if ($_POST['source'] == 'MasE') {
+                $bobines = \App\Fabrication\Bobine::where('Etat', '=', 'MasE')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
+                $coulees = \App\Fabrication\Bobine::where('Etat', '=', 'MasE')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
+                return response()->json(array('bobine' => $bobine, "bobines" => $bobines, "coulees" => $coulees), 200);
+            } else if ($_POST['source'] == 'RecBob') {
+                $bobinesCount = \App\Fabrication\Bobine::where('NbReception', '=', null)->select('Bobine')->count();
+                return response()->json(array('bobine' => $bobine, 'Count' => $bobinesCount), 200);
+            }
+        }
     } else {
         return response()->json(array('error' => error), 404);
 
@@ -371,20 +382,32 @@ Route::get('users', function () {
 
 Route::post('couleeGet', function (\Illuminate\Http\Request $request) {
     if (isset($request->source)) {
-        if ($request->source == "M3") {
-            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
-                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'M3');
-            })->first();
+        if ($request->source == "M3" ) {
+            if($request->etat=='REC') {
+                $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
+                    return $query->where('Etat', '=','REC' )->orWhere('Etat', '=', 'M3');
+                })->first();
+            }else {
+                $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
+                    return $query->where('Etat', '=', 'NonREC')->orWhere('Etat', '=', 'M3');
+                })->first();
+            }
         } else if ($request->source == "MasE") {
-            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
-                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
-            })->first();
+            if($request->etat=='REC') {
+                $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
+                    return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
+                })->first();
+            }else{
+                $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
+                    return $query->where('Etat', '=', 'NonREC')->orWhere('Etat', '=', 'MasE');
+                })->first();
+            }
         }
     } else if (isset($request->machine)) {
         if ($request->machine == "E") {
-            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', 'MasEPrep')->where('Did', '=', $request->Did)->first();
+            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', 'MasEPrep')->first();
         } else {
-            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', 'Prep')->where('Did', '=', $request->Did)->first();
+            $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where('Etat', '=', 'Prep')->first();
         }
 
     } else if ($request->etat == "NonREC") {
@@ -402,20 +425,32 @@ Route::post('bobineGet', function (\Illuminate\Http\Request $request) {
         $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Test', '=', $request->test)->get();
     else if (isset($request->source)) {
         if ($request->source == "M3") {
-            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
-                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'M3');
-            })->get();
+            if($request->etat=='REC'){
+                $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
+                    return $query->where('Etat', '=','REC')->orWhere('Etat', '=', 'M3');
+                })->get();
+            }else{
+                $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
+                    return $query->where('Etat', '=','NonREC')->orWhere('Etat', '=', 'M3');
+                })->get();
+            }
+
         } else if ($request->source == "MasE") {
+            if($request->etat=='REC'){
             $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
-                return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
-            })->get();
+                return $query->where('Etat', '=','REC')->orWhere('Etat', '=', 'MasE');})->get();
+            }else{
+                $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
+                    return $query->where('Etat', '=','NonREC')->orWhere('Etat', '=', 'MasE');})->get();
+                }
+
         }
     } else if (isset($request->machine)) {
         if ($request->machine == "E") {
-            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Etat', '=', 'MasEPrep')->where('Did', '=', $request->Did)->get();
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Did','=',$request->Did)->where('Etat', '=', 'MasEPrep')->get();
 
         } else {
-            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Etat', '=', 'Prep')->where('Did', '=', $request->Did)->get();
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Did','=',$request->Did)->where('Etat', '=', 'Prep')->get();
         }
 
     } else if ($request->etat == "NonREC") {

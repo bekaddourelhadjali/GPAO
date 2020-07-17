@@ -17,19 +17,14 @@ class NdtRapportController extends Controller
      */
     public function index()
     {
-        $postes = DB::select('Select * from postes');
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $details = $projet->details;
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        $machines = $location->machines;
         $rapports=DB::select('select * from rapports where "Zone"=\'Z07\' order by "DateSaisie" desc limit 3');
         return view ('Ndt.NdtRapports',['details'=>$details
-            ,'postes'=>$postes
-            ,'machines'=>$machines
             ,'agents'=>$agents
-            ,'rapports'=>$rapports
-            ,'projet'=>$projet]);
+            ,'rapports'=>$rapports]);
     }
 
     /**

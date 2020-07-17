@@ -21,13 +21,13 @@ class CreateM25Table extends Migration
             $table->string('Machine',1);
             $table->string('Ntube',4);
             $table->string('Tube',5);
-            $table->Boolean('Bis');
-            $table->integer('NbOpr');
-            $table->string('Operation',30);
+            $table->Boolean('Bis'); 
             $table->Boolean('Debut');
             $table->Boolean('Fin');
             $table->string('Observation')->nullable();
             $table->integer('NumeroRap')->unsigned();
+            $table->string('User',50);
+            $table->string('Computer',50);
             $table->dateTime('DateSaisie');
         });
     }

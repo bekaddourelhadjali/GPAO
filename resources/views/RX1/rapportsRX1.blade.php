@@ -99,7 +99,6 @@
                     @csrf
                     <fieldset>
                         <legend ><h4>Information du rapport</h4> </legend>
-                        <input name="Pid" type="hidden" id="Pid" value="{{$projet->Pid}}">
                         <input name="Did" type="hidden" id="Did" value="0">
                         <input name="machine" type="hidden" id="machine" value="0">
                         <div class="row ">
@@ -121,14 +120,11 @@
                                 <div class="form-group row">
                                     <label class="col-6" for="poste ">Poste</label>
                                     <select class="form-control col-6" id="poste" name="poste" required>
-                                        @if(isset($postes))
-                                        @foreach($postes as $poste)
-                                            <option value="{{$poste->Poste}}">{{$poste->Poste}}</option>
-                                        @endforeach
-                                        @endif
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
                                     </select>
                                 </div>
-
                             </div>
                             <div class="col-6">
                                 <div class="form-group row">
@@ -165,17 +161,7 @@
                                     @endforeach
                                     @endif
                                 </select>
-                                <input type="hidden" id="codeAgent" name="codeAgent" value="">
-                                <select class="form-control col-2 offset-1"  id="code" name="code" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                <input type="text" class="form-control col-3" id="codeAgent" name="codeAgent" placeholder="Code"  required>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3" for="agent2">Agent 02</label>
@@ -189,17 +175,7 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="hidden" id="codeAgent2" name="codeAgent2" value="">
-                                <select class="form-control col-2 offset-1"  id="code2" name="code2" disabled >
-                                    @if(isset($agents))
-                                        @php
-                                            $i=0;
-                                        @endphp
-                                        @foreach($agents as $agent)
-                                            <option order="{{$i++}}" value="{{$agent->Code}}">{{$agent->Code}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                                <input type="text" id="codeAgent2"class="form-control col-3" name="codeAgent2" placeholder="Code"  required>
                             </div>
 
                         <hr>
@@ -228,7 +204,6 @@
                    <tr>
                        <th>Date</th>
                        <th>Poste</th>
-                       <th>Machine</th>
                        <th>Agent 1</th>
                        <th>Agent 2</th>
                        <th>Clôturé</th>
@@ -240,7 +215,6 @@
                    <tr id="rapport{{$rapport->Numero}}" @if($rapport->Etat=='C')class="Clot bg-success text-white" @else class="NotClot  " @endif >
                    <td>{{$rapport->DateRapport}}</td>
                    <td>{{$rapport->Poste}}</td>
-                   <td>{{$rapport->Machine}}</td>
                        <td>{{$rapport->NomAgents}} / {{$rapport->CodeAgent}}</td>
                        <td>{{$rapport->NomAgents1}} / {{$rapport->CodeAgent1}}</td>
                        @if($rapport->Etat=='C')<td>Oui</td>   @else <td>Non</td>  @endif
@@ -282,7 +256,6 @@
                         <tr>
                             <th>Date</th>
                             <th>Poste</th>
-                            <th>Machine</th>
                             <th>Agent 1</th>
                             <th>Agent 2</th>
                             <th>Clôturé</th>
@@ -327,7 +300,6 @@
                             $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
                             '                   <td>'+rapport.DateRapport+'</td>\n' +
                             '                   <td>'+rapport.Poste+'</td>\n' +
-                            '                   <td>'+rapport.Machine+'</td>\n' +
                                 '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
                                 '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
                             '                            <td>Oui</td>   ;');
@@ -335,7 +307,6 @@
                             $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'"  class="NotClot  "> ' +
                                 '                   <td>'+rapport.DateRapport+'</td>\n' +
                                 '                   <td>'+rapport.Poste+'</td>\n' +
-                                '                   <td>'+rapport.Machine+'</td>\n' +
                                 '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
                                 '                   <td>'+rapport.NomAgents1+' / '+rapport.CodeAgent1+'</td>\n' +
                             '                             <td>Non</td>   ;');
@@ -370,19 +341,7 @@
             });
         });
         }
-        $('#agent').on('change',function(){
-            order=$(this).children("option:selected").attr('order');
-            val=$('#code').find('option[order='+order+']').val();
-            $('#code').val(val);
-            $('#codeAgent').val(val);
 
-        });
-        $('#agent2').on('change',function(){
-            order=$(this).children("option:selected").attr('order');
-            val=$('#code2').find('option[order='+order+']').val();
-            $('#code2').val(val);
-            $('#codeAgent2').val(val);
-        });
 
     });
 </script>

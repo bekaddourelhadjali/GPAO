@@ -1,4 +1,4 @@
-@extends('layouts.app')
+    @extends('layouts.app')
 
 @section('style')
     <style>
@@ -166,7 +166,6 @@
                     <div class="col-12">Information Rapport:&nbsp;<span class="valeur">   <span
                                     class="valeur"> Epais: {{$rapport->details->Epaisseur}}
                                 mm -Diam : {{$rapport->details->Diametre}}mm</span></span></div>
-                    <div class="col-12">Machine: &nbsp; <span class="valeur">  {{$rapport->Machine}} </span></div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-xl-2 col-lg-2">
                     <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
@@ -211,7 +210,7 @@
                             <tbody>
                             <tr>
                                 <td class="large-td"><input class="  form-control" type="text" id="ntube" name="ntube"
-                                                            value="" maxlength="5" minlength="5" required></td>
+                                                            value="" maxlength="5" minlength="5" required pattern="[A-E]\d{4}"></td>
                                 <td class="small-td"><input class=" " type="checkbox" id="bis" name="bis"></td>
                                 <td class="large-td"><input class=" form-control" type="number" min="7500" max="13500"
                                                             id="longueur" name="longueur" required></td>
@@ -234,7 +233,7 @@
                             <button type="reset" class="col-2  btn btn-secondary" type="button" id="annulerButton">
                                 Annuler
                             </button>
-                            <button type="button" class="col-4   offset-1  btn btn-success" type="button" id="Ajouter">
+                            <button type="submit" class="col-4   offset-1  btn btn-success" type="button" id="Ajouter">
                                 Ajouter
                             </button>
                         </div>
@@ -426,9 +425,9 @@
                     </button>
                 </div>
                 <div class=" col-lg-3 col-md-6 col-sm-12">
-                    <button type="button" id="imprimer" class="btn btn-outline-primary col-12">
-                        <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
-                    </button>
+                    {{--<button type="button" id="imprimer" class="btn btn-outline-primary col-12">--}}
+                        {{--<b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>--}}
+                    {{--</button>--}}
                 </div>
                 <div class=" col-lg-3  col-md-6 col-sm-12">
                     <form method="post" action="{{route('rapports_visuels.destroy',["id"=>$rapport->Numero])}}">
@@ -448,157 +447,13 @@
         </section>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog  " role="document" id="BobineModal">
-            <section>
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Arrets Machine</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"> <button data-dismiss="modal"
-                                                              onclick="$('#arretForm').trigger('reset')"
-                                                              class="btn btn-danger"><b>X</b></button></span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="arretForm">
-                            <input name="idArret" type="hidden" id="idArret" value="">
-                            <input type="hidden" name="Pid" id="Pid" value="{{$rapport->Pid}}">
-                            <input type="hidden" name="Did" id="Did" value="{{$rapport->Did}}">
-                            <input type="hidden" name="NumRap" id="NumRap" value="{{$rapport->Numero}}">
-                            <input type="hidden" name="Machine" id="Machine" value="{{$rapport->Machine}}">
-                            <div class="row">
-                                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
-                                    <div class="form-group row">
-                                        <label class="col-12" for="type_arret">Type Arret</label>
-                                        <select class="form-control col-10" id="type_arret" name="type_arret">
-                                            <option value="panne">Panne</option>
-                                            <option value="arret" selected>Arret</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group  ">
-                                                <label class="col-12" for="du">Du</label>
-                                                <input class="col-12 form-control" type="time" id="du" name="du"
-                                                       value="00:00" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group  ">
-                                                <label class="col-12" for="au">Au</label>
-                                                <input class="col-12 form-control" type="time" id="au" name="au"
-                                                       value="00:00" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-1 col-lg-1 col-md-2 col-sm-4">
-                                    <div class="form-group row">
-                                        <label class="col-12" for="duree">Durée(m)</label>
-                                        <input class="col-12 form-control" type="number" id="duree" name="duree"
-                                               value="" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-8">
-                                    <div class="form-group row">
-                                        <label class="col-11 offset-1" for="cause">Cause</label>
-                                        <input class="col-11 offset-1 form-control" type="text" id="cause" name="cause"
-                                               value="" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
-                                    <div class="form-group row">
-                                        <label class="col-12" for="ndi">N°DI</label>
-                                        <input class="col-10 form-control" type="text" id="ndi" name="ndi" value="">
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8">
-                                    <div class="form-group row">
-                                        <label class="col-12" for="obs">Obs</label>
-                                        <input class="col-11 form-control" type="text" id="obs" name="obs" value="">
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-3">
-                                    <div class="form-group row">
-                                        <label class="col-12" for="relv">Relv_Compt</label>
-                                        <input class="col-12 form-control" type="text" id="relv" name="relv" value="">
-                                    </div>
-                                </div>
-                                <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 " id="annulerButton">
-                                    <div class="col-10">
-                                        <label class="col-10"> &nbsp;</label>
-                                        <button type="reset" id="annulerPanne" class="btn btn-secondary"> Annuler
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                                    <div class="col-10"><label class="col-12"> &nbsp;</label>
-                                    </div>
-                                    <button class="col-10 btn btn-success offset-2" type="button" type="submit"
-                                            id="ajouterPanne"> Ajouter panne
-                                    </button>
-                                </div>
-                            </div>
-
-
-                        </form>
-                        <hr>
-                        <div class="table-container">
-                            <table class="table table-striped table-hover table-bordered" id="ArretTable">
-                                <thead class="bg-primary text-white">
-                                <tr>
-                                    <th>Type Arret</th>
-                                    <th>Du</th>
-                                    <th>Au</th>
-                                    <th>Duree</th>
-                                    <th>Cause</th>
-                                    <th>N°DI</th>
-                                    <th>Obs</th>
-                                    <th>Relv_Compt</th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @if(isset($arrets))
-                                    @foreach($arrets as $arret)
-                                        <tr id="arret{{$arret->id}}">
-                                            <td id="type{{$arret->id}}">{{$arret->TypeArret}}</td>
-                                            <td id="du{{$arret->id}}">{{$arret->Du}}</td>
-                                            <td id="au{{$arret->id}}">{{$arret->Au}}</td>
-                                            <td id="duree{{$arret->id}}">{{$arret->Durée}}</td>
-                                            <td id="cause{{$arret->id}}">{{$arret->Cause}}</td>
-                                            <td id="ndi{{$arret->id}}"> {{$arret->NDI}}</td>
-                                            <td id="obs{{$arret->id}}">{{$arret->Obs}}</td>
-                                            <td id="relv{{$arret->id}}">{{$arret->Relv_Compt}}</td>
-                                            <td class="actions">
-                                                <button id="arret{{$arret->id}}Edit" class="arretEdit text-primary"><i
-                                                            class="fa fa-edit"></i></button>
-                                                <button id="arret{{$arret->id}}Delete" class="arretDelete text-danger">
-                                                    <i class="fa fa-trash"></i></button>
-                                            </td>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
+    @include('layouts.ArretsLayout');
 
 
 @endsection
 @section('script')
 
+    @include('layouts.ArretScript');
     <script>
 
         $(document).ready(function () {
@@ -684,7 +539,7 @@
             });
             $('#Ajouter').click(function (e) {
                 if ($('#visuelForm')[0].checkValidity()) {
-
+                e.preventDefault();
 
                     const id = $('#Numero').val();
                     $.ajaxSetup({
@@ -692,7 +547,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    ntube = $('#ntube').val().replace(/[^0-9]/g, '');
+                    ntube = $('#ntube').val();
                     if ((DefautsSoudure.length > 0 || $('#operation1').val() === 'R.A.S')
                         && (DefautsMetal.length > 0 || $('#operation2').val() === 'R.A.S')) {
                         if (DefautsSoudure.length > 0) {
@@ -713,8 +568,6 @@
                                 Opr = $('#operation2').val(), null, null, null, $('#operation2').find("option:selected").attr("operationId"), null]);
                         }
                     if ($('#Ajouter').html() !== ' Modifier ') {
-
-
                             $.ajax({
                                 url: "{{ route('visuels.store')}}",
                                 method: 'post',
@@ -791,7 +644,6 @@
                                 Did: $('#Did').val(),
                                 NumeroRap: $('#NumRap').val(),
                                 ntube: ntube,
-                                bis: $('#bis:checked').length > 0,
                                 longueur: $('#longueur').val(),
                                 sond: $('#Sond:checked').length > 0,
                                 E: $('#E').val(),
@@ -1066,203 +918,6 @@
             window.open('{{route("printRap",["id"=>$rapport->Numero])}}', '_blank');
         });
 
-    </script>
-    <script>
-        $(document).ready(function () {
-
-            addArretsListeners();
-            $('#annulerPanne').click(function () {
-                $('#ajouterPanne').html(' Ajouter panne ');
-                $('#annulerPanne').hide();
-                $('#arretForm').trigger('reset');
-            });
-
-            function addArretsListeners() {
-                $('.arretDelete').each(function (e) {
-                    $(this).off('click');
-                    $(this).click(function (e) {
-
-                        tr = $(this).parent().parent();
-                        const id = $(this).attr("id").replace(/[^0-9]/g, '');
-
-                        e.preventDefault();
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            url: "{{url('/arret_machine/')}}/" + id,
-                            method: 'post',
-                            data: {
-                                _token: '{{csrf_token()}}',
-                                id: id,
-                                _method: 'delete'
-
-                            },
-                            success: function (result) {
-                                tr.remove();
-                            },
-                            error: function (result) {
-                                alert(result.responseJSON.message);
-                            }
-                        });
-                    });
-                });
-                $('.arretEdit').each(function (e) {
-                    $(this).off('click');
-                    $(this).click(function (e) {
-                        e.preventDefault();
-                        tr = $(this).parent().parent();
-                        const id = $(this).attr("id").replace(/[^0-9]/g, '');
-                        $('#cause').val(tr.find('#cause' + id).html());
-                        $('#du').val(tr.find('#du' + id).html());
-                        $('#au').val(tr.find('#au' + id).html());
-                        $('#duree').val(tr.find('#duree' + id).html());
-                        $('#ndi').val(tr.find('#ndi' + id).html());
-                        $('#obs').val(tr.find('#obs' + id).html());
-                        $('#relv').val(tr.find('#relv' + id).html());
-                        $('#idArret').val(id);
-
-                        if ($('#type' + id).html() === 'panne') {
-                            $('#type_arret').find('option[value=panne]').attr('selected', 'selected');
-                            $('#type_arret').find('option[value=arret]').removeAttr('selected');
-
-                        } else {
-                            $('#type_arret').find('option[value=panne]').removeAttr('selected');
-                            $('#type_arret').find('option[value=arret]').attr('selected', 'selected');
-                        }
-                        $('#ajouterPanne').html(' Modifier panne ');
-                        $('#annulerPanne').show();
-
-                    });
-                });
-            }
-
-            $('#ajouterPanne').click(function (e) {
-                if ($('#arretForm')[0].checkValidity()) {
-                    const id = $('#idArret').val();
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    e.preventDefault();
-                    if ($('#ajouterPanne').html() !== ' Modifier panne ') {
-
-                        $.ajax({
-                            url: "{{ route('arret_machine.store')}}",
-                            method: 'post',
-                            data: {
-                                _token: '{{csrf_token()}}',
-                                Machine: $('#Machine').val(),
-                                Pid: $('#Pid').val(),
-                                Did: $('#Did').val(),
-                                NumRap: $('#NumRap').val(),
-                                type_arret: $('#type_arret').val(),
-                                du: $('#du').val(),
-                                au: $('#au').val(),
-                                duree: $('#duree').val(),
-                                cause: $('#cause').val(),
-                                ndi: $('#ndi').val(),
-                                obs: $('#obs').val(),
-                                relv: $('#relv').val(),
-                            },
-                            success: function (result) {
-
-
-                                $('#ArretTable').append('<tr id="arret' + result.arret.id + '">' +
-                                    '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
-                                    '<td id="du' + result.arret.id + '">' + result.arret.Du + '</td>' +
-                                    '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
-                                    '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
-                                    '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
-                                    '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
-                                    '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
-                                    '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
-                                    '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
-                                    '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
-
-                                addArretsListeners();
-                            },
-                            error: function (result) {
-                                console.log(result.responseJSON);
-                                alert(result.responseJSON.message);
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: "{{url('/arret_machine/')}}/" + id,
-                            method: 'post',
-                            data: {
-                                _token: '{{csrf_token()}}',
-                                id: id,
-                                _method: 'put',
-                                Machine: $('#Machine').val(),
-                                Pid: $('#Pid').val(),
-                                Did: $('#Did').val(),
-                                NumRap: $('#NumRap').val(),
-                                type_arret: $('#type_arret').val(),
-                                du: $('#du').val(),
-                                au: $('#au').val(),
-                                duree: $('#duree').val(),
-                                cause: $('#cause').val(),
-                                ndi: $('#ndi').val(),
-                                obs: $('#obs').val(),
-                                relv: $('#relv').val(),
-                            },
-                            success: function (result) {
-
-                                $('#ArretTable').find('#arret' + result.arret.id).html(
-                                    '<td id="type' + result.arret.id + '">' + result.arret.TypeArret + '</td>' +
-                                    '<td id="du' + result.arret.id + '">' + result.arret.Du + '</td>' +
-                                    '<td id="au' + result.arret.id + '">' + result.arret.Au + '</td>' +
-                                    '<td id="duree' + result.arret.id + '">' + result.arret.Durée + '</td>' +
-                                    '<td id="cause' + result.arret.id + '">' + result.arret.Cause + '</td>' +
-                                    '<td id="ndi' + result.arret.id + '">' + result.arret.NDI + '</td>' +
-                                    '<td id="obs' + result.arret.id + '">' + result.arret.Obs + '</td>' +
-                                    '<td id="relv' + result.arret.id + '">' + result.arret.Relv_Compt + '</td>' +
-                                    '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
-                                    '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td>');
-                                $('#ajouterPanne').html(' Ajouter panne ');
-                                $('#annulerPanne').hide();
-                                $('#arretForm').trigger("reset");
-                                addArretsListeners();
-                            },
-                            error: function (result) {
-                                alert(result.responseJSON.message);
-                            }
-                        });
-
-
-                    }
-                } else {
-                    alert('Remplir tous les champs qui sont obligatoires svp!');
-                }
-            });
-            $("#au , #du").click(function (event) {
-
-
-                if ($("#du").val() != "" && $("#au").val() != "") {
-                    var du = parseTime($("#du").val()) / 60000;
-                    var au = parseTime($("#au").val()) / 60000;
-                    if (du > au) {
-                        au = au + (24 * 60);
-                    }
-                    $('#duree').val((au - du));
-                }
-            });
-
-            function parseTime(cTime) {
-                if (cTime == '') return null;
-                var d = new Date();
-                var time = cTime.match(/(\d+)(:(\d\d))?\s*(p?)/);
-                d.setHours(parseInt(time[1]) + ((parseInt(time[1]) < 12 && time[4]) ? 12 : 0));
-                d.setMinutes(parseInt(time[3]) || 0);
-                d.setSeconds(0, 0);
-                return d;
-            }
-        });
     </script>
 
 @endsection

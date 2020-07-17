@@ -56,8 +56,11 @@ class RapportsController extends Controller
         $rapport->Equipe= $request->equipe;
         $rapport->Machine= $request->machine;
         $rapport->Poste= $request->poste;
-        $rapport->NomAgents= $request->agent; 
+        $rapport->NomAgents= $request->agent;
+        $rapport->CodeAgent= $request->codeAgent ;
         $rapport->Etat='N';
+        $rapport->Computer=gethostname();
+        $rapport->User=$request->agent;
         $rapport->DateSaisie=date('Y-m-d H:i:s');
         if($rapport->save()) {
              return redirect(route('rapprod.show',['id'=>$rapport->Numero]));

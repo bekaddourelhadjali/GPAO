@@ -38,8 +38,7 @@ class M3Controller extends Controller
      */
     public function store(Request $request)
     {
-        $bobine = Bobine::where("Bobine", '=', $request->bobine)->where('Coulee', '=', $request->coulee)
-            ->where('Did','=',$request->Did)->first();
+        $bobine = Bobine::where("Bobine", '=', $request->bobine)->where('Coulee', '=', $request->coulee)->first();
         $m3 = new M3();
         $m3->IdBobine = $bobine->Id;
         $m3->LargeurD = $request->LargeurD;
@@ -118,7 +117,9 @@ class M3Controller extends Controller
      */
     public function edit($id)
     {
-        //
+        $bobines = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Bobine')->get();
+        $coulees = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Coulee')->distinct('Coulee')->get();
+        return response()->json(array('bobines' => $bobines, 'coulees' => $coulees), 200);
     }
 
     /**

@@ -17,17 +17,12 @@ class RapportsRX1Controller extends Controller
      */
     public function index()
     {
-        $postes = DB::select('Select * from postes');
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $projet= \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $details = $projet->details;
         $agents = $location->agents;
         $rapports=DB::select('select * from rapports where "Zone"=\'Z03\' order by "DateSaisie" desc limit 3');
-        return view ('RX1.rapportsRX1',['details'=>$details
-            ,'postes'=>$postes
-            ,'agents'=>$agents
-            ,'rapports'=>$rapports
-            ,'projet'=>$projet]);
+        return view ('RX1.rapportsRX1',[
+            'agents'=>$agents
+            ,'rapports'=>$rapports]);
 
     }
 
@@ -50,12 +45,12 @@ class RapportsRX1Controller extends Controller
     public function store(Request $request)
     {
         $rapport = new Rapport();
-        $rapport->Pid= $request->Pid;
-        $rapport->Did= $request->Did;
+        $rapport->Did= 0;
+        $rapport->Pid= 0;
         $rapport->DateRapport= $request->date;
         $rapport->Zone='Z03';
         $rapport->Equipe= $request->equipe;
-        $rapport->Machine= $request->machine;
+        $rapport->Machine= '3';
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
         $rapport->NomAgents1= $request->agent2;
@@ -66,6 +61,8 @@ class RapportsRX1Controller extends Controller
         $rapport->TmpPose=$request->tmpPose;
         $rapport->DisBras=$request->disBras;
         $rapport->Etat='N';
+        $rapport->Computer=gethostname();
+        $rapport->User=$request->agent.'/'.$request->agent2;
         $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
              return redirect(route('RX1.show',['id'=>$rapport->Numero]));

@@ -73,7 +73,7 @@ class RecBobController extends Controller
         if ($rapport != null) {
             if ($rapport->Zone == 'RecBob') {
                 $bobines = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->select('Bobine')->get();
-                $coulees = Bobine::where('Etat', '=', 'NonREC')->where('Did','=',$rapport->Did)->orWhere('Etat','=','M3')->select('Coulee')->distinct('Coulee')->get();
+                $coulees = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();
                 if ($rapport->Etat == 'N') {
                     $maxArr = Bobine::where('Etat', '=', 'NonREC')->max('Arrivage');
                     $maxRec = Bobine::where('Etat', '=', 'REC')->max('NbReception') + 1;
@@ -104,7 +104,9 @@ class RecBobController extends Controller
      */
     public function edit($id)
     {
-        //
+        $bobines = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Bobine')->get();
+        $coulees = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Coulee')->distinct('Coulee')->get();
+        return response()->json(array('bobines' => $bobines, 'coulees' => $coulees), 200);
     }
 
     /**

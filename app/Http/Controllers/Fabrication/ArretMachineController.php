@@ -40,10 +40,11 @@ class ArretMachineController extends Controller
     public function store(Request $request)
     {
         $arret_machine=new ArretMachine();
-        $arret_machine->Pid=$request->Pid;
-        $arret_machine->Did=$request->Did;
+        $rapport=Rapport::find($request->NumRap);
+        $arret_machine->Pid=$rapport->Pid;
+        $arret_machine->Did=$rapport->Did;
         $arret_machine->NumRap=$request->NumRap;
-        $arret_machine->Machine=$request->Machine;
+        $arret_machine->Machine=$rapport->Machine;
         $arret_machine->TypeArret=$request->type_arret;
         $arret_machine->Du=$request->du;
         $arret_machine->Au=$request->au;

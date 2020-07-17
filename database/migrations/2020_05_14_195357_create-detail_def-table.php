@@ -27,7 +27,9 @@ class CreateDetailDefTable extends Migration
             $table->double('Valeur',50)->nullable();
             $table->integer('NbOpr');
             $table->integer('Nombre')->nullable();
-            $table->Boolean('Vald')->default(0);
+            $table->Boolean('Int')->default(0);
+            $table->Boolean('Ext')->default(0);
+            $table->string('Observation',50)->nullable();
         });
     }
 

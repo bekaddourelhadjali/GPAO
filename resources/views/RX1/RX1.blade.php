@@ -197,17 +197,13 @@
                     <form id="rx1Form">
                         <input name="Numero" type="hidden" id="Numero" value="">
                         <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
-                        <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
-                        <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                         <div class="row">
                             <div class=" col-lg-9 col-sm-12">
                                 <div class="form-group ">
                                     <label class="col-lg-12" style="padding-left: 0">Detail Projet</label>
                                     <select class="form-control col-12" id="detail_project" name="detail_project">
                                         @foreach($details as $detail)
-                                            <option value="{{$detail->Did}}">Epais: {{$detail->Epaisseur}} mm -Diam
-                                                : {{$detail->Diametre}}mm
-                                            </option>
+                                            <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -228,7 +224,7 @@
                             </div>
                             <div class="form-group col-2 ">
                                 <label for="" class="col-12"></label>
-                                <button type="reset" class="  btn btn-secondary" type="button" id="annulerButton">
+                                <button type="reset" class="  btn btn-secondary" type="button" id="annulerRX1Button">
                                     Annuler
                                 </button>
                             </div>
@@ -365,22 +361,18 @@
         </section>
         <section>
             <div class="row" id="bottom-actions">
-                <div class=" col-lg-2 col-md-6 col-sm-12">
-                    <button type="button" class="btn btn-info col-12" data-toggle="modal"                             data-target="#cardBackdrop">                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b>                     </button>
-                </div>
-                <div class=" col-lg-2 col-md-6 col-sm-12">
+                <div class=" col-lg-3 col-md-6 col-sm-12">
                     <button type="button" class="btn btn-outline-danger col-12" data-toggle="modal"
                             data-target="#staticBackdrop">
                         <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets
                             Machine</b>
                     </button>
                 </div>
-                <div class=" col-lg-2 col-md-6 col-sm-12">
-                    <button type="button" id="imprimer" class="btn btn-outline-primary col-12">
-                        <b><i class="fa fa-print" style="font-size: 20px;"></i> &nbsp;&nbsp;Imprimer</b>
-                    </button>
+                <div class=" col-lg-3 col-md-6 col-sm-12">
+                    <button type="button" class="btn btn-info col-12" data-toggle="modal"                             data-target="#cardBackdrop">                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b>                     </button>
                 </div>
-                <div class="  col-lg-2  col-md-6 col-sm-12">
+
+                <div class="  col-lg-3  col-md-6 col-sm-12">
                     <form method="post" action="{{route('rapports_RX1.destroy',["id"=>$rapport->Numero])}}">
                         @csrf
                         <input type="hidden" name="_method" value="delete">
@@ -389,7 +381,7 @@
                                 le rapport</b></button>
                     </form>
                 </div>
-                <div class=" col-lg-2 col-md-6 col-sm-12">
+                <div class=" col-lg-3 col-md-6 col-sm-12">
                     <button id="cloturer" class="btn btn-success col-12">
                         <b> <i class="fa fa-check-circle" style="font-size: 20px;"></i> &nbsp;&nbsp; Clôturer
                             Rapport</b></button>
@@ -410,8 +402,7 @@
         $(document).ready(function () {
             rxdef = 0;
             Defauts = [];
-            $('#annulerButton').hide();
-            $('#annulerPanne').hide();
+            $('#annulerRX1Button').hide();
             addRapprodsListeners();
 
             $('#addDefaut').click(function (e) {
@@ -469,8 +460,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    ntube = $('#ntube').val().replace(/[^0-9]/g, '');
-                    machine = $('#ntube').val().replace(ntube, '');
+                    ntube = $('#ntube').val();
                     if (Defauts.length > 0 || $('#operation').val() === 'R.A.S') {
                         if (Defauts.length > 0) {
 
@@ -488,12 +478,9 @@
                                 method: 'post',
                                 data: {
                                     _token: '{{csrf_token()}}',
-                                    machine: machine,
-                                    Pid: $('#Pid').val(),
                                     Did: $('#detail_project').val(),
                                     NumeroRap: $('#NumRap').val(),
                                     ntube: ntube,
-                                    Tube: $('#ntube').val(),
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
                                     Observation: $('#observation').val(),
@@ -537,12 +524,7 @@
                                 data: {
                                     _method: 'put',
                                     _token: '{{csrf_token()}}',
-                                    machine: machine,
-                                    Pid: $('#Pid').val(),
-                                    Did: $('#detail_project').val(),
-                                    NumeroRap: $('#NumRap').val(),
                                     ntube: ntube,
-                                    Tube: $('#ntube').val(),
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
                                     Observation: $('#observation').val(),
@@ -568,7 +550,7 @@
                                         '                     </tr> ');
                                     $('#rx1Form').trigger("reset");
                                     $('#Ajouter').html(' Ajouter ');
-                                    $('#annulerButton').hide();
+                                    $('#annulerRX1Button').hide();
                                     $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                     $('#defauts').val('');
                                     $('#ntube').prop('disabled', false);
@@ -592,10 +574,10 @@
                     alert("Remplir tous les champs qui sont obligatoires svp !");
                 }
             });
-            $('#annulerButton').click(function () {
+            $('#annulerRX1Button').click(function () {
                 $('#rx1Form').trigger("reset");
                 $('#Ajouter').html(' Ajouter ');
-                $('#annulerButton').hide();
+                $('#annulerRX1Button').hide();
                 $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                 $('#defauts').val('');
                 $('#ntube').prop('disabled', false);
@@ -639,7 +621,7 @@
 
                     $('#rx1Form').trigger("reset");
                     $('#Ajouter').html(' Ajouter ');
-                    $('#annulerButton').hide();
+                    $('#annulerRX1Button').hide();
                     $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                     $('#defauts').val('');
                     $('#ntube').prop('disabled', false);
@@ -684,7 +666,7 @@
                                 SetDefauts();
                                 $('#operation').val(Defauts[Defauts.length - 1][0]);
                                 $('#Ajouter').html(' Modifier ');
-                                $('#annulerButton').show();
+                                $('#annulerRX1Button').show();
                                 $('#ntube').prop('disabled', true);
 
                             },

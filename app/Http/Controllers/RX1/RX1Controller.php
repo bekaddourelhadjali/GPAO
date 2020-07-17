@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\RX1;
 
+use App\Fabrication\detailprojet;
+use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Http\Controllers\Controller;
 use App\Visuel\RX1;
@@ -40,11 +42,12 @@ class RX1Controller extends Controller
     public function store(Request $request)
     {
         $rx1 = new RX1();
-        $rx1->Pid = $request->Pid;
+        $rapport = Rapport::find($request->NumeroRap);
+        $rx1->Pid = detailprojet::find($request->Did)->Project->Pid;
         $rx1->Did = $request->Did;
-        $rx1->Machine = $request->machine;
-        $rx1->Tube = $request->Tube;
-        $rx1->Ntube = $request->ntube;
+        $rx1->Machine =  substr($request->ntube,0,1);
+        $rx1->Tube = $request->ntube;
+        $rx1->Ntube = substr($request->ntube,1);
         $rx1->NumeroRap = $request->NumeroRap;
         if ($request->bis == 'true') $rx1->Bis = 1;
         else $rx1->Bis = 0;
@@ -52,6 +55,7 @@ class RX1Controller extends Controller
         $rx1->Observation = $request->Observation;
         $rx1->DateSaisie = date('Y-m-d H:i:s');
         $tube = Tube::where('Tube', '=', $rx1->Tube)
+            ->where('Bis', '=', $rx1->Bis)
             ->where('Pid', '=', $rx1->Pid)
             ->where('Did', '=', $rx1->Did)->first();
         if ($tube != null) {
@@ -62,9 +66,12 @@ class RX1Controller extends Controller
             $tube->Pid = $rx1->Pid;
             $tube->Did = $rx1->Did;
             $tube->Machine = $rx1->Machine;
-            $tube->NTube = $request->ntube;
+            $tube->NTube = $rx1->Ntube;
             $tube->Tube = $rx1->Tube;
             $tube->Bis = $rx1->Bis;
+            $tube->User = $rapport->NomAgents . '/' . $rapport->NomAgents1;
+            $tube->Computer = gethostname();
+            $tube->DateSaisie = date('Y-m-d H:i:s');
             $tube->Z03 = true;
         }
 
@@ -108,14 +115,14 @@ class RX1Controller extends Controller
         if ($rapport != null) {
             if ($rapport->Zone == 'Z03') {
                 if ($rapport->Etat == 'N') {
-                    $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-                    $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z03')->get();
+                     $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z03')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z03')->get();
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     return view('RX1.RX1',
                         ['rapport' => $rapport,
                             'rx1' => $rapport->rx1,
-                            'projet' => $projet,
-                            'details' => $projet->details,
+                            'details' => $details,
                             'arrets' => $rapport->arrets,
                             'defauts' => $defauts,
                             'operations' => $operations]);
@@ -162,8 +169,6 @@ class RX1Controller extends Controller
     {
         $rx1 = RX1::findorFail($id);
         $rx1->Did = $request->Did;
-        if ($request->bis == 'true') $rx1->Bis = 1;
-        else $rx1->Bis = 0;
         $rx1->Defauts = $request->Obs;
         $rx1->Observation = $request->Observation;
         $rx1->DateSaisie = date('Y-m-d H:i:s');
@@ -206,13 +211,22 @@ class RX1Controller extends Controller
     public function destroy($id)
     {
         $rx1 = \App\Visuel\RX1::findOrFail($id);
-
+        $tube = $rx1->tube;
         if ($rx1->delete()) {
-            $rx1->tube->Z03 = false;
-            $rx1->tube->save();
             foreach ($rx1->Defs as $Defaut) {
                 $Defaut->delete();
             }
+            $nbRX1 = RX1::where('Tube', '=', $tube->Tube)->where('Bis', '=', $tube->Bis)->where('Did', '=', $tube->Did)->count();
+            if($nbRX1== 0){
+                if (!$tube->Z01 && !$tube->Z02){
+                    $rx1->tube->delete();
+                }else{
+
+                    $rx1->tube->Z03 = false;
+                    $rx1->tube->save();
+                }
+            }
+
             return response()->json(array('success' => true), 200);
 
         } else {
