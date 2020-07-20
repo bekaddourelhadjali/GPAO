@@ -157,6 +157,19 @@ Route::post('/bobine', function () {
 
     }
 })->name('bobine');
+
+//Dashboard
+
+Route::resource('affectations', 'Dashboard\AffectationsController');
+Route::resource('agents', 'Dashboard\AgentsController');
+Route::resource('Locations', 'Dashboard\LocationsController');
+Route::resource('machines', 'Dashboard\MachinesController');
+Route::resource('clients', 'Dashboard\ClientsController');
+Route::resource('projects', 'Dashboard\ProjectsController');
+Route::resource('Defauts', 'Dashboard\DefautsController');
+Route::resource('Operations', 'Dashboard\OperationsController');
+
+//Rapports
 Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
@@ -167,19 +180,14 @@ Route::resource('MasEPrep', 'Fabrication\MasEPrepController');
 Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController');
 Route::resource('RecBob', 'Reception\RecBobController');
 Route::resource('rapports', 'Fabrication\RapportsController');
-
 //->middleware('UnAuthorized:Z01');
 Route::resource('rapprod', 'Fabrication\RapprodController');
 //->middleware('UnAuthorized:Z01');
+Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController');
+Route::resource('Ultrason', 'Fabrication\UltrasonController');
 Route::resource('arret_machine', 'Fabrication\ArretMachineController');
 Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController');
 Route::resource('visuels', 'Visuel\VisuelsController');
-Route::resource('affectations', 'Dashboard\AffectationsController');
-Route::resource('agents', 'Dashboard\AgentsController');
-Route::resource('Locations', 'Dashboard\LocationsController');
-Route::resource('machines', 'Dashboard\MachinesController');
-Route::resource('clients', 'Dashboard\ClientsController');
-Route::resource('projects', 'Dashboard\ProjectsController');
 Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller');
 Route::resource('RX1', 'RX1\RX1Controller');
 Route::resource('Reparation', 'RepM17\ReparationController');
@@ -194,6 +202,15 @@ Route::resource('rapports_Ndt', 'Ndt\NdtRapportController');
 Route::resource('Ndt', 'Ndt\NdtController');
 Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller');
 Route::resource('RX2', 'RX2\RX2Controller');
+
+Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController');
+Route::resource('Reception', 'Reception\RecTubeController');
+Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController');
+Route::resource('RevInt', 'Revetement\RevIntController');
+Route::resource('rapports_RevExt', 'Revetement\RevExtRapportsController');
+Route::resource('RevExt', 'Revetement\RevExtController');
+Route::resource('rapports_Expedition', 'Expedition\ExpeditionRapportsController');
+Route::resource('Expedition', 'Expedition\ExpeditionController');
 
 Route::get('CarteTube/{tube}', function ($tube) {
 

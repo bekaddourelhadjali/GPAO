@@ -25,7 +25,7 @@
     <style>
         body {
             color: #000;
-            background-color: #e9ebee;
+            background-color: #f8f9fc;
             font-family: Arial, Helvetica, sans-serif;
         }
         .nav-link{
@@ -50,6 +50,7 @@
             /*box-shadow: #ddd -2px -2px 2px;*/
             margin-top: 20px;
             border: 2px solid #ddd;
+            box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
         }
 
         input[type=text] {
@@ -81,6 +82,10 @@
         }
         #cardBackdrop table{
             min-width: 0;
+        }
+        #CarteTubeTable > tbody > tr > td {
+            border:1px solid blue;
+            font-weight: bold;
         }
 
     </style>

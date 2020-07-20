@@ -20,13 +20,7 @@ class CreateDetailProjetTable extends Migration
             $table->double('Epaisseur');
             $table->double('Diametre');
             $table->integer('Psl')->nullable();
-            $table->integer('Qty')->nullable();
-            $table->double('MMtube')->nullable();
-            $table->double('MMBobine')->nullable();
-            $table->double('PoidsM')->nullable();
-            $table->double('Largeur')->nullable();
-            $table->double('RiveG')->nullable();
-            $table->double('RiveD')->nullable();
+            $table->integer('Langueur');
             $table->string('Libelle')->nullable();
             $table->unique(['Did','Pid']);
         });

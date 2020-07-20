@@ -172,7 +172,7 @@
                     <br>
                     <div class="row">
                         <div class="  table-container ">
-                            <table class=" table table-striped table-hover table-bordered">
+                            <table class=" table table-striped table-hover table-borderless">
                                 <thead class="bg-primary text-white">
                                 <tr>
                                     <th>Projet</th>

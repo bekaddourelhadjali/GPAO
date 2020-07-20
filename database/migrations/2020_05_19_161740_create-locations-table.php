@@ -16,9 +16,9 @@ class CreateLocationsTable extends Migration
         Schema::create('Locations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('Designation',60);
-            $table->string('Zone',3);
-            $table->string('AdresseIp',15)->unique();
-
+            $table->string('Zone',10);
+            $table->string('AdresseIp',15);
+            $table->unique(['Zone','AdresseIp']);
         });
     }
 

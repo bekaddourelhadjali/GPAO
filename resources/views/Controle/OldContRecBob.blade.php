@@ -103,7 +103,7 @@
             <div class="modal-body  ">
                 <h5 class="text-center">Bobines Réceptionnées</h5>
                 <div class="table-container">
-                    <table id="RecBobTable" class="table table-striped table-hover table-bordered rapprods ">
+                    <table id="RecBobTable" class="table table-striped table-hover table-borderless rapprods ">
                         <thead class="bg-primary text-white">
                         <tr>
                             <th>Arrivage</th>

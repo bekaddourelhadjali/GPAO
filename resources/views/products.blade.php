@@ -100,7 +100,7 @@
                         </form>
                     </div>
 
-    <table   class="table table-sm table-responsive-md table-responsive-sm  table-striped table-bordered">
+    <table   class="table table-sm table-responsive-md table-responsive-sm  table-striped table-borderless">
 <thead class="table-light">
 <td>Images</td>
 <td>Name</td>

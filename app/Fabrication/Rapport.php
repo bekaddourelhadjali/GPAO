@@ -19,6 +19,9 @@ class Rapport extends Model
         return $this->hasMany('App\Fabrication\Rapprod','NumeroRap')
             ->select(['Numero','Ntube','Coulee','Bobine','Longueur','Macro','RB','Observation']);
     }
+    public function ultrasons(){
+        return $this->hasMany('App\Fabrication\Ultrason','NumeroRap') ;
+    }
     public function visuels(){
         return $this->hasMany('App\Visuel\Visuels','NumeroRap') ;
     }
@@ -42,6 +45,18 @@ class Rapport extends Model
     }
     public function rx2(){
         return $this->hasMany('App\Visuel\RX2','NumeroRap') ;
+    }
+    public function recTubes(){
+        return $this->hasMany('App\Visuel\Reception','NumeroRap') ;
+    }
+    public function revInt(){
+        return $this->hasMany('App\Visuel\RevInt','NumeroRap') ;
+    }
+    public function revExt(){
+        return $this->hasMany('App\Visuel\RevExt','NumeroRap') ;
+    }
+    public function Expedition(){
+        return $this->hasMany('App\Visuel\Expedition','NumeroRap') ;
     }
     public function RecBob(){
         return $this->hasMany('App\Fabrication\Bobine','NumeroRap') ;

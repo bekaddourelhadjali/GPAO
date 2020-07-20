@@ -310,7 +310,7 @@
         </form>
         <section class="col-12">
             <div class="table-container">
-                <table id="rx1sTable" class="table table-striped table-hover table-bordered rapprods ">
+                <table id="rx1sTable" class="table table-striped table-hover table-borderless rapprods ">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th>Tube</th>

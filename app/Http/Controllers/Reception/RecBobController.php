@@ -39,7 +39,7 @@ class RecBobController extends Controller
     public function store(Request $request)
     {
         $bobine = Bobine::where("Bobine", '=', $request->bobine)->where('Coulee', '=', $request->coulee)
-            ->where('Did','=',$request->Did)->where('Etat', '=', 'NonREC')->first();
+            ->where('Did','=',$request->Did)->whereNull('DateRec')->first();
         if ($bobine) {
             $bobine->Did = $request->Did;
             $bobine->Pid = $request->Pid;

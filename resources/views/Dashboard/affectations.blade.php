@@ -36,7 +36,8 @@
 
             <a class="nav-item nav-link active " id="nav-affectations-tab" data-toggle="tab" href="#nav-affectations" role="tab" aria-controls="nav-affectations" aria-selected="true"><b>Affectations</b></a>
             <a class="nav-item nav-link  " id="nav-locations-tab"  href="{{route('Locations.index')}}"><b>Locations</b></a>
-            <a class="nav-item nav-link " id="nav-agents-tab" href="{{route('agents.index')}}"><b>Agents et Machines</b></a>
+            <a class="nav-item nav-link " id="nav-agents-tab" href="{{route('agents.index')}}"><b>Agents </b></a>
+            <a class="nav-item nav-link " href="{{route('Defauts.index')}}"><b>Defauts & Operations</b></a>
 
         </div>
     </nav>
@@ -44,23 +45,23 @@
         <div class="tab-pane fade show active" id="nav-affectations" role="tabpanel" aria-labelledby="nav-affectations-tab">
             <div class="col-12">
                 <section style="">
-                    <h4 class="text-center bg-gradient-info text-white" ><b>Gestion Des Affectations</b></h4>
                     @if(isset($locations))
+
+                        <div class="row">
                         @foreach($locations as $location)
-                            <div class="col-12">
+                            <div class="col-xl-4 col-lg-6 col-12">
                     <div class="card bg-gradient-light ">
                         <div class="card-body " id="locationAff{{$location->id}}">
-                            <h5 class="card-title text-center "><b><span id="location{{$location->id}}Designation">{{$location->Designation}}</span></b></h5>
+                            <h5 class="card-title text-center text-primary"><b><span id="location{{$location->id}}Designation">{{$location->Designation}}</span></b></h5>
                             <hr>
                             <div class="row">
-                                <div class="col-lg-4 col-sm-12   text-center"  >
-                                    <br>
+                                <div class=" col-sm-12   text-center"  >
                                     <div  >
-                                        <p class="card-text"><b><i class="fa fa-desktop text-warning"></i>&nbsp;&nbsp;Adresse IP : <span id="location{{$location->id}}AdresseIp">{{$location->AdresseIp}}</span> </b></p>
-                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span id="location{{$location->id}}Zone">{{$location->Zone}}</span>  </b></p>
+                                        <p class="card-text"><b><i class="fa fa-desktop text-danger"></i>&nbsp;&nbsp;Adresse IP : <span class=" text-danger" id="location{{$location->id}}AdresseIp">{{$location->AdresseIp}}</span> </b></p>
+                                        <p class="card-text"><b><i class="fa fa-map-marker-alt text-success"></i>&nbsp;&nbsp;&nbsp;Zone : <span  class=" text-success" id="location{{$location->id}}Zone">{{$location->Zone}}</span>  </b></p>
                                     </div>
                                 </div>
-                                <section class="col-lg-5 col-md-8 small-section bg-white">
+                                <section class="col-12 small-section bg-white">
                                     <h6 class="text-center text-primary"><b><i class="fa fa-chalkboard-teacher"></i> &nbsp;&nbsp;Agents</b></h6>
                                     <form id="Location{{$location->AdresseIp}}AffForm" class="row form-inline">
                                         <input type="hidden" name="adresseIP" val="{{$location->AdresseIp}}">
@@ -89,41 +90,13 @@
                                         </table>
                                     </div>
                                 </section>
-                                <section class="col-lg-3 col-md-4 bg-white small-section">
-                                    <h6 class="text-center text-warning"><b><i class="fa fa-chalkboard "></i> &nbsp;&nbsp;Machines</b></h6>
-                                    <form >
-                                        <div class="input-group mb-3 col-12">
-                                            <select class="form-control col-12" name="machineSelect" id="machineSelect"  >
-                                                @if(isset($machines))
-                                                    @foreach($machines as $machine)
-                                                        @if($machine->Zone==$location->Zone)
-                                                        <option value="{{$machine->id}}">{{$machine->Machine.' / '.$machine->Description }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <div class="input-group-append">
-                                                <button type="button" id="machineAff{{$location->AdresseIp}}Ajouter" class="machineAffAjouter btn btn-warning"  ><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                         <div class="table-container-small">
-                                             <table id="machines{{$location->AdresseIp}}Table" class="table">
-                                                 <tbody>
-                                                @foreach($location->machines as $machine)
-                                                    <tr id="machineAff{{$machine->id}}"> <td> {{$machine->Machine.' / '.$machine->Description}}</td>
-                                                        <td><button id="machineAff{{$machine->id}}Delete" class="machineAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                         </div>
-                                </section>
                             </div>
                         </div>
                     </div>
                             </div>
                         @endforeach
+
+                            </div>
                     @endif
                     <div class="justify-content-center row" style="margin-top: 20px">
                         @if(isset($locations))
@@ -216,94 +189,11 @@
                         tr.remove();
                     },
                     error: function(result){
-                        alert('hello');console.log(result)
+                        alert(result.responseJSON.message); console.log(result)
                     }
                 });
             });
         });
-        }
-    });
-</script>
-<script>
-    $(document).ready(function(){
-        addMachineAffListeners();
-        $('.machineAffAjouter').each(function(){
-            $(this).off('click');$(this).click(function(e){
-                adresseIp=$(this).attr("id").replace('machineAff','').replace('Ajouter','');
-                form=$(this).parent().parent().parent();
-                tbody=form.next().find('tbody');
-                e.preventDefault();
-                $.ajax({
-                    url: "{{ route('affectations.store')}}",
-                    method: 'post',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        AdresseIp: adresseIp,
-                        idAgent: null,
-                        idMachine: $('#machineSelect').val(),
-                    },
-                    success: function (result) {
-
-                        tbody.append(' <tr id="machineAff'+result.machine.id+'"> <td>'+result.machine.Machine+'</td>\n' +
-                            '                                                        <td><button  id="machineAff'+result.machine.id+'Delete" class="machineAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>\n' +
-                            '                                                    </tr>');
-                        addMachineAffListeners();
-                    },
-                    error: function (result) {
-                        if(typeof result.responseJSON.message !='undefined'){
-                            if(result.responseJSON.message.includes('Unique violation')){
-                                alert("La machine est déjà affectée à cette location");
-                            }else{
-                                alert(result.responseJSON.message);console.log(result);
-                            }
-                        }else{
-                            console.log(result);
-
-                        }
-
-                    }
-                });
-            });
-        });
-        function addMachineAffListeners(){
-            $('.machineAffDelete').each(function(){
-                $(this).off('click');
-                $(this).off('click');$(this).click(function(e){
-                    tr= $(this).parent().parent();
-                    const id=$(this).attr("id").replace(/[^0-9]/g,'');
-                    adresseIp=tr.parent().parent().attr("id").replace('machines','').replace('Table','');
-                    e.preventDefault();
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        url:  "{{url('/affectations/')}}/"+id,
-                        method: 'post',
-                        data: {
-                            _method :'delete',
-                            _token :'{{csrf_token()}}',
-                            idAgent :null,
-                            AdresseIp:adresseIp,
-                            idMachine:id ,
-
-
-                        },
-                        success: function(result){
-                            tr.remove();
-                        },
-                        error: function(result){
-                            if(typeof result.responseJSON.message !='undefined'){
-                                alert(result.responseJSON.message);console.log(result);
-                            } else{
-                                console.log(result);
-                            }
-                        }
-                    });
-                });
-            });
         }
     });
 </script>

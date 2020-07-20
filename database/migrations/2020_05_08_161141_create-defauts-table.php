@@ -17,8 +17,8 @@ class CreateDefautsTable extends Migration
            $table->increments('id');
            $table->string('Defaut',50);
            $table->string('Zone',5);
-           $table->integer('Type')->nullable();
-           $table->string('Descr',50)->nullable();
+           $table->string('Type',10)->nullable();
+           $table->unique(['Defaut','Zone','Type']);
         });
     }
 

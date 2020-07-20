@@ -163,7 +163,6 @@
             <div class="row">
                 <div class="col-12 col-sm-12 col-lg-6">
                     <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}} : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span></div>
-                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                     <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
                 </div>
                 <div class="col-6 col-sm-2  col-lg-2">
@@ -173,7 +172,7 @@
                 <div class="col-6 col-sm-6  col-lg-3">
                     <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}
                             / {{$rapport->CodeAgent}}</span></div>
-                    <div class="row">Zone De Reparation: &nbsp; <span class="valeur">{{$rapport->ZoneRep}} </span></div>
+                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                 </div>
 
             </div>
@@ -311,7 +310,7 @@
         </form>
         <section class="col-12">
             <div class="table-container">
-                <table id="rx1sTable" class="table table-striped table-hover table-bordered rapprods ">
+                <table id="rx1sTable" class="table table-striped table-hover table-borderless rapprods ">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th>Tube</th>
@@ -379,8 +378,8 @@
     </div>
     <!-- Modal -->
 
-    @include('layouts.ArretsLayout');
-    @include('layouts.CarteTubeLayout');
+    @include('layouts.ArretsLayout')
+    @include('layouts.CarteTubeLayout')
 @endsection
 @section('script')
 
@@ -772,6 +771,6 @@
         });
 
     </script>
-    @include('layouts.ArretScript');
-    @include('layouts.CarteTubeScript');
+    @include('layouts.ArretScript')
+    @include('layouts.CarteTubeScript')
 @endsection

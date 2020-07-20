@@ -366,7 +366,7 @@
         </div>
         <section class="col-12">
             <div class="table-container">
-                <table id="visuelsTable" class="table table-striped table-hover table-bordered rapprods ">
+                <table id="visuelsTable" class="table table-striped table-hover table-borderless rapprods ">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th>Tube</th>

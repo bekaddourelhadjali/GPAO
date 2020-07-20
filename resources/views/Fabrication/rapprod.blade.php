@@ -240,7 +240,7 @@
                     </form>
                     <br>
                     <div class="table-container">
-                        <table id="rapprodsTable" class="table table-striped table-hover table-bordered rapprods ">
+                        <table id="rapprodsTable" class="table table-striped table-hover table-borderless rapprods ">
                             <thead class="bg-primary text-white">
                             <tr>
                                 <th>Coulee</th>

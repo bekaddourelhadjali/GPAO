@@ -228,7 +228,7 @@
                     </form>
                     <br>
                     <div class="table-container">
-                        <table id="RecBobTable" class="table table-striped table-hover table-bordered rapprods ">
+                        <table id="RecBobTable" class="table table-striped table-hover table-borderless rapprods ">
                             <thead class="bg-primary text-white">
                             <tr>
                                 <th>Arrivage</th>
@@ -351,14 +351,19 @@
                                     '                                </td> \n' +
                                     '                            </tr>');
                                 $('#RecBobForm').trigger("reset");
+                                $('#NbReception').val(parseInt(item.NbReception) + 1);
                                 $('#bobines').find('option[value=' + item.Bobine + ']').remove();
                                 $('#coulees').find('option[value=' + item.Coulee + ']').remove();
-                                $('#NbReception').val(parseInt($('#NbReception').val()) + 1);
                                 addRapprodsListeners();
                             },
                             error: function (result) {
+                                if(result.responseJSON.message.s('bobine_nbreception_pid_unique')){
+                                    alert('Numero De Réception déjà donné a une autre bobine');
+                                }else{
+
+                                    alert(result.responseJSON.message);
+                                }
                                 console.log(result);
-                                alert(result.responseJSON.error);
                             }
                         });
                     } else {

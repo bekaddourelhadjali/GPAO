@@ -150,7 +150,7 @@
                     </div>
                     <button class="btn btn-success comment_btn my-2  my-sm-0 " type="submit">Save</button>
                 </form>
-                <table class="table table-sm table-responsive-md table-responsive-sm  table-bordered">
+                <table class="table table-sm table-responsive-md table-responsive-sm  table-borderless">
 
                     @foreach($comments as $comment)
                         <tr><td>

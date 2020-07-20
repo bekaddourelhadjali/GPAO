@@ -274,7 +274,7 @@
             </form>
             <br>
             <div class="table-container">
-                <table id="MsTable" class="table table-striped table-hover table-bordered Mss " style="max-width:120%">
+                <table id="MsTable" class="table table-striped table-hover table-borderless Mss " style="max-width:120%">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th rowspan="2">Coulee</th>
@@ -516,7 +516,7 @@
                             },
                             error: function (result) {
                                 if (typeof result.responseJSON.message != 'undefined') {
-                                    if (result.responseJSON.message.includes('tube_pid_did_machine_numtube_unique')) {
+                                    if (result.responseJSON.message.s('tube_pid_did_machine_numtube_unique')) {
                                         alert('Le tube n°=' + $('#machine').val() + ntube + ' existe dejà');
                                     } else {
                                         alert(result.responseJSON.message);
@@ -851,7 +851,7 @@
                         },
                         error: function (result) {
                             if (typeof result.responseJSON.message != 'undefined') {
-                                if (result.responseJSON.message.includes('bobine_coulee_bobine_unique')) {
+                                if (result.responseJSON.message.s('bobine_coulee_bobine_unique')) {
                                     alert('La bobine ' + $('#Bbobine').val() + ' existe déjà');
                                 } else {
 

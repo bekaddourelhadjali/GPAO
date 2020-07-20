@@ -226,7 +226,7 @@
                             },
                             error: function (result) {
                                 if (typeof result.responseJSON.message != 'undefined') {
-                                    if (result.responseJSON.message.includes('Unique violation')) {
+                                    if (result.responseJSON.message.s('Unique violation')) {
                                         alert("Le client " + $('#name').val() + " existe déjà");
                                         console.log(result);
                                     } else {
@@ -281,7 +281,7 @@
                             error: function (result) {
 
                                 if (typeof result.responseJSON.message != 'undefined') {
-                                    if (result.responseJSON.message.includes('Unique violation')) {
+                                    if (result.responseJSON.message.s('Unique violation')) {
                                         alert("Le client " + $('#name').val() + " existe déjà");
                                     } else {
                                         alert(result.responseJSON.message);

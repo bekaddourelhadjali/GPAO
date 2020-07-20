@@ -186,7 +186,7 @@
                <br>
                <div class="row">
                    <div class="  table-container ">
-               <table class=" table table-striped table-hover table-bordered">
+               <table class=" table table-striped table-hover table-borderless">
                    <thead class="bg-primary text-white">
                    <tr>
                        <th>Date</th>
@@ -238,7 +238,7 @@
                         <button type="button" class="col-2 offset-1 btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
 
                     </div>
-                    <table class=" col-12 table table-striped table-hover table-bordered">
+                    <table class=" col-12 table table-striped table-hover table-borderless">
                         <thead class="bg-primary text-white">
                         <tr>
                             <th>Date</th>

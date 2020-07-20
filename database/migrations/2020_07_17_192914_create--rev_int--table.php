@@ -14,8 +14,22 @@ class CreateRevIntTable extends Migration
     public function up()
     {
         Schema::create('rev_int', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->increments('Id');
+            $table->integer('NumeroRap')->unsigned();
+            $table->integer('NumTube')->unsigned();
+            $table->integer('NumReception')->unsigned();
+            $table->string('Tube',5);
+            $table->integer('Pid')->unsigned();
+            $table->integer('Did')->unsigned();
+            $table->string('Ntube',4);
+            $table->integer('Langueur');
+            $table->Boolean('Bis');
+            $table->string('Aspect');
+            $table->Boolean('Accepte');
+            $table->string('Observation')->nullable();
+            $table->string('User',50);
+            $table->string('Computer',50);
+            $table->dateTime('DateSaisie');
         });
     }
 

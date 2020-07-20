@@ -144,7 +144,7 @@
                         <div class="modal-body  ">
                             <h5 class="text-center">Liste des bobines insérées</h5>
                             <div class="table-container">
-                                <table id="NvBobinesTab" class="table table-hover table-bordered table-light">
+                                <table id="NvBobinesTab" class="table table-hover table-borderless table-light">
                                     <thead >
                                     <tr class="btn-success"  >
                                         <th>Arrivage</th>

@@ -119,7 +119,7 @@
                     </form>
                     <hr>
                     <div class="table-container">
-                        <table class="table table-striped table-hover table-bordered" id="ArretTable">
+                        <table class="table table-striped table-hover table-borderless" id="ArretTable">
                             <thead class="bg-primary text-white">
                             <tr>
                                 <th>Type Arret</th>

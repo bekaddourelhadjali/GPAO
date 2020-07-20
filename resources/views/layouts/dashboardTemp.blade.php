@@ -75,6 +75,13 @@
      th{
        text-align: center;
      }
+     .form-control{
+       color:#000;
+       text-align: center;
+     }
+     .form-group label{
+       font-weight: bold;
+     }
    </style>
   @yield('style')
 

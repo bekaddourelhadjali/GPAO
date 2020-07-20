@@ -243,7 +243,7 @@
                 <section>
 
                     <div class="table-container">
-                    <table id="rx1sTable" class="table table-striped table-hover table-bordered rapprods ">
+                    <table id="rx1sTable" class="table table-striped table-hover table-borderless rapprods ">
                         <thead class="bg-primary text-white">
                         <tr>
                             <th>Tube</th>
@@ -319,8 +319,8 @@
     </div>
     <!-- Modal -->
 
-    @include('layouts.ArretsLayout');
-    @include('layouts.CarteTubeLayout');
+    @include('layouts.ArretsLayout')
+    @include('layouts.CarteTubeLayout')
 
 
 @endsection
@@ -581,6 +581,6 @@
 
 
     </script>
-    @include('layouts.ArretScript');
-    @include('layouts.CarteTubeScript');
+    @include('layouts.ArretScript')
+    @include('layouts.CarteTubeScript')
 @endsection

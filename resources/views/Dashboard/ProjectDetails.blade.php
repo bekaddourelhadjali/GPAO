@@ -54,7 +54,7 @@
                         <hr>
                         <form id="detail_projectsForm" class="row text-center">
                             <input type="hidden" id="DetailProjectId" name="id" value="">
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4">
+                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6">
                                 <label   for="project" >  Projet  </label>
                                 <select class="form-control col-12" name="project" id="project"  required>
                                     <option disabled value="0" selected></option>
@@ -65,55 +65,33 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 ">
+                            <div class="form-group col-xl-1 col-lg-2 col-md-3 col-sm-4 col-6 ">
                                 <label  for="nuance"  > Nuance </label>
                                 <input class=" form-control"  name="nuance" id="nuance" type="text" step="0.01"  required >
                             </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 ">
+                            <div class="form-group col-xl-1 col-lg-2 col-md-3 col-sm-4  col-6">
                                 <label  for="epaisseur"  > Epaisseur </label>
-                                <input class=" form-control"  name="epaisseur" id="epaisseur" type="number" step="0.01"  required >
+                                <input style="padding:3px 2px" class=" form-control"  name="epaisseur" id="epaisseur" type="number" step="0.01"  required >
                             </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 ">
+                            <div class="form-group col-xl-1 col-lg-2 col-md-3 col-sm-4  col-6">
                                 <label  for="diametre"  > Diametre </label>
-                                <input class=" form-control"  name="diametre" id="diametre" type="number" step="0.01" required  >
+                                <input style="padding:3px 2px" class=" form-control"  name="diametre" id="diametre" type="number" step="0.01" required  >
                             </div>
-                            <div class="form-group  col-xl-1 col-lg-2 col-md-3 col-sm-4  ">
+                            <div class="form-group  col-xl-1 col-lg-2 col-md-3 col-sm-4   col-6">
                                 <label  for="psl"  > PSL </label>
                                 <input class=" form-control"  name="psl" id="psl" type="number"    required >
                             </div>
-                            <div class="form-group col-xl-1 col-lg-2 col-md-3 col-sm-4 ">
-                                <label  for="qty"  > Quantité </label>
-                                <input class=" form-control"  name="qty" id="qty" type="number"    required  >
+
+                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6">
+                                <label   for="Langueur" > Langueur </label>
+                                <input class="  form-control"  name="Langueur" id="Langueur" type="number" min="1"  required >
                             </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 ">
-                                <label  for="mmTube"  > MM Tube </label>
-                                <input class=" form-control"  name="mmTube" id="mmTube" type="number" step="0.01"  required  >
-                            </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 ">
-                                <label  for="mmBobine"  > MM Bobine </label>
-                                <input class=" form-control"  name="mmBobine" id="mmBobine" type="number" step="0.01"  required  >
-                            </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4">
-                                <label   for="poidsM" > Poids M </label>
-                                <input class="  form-control"  name="poidsM" id="poidsM"  type="number" step="0.01" required>
-                            </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4">
-                                <label   for="largeur" > Largeur </label>
-                                <input class="  form-control"  name="largeur" id="largeur" type="number" step="0.01"  required >
-                            </div>
-                            <div class="form-group col-xl-1 col-lg-2 col-md-3 col-sm-4">
-                                <label   for="riveG" > Rive G </label>
-                                <input class="  form-control"  name="riveG" id="riveG" type="number" step="0.01"  required >
-                            </div>
-                            <div class="form-group col-xl-1 col-lg-2 col-md-3 col-sm-4">
-                                <label   for="riveD" > Rive D </label>
-                                <input class="  form-control"  name="riveD" id="riveD" type="number" step="0.01" required  >
-                            </div>
-                            <div class="form-group col-xl-2 col-lg-3 col-md-4 col-sm-4">
+
+                            <div class="form-group col-xl-2 col-lg-3 col-md-4 col-sm-4 col-6">
                                 <label   for="libelle" > Libelle </label>
                                 <input class="  form-control"  name="libelle" id="libelle" type="text" required  >
                             </div>
-                            <div class="col-xl-2 col-sm-2 form-group  actions ">
+                            <div class="col-xl-2 col-sm-2 col-6 form-group  actions ">
                                 <label class="col-12">&nbsp</label>
                                 <button type="button" id="AnnulerDetail_project" class=" btn btn-danger" style="width:35px; height:35px; padding:0;" ><i class="fa fa-times"></i></button>
                                 <button type="button" id="AjouterDetail_project" style="width:35px; height:35px; padding:0;" class=" btn btn-info"><i class="fa fa-plus"></i></button>
@@ -130,13 +108,7 @@
                                     <th>Epaisseur</th>
                                     <th>Diametre</th>
                                     <th>PSL</th>
-                                    <th>Quantité</th>
-                                    <th>MM Tube</th>
-                                    <th>MM Bobine</th>
-                                    <th>Poids M</th>
-                                    <th>Largeur</th>
-                                    <th>Rive G</th>
-                                    <th>Rive D</th>
+                                    <th>Langueur</th>
                                     <th>Libelle</th>
                                 </tr>
                                 </thead>
@@ -149,13 +121,7 @@
                                     <td id="detail_project{{$detail_project->Did}}epaisseur">{{$detail_project->Epaisseur}}</td>
                                     <td id="detail_project{{$detail_project->Did}}diametre">{{$detail_project->Diametre}}</td>
                                     <td id="detail_project{{$detail_project->Did}}psl">{{$detail_project->Psl}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}qty">{{$detail_project->Qty}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}mmTube">{{$detail_project->MMtube}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}mmBobine">{{$detail_project->MMBobine}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}poidsM">{{$detail_project->PoidsM}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}largeur">{{$detail_project->Largeur}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}riveG">{{$detail_project->RiveG}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}riveD">{{$detail_project->RiveD}}</td>
+                                    <td id="detail_project{{$detail_project->Did}}Langueur">{{$detail_project->Langueur}}</td>
                                     <td id="detail_project{{$detail_project->Did}}libelle">{{$detail_project->Libelle}}</td>
                                 </tr>
 
@@ -210,13 +176,7 @@
                                 Epaisseur: $('#epaisseur').val(),
                                 Diametre: $('#diametre').val(),
                                 Psl: $('#psl').val(),
-                                Qty: $('#qty').val(),
-                                MMtube: $('#mmTube').val(),
-                                MMBobine: $('#mmBobine').val(),
-                                PoidsM: $('#poidsM').val(),
-                                Largeur: $('#largeur').val(),
-                                RiveG: $('#riveG').val(),
-                                RiveD: $('#riveD').val(),
+                                Langueur: $('#Langueur').val(),
                                 Libelle: $('#libelle').val(),
 
                             },
@@ -227,13 +187,7 @@
                                     '                                    <td id="detail_project'+result.detail_project.Did+'epaisseur">'+result.detail_project.Epaisseur+'</td>\n' +
                                     '                                    <td id="detail_project'+result.detail_project.Did+'diametre">'+result.detail_project.Diametre+'</td>\n' +
                                     '                                    <td id="detail_project'+result.detail_project.Did+'psl">'+result.detail_project.Psl+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'qty">'+result.detail_project.Qty+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'mmTube">'+result.detail_project.MMtube+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'mmBobine">'+result.detail_project.MMBobine+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'poidsM">'+result.detail_project.PoidsM+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'largeur">'+result.detail_project.Largeur+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'riveG">'+result.detail_project.RiveG+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'riveD">'+result.detail_project.RiveD+'</td>\n' +
+                                    '                                    <td id="detail_project'+result.detail_project.Did+'Langueur">'+result.detail_project.Langueur+'</td>\n' +
                                     '                                    <td id="detail_project'+result.detail_project.Did+'libelle">'+result.detail_project.Libelle+'</td>\n' +
                                     '                                </tr>');
                                 addDetail_projectsListeners();
@@ -266,13 +220,7 @@
                                 Epaisseur: $('#epaisseur').val(),
                                 Diametre: $('#diametre').val(),
                                 Psl: $('#psl').val(),
-                                Qty: $('#qty').val(),
-                                MMtube: $('#mmTube').val(),
-                                MMBobine: $('#mmBobine').val(),
-                                PoidsM: $('#poidsM').val(),
-                                Largeur: $('#largeur').val(),
-                                RiveG: $('#riveG').val(),
-                                RiveD: $('#riveD').val(),
+                                Langueur: $('#Langueur').val(),
                                 Libelle: $('#libelle').val(),
 
                             },
@@ -284,13 +232,7 @@
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'epaisseur">'+result.detail_project.Epaisseur+'</td>\n' +
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'diametre">'+result.detail_project.Diametre+'</td>\n' +
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'psl">'+result.detail_project.Psl+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'qty">'+result.detail_project.Qty+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'mmTube">'+result.detail_project.MMtube+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'mmBobine">'+result.detail_project.MMBobine+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'poidsM">'+result.detail_project.PoidsM+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'largeur">'+result.detail_project.Largeur+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'riveG">'+result.detail_project.RiveG+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'riveD">'+result.detail_project.RiveD+'</td>\n' +
+                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'Langueur">'+result.detail_project.Langueur+'</td>\n' +
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'libelle">'+result.detail_project.Libelle+'</td>\n' +
                                     '                                    \'                                </tr>');
                                 addDetail_projectsListeners();
@@ -366,13 +308,7 @@
                         $('#epaisseur').val($('#detail_project'+id+'epaisseur').html());
                         $('#diametre').val($('#detail_project'+id+'diametre').html());
                         $('#psl').val($('#detail_project'+id+'psl').html());
-                        $('#qty').val($('#detail_project'+id+'qty').html());
-                        $('#mmTube').val($('#detail_project'+id+'mmTube').html());
-                        $('#mmBobine').val($('#detail_project'+id+'mmBobine').html());
-                        $('#poidsM').val($('#detail_project'+id+'poidsM').html());
-                        $('#largeur').val($('#detail_project'+id+'largeur').html());
-                        $('#riveG').val($('#detail_project'+id+'riveG').html());
-                        $('#riveD').val($('#detail_project'+id+'riveD').html());
+                        $('#Langueur').val($('#detail_project'+id+'Langueur').html());
                         $('#libelle').val($('#detail_project'+id+'libelle').html());
                         $('#AnnulerDetail_project').show();
                         $('#AjouterDetail_project').html('<i class="fa fa-check"></i>');

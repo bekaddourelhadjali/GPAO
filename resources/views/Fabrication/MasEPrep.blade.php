@@ -259,7 +259,7 @@
             </form>
             <br>
             <div class="table-container">
-                <table id="MsTable" class="table table-striped table-hover table-bordered Mss " style="max-width:120%">
+                <table id="MsTable" class="table table-striped table-hover table-borderless Mss " style="max-width:120%">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th rowspan="2">Coulee</th>

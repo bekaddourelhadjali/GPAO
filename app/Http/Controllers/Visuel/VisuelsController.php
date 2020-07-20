@@ -131,8 +131,8 @@ class VisuelsController extends Controller
         if ($rapport != null) {
             if ($rapport->Zone == 'Z02') {
                 if ($rapport->Etat == 'N') {
-                    $defautsMetal = \App\Visuel\Defauts::where('Zone', '=', 'Z02')->where('Descr', '=', 'Metal')->get();
-                    $defautsSoudure = \App\Visuel\Defauts::where('Zone', '=', 'Z02')->where('Descr', '=', 'Soudure')->get();
+                    $defautsMetal = \App\Visuel\Defauts::where('Zone', '=', 'Z02')->where('Type', '=', 'Metal')->get();
+                    $defautsSoudure = \App\Visuel\Defauts::where('Zone', '=', 'Z02')->where('Type', '=', 'Soudure')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z02')->get();
                     return view('visuel.rapvisuel',
                         ['rapport' => $rapport,
