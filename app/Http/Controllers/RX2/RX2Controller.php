@@ -52,6 +52,8 @@ class RX2Controller extends Controller
         $rx2->Pid = $request->Pid;
         $rx2->Did = $request->Did;
         $rx2->NumeroRap = $request->NumeroRap;
+        $rx2->Integration = $request->Integration;
+        $rx2->CodeSoude = $request->CodeSoude;
         $rx2->Ntube = $tube->NTube;
         $rx2->Tube = $tube->Tube;
         $rx2->Bis = $tube->Bis;
@@ -159,6 +161,8 @@ class RX2Controller extends Controller
         $rx2->Observation=$request->ObsTube;
         $rx2->DateSaisie = date('Y-m-d H:i:s');
         $oldDefs = $rx2->Defs;
+        $rx2->Integration = $request->Integration;
+        $rx2->CodeSoude = $request->CodeSoude;
         $defauts=$request->Defauts;
         if ($rx2->save()) {
             foreach ($defauts as $defaut) {

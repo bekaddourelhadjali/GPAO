@@ -162,7 +162,9 @@
         <section id="head-section">
             <div class="row">
                 <div class="col-12 col-sm-12 col-lg-6">
-                    <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}} : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span></div>
+                    <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}}
+                            : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span>
+                    </div>
                     <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
                 </div>
                 <div class="col-6 col-sm-2  col-lg-2">
@@ -189,7 +191,7 @@
                     <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                     <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                     <div class="row">
-                        <div class=" col-4">
+                        <div class=" col-xl-4  col-lg-6 col-md-4 col-6">
                             <div class="form-group ">
                                 <label class="col-lg-12" style="padding-left: 0">Tube</label>
                                 <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
@@ -207,6 +209,27 @@
                                 </datalist>
                             </div>
                         </div>
+                        <div class=" col-xl-3 col-lg-6 col-md-4 col-6">
+                            <div class="form-group ">
+                                <label class="col-12" for="Integration" style="padding-left: 0">Integration</label>
+                                <input class=" col-12 form-control" type="text" id="Integration"
+                                       name="Integration"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="  col-xl-5 col-lg-6 col-md-4 col-6">
+                            <div class="form-group ">
+                                <label class="col-12" for="CodeSoude" style="padding-left: 0">Code Soudeur</label>
+                                <input class=" col-12 form-control" type="text" id="CodeSoude"
+                                       name="CodeSoude"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xl-12 col-lg-6 col-md-12 col-6 ">
+                            <label for="ObsTube" class="col-12">Observation</label>
+                            <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
+                        </div>
                         <div class="col-8 ">
                             <div class="form-group ">
                                 <label class="col-lg-12" style="padding-left: 0">&nbsp;</label>
@@ -219,11 +242,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="form-group  col-12  ">
-                            <label for="ObsTube" class="col-12">Observation</label>
-                            <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
-                        </div>
-
 
                     </div>
                 </section>
@@ -278,8 +296,8 @@
                         <div class="col-6 col-sm-4 col-md-4 col-lg-3 ">
                             <div class="form-group text-center">
                                 <label class="col-12">Defaut</label>
-                                <span class="  col-5 btn btn-outline-secondary defs" id="Int">Debut</span>
-                                <span class="  col-5 btn btn-outline-secondary defs" id="Ext">Fin</span>
+                                <span style="padding:5px 2px" class="  col-5 btn btn-outline-secondary defs" id="Int">Debut</span>
+                                <span style="padding:5px 2px" class="  col-5 btn btn-outline-secondary defs" id="Ext">Fin</span>
                             </div>
                         </div>
                         <div class="form-group col-md-8 col-sm-8 col-12  ">
@@ -315,6 +333,8 @@
                     <tr>
                         <th>Tube</th>
                         <th>Bis</th>
+                        <th>Intégration</th>
+                        <th>Code Soudeur</th>
                         <th>Defauts</th>
                         <th>Observations</th>
                         <th></th>
@@ -328,7 +348,8 @@
                                 <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
                                                                                  onclick="return false;">
                                     @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
-
+                                <td id="Integration{{$item->Id}}">{{$item->Integration}}</td>
+                                <td id="CodeSoude{{$item->Id}}">{{$item->CodeSoude}}</td>
                                 <td id="Defaut{{$item->Id}}">{{$item->Defauts}} </td>
                                 <td id="Observation{{$item->Id}}">{{$item->Observation}} </td>
 
@@ -397,27 +418,27 @@
                 e.preventDefault();
                 if ($('#defaut').val() !== null && $('#operation').val() !== null) {
 
-                        Opr = $('#operation').val();
-                        IdDef = $('#defaut').find("option:selected").attr("defautId");
+                    Opr = $('#operation').val();
+                    IdDef = $('#defaut').find("option:selected").attr("defautId");
 
-                        Defaut = $('#defaut').val();
+                    Defaut = $('#defaut').val();
 
-                        Valeur = $('#valeur').val();
-                        NbOpr = $('#operation').find("option:selected").attr("operationId");
-                        Nombre = $('#nbr').val();
-                        if (Valeur === '' || Valeur === 0) {
-                            Valeur = null;
-                        }
-                        if (Nombre === '' || Nombre === 0) {
-                            Nombre = null;
-                        }
+                    Valeur = $('#valeur').val();
+                    NbOpr = $('#operation').find("option:selected").attr("operationId");
+                    Nombre = $('#nbr').val();
+                    if (Valeur === '' || Valeur === 0) {
+                        Valeur = null;
+                    }
+                    if (Nombre === '' || Nombre === 0) {
+                        Nombre = null;
+                    }
 
-                        Int = defauts["Int"];
-                        Ext = defauts["Ext"];
+                    Int = defauts["Int"];
+                    Ext = defauts["Ext"];
 
-                        Obs=$('#observation').val();
-                        Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, Int, Ext,Obs]);
-                        SetDefauts();
+                    Obs = $('#observation').val();
+                    Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, Int, Ext, Obs]);
+                    SetDefauts();
 
                 } else {
                     alert('Sélectionner un defaut et une opération svp!');
@@ -500,106 +521,114 @@
             $('#Ajouter').click(function (e) {
                 if ($('#repForm')[0].checkValidity() && $('#tubes option[value=' + $('#ntube').val() + ']').val() !== undefined) {
                     e.preventDefault();
-                        const id = $('#Numero').val();
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        if (Defauts.length > 0 || $('#operation').val() === 'R.A.S') {
-                            if (Defauts.length > 0) {
-
-                                obs = $('#defauts').val() + '|' + Defauts[Defauts.length - 1][0] + '|';
-                            } else if ($('#operation').val() === 'R.A.S') {
-                                obs = $('#operation').val();
-                                Defauts.push([
-                                    Opr = $('#operation').val(), null, null, null, $('#operation').find("option:selected").attr("operationId"), null]);
-                            }
-                            if ($('#Ajouter').html() !== ' Modifier ') {
-                                $.ajax({
-                                    url: "{{ route('RX2.store')}}",
-                                    method: 'post',
-                                    data: {
-                                        _token: '{{csrf_token()}}',
-                                        Pid: $('#Pid').val(),
-                                        Did: $('#Did').val(),
-                                        NumeroRap: $('#NumRap').val(),
-                                        ntube: $('#ntube').val(),
-                                        Defauts: Defauts,
-                                        ObsTube: $('#ObsTube').val(),
-                                        Obs: obs,
-                                    },
-                                    success: function (result) {
-                                        var item = result.rx2;
-                                        $('#reps').append('<tr id="rep' + item.Id + '">\n' +
-                                            '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
-                                            '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                            '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                            '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
-                                            '                                <td>\n' +
-                                            '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
-                                            '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
-                                            '                                </td>\n' +
-                                            '                            </tr>');
-                                        $('#repForm').trigger("reset");
-                                        defauts = [];
-                                        initDefauts();
-                                        Defauts = [];
-                                        addRapprodsListeners();
-                                    },
-                                    error: function (result) {
-                                        alert(result.responseJSON.message);
-                                        console.log(result);
-                                    }
-                                });
-
-                            } else {
-                                $.ajax({
-                                    url: "{{url('/RX2/')}}/" + id,
-                                    method: 'post',
-                                    data: {
-                                        _method: 'put',
-                                        _token: '{{csrf_token()}}',
-                                        Pid: $('#Pid').val(),
-                                        Did: $('#Did').val(),
-                                        NumeroRap: $('#NumRap').val(),
-                                        ntube: $('#ntube').val(),
-                                        Defauts: Defauts,
-                                        ObsTube: $('#ObsTube').val(),
-                                        Obs: obs,
-                                        id: id
-                                    },
-                                    success: function (result) {
-                                        var item = result.rx2;
-                                        console.log(item);
-                                        $('#rep' + id).html('<td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
-                                            '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                            '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                            '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
-                                            '                                <td>\n' +
-                                            '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
-                                            '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
-                                            '                                </td>');
-                                        $('#repForm').trigger("reset");
-                                        $('#Ajouter').html(' Ajouter ');
-                                        $('#annulerButton').hide();
-                                        defauts = [];
-                                        Defauts = [];
-                                        initDefauts();
-                                        $('#ntube').prop('disabled', false);
-                                        addRapprodsListeners();
-                                    },
-                                    error: function (result) {
-                                        alert(result.responseJSON.message);
-                                        console.log(result);
-
-                                    }
-                                });
-
-                            }
-                        } else {
-                            alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
+                    const id = $('#Numero').val();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
+                    });
+                    if (Defauts.length > 0 || $('#operation').val() === 'R.A.S') {
+                        if (Defauts.length > 0) {
+
+                            obs = $('#defauts').val() + '|' + Defauts[Defauts.length - 1][0] + '|';
+                        } else if ($('#operation').val() === 'R.A.S') {
+                            obs = $('#operation').val();
+                            Defauts.push([
+                                Opr = $('#operation').val(), null, null, null, $('#operation').find("option:selected").attr("operationId"), null]);
+                        }
+                        if ($('#Ajouter').html() !== ' Modifier ') {
+                            $.ajax({
+                                url: "{{ route('RX2.store')}}",
+                                method: 'post',
+                                data: {
+                                    _token: '{{csrf_token()}}',
+                                    Pid: $('#Pid').val(),
+                                    Did: $('#Did').val(),
+                                    NumeroRap: $('#NumRap').val(),
+                                    ntube: $('#ntube').val(),
+                                    Integration: $('#Integration').val(),
+                                    CodeSoude: $('#CodeSoude').val(),
+                                    Defauts: Defauts,
+                                    ObsTube: $('#ObsTube').val(),
+                                    Obs: obs,
+                                },
+                                success: function (result) {
+                                    var item = result.rx2;
+                                    $('#reps').append('<tr id="rep' + item.Id + '">\n' +
+                                        '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
+                                        '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
+                                        '                                <td    id="Integration' + item.Id + '">' + item.Integration + '</td>\n' +
+                                        '                                <td    id="CodeSoude' + item.Id + '">' + item.CodeSoude + '</td>\n' +
+                                        '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
+                                        '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
+                                        '                                <td>\n' +
+                                        '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
+                                        '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
+                                        '                                </td>\n' +
+                                        '                            </tr>');
+                                    $('#repForm').trigger("reset");
+                                    defauts = [];
+                                    initDefauts();
+                                    Defauts = [];
+                                    addRapprodsListeners();
+                                },
+                                error: function (result) {
+                                    alert(result.responseJSON.message);
+                                    console.log(result);
+                                }
+                            });
+
+                        } else {
+                            $.ajax({
+                                url: "{{url('/RX2/')}}/" + id,
+                                method: 'post',
+                                data: {
+                                    _method: 'put',
+                                    _token: '{{csrf_token()}}',
+                                    Pid: $('#Pid').val(),
+                                    Did: $('#Did').val(),
+                                    NumeroRap: $('#NumRap').val(),
+                                    ntube: $('#ntube').val(),
+                                    Defauts: Defauts,
+                                    ObsTube: $('#ObsTube').val(),
+                                    Integration: $('#Integration').val(),
+                                    CodeSoude: $('#CodeSoude').val(),
+                                    Obs: obs,
+                                    id: id
+                                },
+                                success: function (result) {
+                                    var item = result.rx2;
+                                    console.log(item);
+                                    $('#rep' + id).html('<td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
+                                        '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
+                                        '                               <td    id="Integration' + item.Id + '">' + item.Integration + '</td>\n' +
+                                        '                                <td    id="CodeSoude' + item.Id + '">' + item.CodeSoude + '</td>\n' +
+                                        '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
+                                        '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
+                                        '                                <td>\n' +
+                                        '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
+                                        '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
+                                        '                                </td>');
+                                    $('#repForm').trigger("reset");
+                                    $('#Ajouter').html(' Ajouter ');
+                                    $('#annulerButton').hide();
+                                    defauts = [];
+                                    Defauts = [];
+                                    initDefauts();
+                                    $('#ntube').prop('disabled', false);
+                                    addRapprodsListeners();
+                                },
+                                error: function (result) {
+                                    alert(result.responseJSON.message);
+                                    console.log(result);
+
+                                }
+                            });
+
+                        }
+                    } else {
+                        alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
+                    }
 
                 } else {
                     if ($('#tubes option[value=' + $('#ntube').val() + ']').val() === undefined) {
@@ -686,40 +715,42 @@
                             },
                             success: function (result) {
                                 $('#Numero').val(id);
+                                $('#CodeSoude').val($('#CodeSoude'+id).html());
+                                $('#Integration').val($('#Integration'+id).html());
                                 rep = result.rx2;
                                 Defauts = [];
                                 rep.defs.forEach(function (item, index) {
-                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,item.Int,item.Ext,item.Observation]);
+                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre, item.Int, item.Ext, item.Observation]);
                                 });
                                 SetDefauts();
                                 $('#operation').val(Defauts[Defauts.length - 1][0]);
                                 $('#defaut').val(Defauts[Defauts.length - 1][2]);
                                 $('#observation').val(Defauts[Defauts.length - 1][8]);
-                                if(Defauts[Defauts.length - 1][6]){
-                                    defauts["Int"]=1;
+                                if (Defauts[Defauts.length - 1][6]) {
+                                    defauts["Int"] = 1;
                                     $("#Int").removeClass('btn-outline-secondary');
                                     $("#Int").addClass('btn-danger');
 
-                                }else{
-                                    defauts["Int"]=0;
+                                } else {
+                                    defauts["Int"] = 0;
                                     $("#Int").addClass('btn-outline-secondary');
                                     $("#Int").removeClass('btn-danger');
                                 }
-                                if(Defauts[Defauts.length - 1][7]){
-                                    defauts["Ext"]=1;
+                                if (Defauts[Defauts.length - 1][7]) {
+                                    defauts["Ext"] = 1;
                                     $("#Ext").removeClass('btn-outline-secondary');
                                     $("#Ext").addClass('btn-danger');
-                                }else{
-                                    defauts["Ext"]=0;
+                                } else {
+                                    defauts["Ext"] = 0;
                                     $("#Ext").addClass('btn-outline-secondary');
                                     $("#Ext").removeClass('btn-danger');
                                 }
                                 $('#ntube').prop('disabled', true);
                                 $('#Numero').val(id);
-                                $('#ObsTube').val($('#Observation'+id).html());
+                                $('#ObsTube').val($('#Observation' + id).html());
 
                                 if ($('#bis' + id).html().includes('checked'))
-                                    $('#ntube').val($("#tube" + id).html()+"bis");
+                                    $('#ntube').val($("#tube" + id).html() + "bis");
                                 else
                                     $('#ntube').val($("#tube" + id).html());
 

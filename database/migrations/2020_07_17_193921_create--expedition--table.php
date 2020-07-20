@@ -23,10 +23,13 @@ class CreateExpeditionTable extends Migration
             $table->string('Ntube',4);
             $table->Boolean('Bis');
             $table->integer('Langueur');
-            $table->integer('Poids')->nullable();
-            $table->integer('NumLot')->nullable();
             $table->integer('Coulee')->nullable();
-            $table->integer('NumExpedition')->nullable();
+            $table->integer('Poids')->nullable();
+            $table->integer('NumBon');
+            $table->integer('NumExpedition');
+            $table->date('DateExpedition');
+            $table->string('Site',20);
+            $table->string('Transporteur',20);
             $table->string('Observation')->nullable();
             $table->string('User',50);
             $table->string('Computer',50);

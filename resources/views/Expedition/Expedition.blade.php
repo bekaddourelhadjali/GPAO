@@ -180,7 +180,7 @@
             </div>
         </section>
         <div class="row">
-            <div class=" col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 offset-0">
+            <div class=" col-12  ">
 
                 <section class="top-actions">
                     <h5>Info Tube</h5>
@@ -191,7 +191,7 @@
                         <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                         <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                         <div class="row">
-                            <div class="col-lg-2 col-md-3 col-4">
+                            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                                 <div class="form-group ">
                                     <label class="col-lg-12" style="padding-left: 0">Tube</label>
                                     <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
@@ -211,14 +211,14 @@
                                     </datalist>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="Coulee" style="padding-left: 0">Coulee</label>
                                     <input class="form-control col-12" type="number" id="Coulee" name="Coulee"
                                            readonly>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="Langueur" style="padding-left: 0">Langueur</label>
                                     <input class="form-control col-12" type="number" id="Langueur" name="Langueur"
@@ -226,14 +226,14 @@
                                            required>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="Poids" style="padding-left: 0">Poids</label>
                                     <input class="form-control col-12" type="number" id="Poids" name="Poids"
                                            >
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="NumExpedition"
                                            style="padding-left: 0">NumExpedition</label>
@@ -242,20 +242,48 @@
                                            required>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
                                 <div class="form-group text-center">
-                                    <label class="col-12" for="NumLot"
-                                           style="padding-left: 0">NumLot</label>
-                                    <input class="form-control col-12" type="number" id="NumLot"
-                                           name="NumLot" min="1"
+                                    <label class="col-12" for="NumBon"
+                                           style="padding-left: 0">N°Bon</label>
+                                    <input class="form-control col-12" type="number" id="NumBon"
+                                           name="NumBon" min="1"
                                            required>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-8 col-md-6 col-12 ">
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
+                                <div class="form-group text-center">
+                                    <label class="col-12" for="DateExpedition"
+                                           style="padding-left: 0">Date Expedition</label>
+                                    <input class="form-control col-12" type="date" id="DateExpedition"
+                                           name="DateExpedition" value="{{date('Y-m-d')}}"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
+                                <div class="form-group text-center">
+                                    <label class="col-12" for="Site"
+                                           style="padding-left: 0">Site</label>
+                                    <input class="form-control col-12" type="text" id="Site"
+                                           name="Site"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3   col-sm-4 col-6">
+                                <div class="form-group text-center">
+                                    <label class="col-12" for="Transporteur"
+                                           style="padding-left: 0">Transporteur</label>
+                                    <input class="form-control col-12" type="text" id="Transporteur"
+                                           name="Transporteur"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-9 col-12 ">
                                 <label for="observation" class="col-12">Observation</label>
                                 <input type="text" class="form-control" name="observation" id="observation">
                             </div>
-                            <div class="col-md-2 col-6"><label class="col-12"></label>
+
+                            <div class="offset-md-0 offset-md-8 col-md-2 col-6"><label class="col-12"></label>
                                 <button style="margin-right: 10px;" type="reset"
                                         class=" col-12  btn btn-outline-secondary " id="annulerButton">Annuler
                                 </button>
@@ -282,8 +310,11 @@
                                 <th>Coulee</th>
                                 <th>Langueur</th>
                                 <th>Poids</th>
-                                <th>NumExpedition</th>
-                                <th>NumLot</th>
+                                <th>N°Expedition</th>
+                                <th>N°Bon</th>
+                                <th>Date Expédition</th>
+                                <th>Site</th>
+                                <th>Transporteur</th>
                                 <th>Observation</th>
                             </tr>
                             </thead>
@@ -300,7 +331,10 @@
                                         <td id="Langueur{{$item->Id}}">{{$item->Langueur}}</td>
                                         <td id="Poids{{$item->Id}}">{{$item->Poids}}</td>
                                         <td id="NumExpedition{{$item->Id}}">{{$item->NumExpedition}}</td>
-                                        <td id="NumLot{{$item->Id}}">{{$item->NumLot}}</td>
+                                        <td id="NumBon{{$item->Id}}">{{$item->NumBon}}</td>
+                                        <td id="DateExpedition{{$item->Id}}">{{$item->DateExpedition}}</td>
+                                        <td id="Site{{$item->Id}}">{{$item->Site}}</td>
+                                        <td id="Transporteur{{$item->Id}}">{{$item->Transporteur}}</td>
                                         <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
                                         <td>
                                             <button id="ms{{$item->Id}}Edit" class="msEdit text-primary"><i
@@ -391,8 +425,11 @@
                                 Coulee: $('#Coulee').val(),
                                 Langueur: $('#Langueur').val(),
                                 Poids: $('#Poids').val(),
-                                NumLot: $('#NumLot').val(),
+                                NumBon: $('#NumBon').val(),
+                                DateExpedition: $('#DateExpedition').val(),
                                 NumExpedition: $('#NumExpedition').val(),
+                                Site: $('#Site').val(),
+                                Transporteur: $('#Transporteur').val(),
 
                             },
                             success: function (result) {
@@ -404,7 +441,10 @@
                                     '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
                                     '                                <td     id="Poids' + item.Id + '">' + item.Poids + '</td>\n' +
                                     '                                <td     id="NumExpedition' + item.Id + '">' + item.NumExpedition + '</td>\n' +
-                                    '                                <td     id="NumLot' + item.Id + '">' + item.NumLot + '</td>\n' +
+                                    '                                <td     id="NumBon' + item.Id + '">' + item.NumBon + '</td>\n' +
+                                    '                                <td     id="DateExpedition' + item.Id + '">' + item.DateExpedition + '</td>\n' +
+                                    '                                <td     id="Site' + item.Id + '">' + item.Site + '</td>\n' +
+                                    '                                <td     id="Transporteur' + item.Id + '">' + item.Transporteur + '</td>\n' +
                                     '                                <td    id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                     '                                <td>\n' +
                                     '                                    <button id="ms' + item.Id + 'Edit" class="msEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
@@ -446,8 +486,11 @@
                                 Observation: $('#observation').val(),
                                 Langueur: $('#Langueur').val(),
                                 Poids: $('#Poids').val(),
-                                NumLot: $('#NumLot').val(),
+                                NumBon: $('#NumBon').val(),
+                                DateExpedition: $('#DateExpedition').val(),
                                 NumExpedition: $('#NumExpedition').val(),
+                                Site: $('#Site').val(),
+                                Transporteur: $('#Transporteur').val(),
                                 id: id
                             },
                             success: function (result) {
@@ -458,8 +501,12 @@
                                     '                                <td     id="Coulee' + item.Id + '">' + $('#Coulee').val() + '</td>\n' +
                                     '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
                                     '                                <td     id="Poids' + item.Id + '">' + item.Poids + '</td>\n' +
-                                    '                                <td     id="NumLot' + item.Id + '">' + item.NumLot + '</td>\n' +
-                                    '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
+                                    '                                <td     id="NumExpedition' + item.Id + '">' + item.NumExpedition + '</td>\n' +
+                                    '                                <td     id="NumBon' + item.Id + '">' + item.NumBon + '</td>\n' +
+                                    '                                <td     id="DateExpedition' + item.Id + '">' + item.DateExpedition + '</td>\n' +
+                                    '                                <td     id="Site' + item.Id + '">' + item.Site + '</td>\n' +
+                                    '                                <td     id="Transporteur' + item.Id + '">' + item.Transporteur + '</td>\n' +
+                                    '                                <td    id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                     '                                <td>\n' +
                                     '                                    <button id="ms' + item.Id + 'Edit" class="msEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                     '                                    <button id="ms' + item.Id + 'Delete" class="msDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
@@ -548,7 +595,10 @@
                         $('#Poids').val($("#Poids" + id).html());
                         $('#NumExpedition').val($("#NumExpedition" + id).html());
                         $('#Coulee').val($("#Coulee" + id).html());
-                        $('#NumLot').val($("#NumLot" + id).html());
+                        $('#NumBon').val($("#NumBon" + id).html());
+                        $('#DateExpedition').val($("#DateExpedition" + id).html());
+                        $('#Site').val($("#Site" + id).html());
+                        $('#Transporteur').val($("#Transporteur" + id).html());
                         $('#observation').val($("#Observation" + id).html());
                         if ($('#bis' + id).html().includes('checked'))
                             $('#ntube').val($("#tube" + id).html() + "bis");

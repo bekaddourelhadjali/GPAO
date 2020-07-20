@@ -52,7 +52,9 @@ class RX1Controller extends Controller
         if ($request->bis == 'true') $rx1->Bis = 1;
         else $rx1->Bis = 0;
         $rx1->Defauts = $request->Obs;
-        $rx1->Observation = $request->ObsTube;
+        $rx1->Observation = $request->Observation;
+        $rx1->Integration = $request->Integration;
+        $rx1->CodeSoude = $request->CodeSoude;
         $rx1->User = $rapport->NomAgents;
         $rx1->Computer = gethostname();
         $rx1->DateSaisie = date('Y-m-d H:i:s');
@@ -170,10 +172,13 @@ class RX1Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rx1 = RX1::findorFail($id);
+        $rx1 = RX1::find($id);
+        $rx1->Pid = detailprojet::find($request->Did)->Project->Pid;
         $rx1->Did = $request->Did;
         $rx1->Defauts = $request->Obs;
-        $rx1->Observation = $request->ObsTube;
+        $rx1->Observation = $request->Observation;
+        $rx1->Integration = $request->Integration;
+        $rx1->CodeSoude = $request->CodeSoude;
         $rx1->DateSaisie = date('Y-m-d H:i:s');
         $oldDefs = $rx1->Defs;
         $defauts = $request->Defauts;
@@ -183,7 +188,7 @@ class RX1Controller extends Controller
                 $detailDefaut->Pid = $rx1->Pid;
                 $detailDefaut->Did = $rx1->Did;
                 $detailDefaut->Zone = "Z03";
-                $detailDefaut->NumRap = $request->NumeroRap;
+                $detailDefaut->NumRap = $rx1->NumeroRap;
                 $detailDefaut->NumVisuel = $rx1->Id;
                 $detailDefaut->Tube = $rx1->Tube;
                 $detailDefaut->Opr = $defaut[0];

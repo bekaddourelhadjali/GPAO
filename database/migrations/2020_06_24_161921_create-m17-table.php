@@ -38,9 +38,6 @@ class CreateM17Table extends Migration
      * @return void
      */
     public function down()
-    {
-        Schema::table('m17', function (Blueprint $table) {
-            //
-        });
+    {   Schema::dropIfExists('m17');
     }
 }

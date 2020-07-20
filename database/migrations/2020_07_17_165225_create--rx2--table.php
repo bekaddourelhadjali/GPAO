@@ -22,6 +22,8 @@ class CreateRx2Table extends Migration
             $table->integer('Did')->unsigned();
             $table->string('Ntube',4);
             $table->Boolean('Bis');
+            $table->string('Integration',20);
+            $table->string('CodeSoude',20);
             $table->string('Defauts');
             $table->string('Observation')->nullable();
             $table->string('User',50);

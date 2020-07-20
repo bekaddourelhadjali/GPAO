@@ -41,8 +41,6 @@ class CreateDetailDefTable extends Migration
     public function down()
     {
 
-        Schema::table('detailDef', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('detailDef');
     }
 }

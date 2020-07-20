@@ -17,10 +17,6 @@
             color: #000;
         }
 
-        section.top-actions {
-            height: 225px;
-        }
-
         .actions .col-1 {
             margin-right: 4px;
 
@@ -189,7 +185,8 @@
 
                 <section class="top-actions">
                     <h5>Info Tube</h5>
-                    <form id="visuelForm">
+                    <hr>
+                    <form id="visuelForm" autocomplete="off">
                         <input name="Numero" type="hidden" id="Numero" value=" ">
                         <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
                         <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
@@ -201,10 +198,10 @@
                                 <th> N°Tube</th>
                                 <th> Bis</th>
                                 <th> Longueur</th>
-                                <th> E</th>
-                                <th> Y</th>
                                 <th> Diam-D</th>
                                 <th> Diam-F</th>
+                                <th> E</th>
+                                <th> Y</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -214,21 +211,48 @@
                                 <td class="small-td"><input class=" " type="checkbox" id="bis" name="bis"></td>
                                 <td class="large-td"><input class=" form-control" type="number" min="7500" max="13500"
                                                             id="longueur" name="longueur" required></td>
-                                <td class="medium-td"><input class=" form-control" type="number" id="E" name="E"
-                                                             required></td>
-                                <td class="medium-td"><input class=" form-control" type="number" id="Y" name="Y"
-                                                             required></td>
+
                                 <td class="large-td"><input class="  form-control" type="number" id="diam_d"
                                                             name="diam_d" required></td>
                                 <td class="large-td"><input class="  form-control" type="number" id="diam_f"
                                                             name="diam_f" required></td>
+                                <td class="medium-td"><input class=" form-control" type="number" id="E" name="E"
+                                                             required></td>
+                                <td class="medium-td"><input class=" form-control" type="number" id="Y" name="Y"
+                                                             required></td>
+
+                            </tr>
+                            <tr>
+
+                                <th>Tube Sond</th>
+                                <th> RB</th>
+                                <th> EY</th>
+                                <th> U</th>
+                                <th> S</th>
+                                <th> W</th>
+                                <th>A.C.</th>
+
+                            </tr>
+                            <tr>
+                                <td class="small-td"><input class=" " type="checkbox" id="Sond" name="Sond"></td>
+                                <td class="small-td"><input class=" " type="checkbox" id="RB" name="RB"></td>
+                                <td class="medium-td"><input class=" form-control" type="number" id="EY" name="EY"
+                                                             required></td>
+                                <td class="medium-td"><input class=" form-control" type="text" id="U" name="U"
+                                                             required></td>
+                                <td class="medium-td"><input class=" form-control" type="text" id="S" name="S"
+                                                             required></td>
+                                <td class="medium-td"><input class=" form-control" type="text" id="W" name="W"
+                                                             required></td>
+                                <td class="medium-td"><input class=" form-control" type="text" id="AC" name="AC"
+                                                             required></td>
+
                             </tr>
                             </tbody>
                         </table>
                         <br>
-                        <div class="row ">
-                            <label class="col-4 " for="Sond"><b> Tube Sondage</b></label>
-                            <input class=" col-1" type="checkbox" id="Sond" name="Sond">
+                        <div class="row " >
+
 
                             <button type="reset" class="col-2  btn btn-secondary" type="button" id="annulerButton">
                                 Annuler
@@ -243,6 +267,7 @@
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                 <section class="top-actions">
                     <h5>Observation sur Soudure</h5>
+                    <hr>
                     <form id="Form1">
                         <table>
                             <thead>
@@ -305,6 +330,7 @@
             <div class="col-xl-4 col-lg-6  col-md-6 col-sm-12">
                 <section class="top-actions">
                     <h5>Observation sur metal de base</h5>
+                    <hr>
                     <form id="Form2">
                         <table>
                             <thead>
@@ -366,19 +392,26 @@
         </div>
         <section class="col-12">
             <div class="table-container">
-                <table id="visuelsTable" class="table table-striped table-hover table-borderless rapprods ">
+                <table id="visuelsTable" class="table table-striped table-hover table-bordered rapprods ">
                     <thead class="bg-primary text-white">
                     <tr>
-                        <th>Tube</th>
+                        <th style="min-width:80px">Tube</th>
                         <th>Bis</th>
                         <th>Sond</th>
                         <th>Longueur</th>
                         <th>E</th>
                         <th>Y</th>
+                        <th>EY</th>
+                        <th>RB</th>
+                        <th>U</th>
+                        <th>S</th>
+                        <th>W</th>
+                        <th>A.C</th>
                         <th>DiamD</th>
                         <th>DiamF</th>
-                        <th>ObsSoudure</th>
-                        <th>ObsMetal</th>
+                        <th style="min-width:300px">ObsSoudure</th>
+                        <th style="min-width:300px">ObsMetal</th>
+                        <th style="min-width:100px"> </th>
 
                     </tr>
                     </thead>
@@ -396,6 +429,14 @@
                                 <td id="longueur{{$visuel->Numero}}">{{$visuel->Longueur}}</td>
                                 <td id="E{{$visuel->Numero}}">{{$visuel->E}}</td>
                                 <td id="Y{{$visuel->Numero}}">{{$visuel->Y}}</td>
+                                <td id="EY{{$visuel->Numero}}">{{$visuel->EY}}</td>
+                                <td id="RB{{$visuel->Numero}}">@if($visuel->RB) <input type="checkbox" checked
+                                                                                           onclick="return false;">
+                                    @elseif(!$visuel->RB)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td id="U{{$visuel->Numero}}">{{$visuel->U}}</td>
+                                <td id="S{{$visuel->Numero}}">{{$visuel->S}}</td>
+                                <td id="W{{$visuel->Numero}}">{{$visuel->W}}</td>
+                                <td id="AC{{$visuel->Numero}}">{{$visuel->AC}}</td>
                                 <td id="diam_d{{$visuel->Numero}}">{{$visuel->DiamD}}</td>
                                 <td id="diam_f{{$visuel->Numero}}">{{$visuel->DiamF}}</td>
                                 <td class="obsS" id="obsSoudure{{$visuel->Numero}}">{{$visuel->ObsSoudure}}</td>
@@ -447,13 +488,13 @@
         </section>
     </div>
     <!-- Modal -->
-    @include('layouts.ArretsLayout');
+    @include('layouts.ArretsLayout')
 
 
 @endsection
 @section('script')
 
-    @include('layouts.ArretScript');
+    @include('layouts.ArretScript')
     <script>
 
         $(document).ready(function () {
@@ -548,26 +589,27 @@
                         }
                     });
                     ntube = $('#ntube').val();
-                    if ((DefautsSoudure.length > 0 || $('#operation1').val() === 'R.A.S')
-                        && (DefautsMetal.length > 0 || $('#operation2').val() === 'R.A.S')) {
-                        if (DefautsSoudure.length > 0) {
 
-                            obsSoud = $('#ObsSoudure').val() + '|' + DefautsSoudure[DefautsSoudure.length - 1][0] + '|';
-                        } else if ($('#operation1').val() === 'R.A.S') {
-                            obsSoud = $('#operation1').val();
-                            DefautsSoudure.push([
-                                Opr = $('#operation1').val(), null, null, null, $('#operation1').find("option:selected").attr("operationId"), null]);
-                        }
-                        if (DefautsMetal.length > 0) {
-
-                            obsMet = $('#ObsMetal').val() + '|' + DefautsMetal[DefautsMetal.length - 1][0] + '|';
-
-                        } else if ($('#operation2').val() === 'R.A.S') {
-                            obsMet = $('#operation2').val();
-                            DefautsMetal.push([
-                                Opr = $('#operation2').val(), null, null, null, $('#operation2').find("option:selected").attr("operationId"), null]);
-                        }
                     if ($('#Ajouter').html() !== ' Modifier ') {
+                        if ((DefautsSoudure.length > 0 || $('#operation1').val() === 'R.A.S')
+                            && (DefautsMetal.length > 0 || $('#operation2').val() === 'R.A.S')) {
+                            if (DefautsSoudure.length > 0) {
+
+                                obsSoud = $('#ObsSoudure').val() + '|' + DefautsSoudure[DefautsSoudure.length - 1][0] + '|';
+                            } else if ($('#operation1').val() === 'R.A.S') {
+                                obsSoud = $('#operation1').val();
+                                DefautsSoudure.push([
+                                    Opr = $('#operation1').val(), null, null, null, $('#operation1').find("option:selected").attr("operationId"), null]);
+                            }
+                            if (DefautsMetal.length > 0) {
+
+                                obsMet = $('#ObsMetal').val() + '|' + DefautsMetal[DefautsMetal.length - 1][0] + '|';
+
+                            } else if ($('#operation2').val() === 'R.A.S') {
+                                obsMet = $('#operation2').val();
+                                DefautsMetal.push([
+                                    Opr = $('#operation2').val(), null, null, null, $('#operation2').find("option:selected").attr("operationId"), null]);
+                            }
                             $.ajax({
                                 url: "{{ route('visuels.store')}}",
                                 method: 'post',
@@ -581,8 +623,14 @@
                                     bis: $('#bis:checked').length > 0,
                                     longueur: $('#longueur').val(),
                                     sond: $('#Sond:checked').length > 0,
+                                    RB: $('#RB:checked').length > 0,
                                     E: $('#E').val(),
                                     Y: $('#Y').val(),
+                                    EY: $('#EY').val(),
+                                    U: $('#U').val(),
+                                    S: $('#S').val(),
+                                    W: $('#W').val(),
+                                    AC: $('#AC').val(),
                                     Diam_D: $('#diam_d').val(),
                                     Diam_F: $('#diam_f').val(),
                                     ObsMetal: obsMet,
@@ -592,11 +640,15 @@
                                 success: function (result) {
                                     var bis = "";
                                     var sond = "";
+                                    var RB = "";
                                     if (result.visuel.Bis) {
                                         bis = "checked"
                                     }
                                     if (result.visuel.Sond) {
                                         sond = "checked"
+                                    }
+                                    if (result.visuel.RB) {
+                                        RB = "checked"
                                     }
                                     $('#visuelsTable').append('<tr id="visuel' + result.visuel.Numero + '">' +
                                         '                        <td id="tube' + result.visuel.Numero + '">' + result.visuel.Tube + '</td> ' +
@@ -605,6 +657,12 @@
                                         '                        <td id="longueur' + result.visuel.Numero + '">' + result.visuel.Longueur + '</td>' +
                                         '                        <td id="E' + result.visuel.Numero + '">' + result.visuel.E + '</td> ' +
                                         '                        <td id="Y' + result.visuel.Numero + '">' + result.visuel.Y + '</td> ' +
+                                        '                        <td id="EY' + result.visuel.Numero + '">' + result.visuel.EY + '</td> ' +
+                                        '                        <td id="RB' + result.visuel.Numero + '">' + '<input type="checkbox" ' + RB + ' onclick="return false;">' +
+                                        '                        <td id="U' + result.visuel.Numero + '">' + result.visuel.U + '</td> ' +
+                                        '                        <td id="S' + result.visuel.Numero + '">' + result.visuel.S + '</td> ' +
+                                        '                        <td id="W' + result.visuel.Numero + '">' + result.visuel.W + '</td> ' +
+                                        '                        <td id="AC' + result.visuel.Numero + '">' + result.visuel.AC + '</td> ' +
                                         '                        <td id="diam_d' + result.visuel.Numero + '">' + result.visuel.DiamD + '</td>' +
                                         '                        <td id="diam_f' + result.visuel.Numero + '">' + result.visuel.DiamF + '</td>' +
                                         '                        <td id="obsSoudure' + result.visuel.Numero + '">' + result.visuel.ObsSoudure + '</td>' +
@@ -618,6 +676,7 @@
                                     $('#Form2').trigger("reset");
                                     $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                     $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                                    $('#RB').prop('checked',false);
                                     $('#ObsMetal').val('');
                                     $('#ObsSoudure').val('');
                                     DefautsSoudure = [];
@@ -630,6 +689,9 @@
                                     console.log(result);
                                 }
                             });
+                    } else {
+                        alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
+                    }
 
                     } else {
 
@@ -646,8 +708,14 @@
                                 ntube: ntube,
                                 longueur: $('#longueur').val(),
                                 sond: $('#Sond:checked').length > 0,
+                                RB: $('#RB:checked').length > 0,
                                 E: $('#E').val(),
                                 Y: $('#Y').val(),
+                                EY: $('#EY').val(),
+                                U: $('#U').val(),
+                                S: $('#S').val(),
+                                W: $('#W').val(),
+                                AC: $('#AC').val(),
                                 Diam_D: $('#diam_d').val(),
                                 Diam_F: $('#diam_f').val(),
                             },
@@ -655,11 +723,15 @@
                                 console.log(result);
                                 var bis = "";
                                 var sond = "";
+                                var RB = "";
                                 if (result.visuel.Bis) {
                                     bis = "checked"
                                 }
                                 if (result.visuel.Sond) {
                                     sond = "checked"
+                                }
+                                if (result.visuel.Sond) {
+                                    RB = "checked"
                                 }
                                 $('#visuel' + id).replaceWith('<tr id="visuel' + result.visuel.Numero + '">' +
                                     '                        <td id="tube' + result.visuel.Numero + '">' + result.visuel.Tube + '</td> ' +
@@ -668,6 +740,12 @@
                                     '                        <td id="longueur' + result.visuel.Numero + '">' + result.visuel.Longueur + '</td>' +
                                     '                        <td id="E' + result.visuel.Numero + '">' + result.visuel.E + '</td> ' +
                                     '                        <td id="Y' + result.visuel.Numero + '">' + result.visuel.Y + '</td> ' +
+                                    '                        <td id="EY' + result.visuel.Numero + '">' + result.visuel.EY + '</td> ' +
+                                    '                        <td id="RB' + result.visuel.Numero + '">' + '<input type="checkbox" ' + RB + ' onclick="return false;">' +
+                                    '                        <td id="U' + result.visuel.Numero + '">' + result.visuel.U + '</td> ' +
+                                    '                        <td id="S' + result.visuel.Numero + '">' + result.visuel.S + '</td> ' +
+                                    '                        <td id="W' + result.visuel.Numero + '">' + result.visuel.W + '</td> ' +
+                                    '                        <td id="AC' + result.visuel.Numero + '">' + result.visuel.AC + '</td> ' +
                                     '                        <td id="diam_d' + result.visuel.Numero + '">' + result.visuel.DiamD + '</td>' +
                                     '                        <td id="diam_f' + result.visuel.Numero + '">' + result.visuel.DiamF + '</td>' +
                                     '                        <td id="obsSoudure' + result.visuel.Numero + '">' + result.visuel.ObsSoudure + '</td>' +
@@ -678,13 +756,16 @@
                                     '                    </tr>');
 
 
+                                $('#visuelForm').trigger("reset");
                                 $('#Ajouter').html(' Ajouter ');
                                 $('#annulerButton').hide();
-                                $('#visuelForm').trigger("reset");
                                 $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                                 $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                                $('#RB').prop('checked',false);
                                 $('#ObsMetal').val('');
                                 $('#ObsSoudure').val('');
+                                $('#ntube').removeAttr("readonly");
+                                $('#Bis').removeAttr("readonly");
                                 EnableForms();
                                 addRapprodsListeners();
                                 DefautsSoudure = [];
@@ -698,9 +779,7 @@
                         });
 
                     }
-                    } else {
-                        alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
-                    }
+
 
                 } else {
                     alert("Remplir tous les champs qui sont obligatoires svp !");
@@ -712,9 +791,11 @@
                 $('#annulerButton').hide();
                 $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
                 $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                $('#RB').prop('checked',false);
                 $('#ObsMetal').val('');
                 $('#ObsSoudure').val('');
                 $('#ntube').removeAttr("readonly");
+                $('#Bis').removeAttr("readonly");
                 EnableForms();
             });
 
@@ -745,6 +826,17 @@
                             },
                             success: function (result) {
                                 tr.remove();
+                                $('#visuelForm').trigger("reset");
+                                $('#Ajouter').html(' Ajouter ');
+                                $('#annulerButton').hide();
+                                $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"    >');
+                                $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"    >');
+                                $('#RB').prop('checked',false);
+                                $('#ObsMetal').val('');
+                                $('#ObsSoudure').val('');
+                                $('#ntube').removeAttr("readonly");
+                                $('#Bis').removeAttr("readonly");
+                                EnableForms();
                             },
                             error: function (result) {
                                 console.log(result);
@@ -761,30 +853,25 @@
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
                         $('#Numero').val(id);
                         $('#ntube').val($('#tube' + id).html()).attr('readonly', 'readonly');
-                        ;
-                        if ($('#bis' + id).find('input[checked]').length > 0) {
-
-                            $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"     checked    >');
-                        } else {
-                            $('#bis').replaceWith('<input class=" " type="checkbox" id="bis" name="bis"         >');
-                        }
+                        $('#bis').prop('checked',$('#bis' + id).find('input[checked]').length > 0).attr('readonly', 'readonly');
+                        $('#Sond').prop('checked',$('#sond' + id).find('input[checked]').length > 0);
+                        $('#RB').prop('checked',$('#RB' + id).find('input[checked]').length > 0);
                         $('#longueur').val($('#longueur' + id).html());
                         $('#E').val($('#E' + id).html());
                         $('#Y').val($('#Y' + id).html());
+                        $('#EY').val($('#EY' + id).html());
+                        $('#U').val($('#U' + id).html());
+                        $('#S').val($('#S' + id).html());
+                        $('#W').val($('#W' + id).html());
+                        $('#AC').val($('#AC' + id).html());
                         $('#diam_d').val($('#diam_f' + id).html());
                         $('#diam_f').val($('#diam_f' + id).html());
-                        if ($('#sond' + id).find('input[checked]').length > 0) {
-
-                            $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"     checked    >');
-                        } else {
-                            $('#Sond').replaceWith('<input class=" " type="checkbox" id="Sond" name="Sond"         >');
-                        }
                         $('#ObsMetal').val($('#obsMetal' + id).html());
                         $('#ObsSoudure').val($('#obsSoudure' + id).html());
                         $('#Ajouter').html(' Modifier ');
                         $('#annulerButton').show();
                         DisableForms();
-
+                        $('#bis').removeAttr("readonly");
                     });
                 });
             }

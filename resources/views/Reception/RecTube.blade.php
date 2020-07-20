@@ -191,7 +191,7 @@
                         <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                         <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                         <div class="row">
-                            <div class="col-lg-2 col-md-3 col-4">
+                            <div class="  col-lg-2 col-md-3 col-4">
                                 <div class="form-group ">
                                     <label class="col-lg-12" style="padding-left: 0">Tube</label>
                                     <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
@@ -211,14 +211,14 @@
                                     </datalist>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="  col-lg-2 col-md-3   col-4">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="Coulee" style="padding-left: 0">Coulee</label>
                                     <input class="form-control col-12" type="number" id="Coulee" name="Coulee"
                                            readonly>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-xl-1 col-lg-2 col-md-3   col-4">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="Langueur" style="padding-left: 0">Langueur</label>
                                     <input class="form-control col-12" type="number" id="Langueur" name="Langueur"
@@ -226,20 +226,29 @@
                                            required>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3   col-4">
+                            <div class="col-xl-1 col-lg-2 col-md-3   col-4">
+                                <div class="form-group text-center">
+                                    <label class="col-12" for="NumLot"
+                                           style="padding-left: 0">N°Lot</label>
+                                    <input class="form-control col-12" type="number" id="NumLot"
+                                           name="NumLot" min="1"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-xl-1  col-lg-2 col-md-3   col-4">
                                 <div class="form-group text-center">
                                     <label class="col-12" for="NumReception"
-                                           style="padding-left: 0">NumReception</label>
+                                           style="padding-left: 0">N°Reception</label>
                                     <input class="form-control col-12" type="number" id="NumReception"
                                            name="NumReception" min="1" value="{{$maxNumRec}}"
                                            required>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-4 col-8 ">
+                            <div class="form-group col-xl-5 col-lg-8 col-md-5 col-12 ">
                                 <label for="observation" class="col-12">Observation</label>
                                 <input type="text" class="form-control" name="observation" id="observation">
                             </div>
-                            <div class="offset-lg-8 offset-md-0 col-md-2 col-6"><label class="col-12"></label>
+                            <div class="offset-xl-8 offset-lg-0 col-md-2 col-6"><label class="col-12"></label>
                                 <button style="margin-right: 10px;" type="reset"
                                         class=" col-12  btn btn-outline-secondary " id="annulerButton">Annuler
                                 </button>
@@ -265,8 +274,10 @@
                                 <th>Bis</th>
                                 <th>Coulee</th>
                                 <th>Langueur</th>
+                                <th>NumLot</th>
                                 <th>NumReception</th>
                                 <th>Observation</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody id="ms">
@@ -280,6 +291,7 @@
                                         </td>
                                         <td id="Coulee{{$item->Id}}">{{$item->Coulee}}</td>
                                         <td id="Langueur{{$item->Id}}">{{$item->Langueur}}</td>
+                                        <td id="NumLot{{$item->Id}}">{{$item->NumLot}}</td>
                                         <td id="NumReception{{$item->Id}}">{{$item->NumReception}}</td>
                                         <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
                                         <td>
@@ -371,6 +383,7 @@
                                 Coulee: $('#Coulee').val(),
                                 Langueur: $('#Langueur').val(),
                                 NumReception: $('#NumReception').val(),
+                                NumLot: $('#NumLot').val(),
 
                             },
                             success: function (result) {
@@ -380,6 +393,7 @@
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                     '                                <td     id="Coulee' + item.Id + '">' + $('#Coulee').val() + '</td>\n' +
                                     '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
+                                    '                                <td     id="NumLot' + item.Id + '">' + item.NumLot + '</td>\n' +
                                     '                                <td     id="NumReception' + item.Id + '">' + item.NumReception + '</td>\n' +
                                     '                                <td    id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                     '                                <td>\n' +
@@ -421,6 +435,7 @@
                                 Observation: $('#observation').val(),
                                 Langueur: $('#Langueur').val(),
                                 NumReception: $('#NumReception').val(),
+                                NumLot: $('#NumLot').val(),
                                 id: id
                             },
                             success: function (result) {
@@ -430,6 +445,7 @@
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                     '                                <td     id="Coulee' + item.Id + '">' + $('#Coulee').val() + '</td>\n' +
                                     '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
+                                    '                                <td     id="NumLot' + item.Id + '">' + item.NumLot + '</td>\n' +
                                     '                                <td     id="NumReception' + item.Id + '">' + item.NumReception + '</td>\n' +
                                     '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
                                     '                                <td>\n' +
@@ -517,6 +533,7 @@
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
                         $('#Numero').val(id);
                         $('#Langueur').val($("#Langueur" + id).html());
+                        $('#NumLot').val($("#NumLot" + id).html());
                         $('#NumReception').val($("#NumReception" + id).html());
                         $('#Coulee').val($("#Coulee" + id).html());
                         $('#observation').val($("#Observation" + id).html());

@@ -58,9 +58,16 @@ class VisuelsController extends Controller
         else $visuel->Bis = 0;
         if ($request->sond == 'true') $visuel->Sond = 1;
         else $visuel->Sond = 0;
+        if ($request->RB == 'true') $visuel->RB = true;
+        else $visuel->RB = 0;
         $visuel->Longueur = $request->longueur;
         $visuel->E = $request->E;
         $visuel->Y = $request->Y;
+        $visuel->EY = $request->EY;
+        $visuel->U = $request->U;
+        $visuel->S = $request->S;
+        $visuel->W = $request->W;
+        $visuel->AC = $request->AC;
         $visuel->DiamD = $request->Diam_D;
         $visuel->DiamF = $request->Diam_F;
         $visuel->ObsSoudure = $request->ObsSoudure;
@@ -180,6 +187,13 @@ class VisuelsController extends Controller
         $visuel->Longueur = $request->longueur;
         $visuel->E = $request->E;
         $visuel->Y = $request->Y;
+        $visuel->EY = $request->EY;
+        $visuel->U = $request->U;
+        $visuel->S = $request->S;
+        $visuel->W = $request->W;
+        $visuel->AC = $request->AC;
+        if ($request->RB == 'true') $visuel->RB = true;
+        else $visuel->RB = 0;
         $visuel->DiamD = $request->Diam_D;
         $visuel->DiamF = $request->Diam_F;
         if ($visuel->save()) {

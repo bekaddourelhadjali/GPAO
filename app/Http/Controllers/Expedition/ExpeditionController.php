@@ -56,7 +56,10 @@ class ExpeditionController extends Controller
         $exp->Ntube = $tube->NTube;
         $exp->Tube = $tube->Tube;
         $exp->Bis = $tube->Bis;
-        $exp->NumLot = $request->NumLot;
+        $exp->NumBon = $request->NumBon;
+        $exp->DateExpedition = $request->DateExpedition;
+        $exp->Site = $request->Site;
+        $exp->Transporteur = $request->Transporteur;
         $exp->Coulee = $request->Coulee;
         $exp->Poids = $request->Poids;
         $exp->NumExpedition = $request->NumExpedition;
@@ -133,7 +136,10 @@ class ExpeditionController extends Controller
     public function update(Request $request, $id)
     {
         $exp = Expedition::find($id);
-        $exp->NumLot = $request->NumLot;
+        $exp->NumBon = $request->NumBon;
+        $exp->DateExpedition = $request->DateExpedition;
+        $exp->Site = $request->Site;
+        $exp->Transporteur = $request->Transporteur;
         $exp->Coulee = $request->Coulee;
         $exp->Poids = $request->Poids;
         $exp->NumExpedition = $request->NumExpedition;

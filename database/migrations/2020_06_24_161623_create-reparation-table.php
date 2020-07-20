@@ -38,8 +38,6 @@ class CreateReparationTable extends Migration
      */
     public function down()
     {
-        Schema::table('reparation', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('reparation');
     }
 }

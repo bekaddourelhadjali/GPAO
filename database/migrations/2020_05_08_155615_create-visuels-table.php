@@ -26,6 +26,12 @@ class CreateVisuelsTable extends Migration
             $table->Boolean('Sond');
             $table->integer('E');
             $table->integer('Y');
+            $table->integer('EY');
+            $table->integer('RB');
+            $table->string('U',10);
+            $table->string('S',10);
+            $table->string('W',10);
+            $table->string('AC',10);
             $table->string('IdOpr',10)->nullable();
             $table->integer('NbOpr')->nullable();
             $table->double('Longueur');
@@ -55,8 +61,6 @@ class CreateVisuelsTable extends Migration
      */
     public function down()
     {
-        Schema::table('visuels', function (Blueprint $table) {
-            //
-        });
+          Schema::dropIfExists('visuels');
     }
 }

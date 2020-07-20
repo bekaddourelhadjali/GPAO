@@ -24,6 +24,8 @@ class CreateRx1Table extends Migration
             $table->string('Machine',1);
             $table->string('Ntube',4);
             $table->Boolean('Bis');
+            $table->string('Integration',20);
+            $table->string('CodeSoude',20);
             $table->string('Defauts');
             $table->string('Observation')->nullable();
             $table->string('User',50);
@@ -39,8 +41,6 @@ class CreateRx1Table extends Migration
      */
     public function down()
     {
-        Schema::table('rx1', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('rx1');
     }
 }

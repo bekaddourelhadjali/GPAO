@@ -25,6 +25,7 @@ class CreateReceptionTable extends Migration
             $table->integer('Langueur');
             $table->integer('Coulee')->nullable();
             $table->integer('NumReception');
+            $table->integer('NumLot');
             $table->string('Observation')->nullable();
             $table->string('User',50);
             $table->string('Computer',50);

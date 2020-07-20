@@ -222,7 +222,23 @@
                                     <input class=" col-12" type="checkbox" id="bis" name="bis">
                                 </div>
                             </div>
-                            <div class="form-group  col-8  ">
+                            <div class=" col-3">
+                                <div class="form-group ">
+                                    <label class="col-12" for="Integration" style="padding-left: 0">Integration</label>
+                                    <input class=" col-12 form-control"  type="text" id="Integration"
+                                            name="Integration"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="  col-4">
+                                <div class="form-group ">
+                                    <label class="col-12" for="CodeSoude" style="padding-left: 0">Code Soudeur</label>
+                                    <input class=" col-12 form-control"  type="text" id="CodeSoude"
+                                           name="CodeSoude"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="form-group  col-5  ">
                                 <label for="ObsTube" class="col-12">Observation</label>
                                 <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
                             </div>
@@ -335,8 +351,11 @@
                     <tr>
                         <th>Tube</th>
                         <th>Bis</th>
+                        <th>Intégration</th>
+                        <th>Code Soudeur</th>
                         <th>Defauts</th>
                         <th>Observation</th>
+                        <th></th>
 
                     </tr>
                     </thead>
@@ -348,6 +367,8 @@
                                 <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
                                                                                  onclick="return false;">
                                     @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
+                                <td  id="Integration{{$item->Id}}">{{$item->Integration}}</td>
+                                <td  id="CodeSoude{{$item->Id}}">{{$item->CodeSoude}}</td>
                                 <td class="obsS" id="Defaut{{$item->Id}}">{{$item->Defauts}}</td>
                                 <td class="obsS" id="Observation{{$item->Id}}">{{$item->Observation}}</td>
                                 <td>
@@ -489,6 +510,8 @@
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
                                     Observation: $('#ObsTube').val(),
+                                    Integration: $('#Integration').val(),
+                                    CodeSoude: $('#CodeSoude').val(),
                                     Defauts: Defauts,
                                 },
                                 success: function (result) {
@@ -500,6 +523,8 @@
                                     $('#rxs').append('<tr id="rx' + item.Id + '">\n' +
                                         '                         <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                         <td id="bis' + item.Id + '"> <input type="checkbox" ' + bis + '  onclick="return false;"> </td>\n' +
+                                        '                               <td    id="Integration' + item.Id + '">' + item.Integration + '</td>\n' +
+                                        '                                <td    id="CodeSoude' + item.Id + '">' + item.CodeSoude + '</td>\n' +
                                         '                         <td   class="obsS" id="Defaut' + item.Id + '">' + item.Defauts + '</td>\n' +
                                         '                         <td   class="obsS" id="Observation' + item.Id + '">' + $('#ObsTube').val() + '</td>\n' +
                                         '                         <td>\n' +
@@ -522,17 +547,19 @@
                             });
 
                         } else {
-
                             $.ajax({
                                 url: "{{url('/RX1/')}}/" + id,
                                 method: 'post',
                                 data: {
                                     _method: 'put',
                                     _token: '{{csrf_token()}}',
+                                    Did: $('#detail_project').val(),
                                     ntube: ntube,
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
                                     Observation: $('#ObsTube').val(),
+                                    Integration: $('#Integration').val(),
+                                    CodeSoude: $('#CodeSoude').val(),
                                     Defauts: Defauts,
                                     id: id
                                 },
@@ -546,6 +573,8 @@
                                     $('#rx' + id).replaceWith('<tr id="rx' + item.Id + '">\n' +
                                         '                         <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                         <td id="bis' + item.Id + '"> <input type="checkbox" ' + bis + '  onclick="return false;">\n' +
+                                        '                               <td    id="Integration' + item.Id + '">' + item.Integration + '</td>\n' +
+                                        '                                <td    id="CodeSoude' + item.Id + '">' + item.CodeSoude + '</td>\n' +
                                         '                         <td   class="obsS" id="Defaut' + item.Id + '">' + item.Defauts + '</td>\n' +
                                         '                         <td   class="obsS" id="Observation' + item.Id + '">' + $('#ObsTube').val() + '</td>\n' +
                                         '                         <td>\n' +
@@ -660,6 +689,8 @@
                                 $('#ntube').val(rx1.Tube);
                                 Defauts = [];
                                 $('#ObsTube').val($('#Observation'+id).html());
+                                $('#CodeSoude').val($('#CodeSoude'+id).html());
+                                $('#Integration').val($('#Integration'+id).html());
                                 rx1.defs.forEach(function (item, index) {
                                     if (item.Defaut.includes('. ')) ++rxdef;
                                     Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,item.Observation]);
@@ -751,6 +782,6 @@
         });
 
     </script>
-    @include('layouts.ArretScript');
-    @include('layouts.CarteTubeScript');
+    @include('layouts.ArretScript')
+    @include('layouts.CarteTubeScript')
 @endsection

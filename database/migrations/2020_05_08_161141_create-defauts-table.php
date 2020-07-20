@@ -29,8 +29,6 @@ class CreateDefautsTable extends Migration
      */
     public function down()
     {
-        Schema::table('defauts', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('defauts');
     }
 }

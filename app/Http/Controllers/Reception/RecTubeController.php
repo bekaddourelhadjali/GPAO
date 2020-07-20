@@ -56,6 +56,7 @@ class RecTubeController extends Controller
         $rec->Tube = $tube->Tube;
         $rec->Bis = $tube->Bis;
         $rec->Coulee = $request->Coulee;
+        $rec->NumLot = $request->NumLot;
         $rec->NumReception = $request->NumReception;
         $rec->Langueur = $request->Langueur;
         $rec->Observation = $request->Observation;
@@ -131,6 +132,7 @@ class RecTubeController extends Controller
     {
         $rec = Reception::find($id);
         $rec->Langueur = $request->Langueur;
+        $rec->NumLot = $request->NumLot;
         $rec->NumReception = $request->NumReception;
         $rec->Observation = $request->Observation;
         $rec->DateSaisie = date('Y-m-d H:i:s');

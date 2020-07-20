@@ -29,8 +29,7 @@ class CreateOperationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('operations', function (Blueprint $table) {
-            //
-        });
+
+        Schema::dropIfExists('operations');
     }
 }
