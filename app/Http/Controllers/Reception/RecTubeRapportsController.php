@@ -22,7 +22,7 @@ class RecTubeRapportsController extends Controller
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        $rapports=DB::select('select * from rapports where "Zone"=\'Z10\' order by "DateSaisie" desc limit 3');
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z11\' order by "DateSaisie" desc limit 3');
         return view ('Reception.RecTubeRapports',['details'=>$details,'agents'=>$agents
             ,'rapports'=>$rapports]);
     }
@@ -49,7 +49,7 @@ class RecTubeRapportsController extends Controller
         $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone='Z10';
+        $rapport->Zone='Z11';
         $rapport->Equipe= $request->equipe;
         $rapport->Machine= '1';
         $rapport->Poste= $request->poste;

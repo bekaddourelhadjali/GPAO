@@ -22,7 +22,7 @@ class CreateReceptionTable extends Migration
             $table->integer('Did')->unsigned();
             $table->string('Ntube',4);
             $table->Boolean('Bis');
-            $table->integer('Langueur');
+            $table->integer('Longueur');
             $table->integer('Coulee')->nullable();
             $table->integer('NumReception');
             $table->integer('NumLot');

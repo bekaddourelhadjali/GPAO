@@ -20,7 +20,7 @@ class CreateDetailProjetTable extends Migration
             $table->double('Epaisseur');
             $table->double('Diametre');
             $table->integer('Psl')->nullable();
-            $table->integer('Langueur');
+            $table->integer('Longueur');
             $table->string('Libelle')->nullable();
             $table->unique(['Did','Pid']);
         });

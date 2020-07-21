@@ -202,7 +202,8 @@ Route::resource('rapports_Ndt', 'Ndt\NdtRapportController');
 Route::resource('Ndt', 'Ndt\NdtController');
 Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller');
 Route::resource('RX2', 'RX2\RX2Controller');
-
+Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController');
+Route::resource('VisuelFinal', 'Visuel\VisuelFinalController');
 Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController');
 Route::resource('Reception', 'Reception\RecTubeController');
 Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController');

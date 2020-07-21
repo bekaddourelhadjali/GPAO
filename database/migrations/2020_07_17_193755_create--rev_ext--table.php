@@ -22,7 +22,7 @@ class CreateRevExtTable extends Migration
             $table->integer('Pid')->unsigned();
             $table->integer('Did')->unsigned();
             $table->string('Ntube',4);
-            $table->integer('Langueur');
+            $table->integer('Longueur');
             $table->Boolean('Bis');
             $table->string('Aspect');
             $table->Boolean('Accepte');

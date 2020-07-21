@@ -70,6 +70,7 @@
                                         <option value="Z04">Réparation</option>
                                         <option value="Z05">Chutage</option>
                                         <option value="Z09">RX2</option>
+                                        <option value="Z10">Visuel Final</option>
                                         <option value="Z11">Revêtement Interieur</option>
                                         <option value="Z12">Revêtement Exterieur</option>
                                     </select>
@@ -147,6 +148,7 @@
                                         <option value="Z03">RX1</option>
                                         <option value="Z04">Réparation</option>
                                         <option value="Z09">RX2</option>
+                                        <option value="Z10">Visuel Final</option>
                                         <option value="Z11">Revêtement Interieur</option>
                                         <option value="Z12">Revêtement Exterieur</option>
                                     </select>

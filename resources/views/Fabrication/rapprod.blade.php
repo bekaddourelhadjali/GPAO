@@ -173,7 +173,7 @@
                                        required>
                             </div>
                             <div class="col-xl-1 col-lg-2 col-md-2 col-sm-6 inputs"><label for="longueur">
-                                    Langueur </label>
+                                    Longueur </label>
                                 <input class="form-control" type="number" min="7000" max="20000"
                                        id="longueur" required name="longueur">
                             </div>
@@ -246,7 +246,7 @@
                                 <th>Coulee</th>
                                 <th>Bobine</th>
                                 <th>Tube</th>
-                                <th>Langueur</th>
+                                <th>Longueur</th>
                                 <th>Macro</th>
                                 <th>RB</th>
                                 <th>Observation</th>

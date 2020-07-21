@@ -220,8 +220,8 @@
                             </div>
                             <div class="col-xl-1 col-lg-2 col-md-3   col-4">
                                 <div class="form-group text-center">
-                                    <label class="col-12" for="Langueur" style="padding-left: 0">Langueur</label>
-                                    <input class="form-control col-12" type="number" id="Langueur" name="Langueur"
+                                    <label class="col-12" for="Longueur" style="padding-left: 0">Longueur</label>
+                                    <input class="form-control col-12" type="number" id="Longueur" name="Longueur"
                                            min="5000" max="20000"
                                            required>
                                 </div>
@@ -273,7 +273,7 @@
                                 <th>Tube</th>
                                 <th>Bis</th>
                                 <th>Coulee</th>
-                                <th>Langueur</th>
+                                <th>Longueur</th>
                                 <th>NumLot</th>
                                 <th>NumReception</th>
                                 <th>Observation</th>
@@ -290,7 +290,7 @@
                                             @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif
                                         </td>
                                         <td id="Coulee{{$item->Id}}">{{$item->Coulee}}</td>
-                                        <td id="Langueur{{$item->Id}}">{{$item->Langueur}}</td>
+                                        <td id="Longueur{{$item->Id}}">{{$item->Longueur}}</td>
                                         <td id="NumLot{{$item->Id}}">{{$item->NumLot}}</td>
                                         <td id="NumReception{{$item->Id}}">{{$item->NumReception}}</td>
                                         <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
@@ -381,7 +381,7 @@
                                 ntube: $('#ntube').val(),
                                 Observation: $('#observation').val(),
                                 Coulee: $('#Coulee').val(),
-                                Langueur: $('#Langueur').val(),
+                                Longueur: $('#Longueur').val(),
                                 NumReception: $('#NumReception').val(),
                                 NumLot: $('#NumLot').val(),
 
@@ -392,7 +392,7 @@
                                     '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                     '                                <td     id="Coulee' + item.Id + '">' + $('#Coulee').val() + '</td>\n' +
-                                    '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
+                                    '                                <td     id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
                                     '                                <td     id="NumLot' + item.Id + '">' + item.NumLot + '</td>\n' +
                                     '                                <td     id="NumReception' + item.Id + '">' + item.NumReception + '</td>\n' +
                                     '                                <td    id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
@@ -433,7 +433,7 @@
                                 NumeroRap: $('#NumRap').val(),
                                 ntube: $('#ntube').val(),
                                 Observation: $('#observation').val(),
-                                Langueur: $('#Langueur').val(),
+                                Longueur: $('#Longueur').val(),
                                 NumReception: $('#NumReception').val(),
                                 NumLot: $('#NumLot').val(),
                                 id: id
@@ -444,7 +444,7 @@
                                     '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                     '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                     '                                <td     id="Coulee' + item.Id + '">' + $('#Coulee').val() + '</td>\n' +
-                                    '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
+                                    '                                <td     id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
                                     '                                <td     id="NumLot' + item.Id + '">' + item.NumLot + '</td>\n' +
                                     '                                <td     id="NumReception' + item.Id + '">' + item.NumReception + '</td>\n' +
                                     '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
@@ -532,7 +532,7 @@
                     $(this).click(function (e) {
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
                         $('#Numero').val(id);
-                        $('#Langueur').val($("#Langueur" + id).html());
+                        $('#Longueur').val($("#Longueur" + id).html());
                         $('#NumLot').val($("#NumLot" + id).html());
                         $('#NumReception').val($("#NumReception" + id).html());
                         $('#Coulee').val($("#Coulee" + id).html());

@@ -57,7 +57,7 @@ class RevIntController extends Controller
         $revInt->Ntube = $tube->NTube;
         $revInt->Tube = $tube->Tube;
         $revInt->Bis = $tube->Bis;
-        $revInt->Langueur = $request->Langueur;
+        $revInt->Longueur = $request->Longueur;
         $revInt->NumReception = $request->NumReception;
         $revInt->Aspect = $request->Aspect;
         $revInt->Accepte = $request->Accepte;
@@ -66,7 +66,7 @@ class RevIntController extends Controller
         $revInt->User = $rapport->NomAgents;
         $revInt->DateSaisie = date('Y-m-d H:i:s');
         if ($revInt->save()) {
-            $tube->Z11 = true;
+            $tube->Z12 = true;
             $tube->save();
             if ($revInt->Bis == "true") $revInt->Bis_t = 'checked'; else $revInt->Bis_t = "";
            
@@ -86,7 +86,7 @@ class RevIntController extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z11') {
+            if ($rapport->Zone == 'Z12') {
                 if ($rapport->Etat == 'N') {
                     $tubes = DB::select('select r."NumTube",r."Tube",r."Bis",r."NumReception" from "reception" r where
 r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" ri
@@ -135,7 +135,7 @@ r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" r
     public function update(Request $request, $id)
     {
         $revInt = RevInt::find($id);
-        $revInt->Langueur = $request->Langueur;
+        $revInt->Longueur = $request->Longueur;
         $revInt->Aspect = $request->Aspect;
         $revInt->Accepte = $request->Accepte;
         $revInt->Observation = $request->Observation;
@@ -159,7 +159,7 @@ r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" r
         $revInt = \App\Visuel\RevInt::findOrFail($id);
 
         if ($revInt->delete()) {
-            $revInt->tube->Z11 = false;
+            $revInt->tube->Z12= false;
             $revInt->tube->save();
 
             return response()->json(array('success' => true), 200);

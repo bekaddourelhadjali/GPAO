@@ -240,8 +240,8 @@
                             </div>
                             <div class="  col-6">
                                 <div class="form-group text-center">
-                                    <label class="col-12" for="Langueur" style="padding-left: 0">Langueur</label>
-                                    <input class="form-control col-12" type="number" id="Langueur" name="Langueur"
+                                    <label class="col-12" for="Longueur" style="padding-left: 0">Longueur</label>
+                                    <input class="form-control col-12" type="number" id="Longueur" name="Longueur"
                                            min="5000" max="20000" required>
                                 </div>
                             </div>
@@ -290,7 +290,7 @@
                                 <th>Tube</th>
                                 <th>Bis</th>
                                 <th>NumReception</th>
-                                <th>Langueur</th>
+                                <th>Longueur</th>
                                 <th>Aspect</th>
                                 <th>Accepté</th>
                                 <th>Observation</th>
@@ -306,7 +306,7 @@
                                             @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif
                                         </td>
                                         <td id="NumReception{{$item->Id}}">{{$item->NumReception}}</td>
-                                        <td id="Langueur{{$item->Id}}">{{$item->Langueur}}</td>
+                                        <td id="Longueur{{$item->Id}}">{{$item->Longueur}}</td>
                                         <td id="Aspect{{$item->Id}}">{{$item->Aspect}}</td>
                                         @if($item->Accepte)
                                             <td id="Accepte{{$item->Id}}">Oui</td>
@@ -443,7 +443,7 @@
                                     ntube: $('#ntube').val(),
                                     Observation: $('#observation').val(),
                                     NumReception: $('#NumReception').val(),
-                                    Langueur: $('#Langueur').val(),
+                                    Longueur: $('#Longueur').val(),
                                     Aspect: $('#Aspect').val(),
                                     Accepte: defauts['Accepte'],
 
@@ -463,7 +463,7 @@
                                         '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                         '                                <td     id="NumReception' + item.Id + '">' + item.NumReception + '</td>\n' +
-                                        '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
+                                        '                                <td     id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
                                         '                                <td     id="Aspect' + item.Id + '">' + item.Aspect + '</td>\n' +
                                         '                                <td     id="Accepte' + item.Id + '">' + Accepte + '</td>\n' +
                                         '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
@@ -498,7 +498,7 @@
                                     ntube: $('#ntube').val(),
                                     Observation: $('#observation').val(),
                                     NumReception: $('#NumReception').val(),
-                                    Langueur: $('#Langueur').val(),
+                                    Longueur: $('#Longueur').val(),
                                     Aspect: $('#Aspect').val(),
                                     Accepte: defauts['Accepte'],
                                     id: id
@@ -525,7 +525,7 @@
                                         '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
                                         '                                <td     id="NumReception' + item.Id + '">' + item.NumReception + '</td>\n' +
-                                        '                                <td     id="Langueur' + item.Id + '">' + item.Langueur + '</td>\n' +
+                                        '                                <td     id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
                                         '                                <td     id="Aspect' + item.Id + '">' + item.Aspect + '</td>\n' +
                                         '                                <td     id="Accepte' + item.Id + '">' + Accepte + '</td>\n' +
                                         '                                <td   class="obsS" id="Observation' + item.Id + '">' + $('#observation').val() + '</td>\n' +
@@ -624,7 +624,7 @@
                     $(this).click(function (e) {
                         const id = $(this).attr("id").replace(/[^0-9]/g, '');
                         $('#Numero').val(id);
-                        $('#Langueur').val($("#Langueur" + id).html());
+                        $('#Longueur').val($("#Longueur" + id).html());
                         $('#NumReception').val($("#NumReception" + id).html());
                         $('#Aspect').val($("#Aspect" + id).html());
                         if ($('#Accepte' + id).html() == "Oui") {

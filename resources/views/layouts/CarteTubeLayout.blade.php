@@ -73,7 +73,7 @@
                         <td colspan="2">Int: 2Y |A Réparé| 1Y |A MEULE| </td>
                         <td colspan="3">Int: 2Y |A Réparé| 1Y |A MEULE| </td>
                         <td colspan="2">Origine motif-Observation </td>
-                        <td colspan="2">Langueur/mm Visa tronc </td>
+                        <td colspan="2">Longueur/mm Visa tronc </td>
                     </tr>
                     </tbody>
                 </table>

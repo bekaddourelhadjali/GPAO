@@ -64,6 +64,9 @@ class Rapport extends Model
     public function Reparations(){
         return $this->hasMany('App\Visuel\Rep','NumeroRap') ;
     }
+    public function visuelFinals(){
+        return $this->hasMany('App\Visuel\VisuelFinal','NumeroRap') ;
+    }
     public function arrets(){
         return $this->hasMany('App\Fabrication\ArretMachine','NumRap');
     }

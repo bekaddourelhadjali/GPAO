@@ -83,8 +83,8 @@
                             </div>
 
                             <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6">
-                                <label   for="Langueur" > Langueur </label>
-                                <input class="  form-control"  name="Langueur" id="Langueur" type="number" min="1"  required >
+                                <label   for="Longueur" > Longueur </label>
+                                <input class="  form-control"  name="Longueur" id="Longueur" type="number" min="1"  required >
                             </div>
 
                             <div class="form-group col-xl-2 col-lg-3 col-md-4 col-sm-4 col-6">
@@ -108,7 +108,7 @@
                                     <th>Epaisseur</th>
                                     <th>Diametre</th>
                                     <th>PSL</th>
-                                    <th>Langueur</th>
+                                    <th>Longueur</th>
                                     <th>Libelle</th>
                                 </tr>
                                 </thead>
@@ -121,7 +121,7 @@
                                     <td id="detail_project{{$detail_project->Did}}epaisseur">{{$detail_project->Epaisseur}}</td>
                                     <td id="detail_project{{$detail_project->Did}}diametre">{{$detail_project->Diametre}}</td>
                                     <td id="detail_project{{$detail_project->Did}}psl">{{$detail_project->Psl}}</td>
-                                    <td id="detail_project{{$detail_project->Did}}Langueur">{{$detail_project->Langueur}}</td>
+                                    <td id="detail_project{{$detail_project->Did}}Longueur">{{$detail_project->Longueur}}</td>
                                     <td id="detail_project{{$detail_project->Did}}libelle">{{$detail_project->Libelle}}</td>
                                 </tr>
 
@@ -176,7 +176,7 @@
                                 Epaisseur: $('#epaisseur').val(),
                                 Diametre: $('#diametre').val(),
                                 Psl: $('#psl').val(),
-                                Langueur: $('#Langueur').val(),
+                                Longueur: $('#Longueur').val(),
                                 Libelle: $('#libelle').val(),
 
                             },
@@ -187,7 +187,7 @@
                                     '                                    <td id="detail_project'+result.detail_project.Did+'epaisseur">'+result.detail_project.Epaisseur+'</td>\n' +
                                     '                                    <td id="detail_project'+result.detail_project.Did+'diametre">'+result.detail_project.Diametre+'</td>\n' +
                                     '                                    <td id="detail_project'+result.detail_project.Did+'psl">'+result.detail_project.Psl+'</td>\n' +
-                                    '                                    <td id="detail_project'+result.detail_project.Did+'Langueur">'+result.detail_project.Langueur+'</td>\n' +
+                                    '                                    <td id="detail_project'+result.detail_project.Did+'Longueur">'+result.detail_project.Longueur+'</td>\n' +
                                     '                                    <td id="detail_project'+result.detail_project.Did+'libelle">'+result.detail_project.Libelle+'</td>\n' +
                                     '                                </tr>');
                                 addDetail_projectsListeners();
@@ -220,7 +220,7 @@
                                 Epaisseur: $('#epaisseur').val(),
                                 Diametre: $('#diametre').val(),
                                 Psl: $('#psl').val(),
-                                Langueur: $('#Langueur').val(),
+                                Longueur: $('#Longueur').val(),
                                 Libelle: $('#libelle').val(),
 
                             },
@@ -232,7 +232,7 @@
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'epaisseur">'+result.detail_project.Epaisseur+'</td>\n' +
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'diametre">'+result.detail_project.Diametre+'</td>\n' +
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'psl">'+result.detail_project.Psl+'</td>\n' +
-                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'Langueur">'+result.detail_project.Langueur+'</td>\n' +
+                                    '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'Longueur">'+result.detail_project.Longueur+'</td>\n' +
                                     '                                    \'                                    <td id="detail_project'+result.detail_project.Did+'libelle">'+result.detail_project.Libelle+'</td>\n' +
                                     '                                    \'                                </tr>');
                                 addDetail_projectsListeners();
@@ -308,7 +308,7 @@
                         $('#epaisseur').val($('#detail_project'+id+'epaisseur').html());
                         $('#diametre').val($('#detail_project'+id+'diametre').html());
                         $('#psl').val($('#detail_project'+id+'psl').html());
-                        $('#Langueur').val($('#detail_project'+id+'Langueur').html());
+                        $('#Longueur').val($('#detail_project'+id+'Longueur').html());
                         $('#libelle').val($('#detail_project'+id+'libelle').html());
                         $('#AnnulerDetail_project').show();
                         $('#AjouterDetail_project').html('<i class="fa fa-check"></i>');

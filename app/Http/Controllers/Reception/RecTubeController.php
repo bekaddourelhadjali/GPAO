@@ -58,13 +58,13 @@ class RecTubeController extends Controller
         $rec->Coulee = $request->Coulee;
         $rec->NumLot = $request->NumLot;
         $rec->NumReception = $request->NumReception;
-        $rec->Langueur = $request->Langueur;
+        $rec->Longueur = $request->Longueur;
         $rec->Observation = $request->Observation;
         $rec->Computer = gethostname();
         $rec->User = $rapport->NomAgents;
         $rec->DateSaisie = date('Y-m-d H:i:s');
         if ($rec->save()) {
-            $tube->Z10 = true;
+            $tube->Z11 = true;
             $tube->save();
             if ($rec->Bis == "true") $rec->Bis_t = 'checked'; else $rec->Bis_t = "";
            
@@ -84,7 +84,7 @@ class RecTubeController extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z10') {
+            if ($rapport->Zone == 'Z11') {
                 if ($rapport->Etat == 'N') {
                     $tubes = DB::select('select t."NumTube" ,t."Tube",t."Bis",t."Coulee" from "tube" t where "NumTube" not in (
                    select "NumTube" from "reception" r where r."Did"=?) and t."Did"=?',[$rapport->Did,$rapport->Did]);
@@ -131,7 +131,7 @@ class RecTubeController extends Controller
     public function update(Request $request, $id)
     {
         $rec = Reception::find($id);
-        $rec->Langueur = $request->Langueur;
+        $rec->Longueur = $request->Longueur;
         $rec->NumLot = $request->NumLot;
         $rec->NumReception = $request->NumReception;
         $rec->Observation = $request->Observation;
@@ -155,7 +155,7 @@ class RecTubeController extends Controller
         $rec = \App\Visuel\Reception::findOrFail($id);
 
         if ($rec->delete()) {
-            $rec->tube->Z10 = false;
+            $rec->tube->Z11 = false;
             $rec->tube->save();
 
             return response()->json(array('success' => true), 200);

@@ -85,7 +85,7 @@
                         <th>Diametre</th>
                         <th>Coulée</th>
                         <th>Poids Total</th>
-                        <th>Langueur Possible</th>
+                        <th>Longueur Possible</th>
                         <th>Nb Bobines Testés</th>
                         <th>Besoin d'un Test</th>
                         <th></th>

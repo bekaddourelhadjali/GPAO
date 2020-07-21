@@ -63,13 +63,13 @@ class ExpeditionController extends Controller
         $exp->Coulee = $request->Coulee;
         $exp->Poids = $request->Poids;
         $exp->NumExpedition = $request->NumExpedition;
-        $exp->Langueur = $request->Langueur;
+        $exp->Longueur = $request->Longueur;
         $exp->Observation = $request->Observation;
         $exp->Computer = gethostname();
         $exp->User = $rapport->NomAgents;
         $exp->DateSaisie = date('Y-m-d H:i:s');
         if ($exp->save()) {
-            $tube->Z13 = true;
+            $tube->Z14 = true;
             $tube->save();
             if ($exp->Bis == "true") $exp->Bis_t = 'checked'; else $exp->Bis_t = "";
            
@@ -89,7 +89,7 @@ class ExpeditionController extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z13') {
+            if ($rapport->Zone == 'Z14') {
                 if ($rapport->Etat == 'N') {
                     $tubes = DB::select('select t."NumTube" ,t."Tube",t."Bis",t."Coulee" from "reception" t where "NumTube" not in (
                    select "NumTube" from "expedition" r where r."Did"=?) and t."Did"=?',[$rapport->Did,$rapport->Did]);
@@ -143,7 +143,7 @@ class ExpeditionController extends Controller
         $exp->Coulee = $request->Coulee;
         $exp->Poids = $request->Poids;
         $exp->NumExpedition = $request->NumExpedition;
-        $exp->Langueur = $request->Langueur;
+        $exp->Longueur = $request->Longueur;
         $exp->Observation = $request->Observation;
         $exp->DateSaisie = date('Y-m-d H:i:s');
         if ($exp->save()) {
@@ -165,7 +165,7 @@ class ExpeditionController extends Controller
         $exp = \App\Visuel\Expedition::findOrFail($id);
 
         if ($exp->delete()) {
-            $exp->tube->Z13 = false;
+            $exp->tube->Z14 = false;
             $exp->tube->save();
 
             return response()->json(array('success' => true), 200);

@@ -14,7 +14,7 @@ class CreateBobineDetailsView extends Migration
     public function up()
     {
         \Illuminate\Support\Facades\DB::statement('Create View BobineDetails as ( SELECT b."Did",b."Epaisseur",d."Diametre", b."Coulee",b."Bobine",b."Poids",
-round (cast((b."Poids"/(((b."Epaisseur")*pi()*7.85*((d."Diametre"-b."Epaisseur")))/1000))  as numeric),2) "langueur",
+round (cast((b."Poids"/(((b."Epaisseur")*pi()*7.85*((d."Diametre"-b."Epaisseur")))/1000))  as numeric),2) "Longueur",
 round (cast(((sum(t."Longueur")/1000)*(((b."Epaisseur")*pi()*7.85*((d."Diametre"-b."Epaisseur")))/1000)) as numeric),2) "PoidsCons",
 round(cast(sum(t."Longueur")/1000 as numeric),2) "LangCons" 
 from "bobine" b join "detailprojet" d on b."Did"=d."Did" left join tube t on b."Did"=t."Did" and

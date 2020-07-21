@@ -41,7 +41,7 @@ class RapprodController extends Controller
      */
     public function store(Request $request)
     {
-        $validity=DB::select('select "PoidsCons","LangCons",(("langueur"+5)>=("LangCons"+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
+        $validity=DB::select('select "PoidsCons","LangCons",(("Longueur"+5)>=("LangCons"+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
       and bd."Coulee"=? and  bd."Did"=?', [$request->longueur, $request->bobine, $request->coulee, $request->Did])[0];
         $valid=$validity->valid;
         if ($valid || ($validity->PoidsCons==null&&$validity->LangCons==null)) {
@@ -129,7 +129,7 @@ class RapprodController extends Controller
                 }
             }
         } else {
-            return response()->json(array('message' => "La langueur totale des tubes dépasse le poids de cette bobine"), 404);
+            return response()->json(array('message' => "La Longueur totale des tubes dépasse le poids de cette bobine"), 404);
         }
     }
 
@@ -193,7 +193,7 @@ class RapprodController extends Controller
     public function update(Request $request, $id)
     {
         $rapprod = Rapprod::findorFail($id);
-        $validity=DB::select('select (("langueur"+5)>=(("LangCons"-round(cast(?/1000 as numeric)))+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
+        $validity=DB::select('select (("Longueur"+5)>=(("LangCons"-round(cast(?/1000 as numeric)))+round(cast(?/1000 as numeric)))) "valid" from "bobinedetails" bd where bd."Bobine"=?
            and bd."Coulee"=? and  bd."Did"=?',
             [$rapprod->Longueur, $request->longueur, $rapprod->Bobine, $rapprod->Coulee, $rapprod->Did])[0];
         $valid=$validity->valid;
@@ -223,7 +223,7 @@ class RapprodController extends Controller
 
             }
         } else {
-            return response()->json(array('message' => "La langueur totale des tubes dépasse le poids de cette bobine"), 404);
+            return response()->json(array('message' => "La Longueur totale des tubes dépasse le poids de cette bobine"), 404);
         }
     }
 
