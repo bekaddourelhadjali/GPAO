@@ -36,6 +36,11 @@
         span.valeur{
             color:red;
         }
+        @media (min-width: 576px){
+            .modal-dialog {
+                max-width:800px;
+            }
+        }
     </style>
 
 @endsection
@@ -115,7 +120,11 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input class="col-3 offset-1 form-control"  placeholder="CODE" name="codeAgent" id="codeAgent" type="text" required>
+                                <input class="col-2 offset-1 form-control" placeholder="CODE" name="codeAgent"
+                                       id="codeAgent" type="password" minlength="8" required>
+                                @if(isset($Error))
+                                    <label class="col-12 text-danger text-center" >{{$Error}}</label>
+                                @endif
                             </div>
 
                             <div class="form-group row">
@@ -135,38 +144,7 @@
     </div>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Reprendre un rapport</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                   <div class="row"></div>
-                    <div class="form-group  row">
-                        <label class="col-xl-3 col-lg-3 col-md-3 col-sm-4"  for="Did2">Detail Projet</label>
-                        <select class="form-control col-xl-8 col-lg-9 col-md-8 col-sm-8" id="Did2" name="Did2">
-                            @foreach($details as $detail)
-                                <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group  form-inline">
-                        <label class="col-3" for="tube" ><h5>Tube :</h5></label>
-                        <input style="margin-right: 5px" class="col-3 form-control"  name="tube" id="tube" type="text"  required >
-                        <button style="margin-right: 5px" type="button" id="reprendreButton" class="col-3 btn btn-primary">Entrer</button>
-                        <button style="margin-right: 5px" type="button" class="col-2   btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+@include('layouts.ReprendreRapport')
 @endsection
 @section('script')
 <script>
@@ -214,40 +192,10 @@
             });
 
         }
-        $('#reprendreButton').click(function(e){
-            const tube= $('#tube').val();
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
-            $.ajax({
-                url:  "{{url('/reprendreTube')}}/"+tube+"/?Did="+$('#Did2').val(),
-                method: 'get',
-                data: {
-                },
-                success: function(result){
-                    if(result.rapportState.Etat==='C'){
-                        alert('Rapport n°= '+result.rapportState.Numero+' est Cloturé');
 
-                    }else
-                        if(result.rapportState.Etat==='N'){
-                            window.location.href='{{url("/rapprod/")}}/'+result.rapportState.Numero;
-                    }
-                },
-                error: function(result){
-                    if(result.responseJSON.message.includes("Tube N'existe Pas")){
-                        alert("Tube n°= "+tube+" n'existe pas");
-                    }else{
-                        alert(result.responseJSON.message);
-                    }
-                    console.log(result);
-                }
-            });
-        });
     });
 </script>
+@include('layouts.ReprendreRapScript',['rapport'=>'rapports','next'=>'rapprod'])
 
 @endsection

@@ -6,6 +6,7 @@ use App\Fabrication\Bobine;
 use App\Fabrication\M3;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class M3Controller extends Controller
 {
@@ -90,11 +91,14 @@ class M3Controller extends Controller
             if ($rapport->Zone == 'Z00') {
                 $bobines = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
                 $coulees = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
+                $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                 if ($rapport->Etat == 'N') {
                     $rapprods = $rapport->rapprods;
                     return view('M3.M3',
                         ['rapport' => $rapport,
                             'bobines' => $bobines,
+                            'detailP' => $detailP,
                             'coulees' => $coulees,
                             'M3s' => $rapport->m3]);
                 } elseif ($rapport->Etat == 'C') {

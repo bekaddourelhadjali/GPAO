@@ -24,8 +24,6 @@ class CreateRapportsTable extends Migration
             $table->string('Poste',2);
             $table->string('NomAgents',100);
             $table->string('NomAgents1',100)->nullable();
-            $table->string('CodeAgent',100)->nullable();
-            $table->string('CodeAgent1',100)->nullable();
             $table->string('Tension',10)->nullable();
             $table->string('Intensite',10)->nullable();
             $table->string('TmpPose',10)->nullable();

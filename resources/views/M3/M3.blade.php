@@ -105,36 +105,20 @@
 @section('content')
     <div class="container-fluid">
         <section>
-            <div class="row ">
-                <div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">
-                    <div class="row ">
-                        <img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">
-                        <div class="col-10">
-                            <h1>Project : {{$rapport->Project->Nom}}</h1>
-                            <h5>Client: {{$rapport->Project->client->name}}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
             <div class="row">
-                <div class="col-sm-12 col-md-8 col-xl-4 col-lg-4">
-                    <div class="col-12">Information projet:</div>
-                    <div class="col-12"><span class="valeur">   <span
-                                    class="valeur"> Epais: {{$rapport->details->Epaisseur}}
-                                mm -Diam : {{$rapport->details->Diametre}}mm</span></span></div>
-                </div>
-                <div class="col-sm-12 col-md-4 col-xl-3 col-lg-3">
-                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
+                <div class="col-12 col-sm-12 col-lg-6">
+                    <div class="row">Détail de Projet: &nbsp; <span class="valeur">{{$detailP->Nom}}
+                            : Epaisseur : {{$detailP->Epaisseur}} mm -- Diametre : {{$detailP->Diametre}} mm</span>
+                    </div>
                     <div class="row">Date: &nbsp; <span class="valeur">{{$rapport->DateRapport}} </span></div>
                 </div>
-                <div class="col-sm-12 col-md-4 col-xl-2 col-lg-2">
+                <div class="col-6 col-sm-2  col-lg-2">
                     <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span></div>
                     <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
                 </div>
-                <div class="col-sm-12 col-md-8 col-xl-3 col-lg-3">
-                    <div class="row">Agent: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}</span></div>
-                    <div class="row">Machine: &nbsp; <span class="valeur">{{$rapport->Machine}}</span></div>
+                <div class="col-6 col-sm-6  col-lg-3">
+                    <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}} </span></div>
+                    <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                 </div>
 
             </div>
@@ -246,8 +230,9 @@
                         <input class="col-xl-9 col-lg-8 col-sm-12 form-control" type="text" id="observation"
                                name="observation">
                     </div>
-                    <hr>
+
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <button type="button" class="btn btn-secondary" data-toggle="modal"
@@ -285,6 +270,7 @@
                         <th colspan="5"> Defaut Metal</th>
                         <th colspan="2"> Chutes</th>
                         <th rowspan="2">Observation</th>
+                        <th rowspan="2"> </th>
 
                     </tr>
                     <tr>

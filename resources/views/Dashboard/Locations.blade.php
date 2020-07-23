@@ -124,11 +124,11 @@
                                 <label   for="nomPrenom" > Nom et Prenoms : </label>
                                 <input class="  form-control"  name="nomPrenom" id="nomPrenom" type="text"  required >
                             </div>
-                            <div class="form-group col-2 ">
+                            <div class="form-group col-3 ">
                                 <label  for="code"  > Code : </label>
-                                <input class=" form-control"  name="code" id="code" type="text"  required >
+                                <input class=" form-control"  name="code" id="code" type="text" minlength="8" maxlength="20" required >
                             </div>
-                            <div class="col-3 form-group  actions ">
+                            <div class="col-2 form-group  actions ">
                                 <label class="col-12">&nbsp</label>
                                 <button type="button" id="AnnulerAgent" class=" btn btn-danger" style="width:35px; height:35px; padding:0;" ><i class="fa fa-times"></i></button>
                                 <button type="button" id="AjouterAgent" style="width:35px; height:35px; padding:0;" class=" btn btn-info"><i class="fa fa-plus"></i></button>
@@ -148,7 +148,7 @@
                                     @foreach($agents as $agent)
                                 <tr id="Agent{{$agent->id}}">
                                     <td id="agent{{$agent->id}}nomPrenom">{{$agent->NomPrenom}}</td>
-                                    <td id="agent{{$agent->id}}Code">{{$agent->Code}}</td>
+                                    <td id="agent{{$agent->id}}Code">********</td>
                                     <td  >
                                         <button id="Agent{{$agent->id}}Edit" class="AgentEdit text-primary" ><i class="fa fa-edit"></i></button>
                                         <button id="Agent{{$agent->id}}Delete" class="AgentDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>
@@ -361,14 +361,18 @@
                                 success: function (result) {
                                     $('#agents').append(' <tr id="Agent'+result.agent.id+'">\n' +
                                         '                                            <td id="agent'+result.agent.id+'nomPrenom">'+result.agent.NomPrenom+'</td>\n' +
-                                        '                                            <td id="agent'+result.agent.id+'Code">'+result.agent.Code+'</td>\n' +
+                                        '                                            <td id="agent'+result.agent.id+'Code">********</td>\n' +
                                         '                                            <td  >\n' +
                                         '                                                <button id="Agent'+result.agent.id+'Edit" class="AgentEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                         '                                                <button id="Agent'+result.agent.id+'Delete" class="AgentDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
                                         '\n' +
                                         '                                            </td>\n' +
                                         '                                        </tr>');
+                                    $('#AgentsForm').trigger('reset');
+                                    $('#AnnulerAgent').hide();
+                                    $('#AjouterAgent').html('<i class="fa fa-plus"></i>');
                                     addAgentsListeners();
+                                    $('#code').prop('required',true);
                                 },
                                 error: function (result) {
                                     if(typeof result.responseJSON.message !='undefined'){
@@ -398,7 +402,7 @@
                                 success: function (result) {
                                     $('#agents').find("#Agent"+id).replaceWith(' <tr id="Agent'+result.agent.id+'">\n' +
                                         '                                            <td id="agent'+result.agent.id+'nomPrenom">'+result.agent.NomPrenom+'</td>\n' +
-                                        '                                            <td id="agent'+result.agent.id+'Code">'+result.agent.Code+'</td>\n' +
+                                        '                                            <td id="agent'+result.agent.id+'Code">********</td>\n' +
                                         '                                            <td  >\n' +
                                         '                                                <button id="Agent'+result.agent.id+'Edit" class="AgentEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                         '                                                <button id="Agent'+result.agent.id+'Delete" class="AgentDelete text-danger" ><i class="fa fa-trash"></i></button></td></td>\n' +
@@ -408,6 +412,7 @@
                                     $('#AgentsForm').trigger('reset');
                                     $('#AnnulerAgent').hide();
                                     $('#AjouterAgent').html('<i class="fa fa-plus"></i>');
+                                    $('#code').prop('required',true);
                                     addAgentsListeners();
                                 },
                                 error: function (result) {
@@ -453,6 +458,10 @@
                                 },
                                 success: function(result){
                                     tr.remove();
+                                    $('#AgentsForm').trigger('reset');
+                                    $('#AnnulerAgent').hide();
+                                    $('#AjouterAgent').html('<i class="fa fa-plus"></i>');
+                                    $('#code').prop('required',true);
                                 },
                                 error: function(result){
                                     alert(result.responseJSON.message);console.log(result)
@@ -466,9 +475,9 @@
                             tr= $(this).parent().parent();
                             $('#AgentId').val(id);
                             $('#nomPrenom').val(tr.find('#agent'+id+'nomPrenom').html());
-                            $('#code').val(tr.find('#agent'+id+'Code').html());
                             $('#AnnulerAgent').show();
                             $('#AjouterAgent').html('<i class="fa fa-check"></i>');
+                            $('#code').prop('required',false);
                         });
                     });
                 }

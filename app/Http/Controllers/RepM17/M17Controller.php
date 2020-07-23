@@ -95,7 +95,7 @@ class M17Controller extends Controller
                     $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
-                    $defauts=Defauts::where('Zone',"=",'Z05')->where('Descr','=',null)->get();
+                    $defauts=Defauts::where('Zone',"=",'Z05')->get();
                     return view('RepM17.M17',
                         ['rapport' => $rapport,
                             'm17' => $rapport->m17,

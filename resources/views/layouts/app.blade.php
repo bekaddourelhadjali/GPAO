@@ -52,7 +52,6 @@
             border: 2px solid #ddd;
             box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
         }
-
         input[type=text] {
             padding: 0px 0px;
             text-align: center;
@@ -72,7 +71,9 @@
         }
 
         .table-container {
+            min-width: 100%;
             max-height: 500px;
+            max-width: 120%;
         }
         #bottom-actions button{
             padding: 5px 0px;
@@ -87,7 +88,6 @@
             border:1px solid blue;
             font-weight: bold;
         }
-
     </style>
     @yield('style')
 
@@ -149,7 +149,11 @@
 <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 @yield('script')
-
+<script>
+    $(document).ready(function(){
+       $('td button i.fa.fa-edit').parent().parent().css("min-width","100px");
+    });
+</script>
 
 </body>
 

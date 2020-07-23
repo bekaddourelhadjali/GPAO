@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\RX1;
 
+use App\Dashboard\Agents;
 use App\Dashboard\Locations;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class RapportsRX1Controller extends Controller
 {
@@ -43,7 +45,8 @@ class RapportsRX1Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   if( Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)&&
+        Hash::check($request->codeAgent2,Agents::where('NomPrenom','=',$request->agent2)->first()->Code)){
         $rapport = new Rapport();
         $rapport->Did= 0;
         $rapport->Pid= 0;
@@ -54,8 +57,6 @@ class RapportsRX1Controller extends Controller
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
         $rapport->NomAgents1= $request->agent2;
-        $rapport->CodeAgent= $request->codeAgent ;
-        $rapport->CodeAgent1= $request->codeAgent2;
         $rapport->Tension=$request->tension;
         $rapport->Intensite=$request->intensite;
         $rapport->TmpPose=$request->tmpPose;
@@ -67,6 +68,27 @@ class RapportsRX1Controller extends Controller
         if($rapport->save()) {
              return redirect(route('RX1.show',['id'=>$rapport->Numero]));
             }
+    }else{
+        $ErrorAgent1=null;
+        $ErrorAgent2=null;
+
+        if(!Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
+            $ErrorAgent1="Code Incorrect";
+        }
+        if(!Hash::check($request->codeAgent2,Agents::where('NomPrenom','=',$request->agent2)->first()->Code)){
+            $ErrorAgent2="Code Incorrect";
+        }
+
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $agents = $location->agents;
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z03\' order by "DateSaisie" desc limit 3');
+        return view ('RX1.rapportsRX1',[
+            'agents'=>$agents
+            ,'rapports'=>$rapports,
+            'ErrorAgent1'=>$ErrorAgent1,
+            'ErrorAgent2'=>$ErrorAgent2]);
+
+    }
     }
 
     /**
@@ -88,11 +110,11 @@ class RapportsRX1Controller extends Controller
      */
     public function edit($id)
     {
-        $results=DB::select('Select * from public.rapports where "Numero" in (SELECT "NumeroRap"  FROM public.rx1 where  "Tube"=?)',[$id]);
-        if ($results!=null){
-            return response()->json(array('rapports'=> $results), 200);
+        $rapport= Rapport::where('Numero','=',$id)->where('Zone','=','Z03')->first();
+        if (!empty($rapport)){
+            return response()->json(array('rapport'=> $rapport), 200);
         }else{
-            return response()->json(array('error'=> error), 404);
+            return response()->json(array('error'=> "Rapport N'existe Pas"), 404);
 
         }
     }

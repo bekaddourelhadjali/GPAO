@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Expedition;
 
+use App\Dashboard\Agents;
 use App\Dashboard\Locations;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ExpeditionRapportsController extends Controller
 {
@@ -44,7 +46,7 @@ class ExpeditionRapportsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {if(Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
         $rapport = new Rapport();
         $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
@@ -54,7 +56,6 @@ class ExpeditionRapportsController extends Controller
         $rapport->Machine= '1';
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
-        $rapport->CodeAgent= $request->codeAgent ;
         $rapport->Etat='N';
         $rapport->Computer=gethostname();
         $rapport->User=$request->agent;
@@ -62,6 +63,17 @@ class ExpeditionRapportsController extends Controller
         if($rapport->save()) {
             return redirect(route('Expedition.show',['id'=>$rapport->Numero]));
         }
+    }else{
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+        $agents = $location->agents;
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z14\' order by "DateSaisie" desc limit 3');
+        return view ('Expedition.ExpeditionRapports',['details'=>$details,'agents'=>$agents
+            ,'rapports'=>$rapports,
+            'Error'=>'Code Incorrect']);
+
+    }
     }
 
     /**
@@ -83,11 +95,11 @@ class ExpeditionRapportsController extends Controller
      */
     public function edit($id)
     {
-        $results=DB::select('Select * from public.rapports where "Numero" in (SELECT "NumeroRap"  FROM public.expedition where  "Tube"=?)',[$id]);
-        if ($results!=null){
-            return response()->json(array('rapports'=> $results), 200);
+        $rapport= Rapport::where('Numero','=',$id)->where('Zone','=','Z14')->first();
+        if (!empty($rapport)){
+            return response()->json(array('rapport'=> $rapport), 200);
         }else{
-            return response()->json(array('error'=> error), 404);
+            return response()->json(array('error'=> "Rapport N'existe Pas"), 404);
 
         }
     }

@@ -159,7 +159,11 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="text" id="codeAgent" name="codeAgent" class="col-2 offset-1 form-control" placeholder="Code" required>
+                                <input class="col-2 offset-1 form-control" placeholder="CODE" name="codeAgent"
+                                       id="codeAgent" type="password" minlength="8" required>
+                                @if(isset($Error))
+                                    <label class="col-12 text-danger text-center" >{{$Error}}</label>
+                                @endif
                             </div>
 
                             <hr>
@@ -215,9 +219,9 @@
 
     </div>
 
-
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -229,85 +233,28 @@
                 <div class="modal-body">
                     <div class="row"></div>
                     <div class="form-group  form-inline">
-                        <label class="col-2" for="tube" ><h5>Tube :</h5></label>
-                        <input class="col-3 form-control"  name="tube" id="tube" type="text" minlength="5" maxlength="5"  required >
-                        <button type="button" id="reprendreButton" class="col-3 offset-1 btn btn-primary">Entrer</button>
-                        <button type="button" class="col-2 offset-1 btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
+                        <label class="col-md-4 col-6" for="NumRap" style="margin-right:10px"><h5>Numero de Rapport
+                                :</h5></label>
+                        <input class="col-3 form-control" oninput="validity.valid||(value='');"
+                               style="margin-right:10px" name="numRap" id="numRap" type="number" min="1" required>
+                        <button type="button" id="reprendreButton" style="margin-right:10px"
+                                class="col-2 offset-md-0  btn btn-primary">Entrer
+                        </button>
 
                     </div>
-                    <table class=" col-12 table table-striped table-hover table-borderless">
-                        <thead class="bg-primary text-white">
-                        <tr>
-                            <th>Date</th>
-                            <th>Poste</th>
-                            <th>Machine</th>
-                            <th>Agent 1</th>
-                            <th>Clôturé</th>
-                        </tr>
-                        </thead>
-                        <tbody id="tbodyReprendre">
-                        </tbody>
-                    </table>
                 </div>
 
             </div>
         </div>
     </div>
+    @include('layouts.ReprendreRapport')
 @endsection
 @section('script')
     <script>
         $(document).ready(function(){
 
-            $('#codeAgent').val($('#code').val());
-            $('#codeAgent2').val($('#code2').val());
             AddListeners();
-            $('#reprendreButton').click(function(e){
-                const tube= $('#tube').val();
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
-                $.ajax({
-                    url:  "{{url('/rapports_Ultrason/')}}/" + tube + '/edit',
-                    method: 'get',
-                    success: function(result){
-
-                        $('#tbodyReprendre').html('');
-                        result.rapports.forEach(function(rapport,index){
-
-                            if(rapport.Etat==='C'){
-                                $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
-                                    '                   <td>'+rapport.DateRapport+'</td>\n' +
-                                    '                   <td>'+rapport.Poste+'</td>\n' +
-                                    '                   <td>'+rapport.Machine+'</td>\n' +
-                                    '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                                    '                            <td>Oui</td>    </tr>');
-                            }else{
-                                $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'"  class="NotClot  "> ' +
-                                    '                   <td>'+rapport.DateRapport+'</td>\n' +
-                                    '                   <td>'+rapport.Poste+'</td>\n' +
-                                    '                   <td>'+rapport.Machine+'</td>\n' +
-                                    '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                                    '                             <td>Non</td>   </tr>');
-                            }
-
-                        });
-                        AddListeners();
-                    },
-                    error: function(result){
-                        console.log(result);
-                        if(result!==undefined )
-                            if(result.responseJSON.message.includes('Undefined offset: 0')){
-                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Ultrason");
-                            }else{
-                                alert("Tube n°= "+tube+" n'existe pas dans les rapports Ultrason");
-                            }
-                    }
-                });
-            });
             function AddListeners(){
                 $('.Clot').each(function(){
                     $(this).off('dblclick');
@@ -327,5 +274,5 @@
 
         });
     </script>
-
+    @include('layouts.ReprendreRapScript',['rapport'=>'rapports_Ultrason','next'=>'Ultrason'])
 @endsection

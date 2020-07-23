@@ -204,6 +204,8 @@ Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller');
 Route::resource('RX2', 'RX2\RX2Controller');
 Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController');
 Route::resource('VisuelFinal', 'Visuel\VisuelFinalController');
+Route::resource('rapports_VFRefuses', 'Visuel\RapportsVFRefusesController');
+Route::resource('VFRefuses', 'Visuel\VFRefusesController');
 Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController');
 Route::resource('Reception', 'Reception\RecTubeController');
 Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController');
@@ -237,8 +239,8 @@ Route::get('UnAuthorized', function () {
 })->name('UnAuthorized');
 Route::get('dernierTube/{id}', function ($id) {
     $dernierTube = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Machine', '=', $id)->orderBy('DateSaisie', 'desc')->first();
-    if ($dernierTube)
-        if ($dernierTube->Tube != "") {
+    if ($dernierTube!= null)
+        if ($dernierTube->Tube != ""&& $dernierTube->Tube != null&& $dernierTube->rapport) {
             $dernierTubetab = ['Tube' => $dernierTube->Tube
                 , 'Observation' => $dernierTube->Observation
                 , 'Numero' => $dernierTube->rapport->Numero

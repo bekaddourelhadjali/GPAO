@@ -12,7 +12,7 @@
             padding:10px 0;
         }
         .table{
-            width:130%;
+            width:100%;
         }
         .table-container{
             overflow: auto;
@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-12">
                     <section >
-                        <h4 class="text-center bg-gradient-info text-white"><b>Gestion Des Details des projets</b></h4>
+                        <h4 class="text-center text-primary"><b>Gestion Des Details des projets</b></h4>
                         <hr>
                         <form id="detail_projectsForm" class="row text-center">
                             <input type="hidden" id="DetailProjectId" name="id" value="">
@@ -327,8 +327,8 @@
             function addActions() {
 
                 $(".detail_projectRow").each(function () {
-                    $(this).off('mouseover');
-                    $(this).mouseover(function () {
+                    $(this).off('mouseenter');
+                    $(this).mouseenter(function () {
 
                         $(this).css({
                             'color': '#858796',
@@ -354,7 +354,7 @@
                         }).show();
 
                     })
-                        .mouseout(function () {
+                        .mouseleave(function () {
                             $('#detail_project' + detail_projectId).css({
                                 'color': '#000',
                                 'background-color': '#fff'
@@ -364,19 +364,21 @@
                 });
 
             }
-            $('#tr-actions').mouseover(function () {
+            $('#tr-actions').mouseenter(function () {
                 $(this).show();
                 $('#detail_project' + detail_projectId).css({
                     'color': '#858796',
                     'background-color': 'rgba(0,0,0,.075)'
                 });
             });
-            $('#tr-actions').mouseout(function () {
+            $('#tr-actions').mouseleave(function () {
+                $(this).hide();
                 $('#detail_project' + detail_projectId).css({
                     'color': '#000',
                     'background-color': '#fff'
                 });
             });
+
         });
     </script>
 

@@ -48,7 +48,7 @@
                 <div class="col-12">
                     <section style="">
 
-                        <h4 class="text-center bg-gradient-info text-white"><b>Gestion Des Projets</b></h4>
+                        <h4 class="text-center  text-primary"><b>Gestion Des Projets</b></h4>
                         <hr>
                         <div class="row">
                         <form id="ProjectsForm" class="col-12">

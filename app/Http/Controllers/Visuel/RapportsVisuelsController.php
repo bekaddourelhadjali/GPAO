@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Visuel;
 
+use App\Dashboard\Agents;
 use App\Dashboard\Locations;
 use App\Dashboard\Machines;
 use App\Fabrication\Bobine;
@@ -10,6 +11,7 @@ use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class RapportsVisuelsController extends Controller
 {
@@ -50,6 +52,8 @@ class RapportsVisuelsController extends Controller
      */
     public function store(Request $request)
     {
+        if( Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)&&
+        Hash::check($request->codeAgent2,Agents::where('NomPrenom','=',$request->agent2)->first()->Code)){
         $rapport = new Rapport();
         $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
@@ -60,8 +64,6 @@ class RapportsVisuelsController extends Controller
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent ;
         $rapport->NomAgents1= $request->agent2;
-        $rapport->CodeAgent= $request->codeAgent ;
-        $rapport->CodeAgent1= $request->codeAgent2; 
         $rapport->Etat='N';
         $rapport->Computer=gethostname();
         $rapport->User=$request->agent.'/'.$request->agent2;
@@ -69,6 +71,29 @@ class RapportsVisuelsController extends Controller
         if($rapport->save()) {
              return redirect(route('visuels.show',['id'=>$rapport->Numero]));
             }
+    }else{
+        $ErrorAgent1=null;
+        $ErrorAgent2=null;
+
+        if(!Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
+            $ErrorAgent1="Code Incorrect";
+        }
+        if(!Hash::check($request->codeAgent2,Agents::where('NomPrenom','=',$request->agent2)->first()->Code)){
+            $ErrorAgent2="Code Incorrect";
+        }
+
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+        $agents = $location->agents;
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z02\' order by "DateSaisie" desc limit 3');
+        return view ('Visuel.rapportsV',['details'=>$details
+            ,'agents'=>$agents
+            ,'rapports'=>$rapports,
+            'ErrorAgent1'=>$ErrorAgent1,
+            'ErrorAgent2'=>$ErrorAgent2]);
+
+    }
     }
 
     /**
@@ -90,11 +115,12 @@ class RapportsVisuelsController extends Controller
      */
     public function edit($id)
     {
-        $results=DB::select('Select * from public.rapports where "Numero" in (SELECT "NumeroRap"  FROM public.visuels where  "Tube"=?)',[$id]);
-        if ($results!=null){
-            return response()->json(array('rapports'=> $results), 200);
+
+        $rapport= Rapport::where('Numero','=',$id)->where('Zone','=','Z02')->first();
+        if (!empty($rapport)){
+            return response()->json(array('rapport'=> $rapport), 200);
         }else{
-            return response()->json(array('error'=> error), 404);
+            return response()->json(array('error'=> "Rapport N'existe Pas"), 404);
 
         }
     }

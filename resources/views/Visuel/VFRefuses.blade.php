@@ -152,10 +152,6 @@
         #defauts {
             margin-bottom: 10px;
         }
-
-        .form-group label{
-            text-align: center;
-        }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
@@ -183,20 +179,20 @@
 
             </div>
         </section>
-        <div class="row">
-            <div class="   col-lg-7 col-sm-12">
-
-                <form   id="repForm" autocomplete="off">
+<div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-8 offset-md-2 offset-lg-0 col-sm-12 ">
                 <section class="top-actions">
+
+                    <form  id="repForm" autocomplete="off">
                     <h5>Info Tube</h5>
                     @php  @endphp
                     <input name="Numero" type="hidden" id="Numero" value="">
-                    <input name="NumeroRap" type="hidden" id="NumeroRap" value="{{$rapport->Numero}}">
+                    <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
                     <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
                     <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                     <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">
                     <div class="row">
-                        <div class="  col-md-3 col-4">
+                        <div class="col-4">
                             <div class="form-group ">
                                 <label class="col-lg-12" style="padding-left: 0">Tube</label>
                                 <input class="form-control col-12 text-center" style="color:#00f" id="ntube"
@@ -214,115 +210,7 @@
                                 </datalist>
                             </div>
                         </div>
-                        <div class="  col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="EpaisseurD" style="padding-left: 0">Epaisseur_D</label>
-                                <input class=" col-12 form-control" type="number" step="0.01" id="EpaisseurD"
-                                       name="EpaisseurD"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="  col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="EpaisseurC" style="padding-left: 0">Epaisseur_C</label>
-                                <input class=" col-12 form-control"  type="number" step="0.01" id="EpaisseurC"
-                                       name="EpaisseurC"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="  col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="EpaisseurF" style="padding-left: 0">Epaisseur F</label>
-                                <input class=" col-12 form-control"  type="number" step="0.01" id="EpaisseurF"
-                                       name="EpaisseurF"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="DiametreD" style="padding-left: 0">Diametre_D</label>
-                                <input class=" col-12 form-control" type="number" step="0.01" id="DiametreD"
-                                       name="DiametreD"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="DiametreC" style="padding-left: 0">Diametre_C</label>
-                                <input class=" col-12 form-control"  type="number" step="0.01" id="DiametreC"
-                                       name="DiametreC"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="DiametreF" style="padding-left: 0">Diametre_F</label>
-                                <input class=" col-12 form-control"  type="number" step="0.01" id="DiametreF"
-                                       name="DiametreF"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="Ovalisation" style="padding-left: 0">Ovalisation</label>
-                                <input class=" col-12 form-control" type="text" id="Ovalisation"
-                                       name="Ovalisation"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="OrthogonaliteD" style="padding-left: 0">Orthogonalite_D</label>
-                                <input class=" col-12 form-control" type="text" id="OrthogonaliteD"
-                                       name="OrthogonaliteD"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="OrthogonaliteF" style="padding-left: 0">Orthogonalite_F</label>
-                                <input class=" col-12 form-control" type="text" id="OrthogonaliteF"
-                                       name="OrthogonaliteF"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="Rectitude" style="padding-left: 0">Rectitude</label>
-                                <input class=" col-12 form-control" type="text" id="Rectitude"
-                                       name="Rectitude"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="ChanfreinD" style="padding-left: 0">Chanfrein_D</label>
-                                <input class=" col-12 form-control" type="text" id="ChanfreinD"
-                                       name="ChanfreinD"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="ChanfreinF" style="padding-left: 0">Chanfrein_F</label>
-                                <input class=" col-12 form-control" type="text" id="ChanfreinF"
-                                       name="ChanfreinF"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="   col-md-3 col-4">
-                            <div class="form-group ">
-                                <label class="col-12" for="Longueur" style="padding-left: 0">Longueur</label>
-                                <input class=" col-12 form-control" type="number" id="Longueur" min="0"
-                                       name="Longueur"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="form-group  col-md-6 col-6 ">
-                            <label for="ObsTube" class="col-12">Observation</label>
-                            <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
-                        </div>
-                        <div class="col-6 ">
+                        <div class="col-8 ">
                             <div class="form-group ">
                                 <label class="col-lg-12" style="padding-left: 0">&nbsp;</label>
                                 <button style=" margin-top: 0; " type="reset"
@@ -334,19 +222,25 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="form-group col-12 ">
+                            <label for="ObsTube" class="col-12">Observation</label>
+                            <textarea type="text" class="form-control" name="ObsTube" id="ObsTube"></textarea>
+                        </div>
+
 
                     </div>
+
+                    </form>
                 </section>
 
-        </form>
             </div>
 
-            <div class="col-xl-5 col-lg-5 col-md-8 offset-md-2 offset-lg-0 col-sm-12">
+            <div class="col-xl-8 col-lg-8 col-sm-12">
                 <section class="top-actions">
                     <h5>Désignation des anomalies</h5>
 
                     <div class="row">
-                        <div class="col-4 col-sm-2 col-lg-2">
+                        <div class="col-4 col-sm-2 ">
                             <div class="form-group ">
                                 <label class="col-12" for="nbr">Nbr</label>
                                 <input class="  form-control" type="number" id="nbr" name="nbr">
@@ -377,8 +271,6 @@
                                 <label class="col-12" for="operation">Operation</label>
                                 <select class="form-control" id="operation" name="operation" required>
                                     <option hidden disabled selected value></option>
-                                    <option operationId="1"  value="R.A.S">R.A.S</option>
-                                    <option operationId="2"   value="Déclassé">Déclassé</option>
                                     @if(isset($operations))
                                         @foreach($operations as $operation)
                                             <option operationId="{{$operation->id}}"
@@ -389,16 +281,16 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group col-8  ">
+                        <div class="form-group col-md-8 col-sm-8 col-12  ">
                             <label for="observation" class="col-12">Observation</label>
                             <input type="text" class="form-control" name="observation" id="observation">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-1 col-2">
 
                             <label class="col-12" for=""> </label>
                             <button id="addDefaut" class=" btn btn-success"><b><i class="fa fa-plus"></i></b></button>
                         </div>
-                        <div class="col-2">
+                        <div class="col-1">
                             <label class="col-12" for=""> </label>
                             <button id="removeDefaut" class="btn btn-danger"><b><i class="fa fa-minus "></i></b>
                             </button>
@@ -414,62 +306,29 @@
                 </section>
 
             </div>
-        </div>
+</div>
         <section class="col-12">
-            <div class="table-container" style="max-width: 120%">
-                <table id="rx1sTable" class="table  table-bordered table-striped table-hover   ">
+            <div class="table-container">
+                <table id="rx1sTable" class="table table-striped table-hover table-borderless rapprods ">
                     <thead class="bg-primary text-white">
                     <tr>
-                        <th style="min-width:80px"  rowspan="2">Tube</th>
-                        <th rowspan="2">Bis</th>
-                        <th colspan="3"> Epaisseur</th>
-                        <th colspan="3"> Diametre</th>
-                        <th rowspan="2">Ovalisation</th>
-                        <th colspan="2"> Orthogonalité</th>
-                        <th rowspan="2"> Rectitude</th>
-                        <th colspan="2">Chanfrein</th>
-                        <th rowspan="2">Longueur</th>
-                        <th rowspan="2">Defauts</th>
-                        <th rowspan="2">Observations</th>
-                        <th style="min-width:100px" rowspan="2"></th>
-                    </tr>
-                    <tr>
-                        <th>Deb</th>
-                        <th>Corps</th>
-                        <th>Fin</th>
-                        <th>Deb</th>
-                        <th>Corps</th>
-                        <th>Fin</th>
-                        <th>Deb</th>
-                        <th>Fin</th>
-                        <th>Deb</th>
-                        <th >Fin</th>
+                        <th>Tube</th>
+                        <th>Bis</th>
+                        <th>Defauts</th>
+                        <th>Observations</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody id="reps">
-                    @if(isset($visuelFinals))
-                        @foreach($visuelFinals as $item)
+                    @if(isset($VFRefuses))
+                        @foreach($VFRefuses as $item)
                             <tr id="rep{{$item->Id}}">
                                 <td id="tube{{$item->Id}}">{{$item->Tube}}</td>
                                 <td id="bis{{$item->Id}}">@if($item->Bis) <input type="checkbox" checked
                                                                                  onclick="return false;">
                                     @elseif(!$item->Bis)<input type="checkbox" onclick="return false;"> @endif</td>
-
-                                <td id="EpaisseurD{{$item->Id}}">{{$item->EpaisseurD}}</td>
-                                <td id="EpaisseurC{{$item->Id}}">{{$item->EpaisseurC}}</td>
-                                <td id="EpaisseurF{{$item->Id}}">{{$item->EpaisseurF}}</td>
-                                <td id="DiametreD{{$item->Id}}">{{$item->DiametreD}}</td>
-                                <td id="DiametreC{{$item->Id}}">{{$item->DiametreC}}</td>
-                                <td id="DiametreF{{$item->Id}}">{{$item->DiametreF}}</td>
-                                <td id="Ovalisation{{$item->Id}}">{{$item->Ovalisation}}</td>
-                                <td id="OrthogonaliteD{{$item->Id}}">{{$item->OrthogonaliteD}}</td>
-                                <td id="OrthogonaliteF{{$item->Id}}">{{$item->OrthogonaliteF}}</td>
-                                <td id="Rectitude{{$item->Id}}">{{$item->Rectitude}}</td>
-                                <td id="ChanfreinD{{$item->Id}}">{{$item->ChanfreinD}}</td>
-                                <td id="ChanfreinF{{$item->Id}}">{{$item->ChanfreinF}}</td>
-                                <td id="Longueur{{$item->Id}}">{{$item->Longueur}}</td>
-                                <td id="Defauts{{$item->Id}}">{{$item->Defauts}}</td>
-                                <td id="Observation{{$item->Id}}">{{$item->Observation}}</td>
+                                <td id="Defaut{{$item->Id}}">{{$item->Defauts}} </td>
+                                <td id="Observation{{$item->Id}}">{{$item->Observation}} </td>
 
                                 <td>
                                     <button id="rep{{$item->Id}}Edit" class="repEdit text-primary"><i
@@ -499,7 +358,7 @@
                         <b><i class="fa fa-file-alt" style="font-size: 20px;"></i> &nbsp;Carte Tube </b></button>
                 </div>
                 <div class="  col-lg-3  col-md-4 col-sm-6 ">
-                    <form method="post" action="{{route('rapports_VisuelFinal.destroy',["id"=>$rapport->Numero])}}">
+                    <form method="post" action="{{route('rapports_VFRefuses.destroy',["id"=>$rapport->Numero])}}">
                         @csrf
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-secondary col-12"><b> <i class="fa fa-times-circle"
@@ -533,7 +392,7 @@
             $('#addDefaut').click(function (e) {
                 e.preventDefault();
                 if ($('#defaut').val() !== null && $('#operation').val() !== null) {
-                    if ($('#operation').val() !== 'R.A.S'&&$('#operation').val() !== 'Déclassé') {
+
                     Opr = $('#operation').val();
                     IdDef = $('#defaut').find("option:selected").attr("defautId");
 
@@ -551,11 +410,9 @@
 
 
                     Obs = $('#observation').val();
-                    Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, , Obs]);
+                    Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre,  Obs]);
                     SetDefauts();
-                    } else {
-                        alert('Sélectionner une opération autre que R.A.S et Déclassé');
-                    }
+
                 } else {
                     alert('Sélectionner un defaut et une opération svp!');
                 }
@@ -582,6 +439,13 @@
                         if (item[3] > 0) {
                             obs = obs + '(' + item[3] + ')';
                         }
+                        if (item[6] && item[7]) {
+                            obs = obs + '(Int et Ext)';
+                        } else if (item[6]) {
+                            obs = obs + '(Int)';
+                        } else if (item[7]) {
+                            obs = obs + '(Ext)';
+                        }
                         if (Defauts.length > index + 1) {
                             NextOp = Defauts[index + 1][0];
                         } else {
@@ -593,20 +457,14 @@
                             $('#defauts').val($('#defauts').val() + '+' + obs + '|' + item[0] + '|');
                         }
                         ObsMetal = $('#defauts').val();
-                        if (ObsMetal.charAt(0) ===  '+')
+                        if (ObsMetal.charAt(0) === '+')
                             $('#defauts').val(ObsMetal.substr(1));
-
                     }
-                    if($('#defauts').val()=="null"){
-                        $('#defauts').val('');
-                    }
-
-                    $('#defaut').val('');
-                    $('#operation').val(Defauts[Defauts.length - 1][0]);
-                    $('#observation').val(Defauts[Defauts.length - 1][6]);
                 });
 
             }
+
+
 
 
             //Ajouter Reparation
@@ -619,60 +477,44 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    if (Defauts.length > 0 || $('#operation').val() === 'R.A.S'|| $('#operation').val() === 'Déclassé' ) {
+                    if (Defauts.length > 0 || $('#operation').val() === 'R.A.S') {
                         if (Defauts.length > 0) {
 
                             obs = $('#defauts').val() + '|' + Defauts[Defauts.length - 1][0] + '|';
-                        } else if ($('#operation').val() === 'R.A.S'|| $('#operation').val() === 'Déclassé') {
+                        } else if ($('#operation').val() === 'R.A.S') {
                             obs = $('#operation').val();
                             Defauts.push([
-                                Opr = $('#operation').val(), null, null, null, $('#operation').find("option:selected").attr("operationId"), null,null]);
+                                Opr = $('#operation').val(), null, null, null, $('#operation').find("option:selected").attr("operationId"), null]);
                         }
-                        var formData = new FormData(document.getElementById('repForm'));
-                        var json_Defauts = JSON.stringify(Defauts);
-                        formData.append('Defauts',json_Defauts);
-                        formData.append('defauts',obs);
                         if ($('#Ajouter').html() !== ' Modifier ') {
                             $.ajax({
-                                url: "{{ route('VisuelFinal.store')}}",
+                                url: "{{ route('VFRefuses.store')}}",
                                 method: 'post',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
+                                data: {
+                                    _token: '{{csrf_token()}}',
+                                    Pid: $('#Pid').val(),
+                                    Did: $('#Did').val(),
+                                    NumeroRap: $('#NumRap').val(),
+                                    ntube: $('#ntube').val(),
+                                    Defauts: Defauts,
+                                    ObsTube: $('#ObsTube').val(),
+                                    Obs: obs,
+                                },
                                 success: function (result) {
-                                    var item = result.visFin;
+                                    var item = result.vfr;
                                     $('#reps').append('<tr id="rep' + item.Id + '">\n' +
                                         '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                        '                                <td    id="EpaisseurD' + item.Id + '">' + item.EpaisseurD + '</td>\n' +
-                                        '                                <td    id="EpaisseurC' + item.Id + '">' + item.EpaisseurC + '</td>\n' +
-                                        '                                <td    id="EpaisseurF' + item.Id + '">' + item.EpaisseurF + '</td>\n' +
-                                        '                                <td    id="DiametreD' + item.Id + '">' + item.DiametreD + '</td>\n' +
-                                        '                                <td    id="DiametreC' + item.Id + '">' + item.DiametreC + '</td>\n' +
-                                        '                                <td    id="DiametreF' + item.Id + '">' + item.DiametreF + '</td>\n' +
-                                        '                                <td    id="Ovalisation' + item.Id + '">' + item.Ovalisation + '</td>\n' +
-                                        '                                <td    id="OrthogonaliteD' + item.Id + '">' + item.OrthogonaliteD + '</td>\n' +
-                                        '                                <td    id="OrthogonaliteF' + item.Id + '">' + item.OrthogonaliteF + '</td>\n' +
-                                        '                                <td    id="Rectitude' + item.Id + '">' + item.Rectitude + '</td>\n' +
-                                        '                                <td    id="ChanfreinD' + item.Id + '">' + item.ChanfreinD + '</td>\n' +
-                                        '                                <td    id="ChanfreinF' + item.Id + '">' + item.ChanfreinF + '</td>\n' +
-                                        '                                <td    id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
                                         '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                        '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
+                                        '                                <td    id="Observation' + item.Id + '">' + $('#ObsTube').val()+ '</td>\n' +
                                         '                                <td>\n' +
                                         '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                         '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
                                         '                                </td>\n' +
                                         '                            </tr>');
                                     $('#repForm').trigger("reset");
-                                    $('#nbr').val('');
-                                    $('#defaut').val('');
-                                    $('#valeur').val('');
-                                    $('#operation').val('');
-                                    $('#Ajouter').html(' Ajouter ');
-                                    $('#annulerButton').hide();
+                                    $('#defauts').val("");
                                     Defauts = [];
-                                    $('#ntube').prop('disabled', false);
                                     addRapprodsListeners();
                                 },
                                 error: function (result) {
@@ -682,46 +524,36 @@
                             });
 
                         } else {
-                            formData.append("_method","put");
                             $.ajax({
-                                url: "{{url('/VisuelFinal/')}}/" + id,
+                                url: "{{url('/VFRefuses/')}}/" + id,
                                 method: 'post',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
+                                data: {
+                                    _method: 'put',
+                                    _token: '{{csrf_token()}}',
+                                    Pid: $('#Pid').val(),
+                                    Did: $('#Did').val(),
+                                    NumeroRap: $('#NumRap').val(),
+                                    ntube: $('#ntube').val(),
+                                    Defauts: Defauts,
+                                    ObsTube: $('#ObsTube').val(),
+                                    Obs: obs,
+                                    id: id
+                                },
                                 success: function (result) {
-                                    var item = result.visFin;
+                                    var item = result.vfr;
                                     console.log(item);
-                                    $('#rep' + id).replaceWith('<tr id="rep' + item.Id + '">\n' +
-                                        '                                <td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
+                                    $('#rep' + id).html('<td id="tube' + item.Id + '">' + item.Tube + '</td>\n' +
                                         '                               <td id="bis' + item.Id + '"> <input type="checkbox" ' + item.Bis_t + '  onclick="return false;"></td>' +
-                                        '                                <td    id="EpaisseurD' + item.Id + '">' + item.EpaisseurD + '</td>\n' +
-                                        '                                <td    id="EpaisseurC' + item.Id + '">' + item.EpaisseurC + '</td>\n' +
-                                        '                                <td    id="EpaisseurF' + item.Id + '">' + item.EpaisseurF + '</td>\n' +
-                                        '                                <td    id="DiametreD' + item.Id + '">' + item.DiametreD + '</td>\n' +
-                                        '                                <td    id="DiametreC' + item.Id + '">' + item.DiametreC + '</td>\n' +
-                                        '                                <td    id="DiametreF' + item.Id + '">' + item.DiametreF + '</td>\n' +
-                                        '                                <td    id="Ovalisation' + item.Id + '">' + item.Ovalisation + '</td>\n' +
-                                        '                                <td    id="OrthogonaliteD' + item.Id + '">' + item.OrthogonaliteD + '</td>\n' +
-                                        '                                <td    id="OrthogonaliteF' + item.Id + '">' + item.OrthogonaliteF + '</td>\n' +
-                                        '                                <td    id="Rectitude' + item.Id + '">' + item.Rectitude + '</td>\n' +
-                                        '                                <td    id="ChanfreinD' + item.Id + '">' + item.ChanfreinD + '</td>\n' +
-                                        '                                <td    id="ChanfreinF' + item.Id + '">' + item.ChanfreinF + '</td>\n' +
-                                        '                                <td    id="Longueur' + item.Id + '">' + item.Longueur + '</td>\n' +
                                         '                                <td    id="Defauts' + item.Id + '">' + item.Defauts + '</td>\n' +
-                                        '                                <td    id="Observation' + item.Id + '">' + item.Observation + '</td>\n' +
+                                        '                                <td    id="Observation' + item.Id + '">' + $('#ObsTube').val()+ '</td>\n' +
                                         '                                <td>\n' +
                                         '                                    <button id="rep' + item.Id + 'Edit" class="repEdit text-primary" ><i class="fa fa-edit"></i></button>\n' +
                                         '                                    <button id="rep' + item.Id + 'Delete" class="repDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
-                                        '                                </td>\n' +
-                                        '                            </tr>');
+                                        '                                </td>');
                                     $('#repForm').trigger("reset");
+                                    $('#defauts').val("");
                                     $('#Ajouter').html(' Ajouter ');
                                     $('#annulerButton').hide();
-                                    $('#nbr').val('');
-                                    $('#defaut').val('');
-                                    $('#valeur').val('');
-                                    $('#operation').val('');
                                     Defauts = [];
                                     $('#ntube').prop('disabled', false);
                                     addRapprodsListeners();
@@ -736,7 +568,6 @@
                         }
                     } else {
                         alert("Choisir soit l'opération R.A.S ou signaler un défaut et choisir une opération correspendante");
-
                     }
 
                 } else {
@@ -749,13 +580,10 @@
             });
             $('#annulerButton').click(function () {
                 $('#repForm').trigger("reset");
+                $('#defauts').val("");
                 $('#Ajouter').html(' Ajouter ');
                 $('#annulerButton').hide();
                 $('#defauts').val('');
-                $('#nbr').val('');
-                $('#defaut').val('');
-                $('#valeur').val('');
-                $('#operation').val('');
                 $('#ntube').prop('disabled', false);
                 Defauts = [];
             });
@@ -777,7 +605,7 @@
                         });
 
                         $.ajax({
-                            url: "{{url('/VisuelFinal/')}}/" + id,
+                            url: "{{url('/VFRefuses/')}}/" + id,
                             method: 'post',
                             data: {
                                 _method: 'delete',
@@ -789,13 +617,10 @@
                             success: function (result) {
                                 tr.remove();
                                 $('#repForm').trigger("reset");
+                                $('#defauts').val("");
                                 $('#Ajouter').html(' Ajouter ');
                                 $('#annulerButton').hide();
                                 $('#defauts').val('');
-                                $('#nbr').val('');
-                                $('#defaut').val('');
-                                $('#valeur').val('');
-                                $('#operation').val('');
                                 $('#ntube').prop('disabled', false);
                                 Defauts = [];
                             },
@@ -819,7 +644,7 @@
                         });
 
                         $.ajax({
-                            url: "{{url('/VisuelFinal/')}}/" + id + '/edit',
+                            url: "{{url('/VFRefuses/')}}/" + id + '/edit',
                             method: 'get',
                             data: {
                                 id: id,
@@ -828,35 +653,23 @@
                             },
                             success: function (result) {
                                 $('#Numero').val(id);
-                                rep = result.visFin;
+                                rep = result.vfr;
+                                Defauts = [];
+                                rep.defs.forEach(function (item, index) {
+                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,  item.Observation]);
+                                });
+                                SetDefauts();
+                                $('#operation').val(Defauts[Defauts.length - 1][0]);
+                                $('#observation').val(Defauts[Defauts.length - 1][8]);
 
-                                console.log(rep)
                                 $('#ntube').prop('disabled', true);
+                                $('#Numero').val(id);
+                                $('#ObsTube').val($('#Observation' + id).html());
 
                                 if ($('#bis' + id).html().includes('checked'))
                                     $('#ntube').val($("#tube" + id).html() + "bis");
                                 else
                                     $('#ntube').val($("#tube" + id).html());
-                                $('#EpaisseurD').val($('#EpaisseurD' + id).html());
-                                $('#EpaisseurC').val($('#EpaisseurC' + id).html());
-                                $('#EpaisseurF').val($('#EpaisseurF' + id).html());
-                                $('#DiametreD').val($('#DiametreD' + id).html());
-                                $('#DiametreC').val($('#DiametreC' + id).html());
-                                $('#DiametreF').val($('#DiametreF' + id).html());
-                                $('#Ovalisation').val($('#Ovalisation' + id).html());
-                                $('#OrthogonaliteD').val($('#OrthogonaliteD' + id).html());
-                                $('#OrthogonaliteF').val($('#OrthogonaliteF' + id).html());
-                                $('#Rectitude').val($('#Rectitude' + id).html());
-                                $('#ChanfreinD').val($('#ChanfreinD' + id).html());
-                                $('#ChanfreinF').val($('#ChanfreinF' + id).html());
-                                $('#Longueur').val($('#Longueur' + id).html());
-                                $('#ObsTube').val($('#Observation' + id).html());
-                                Defauts = [];
-                                rep.defs.forEach(function (item, index) {
-                                    Defauts.push([item.Opr, item.IdDef, item.Defaut, item.Valeur, item.NbOpr, item.Nombre,  item.Observation]);
-                                });
-                                SetDefauts()
-
 
                                 $('#Ajouter').html(' Modifier ');
                                 $('#annulerButton').show();
@@ -889,7 +702,7 @@
                     success: function (result) {
                         if (result.rapportState.Etat === 'C') {
                             alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
-                            window.location.href = '{{route("rapports_VisuelFinal.index")}}';
+                            window.location.href = '{{route("rapports_VFRefuses.index")}}';
 
                         }
 

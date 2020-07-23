@@ -128,7 +128,7 @@
                                     <div class="form-group row">
                                         <label class="col-4" for="date">Date du rapport</label>
                                         <input class="col-4 form-control" name="date" id="date" type="date"
-                                               value="{{date("Y-m-d") }}" required max="{{date("Y-m-d") }}" min="2020-07-07">
+                                               value="{{date("Y-m-d") }}" required max="{{date("Y-m-d") }}" min="{{date("Y-m-d") }}">
                                     </div>
 
                                 </div>
@@ -148,7 +148,10 @@
                                     @endif
                                 </select>
                                 <input class="col-2 offset-1 form-control" placeholder="CODE" name="codeAgent"
-                                       id="codeAgent" type="text" required>
+                                       id="codeAgent" type="password" minlength="8" required>
+                                @if(isset($Error))
+                                    <label class="col-12 text-danger text-center" >{{$Error}}</label>
+                                    @endif
                             </div>
                             <hr>
 
@@ -205,35 +208,7 @@
         </div>
 
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Reprendre un rapport</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row"></div>
-                    <div class="form-group  form-inline">
-                        <label class="col-md-4 col-6" for="NumRap" style="margin-right:10px"><h5>Numero de Rapport
-                                :</h5></label>
-                        <input class="col-3 form-control" oninput="validity.valid||(value='');"
-                               style="margin-right:10px" name="numRap" id="numRap" type="number" min="1" required>
-                        <button type="button" id="reprendreButton" style="margin-right:10px"
-                                class="col-2 offset-md-0  btn btn-primary">Entrer
-                        </button>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
+    @include('layouts.ReprendreRapport')
 @endsection
 @section('script')
     <script>
@@ -256,35 +231,10 @@
                 });
             }
 
-            $('#reprendreButton').click(function () {
 
-                    const numRap = $('#numRap').val();
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        url: "{{url('/rapports_RecBob/')}}/" + numRap + '/edit',
-                        method: 'get',
-                        success: function (result) {
-                            var rapport = result.rapport;
-                            if (rapport.Etat === 'N')
-                                window.location.href = '{{url("/RecBob/")}}/' + rapport.Numero;
-                            else
-                                alert('Rapport Cloturé');
-                        },
-                        error: function (result) {
-                            alert(result.responseJSON.error);
-                            console.log(result);
-                        }
-                    });
-
-            });
         });
 
 
     </script>
-
+    @include('layouts.ReprendreRapScript',['rapport'=>'rapports_RecBob','next'=>'RecBob'])
 @endsection

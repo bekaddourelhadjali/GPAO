@@ -15,7 +15,7 @@
         }
 
         .table {
-            width: 120%;
+            width: 100%;
         }
 
         .table-container {
@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-12">
                         <section>
-                            <h4 class="text-center bg-gradient-info text-white"><b>Gestion Des Clients</b></h4>
+                            <h4 class="text-center text-primary"><b>Gestion Des Clients</b></h4>
                             <hr>
                             <form id="clientsForm" class="row text-center">
                                 <input type="hidden" id="ClientId" name="id" value="">
@@ -375,8 +375,8 @@
             function addActions() {
 
                 $(".clientRow").each(function () {
-                    $(this).off('mouseover');
-                    $(this).mouseover(function () {
+                    $(this).off('mouseenter');
+                    $(this).mouseenter(function () {
 
                         $(this).css({
                             'color': '#858796',
@@ -402,7 +402,7 @@
                         }).show();
 
                     })
-                        .mouseout(function () {
+                        .mouseleave(function () {
                             $('#client' + clientId).css({
                                 'color': '#000',
                                 'background-color': '#fff'
@@ -413,19 +413,21 @@
 
             }
 
-            $('#tr-actions').mouseover(function () {
+            $('#tr-actions').mouseenter(function () {
                 $(this).show();
                 $('#client' + clientId).css({
                     'color': '#858796',
                     'background-color': 'rgba(0,0,0,.075)'
                 });
             });
-            $('#tr-actions').mouseout(function () {
+            $('#tr-actions').mouseleave(function () {
+                $(this).hide();
                 $('#client' + clientId).css({
                     'color': '#000',
                     'background-color': '#fff'
                 });
             });
+
         });
     </script>
 

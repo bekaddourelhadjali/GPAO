@@ -149,24 +149,12 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <input type="text" placeholder="Code" id="codeAgent" name="codeAgent" value="" class="form-control col-2 offset-1" required>
+                                <input class="col-2 offset-1 form-control" placeholder="CODE" name="codeAgent"
+                                       id="codeAgent" type="password" minlength="8" required>
+                                @if(isset($Error))
+                                    <label class="col-12 text-danger text-center" >{{$Error}}</label>
+                                @endif
                             </div>
-                            {{--<div class="form-group row">--}}
-                                {{--<label class="col-3" for="agent2">Agent 02</label>--}}
-                                {{--<select class="form-control col-6" id="agent2" name="agent2">--}}
-                                    {{--@if(isset($agents))--}}
-                                        {{--@php--}}
-                                            {{--$i=0;--}}
-                                        {{--@endphp--}}
-                                        {{--@foreach($agents as $agent)--}}
-                                            {{--<option order="{{$i++}}" value="{{$agent->NomPrenom}}">{{$agent->NomPrenom}}</option>--}}
-                                        {{--@endforeach--}}
-                                    {{--@endif--}}
-                                {{--</select>--}}
-                                {{--<input type="text" placeholder="Code" id="codeAgent2" name="codeAgent2" value="" class="form-control col-2 offset-1" required>--}}
-
-                            {{--</div>--}}
-
                             <hr>
                             <div class="form-group row">
                                 <div class="col-3 ">
@@ -214,7 +202,7 @@
                    <td>{{$rapport->DateRapport}}</td>
                    <td>{{$rapport->Poste}}</td>
                    <td>{{$rapport->Machine}}</td>
-                       <td>{{$rapport->NomAgents}} / {{$rapport->CodeAgent}}</td>
+                       <td>{{$rapport->NomAgents}}  </td>
                        @if($rapport->Etat=='C')<td>Oui</td>   @else <td>Non</td>  @endif
                    </tr>
                     @endforeach
@@ -229,98 +217,14 @@
 
     </div>
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Reprendre un rapport</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                   <div class="row"></div>
-                    <div class="form-group  form-inline">
-                        <label class="col-2" for="tube" ><h5>Tube :</h5></label>
-                        <input class="col-3 form-control"  name="tube" id="tube" type="text" minlength="5" maxlength="5"  required >
-                        <button type="button" id="reprendreButton" class="col-3 offset-1 btn btn-primary">Entrer</button>
-                        <button type="button" class="col-2 offset-1 btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
-
-                    </div>
-                    <table class=" col-12 table table-striped table-hover table-borderless">
-                        <thead class="bg-primary text-white">
-                        <tr>
-                            <th>Date</th>
-                            <th>Poste</th>
-                            <th>Machine</th>
-                            <th>Agent 1</th>
-                            <th>Clôturé</th>
-                        </tr>
-                        </thead>
-                        <tbody id="tbodyReprendre">
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    @include('layouts.ReprendreRapport')
 @endsection
 @section('script')
 <script>
     $(document).ready(function(){
 
-        $('#codeAgent').val($('#code').val());
-        $('#codeAgent2').val($('#code2').val());
         AddListeners();
-        $('#reprendreButton').click(function(e){
-            const tube= $('#tube').val();
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
-            $.ajax({
-                url:  "{{url('/rapports_M17/')}}/" + tube + '/edit',
-                method: 'get',
-                success: function(result){
-                    $('#tbodyReprendre').html('');
-                    result.rapports.forEach(function(rapport,index){
-
-                        if(rapport.Etat==='C'){
-                            $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'" class="Clot bg-success text-white">' +
-                            '                   <td>'+rapport.DateRapport+'</td>\n' +
-                            '                   <td>'+rapport.Poste+'</td>\n' +
-                            '                   <td>'+rapport.Machine+'</td>\n' +
-                                '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                            '                            <td>Oui</td>   ;');
-                        }else{
-                            $('#tbodyReprendre').append('<tr id="rapport'+rapport.Numero+'"  class="NotClot  "> ' +
-                                '                   <td>'+rapport.DateRapport+'</td>\n' +
-                                '                   <td>'+rapport.Poste+'</td>\n' +
-                                '                   <td>'+rapport.Machine+'</td>\n' +
-                                '                   <td>'+rapport.NomAgents+' / '+rapport.CodeAgent+'</td>\n' +
-                            '                             <td>Non</td>   ;');
-                        }
-
-                    });
-                    AddListeners();
-                },
-                error: function(result){
-                    console.log(result);
-                    if(result!==undefined )
-                    if(result.responseJSON.message.includes('Undefined offset: 0')){
-                        alert("Tube n°= "+tube+" n'existe pas dans les rapports M17");
-                    }else{
-                        alert("Tube n°= "+tube+" n'existe pas dans les rapports M17");
-                    }
-                }
-            });
-        });
         function AddListeners(){
         $('.Clot').each(function(){
 
@@ -336,21 +240,8 @@
             });
         });
         }
-        $('#agent').on('change',function(){
-            order=$(this).children("option:selected").attr('order');
-            val=$('#code').find('option[order='+order+']').val();
-            $('#code').val(val);
-            $('#codeAgent').val(val);
-
-        });
-        $('#agent2').on('change',function(){
-            order=$(this).children("option:selected").attr('order');
-            val=$('#code2').find('option[order='+order+']').val();
-            $('#code2').val(val);
-            $('#codeAgent2').val(val);
-        });
 
     });
 </script>
-
+@include('layouts.ReprendreRapScript',['rapport'=>'rapports_M17','next'=>'M17'])
 @endsection

@@ -95,13 +95,13 @@
         <div class="row">
             <div class="body-content col-xl-6 col-lg-6 col-md-8 offset-xl-0 offset-lg-0 offset-md-2 col-sm-12 " >
                 <section class="col-12">
-                    <form method="post" action="{{route('rapports_RevInt.store')}}">
+                    <form method="post" action="{{route('rapports_VFRefuses.store')}}">
                         @csrf
                         <fieldset>
                             <legend><h4>Information du rapport</h4> </legend>
                             <div class="form-group  row">
                                 <label class="col-4" for="detail_project ">Detail Projet</label>
-                                <select class="form-control col-xl-8 col-lg-9 col-md-8 col-sm-8" id="detail_project" name="detail_project">
+                                <select class="form-control col-xl-8 col-lg-8 col-md-8 col-sm-8" id="detail_project" name="detail_project">
                                     @foreach($details as $detail)
                                         <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                     @endforeach
@@ -110,12 +110,12 @@
                             <div class="row ">
                                 <div class="col-12">
                                     <div class="form-group row">
-                                        <label class="col-4" for="date" >Date du rapport</label>
+                                        <label class="col-5" for="date" >Date du rapport</label>
                                         <input class="col-4 form-control"  name="date" id="date" type="date" value="{{date("Y-m-d") }}" >
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-4" for="equipe ">Equipe</label>
+                                        <label class="col-5" for="equipe ">Equipe</label>
                                         <select class="form-control col-4" id="equipe" name="equipe">
                                             <option value="A">A</option>
                                             <option value="B">B</option>
@@ -124,7 +124,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-4" for="poste ">Poste</label>
+                                        <label class="col-5" for="poste ">Poste</label>
                                         <select class="form-control col-4" id="poste" name="poste">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -157,11 +157,16 @@
                             </div>
                             <hr>
                             <div class="form-group row">
-                                <button type="button" class="col-5  btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
+
+                                <div class="col-5">
+                                <button type="button" class="col-12   btn btn-warning" data-toggle="modal"    data-target="#exampleModal">
                                     Reprendre un rapport
                                 </button>
-
-                                <button   type="submit" class=" col-4 offset-3 btn btn-success"> Valider</button>
+                                </div>
+                                <div class="col-3"></div>
+                                <div class="col-4">
+                                <button   type="submit" class="col-12  btn btn-success"> Valider</button>
+                                </div>
                             </div>
                         </fieldset>
 
@@ -213,27 +218,28 @@
     <script>
         $(document).ready(function(){
 
+
             AddListeners();
+
+
 
             function AddListeners(){
                 $('.Clot').each(function(){
-                    $(this).off('dblclick');
+
                     $(this).dblclick(function(){
                         id=$(this).attr('id').replace(/[^0-9]/g,'');
                         alert('Rapport N°='+id+' est CLoturé');
                     });
                 });
                 $('.NotClot').each(function(){
-                    $(this).off('dblclick');
                     $(this).dblclick(function(){
                         id=$(this).attr('id').replace(/[^0-9]/g,'');
-                        window.location.href='{{url("/RevInt/")}}/'+id;
+                        window.location.href='{{url("/VFRefuses/")}}/'+id;
                     });
                 });
             }
 
-
         });
     </script>
-    @include('layouts.ReprendreRapScript',['rapport'=>'rapports_RevInt','next'=>'RevInt'])
+    @include('layouts.ReprendreRapScript',['rapport'=>'rapports_VFRefuses','next'=>'VFRefuses'])
 @endsection

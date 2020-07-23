@@ -8,6 +8,7 @@ use App\Dashboard\Machines;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AgentsController extends Controller
 {
@@ -52,7 +53,7 @@ class AgentsController extends Controller
     {
         $agent=new Agents();
         $agent->NomPrenom=$request->NomPrenom;
-        $agent->Code=$request->Code;
+        $agent->Code=Hash::make($request->Code);
         if($agent->save()){
             return response()->json(array('agent'=> $agent), 200);
 
@@ -95,7 +96,9 @@ class AgentsController extends Controller
     {
         $agent=Agents::findOrFail($id);
         $agent->NomPrenom=$request->NomPrenom;
-        $agent->Code=$request->Code;
+        if($request->Code!=""&&$request->Code!=null){
+        $agent->Code=Hash::make($request->Code);
+        }
         if($agent->save()){
             return response()->json(array('agent'=> $agent), 200);
 

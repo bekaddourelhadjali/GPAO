@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Fabrication;
+namespace App\Http\Controllers\Visuel;
 
-use App\Dashboard\Affectations;
 use App\Dashboard\Agents;
 use App\Dashboard\Locations;
-use App\Dashboard\Machines;
-use App\Fabrication\Bobine;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class RapportsController extends Controller
+class RapportsVFRefusesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,13 +20,15 @@ class RapportsController extends Controller
      */
     public function index()
     {
+
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        return view ('Fabrication.rapports',['details'=>$details
-            ,'agents'=>$agents, ]);
-
+        $rapports=DB::select('select * from rapports where "Zone"=\'DEC\' order by "DateSaisie" desc limit 3');
+        return view ('Visuel.VFRefusesRapports',['details'=>$details
+            ,'agents'=>$agents
+            ,'rapports'=>$rapports ]);
     }
 
     /**
@@ -51,29 +50,35 @@ class RapportsController extends Controller
     public function store(Request $request)
     { if(Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
         $rapport = new Rapport();
-        $rapport->Pid= detailprojet::find($request->detail_project)->Pid;
+        $rapport->Pid= detailprojet::find($request->detail_project)->Project->Pid;
         $rapport->Did= $request->detail_project;
         $rapport->DateRapport= $request->date;
-        $rapport->Zone='Z01';
+        $rapport->Zone='DEC';
         $rapport->Equipe= $request->equipe;
-        $rapport->Machine= $request->machine;
+        $rapport->Machine= '9';
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
         $rapport->Etat='N';
         $rapport->Computer=gethostname();
         $rapport->User=$request->agent;
-        $rapport->DateSaisie=date('Y-m-d H:i:s');
+        $rapport->DateSaisie= date('Y-m-d H:i:s');
         if($rapport->save()) {
-             return redirect(route('rapprod.show',['id'=>$rapport->Numero]));
-            }
+            return redirect(route('VFRefuses.show', ['id' => $rapport->Numero]));
+        }else{
+            return redirect(route('rapports_VFRefuses.index'));
+        }
     }else{
+
         $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $agents = $location->agents;
-        return view ('Fabrication.rapports',['details'=>$details
-            ,'agents'=>$agents,
+        $rapports=DB::select('select * from rapports where "Zone"=\'DEC\' order by "DateSaisie" desc limit 3');
+        return view ('Visuel.VFRefusesRapports',['details'=>$details
+            ,'agents'=>$agents
+            ,'rapports'=>$rapports,
             'Error'=>'Code Incorrect']);
+
     }
     }
 
@@ -85,7 +90,6 @@ class RapportsController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -96,11 +100,11 @@ class RapportsController extends Controller
      */
     public function edit($id)
     {
-        $rapport= Rapport::where('Numero','=',$id)->where('Zone','=','Z01')->first();
-        if (!empty($rapport)){
-            return response()->json(array('rapport'=> $rapport), 200);
-        }else{
-            return response()->json(array('error'=> "Rapport N'existe Pas"), 404);
+        $rapport = Rapport::where('Numero', '=', $id)->where('Zone', '=', 'DEC')->first();
+        if (!empty($rapport)) {
+            return response()->json(array('rapport' => $rapport), 200);
+        } else {
+            return response()->json(array('error' => "Rapport N'existe Pas"), 404);
 
         }
     }
@@ -126,15 +130,11 @@ class RapportsController extends Controller
     public function destroy($id)
     {
         $rapport=\App\Fabrication\Rapport::find($id);
-        if(sizeof($rapport->rapprods) || sizeof($rapport->arrets)){
+        if(sizeof($rapport->VFRefuses) || sizeof($rapport->arrets)){
+
         }else{
-            foreach($rapport->operateurs as $operateur){
-                $operateur->delete();
-            }
             $rapport->delete();
         }
-        return redirect(route('rapports.index'));
-
+        return redirect(route('rapports_VFRefuses.index'));
     }
-
 }

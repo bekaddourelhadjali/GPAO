@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\M3;
 
+use App\Dashboard\Agents;
 use App\Dashboard\Locations;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class M3RapportsController extends Controller
 {
@@ -45,7 +47,7 @@ class M3RapportsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   if(Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
         $rapport = new Rapport();
         $rapport->Pid=detailprojet::find($request->detail_project)->Pid;
         $rapport->Did= $request->detail_project;
@@ -55,7 +57,6 @@ class M3RapportsController extends Controller
         $rapport->Equipe= $request->equipe;
         $rapport->Poste= $request->poste;
         $rapport->NomAgents= $request->agent;
-        $rapport->CodeAgent= $request->codeAgent;
         $rapport->Etat='N';
         $rapport->Computer=gethostname();
         $rapport->User=$request->agent;
@@ -63,6 +64,18 @@ class M3RapportsController extends Controller
         if($rapport->save()) {
             return redirect(route('M3.show',['id'=>$rapport->Numero]));
         }
+    }else{
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+        $agents = $location->agents;
+        $rapports=DB::select('select * from rapports where "Zone"=\'Z00\' order by "DateSaisie" desc limit 3');
+        return view ('M3.M3Rapports',['details'=>$details
+            ,'agents'=>$agents
+            ,'rapports'=>$rapports,
+            'Error'=>'Code Incorrect']);
+
+    }
     }
 
     /**

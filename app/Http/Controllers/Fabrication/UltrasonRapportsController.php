@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Fabrication;
 
 use App\Dashboard\Affectations;
+use App\Dashboard\Agents;
 use App\Dashboard\Locations;
 use App\Dashboard\Machines;
 use App\Fabrication\Bobine;
@@ -11,6 +12,7 @@ use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UltrasonRapportsController extends Controller
 {
@@ -51,23 +53,38 @@ class UltrasonRapportsController extends Controller
      */
     public function store(Request $request)
     {
-        $rapport = new Rapport();
-        $rapport->Pid= detailprojet::find($request->detail_project)->Pid;
-        $rapport->Did= $request->detail_project;
-        $rapport->DateRapport= $request->date;
-        $rapport->Zone='US';
-        $rapport->Equipe= $request->equipe;
-        $rapport->Machine= $request->Machine;
-        $rapport->Poste= $request->poste;
-        $rapport->NomAgents= $request->agent;
-        $rapport->CodeAgent= $request->codeAgent ;
-        $rapport->Etat='N';
-        $rapport->Computer=gethostname();
-        $rapport->User=$request->agent;
-        $rapport->DateSaisie=date('Y-m-d H:i:s');
-        if($rapport->save()) {
-             return redirect(route('Ultrason.show',['id'=>$rapport->Numero]));
+        {
+            if (Hash::check($request->codeAgent, Agents::where('NomPrenom', '=', $request->agent)->first()->Code)) {
+                $rapport = new Rapport();
+                $rapport->Pid = detailprojet::find($request->detail_project)->Pid;
+                $rapport->Did = $request->detail_project;
+                $rapport->DateRapport = $request->date;
+                $rapport->Zone = 'US';
+                $rapport->Equipe = $request->equipe;
+                $rapport->Machine = $request->Machine;
+                $rapport->Poste = $request->poste;
+                $rapport->NomAgents = $request->agent;
+                $rapport->Etat = 'N';
+                $rapport->Computer = gethostname();
+                $rapport->User = $request->agent;
+                $rapport->DateSaisie = date('Y-m-d H:i:s');
+                if ($rapport->save()) {
+                    return redirect(route('Ultrason.show', ['id' => $rapport->Numero]));
+                }
+            } else {
+                $location = Locations::where('AdresseIp', \Illuminate\Support\Facades\Request::ip())->first();
+                $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+                $agents = $location->agents;
+                $rapports = DB::select('select * from rapports where "Zone"=\'US\' order by "DateSaisie" desc limit 3');
+                return view('Fabrication.UltrasonRapports', [
+                    'details' => $details,
+                    'rapports' => $rapports
+                    , 'agents' => $agents,
+                    'Error' => 'Code Incorrect']);
+
             }
+        }
     }
 
     /**
@@ -89,7 +106,13 @@ class UltrasonRapportsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $rapport= Rapport::where('Numero','=',$id)->where('Zone','=','US')->first();
+        if (!empty($rapport)){
+            return response()->json(array('rapport'=> $rapport), 200);
+        }else{
+            return response()->json(array('error'=> "Rapport N'existe Pas"), 404);
+
+        }
     }
 
     /**
