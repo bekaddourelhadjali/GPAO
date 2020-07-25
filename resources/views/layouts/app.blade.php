@@ -23,6 +23,18 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/selectize.css')}}" />
 
     <style>
+        .TCVal{
+            color: orangered;
+        }
+        .CTCollapse{
+            background-color: #043084;
+            color:#fff;
+            margin-top:15px;
+        }
+        .CTButton{
+            background-color: #043084;
+            color:#fff;
+        }
         body {
             color: #000;
             background-color: #f8f9fc;
@@ -84,7 +96,7 @@
         #cardBackdrop table{
             min-width: 0;
         }
-        #CarteTubeTable > tbody > tr > td {
+        #CarteTubeTable > tbody > tr > td ,#CarteTubeTable > tbody > tr > th  {
             border:1px solid blue;
             font-weight: bold;
         }

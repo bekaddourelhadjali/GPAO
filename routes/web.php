@@ -104,7 +104,7 @@ Auth::routes();
 //   return view('Fabrication.rapport_info');});
 
 Route::post('/bobine', function () {
-    $rapport=\App\Fabrication\Rapport::find($_POST['NumRap']);
+    $rapport = \App\Fabrication\Rapport::find($_POST['NumRap']);
     $bobine = new \App\Fabrication\Bobine();
     $bobine->Bobine = $_POST['bobine'];
     $bobine->Coulee = $_POST['coulee'];
@@ -128,14 +128,14 @@ Route::post('/bobine', function () {
     } else if ($_POST['source'] == 'MasE') {
         $bobine->Etat = 'MasE';
         $bobine->ZoneAddSaisie = 'MasE';
-    }else if($_POST['source'] == 'RecBob'){
+    } else if ($_POST['source'] == 'RecBob') {
         $bobine->ZoneAddSaisie = 'RecBob';
     }
     $bobine->Pid = $_POST["Pid"];
     $bobine->Did = $_POST["Did"];
-    $bobine->AgentAddSaisie  =$rapport->NomAgents;
-	$bobine->RapportAddSaisie  =$rapport->Numero;
-	$bobine->DateAddSaisie  =date('Y-m-d H:i:s');
+    $bobine->AgentAddSaisie = $rapport->NomAgents;
+    $bobine->RapportAddSaisie = $rapport->Numero;
+    $bobine->DateAddSaisie = date('Y-m-d H:i:s');
     if ($bobine->save()) {
 
         if (isset($_POST['source'])) {
@@ -215,7 +215,41 @@ Route::resource('RevExt', 'Revetement\RevExtController');
 Route::resource('rapports_Expedition', 'Expedition\ExpeditionRapportsController');
 Route::resource('Expedition', 'Expedition\ExpeditionController');
 
-Route::get('CarteTube/{tube}', function ($tube) {
+Route::get('CarteTube/getTubes/{Did}', function ($Did) {
+    $tubes = $tube = \App\Fabrication\Tube::where('Did', '=', $Did)->select('NumTube', 'Tube', 'Bis')->get();
+    return response()->json(array('tubes' => $tubes), 200);
+
+});
+Route::get('CarteTube/getTubeData/{Tube}', function (\Illuminate\Http\Request $request, $Tube) {
+
+    $Fournisseur = '';
+    $tubeBis = false;
+    $tubeBisStr = substr($Tube, 5, 3);
+    if ($tubeBisStr == 'bis') {
+        $tubeBis = true;
+    }
+    $tube = \App\Fabrication\Tube::where('Tube', '=', substr($Tube, 0, 5))->where('Bis', '=', $tubeBis)->where('Did', '=', $request->Did)->first();
+    if ($tube->Z01) {
+        $Fournisseur = \App\Fabrication\Bobine::where('Bobine', '=', $tube->Bobine)->where('Coulee', '=', $tube->Coulee)->first()->Fournisseur;
+    }
+    return response()->json(array(
+        'tube' => $tube,
+        'visuels' => $tube->visuels,
+        'RX1' => $tube->RX1,
+        'Reparation' => $tube->Reparation,
+        'M17' => $tube->M17,
+        'M24' => $tube->M24,
+        'M25' => $tube->M25,
+        'NDT' => $tube->NDT,
+        'RX2' => $tube->RX2,
+        'VisuelFinal' => $tube->VisuelFinal,
+        'VFRefuses' => $tube->VFRefuses,
+        'Reception' => $tube->Reception,
+        'RevInt' => $tube->RevInt,
+        'RevExt' => $tube->RevExt,
+        'Expedition' => $tube->Expedition,
+        'Fournisseur' => $Fournisseur,
+    ), 200);
 
 });
 Route::get('Rep_M17', function () {
@@ -239,8 +273,8 @@ Route::get('UnAuthorized', function () {
 })->name('UnAuthorized');
 Route::get('dernierTube/{id}', function ($id) {
     $dernierTube = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Machine', '=', $id)->orderBy('DateSaisie', 'desc')->first();
-    if ($dernierTube!= null)
-        if ($dernierTube->Tube != ""&& $dernierTube->Tube != null&& $dernierTube->rapport) {
+    if ($dernierTube != null)
+        if ($dernierTube->Tube != "" && $dernierTube->Tube != null && $dernierTube->rapport) {
             $dernierTubetab = ['Tube' => $dernierTube->Tube
                 , 'Observation' => $dernierTube->Observation
                 , 'Numero' => $dernierTube->rapport->Numero
@@ -404,22 +438,22 @@ Route::get('users', function () {
 
 Route::post('couleeGet', function (\Illuminate\Http\Request $request) {
     if (isset($request->source)) {
-        if ($request->source == "M3" ) {
-            if($request->etat=='REC') {
+        if ($request->source == "M3") {
+            if ($request->etat == 'REC') {
                 $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
-                    return $query->where('Etat', '=','REC' )->orWhere('Etat', '=', 'M3');
+                    return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'M3');
                 })->first();
-            }else {
+            } else {
                 $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
                     return $query->where('Etat', '=', 'NonREC')->orWhere('Etat', '=', 'M3');
                 })->first();
             }
         } else if ($request->source == "MasE") {
-            if($request->etat=='REC') {
+            if ($request->etat == 'REC') {
                 $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
                     return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
                 })->first();
-            }else{
+            } else {
                 $coulee = \App\Fabrication\Bobine::where('Bobine', '=', $request->bobine)->where(function ($query) {
                     return $query->where('Etat', '=', 'NonREC')->orWhere('Etat', '=', 'MasE');
                 })->first();
@@ -447,32 +481,34 @@ Route::post('bobineGet', function (\Illuminate\Http\Request $request) {
         $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Test', '=', $request->test)->get();
     else if (isset($request->source)) {
         if ($request->source == "M3") {
-            if($request->etat=='REC'){
+            if ($request->etat == 'REC') {
                 $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
-                    return $query->where('Etat', '=','REC')->orWhere('Etat', '=', 'M3');
+                    return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'M3');
                 })->get();
-            }else{
+            } else {
                 $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
-                    return $query->where('Etat', '=','NonREC')->orWhere('Etat', '=', 'M3');
+                    return $query->where('Etat', '=', 'NonREC')->orWhere('Etat', '=', 'M3');
                 })->get();
             }
 
         } else if ($request->source == "MasE") {
-            if($request->etat=='REC'){
-            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
-                return $query->where('Etat', '=','REC')->orWhere('Etat', '=', 'MasE');})->get();
-            }else{
+            if ($request->etat == 'REC') {
                 $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
-                    return $query->where('Etat', '=','NonREC')->orWhere('Etat', '=', 'MasE');})->get();
-                }
+                    return $query->where('Etat', '=', 'REC')->orWhere('Etat', '=', 'MasE');
+                })->get();
+            } else {
+                $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where(function ($query) {
+                    return $query->where('Etat', '=', 'NonREC')->orWhere('Etat', '=', 'MasE');
+                })->get();
+            }
 
         }
     } else if (isset($request->machine)) {
         if ($request->machine == "E") {
-            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Did','=',$request->Did)->where('Etat', '=', 'MasEPrep')->get();
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Did', '=', $request->Did)->where('Etat', '=', 'MasEPrep')->get();
 
         } else {
-            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Did','=',$request->Did)->where('Etat', '=', 'Prep')->get();
+            $bobines = \App\Fabrication\Bobine::where('Coulee', '=', $request->coulee)->where('Did', '=', $request->Did)->where('Etat', '=', 'Prep')->get();
         }
 
     } else if ($request->etat == "NonREC") {

@@ -87,15 +87,19 @@ class RecTubeController extends Controller
             if ($rapport->Zone == 'Z11') {
                 if ($rapport->Etat == 'N') {
                     $tubes = DB::select('select t."NumTube" ,t."Tube",t."Bis",t."Coulee" from "tube" t where "NumTube" not in (
-                   select "NumTube" from "reception" r where r."Did"=?) and t."Did"=?',[$rapport->Did,$rapport->Did]);
+                   select "NumTube" from "reception" r where r."Did"=? ) and "NumTube" not in (
+                   select "NumTube" from "vf_refuses" r where r."Did"=? ) and t."Did"=?',[$rapport->Did,$rapport->Did,$rapport->Did]);
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     $maxNumRec=Reception::where('Did','=',$rapport->Did)->max('NumReception');
                     return view('Reception.RecTube',
                         ['rapport' => $rapport,
                             'maxNumRec'=>$maxNumRec+1,
                             'recTubes' => $rapport->recTubes,
                             'detailP' => $detailP,
+                            'details' => $details,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);
                 } elseif ($rapport->Etat == 'C') {

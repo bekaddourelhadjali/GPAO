@@ -357,11 +357,13 @@
                                 addRapprodsListeners();
                             },
                             error: function (result) {
-                                if(result.responseJSON.message.s('bobine_nbreception_pid_unique')){
-                                    alert('Numero De Réception déjà donné a une autre bobine');
-                                }else{
+                                if (typeof result.responseJSON.message != 'undefined') {
+                                    if (result.responseJSON.message.includes('bobine_nbreception_pid_unique')) {
+                                        alert('Numero De Réception déjà donné a une autre bobine');
+                                    } else {
 
-                                    alert(result.responseJSON.message);
+                                        alert(result.responseJSON.message);
+                                    }
                                 }
                                 console.log(result);
                             }
@@ -402,8 +404,8 @@
                                 addRapprodsListeners();
                             },
                             error: function (result) {
-                                alert(result.responseJSON.message);
                                 console.log(result)
+                                alert(result.responseJSON.message);
                             }
                         });
 

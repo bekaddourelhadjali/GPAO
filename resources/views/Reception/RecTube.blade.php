@@ -401,10 +401,11 @@
                                     '                                    <button id="ms' + item.Id + 'Delete" class="msDelete text-danger" ><i class="fa fa-trash"></i></button>\n' +
                                     '                                </td>\n' +
                                     '                            </tr>');
+
+                                $('#tubes option[value=' + $('#ntube').val() + ']').remove();
                                 $('#msForm').trigger("reset");
                                 addRapprodsListeners();
-                                $('#NumReception').val(item.NumReception + 1);
-                                $('#tubes option[value=' + $('#ntube').val() + ']').remove();
+                                $('#NumReception').val(parseInt(item.NumReception) + 1);
                             },
                             error: function (result) {
                                 if(result.responseJSON.message.includes('reception_numreception_did_unique')){

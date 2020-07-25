@@ -96,10 +96,13 @@ class M17Controller extends Controller
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                     $defauts=Defauts::where('Zone',"=",'Z05')->get();
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     return view('RepM17.M17',
                         ['rapport' => $rapport,
                             'm17' => $rapport->m17,
                             'defauts' => $defauts,
+                            'details' => $details,
                             'detailP' => $detailP,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);

@@ -96,11 +96,14 @@ class ExpeditionController extends Controller
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                     $maxNumExp=Expedition::where('Did','=',$rapport->Did)->max('NumExpedition');
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     return view('Expedition.Expedition',
                         ['rapport' => $rapport,
                             'maxNumExp'=>$maxNumExp+1,
                             'Expeditions' => $rapport->Expedition,
                             'detailP' => $detailP,
+                            'details' => $details,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);
                 } elseif ($rapport->Etat == 'C') {

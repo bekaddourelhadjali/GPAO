@@ -89,10 +89,13 @@ class NdtController extends Controller
                     $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     return view('Ndt.Ndt',
                         ['rapport' => $rapport,
                             'ndts' => $rapport->Ndt,
                             'detailP' => $detailP,
+                            'details' => $details,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,]);
                 } elseif ($rapport->Etat == 'C') {

@@ -109,9 +109,12 @@ class RX2Controller extends Controller
                     $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
                     $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z09')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z09')->get();
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     return view('RX2.RX2',
                         ['rapport' => $rapport,
                             'rxs' => $rapport->rx2,
+                            'details' => $details,
                             'detailP' => $detailP,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,

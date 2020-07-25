@@ -23,7 +23,7 @@ class CreateM24Table extends Migration
             $table->string('Tube',5);
             $table->Boolean('Bis');
             $table->double('Pression');
-            $table->string('Observation')->phpnullable();
+            $table->string('Observation')->nullable();
             $table->integer('NumeroRap')->unsigned();
             $table->string('User',50);
             $table->string('Computer',50);

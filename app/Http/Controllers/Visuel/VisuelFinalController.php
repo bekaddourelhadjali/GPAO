@@ -126,10 +126,13 @@ class VisuelFinalController extends Controller
                     $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
                     $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z10')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z10')->get();
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     return view('Visuel.VisuelFinal',
                         ['rapport' => $rapport,
                             'visuelFinals' => $rapport->visuelFinals,
                             'detailP' => $detailP,
+                            'details' => $details,
                             'tubes' => $tubes,
                             'arrets' => $rapport->arrets,
                             'defauts' => $defauts,

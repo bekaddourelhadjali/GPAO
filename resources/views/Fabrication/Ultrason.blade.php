@@ -341,7 +341,6 @@
     <!-- Modal -->
 
     @include('layouts.ArretsLayout')
-    @include('layouts.CarteTubeLayout')
 
 @endsection
 @section('script')
@@ -560,5 +559,4 @@
 
     </script>
     @include('layouts.ArretScript')
-    @include('layouts.CarteTubeScript')
 @endsection

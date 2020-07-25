@@ -51,14 +51,8 @@ class ProjectDetailsController extends Controller
         $detail_project->Epaisseur=$request->Epaisseur;
         $detail_project->Diametre=$request->Diametre;
         $detail_project->Psl=$request->Psl;
-        $detail_project->Qty=$request->Qty;
-        $detail_project->MMtube=$request->MMtube;
-        $detail_project->MMBobine=$request->MMBobine;
-        $detail_project->PoidsM=$request->PoidsM;
-        $detail_project->Largeur=$request->Largeur;
-        $detail_project->RiveD=$request->RiveD;
+        $detail_project->Longueur=$request->Longueur;
         $detail_project->Libelle=$request->Libelle;
-        $detail_project->RiveG=$request->RiveG;
         if($detail_project->save()){
             $detail_project->projectName=$detail_project->project->Nom;
             return response()->json(array('detail_project'=> $detail_project), 200);
@@ -106,14 +100,8 @@ class ProjectDetailsController extends Controller
         $detail_project->Epaisseur=$request->Epaisseur;
         $detail_project->Diametre=$request->Diametre;
         $detail_project->Psl=$request->Psl;
-        $detail_project->Qty=$request->Qty;
-        $detail_project->MMtube=$request->MMtube;
-        $detail_project->MMBobine=$request->MMBobine;
-        $detail_project->PoidsM=$request->PoidsM;
-        $detail_project->Largeur=$request->Largeur;
-        $detail_project->RiveD=$request->RiveD;
+        $detail_project->Longueur=$request->Longueur;
         $detail_project->Libelle=$request->Libelle;
-        $detail_project->RiveG=$request->RiveG;
         if($detail_project->save()){
             $detail_project->projectName=$detail_project->project->Nom;
             return response()->json(array('detail_project'=> $detail_project), 200);

@@ -93,12 +93,14 @@ r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" r
 						  where ri."Did"=? and ri."Accepte"=true ) ',[$rapport->Did,$rapport->Did]);
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
-
+                    $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
                     $defauts=Operations::where('Zone','=','Z11')->select('Operation')->get();
                     return view('Revetement.RevInt',
                         ['rapport' => $rapport,
                             'revInt' => $rapport->revInt,
                             'detailP' => $detailP,
+                            'details' => $details,
                             'tubes' => $tubes,
                             'defauts' => $defauts,
                             'arrets' => $rapport->arrets,]);
