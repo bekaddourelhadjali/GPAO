@@ -767,7 +767,7 @@
                         } else {
                             NextOp = item[0];
                         }
-                        if (NextOp === item[0]) {
+                        if (NextOp == item[0]) {
                             $('#defauts').val($('#defauts').val() + '+' + obs);
                         } else {
                             $('#defauts').val($('#defauts').val() + '+' + obs + '|' + item[0] + '|');

@@ -20,7 +20,10 @@
 
    <style>
        body{
-       color:#000;
+         color: #000;
+         background-color: #f8f9fc;
+         font-family: Arial, Helvetica, sans-serif;
+
        }
        section{
          background-color: #fff;
@@ -29,6 +32,7 @@
          /*box-shadow: #ddd -2px -2px 2px;*/
          margin-top: 20px;
          border: 2px solid #ddd;
+         box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
        }
        td{
          vertical-align: middle !important;
@@ -59,9 +63,7 @@
          border:none;
          background-color: rgba(0,0,0,0);
        }
-       tbody tr td:last-child{
-         padding: 0 !important;
-       }
+
      input[type=text]{
        padding: 0px 0px;
        text-align: center;
@@ -82,6 +84,9 @@
      .form-group label{
        font-weight: bold;
      }
+       .container-fluid{
+           padding-bottom: 50px;
+       }
    </style>
   @yield('style')
 
@@ -336,6 +341,16 @@
   <script src="{{asset('js/SortTable.js')}}"></script>
  @yield('script')
  <script>
+     function calculateColumn(index) {
+         var total = 0;
+         $('table tbody tr[style*="display: table-row;"]').each(function() {
+             var value = parseInt($('td', this).eq(index).text());
+             if (!isNaN(value)) {
+                 total += value;
+             }
+         });
+         $('table tfoot td').eq(index).html('<span class="text-danger"><b>' + total+"</b></span>");
+     }
  </script>
 
 </body>

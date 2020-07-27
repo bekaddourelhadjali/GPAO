@@ -38,6 +38,7 @@
             </div>
             <div class="modal-body " style="background-color: #eee; ">
                 <div class="row">
+                    <div class="table-container">
                     <table class="col-12 table table-borderless bg-white" id="CarteTubeTable"  >
                         <thead></thead>
                         <tbody>
@@ -50,6 +51,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    </div>
                     <div class="col-md-6">
 
                         <div class="col-12">

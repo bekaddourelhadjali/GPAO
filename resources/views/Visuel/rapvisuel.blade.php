@@ -24,12 +24,7 @@
 
         #arretForm button {
             margin-top: 0;
-        }
-
-        #annulerButton {
-            padding: 0;
-        }
-
+        } 
         .visuelEdit, .visuelDelete {
             margin: 0;
         }
@@ -253,13 +248,16 @@
                         <br>
                         <div class="row " >
 
-
-                            <button type="reset" class="col-2  btn btn-secondary" type="button" id="annulerButton">
+                            <div class="col-4 offset-4">
+                            <button type="reset" class="col-12  btn btn-secondary" type="button" id="annulerButton">
                                 Annuler
                             </button>
-                            <button type="submit" class="col-4   offset-1  btn btn-success" type="button" id="Ajouter">
+                            </div>
+                            <div class="col-4  ">
+                            <button type="submit" class=" col-12  btn btn-success" type="button" id="Ajouter">
                                 Ajouter
                             </button>
+                            </div>
                         </div>
                     </form>
                 </section>

@@ -169,6 +169,14 @@ Route::resource('projects', 'Dashboard\ProjectsController');
 Route::resource('Defauts', 'Dashboard\DefautsController');
 Route::resource('Operations', 'Dashboard\OperationsController');
 
+
+//Dashboard Daily Reports
+Route::resource('RecBobReport', 'Reports\RecBobReportController');
+Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController');
+Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController');
+
+
+
 //Rapports
 Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 Route::resource('ContBobine', 'Controle\ContBobineController');
