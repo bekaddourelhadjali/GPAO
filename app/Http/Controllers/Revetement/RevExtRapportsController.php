@@ -20,10 +20,11 @@ class RevExtRapportsController extends Controller
      */
     public function index()
     {
-        $location = Locations::where('AdresseIp', \Illuminate\Support\Facades\Request::ip())->first();
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+            ->where("Zone",'=','Z13')->first();
         $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $agents = $location->agents;
+        $agents = $location->agents();
         $rapports = DB::select('select * from rapports where "Zone"=\'Z13\' order by "DateSaisie" desc limit 3');
         return view('Revetement.RevExtRapports', ['details' => $details, 'agents' => $agents
             , 'rapports' => $rapports]);

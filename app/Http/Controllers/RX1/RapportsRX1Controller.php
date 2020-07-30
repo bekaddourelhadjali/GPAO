@@ -19,8 +19,9 @@ class RapportsRX1Controller extends Controller
      */
     public function index()
     {
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $agents = $location->agents;
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+            ->where("Zone",'=','Z03')->first();
+        $agents = $location->agents();
         $rapports=DB::select('select * from rapports where "Zone"=\'Z03\' order by "DateSaisie" desc limit 3');
         return view ('RX1.rapportsRX1',[
             'agents'=>$agents

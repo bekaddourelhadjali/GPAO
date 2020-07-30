@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Dashboard\Locations;
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class AddressCheck
+class Rapports
 {
     /**
      * Handle an incoming request.
@@ -18,14 +17,9 @@ class AddressCheck
      */
     public function handle($request, Closure $next,$zone)
     {
-        if (Auth::check()) {
-            return $next($request);
-        }
-        else{
-        $location = Locations::where('AdresseIp',Request::ip())->where('Zone',$zone)->get();
-        if(sizeof($location)>0)
-            return $next($request);
-        }
+            $location = Locations::where('AdresseIp',Request::ip())->where('Zone',$zone)->get();
+            if(sizeof($location)>0)
+                return $next($request);
         return redirect('UnAuthorized');
     }
 }

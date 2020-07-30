@@ -59,21 +59,21 @@
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-                        @csrf
+                        {{csrf_field()}}
 
                         <div class="form-group ">
-                        <input type="email" name="email" value="{{ old('email') }}"  class="  form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" aria-describedby="emailHelp" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address..." required autofocus> 
+                        <input type="username" name="username" value="{{ old('username') }}"  class="  form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" aria-describedby="usernameHelp" id="username" aria-describedby="usernameHelp" placeholder="Username" required autofocus>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('username'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             
                         </div>
 
                         <div class="form-group "> 
-                                <input id="password" type="password" class="  form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password">
+                                <input id="password" type="password" class="  form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" minlength="8" required placeholder="password">
 
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
@@ -94,13 +94,10 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
                                 <br><br><br><br><br><br><br><br>
                                 <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; GPAO {{date('Y')}}</span>
           </div>
         </div>
                     </form>
@@ -108,7 +105,9 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
+</div>
+    </div>
 </div><script src="{{asset('js/jquery.min.js')}}"></script>
 
 <script src="{{asset('js/custom.js')}}"></script>

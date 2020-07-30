@@ -49,7 +49,6 @@
        }
        .table-container  {
          overflow-x: auto;
-         max-height: 400px;
        }
 
        .table th{

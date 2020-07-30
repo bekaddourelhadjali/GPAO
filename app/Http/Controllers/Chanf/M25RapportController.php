@@ -20,8 +20,9 @@ class M25RapportController extends Controller
      */
     public function index()
     {
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $agents = $location->agents;
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+            ->where("Zone",'=','Z07')->first();
+        $agents = $location->agents();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $rapports=DB::select('select * from rapports where "Zone"=\'Z07\' order by "DateSaisie" desc limit 3');

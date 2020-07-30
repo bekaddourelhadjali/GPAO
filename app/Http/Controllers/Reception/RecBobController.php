@@ -6,6 +6,7 @@ use App\Fabrication\Bobine;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RecBobController extends Controller
@@ -49,7 +50,12 @@ class RecBobController extends Controller
             $bobine->Source = $request->Source;
             $bobine->NbBon = $request->NbBon;
             $bobine->Etat = 'REC';
-            $bobine->User = Rapport::find($request->NumRap)->NomAgents;
+            if(Auth::check()){
+                $bobine->User=Auth::user()->username;
+            }else{
+                $bobine->User = Rapport::find($request->NumRap)->NomAgents;
+            }
+
             $bobine->Computer = gethostname();
             $bobine->NumeroRap = $request->NumRap;
             if ($bobine->save()) {
@@ -74,7 +80,7 @@ class RecBobController extends Controller
             if ($rapport->Zone == 'RecBob') {
                 $bobines = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->select('Bobine')->get();
                 $coulees = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||Auth::check()) {
                     $maxArr = Bobine::where('Etat', '=', 'NonREC')->max('Arrivage');
                     $maxRec = Bobine::where('Etat', '=', 'REC')->max('NbReception') + 1;
                     return view('Reception.RecBobine',

@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Dashboard\Affectations;
-use App\Dashboard\Agents;
-use App\Dashboard\Locations;
-use App\Dashboard\Machines;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class AffectationsController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,13 +16,8 @@ class AffectationsController extends Controller
      */
     public function index()
     {
-          $locations=Locations::orderBy("Zone")->paginate(5);
-        $agents=Agents::all();
-        return view('Dashboard.affectations',[
-                        "locations"=>$locations,
-                        "agents"=>$agents,
-
-        ]);
+        $users=User::all();
+        return view('Dashboard.users',["users"=>$users]);
     }
 
     /**
@@ -46,18 +38,17 @@ class AffectationsController extends Controller
      */
     public function store(Request $request)
     {
-        $affectation=new Affectations();
-        $affectation->AdresseIp=$request->AdresseIp;
-        $affectation->Zone=$request->Zone;
-        $affectation->idAgent=$request->idAgent;
-        if($affectation->save()){
-                $agent=Agents::find($affectation->idAgent);
-                    return response()->json(array('agent'=> $agent), 200);
+        $user=new User();
+        $user->username=$request->username;
+        $user->password=Hash::make($request->password);
+        $user->role=$request->role;
+        if($user->save()){
+            return response()->json(array('user'=> $user), 200);
+
         }else{
             return response()->json(array('error'=> error), 404);
 
         }
-
     }
 
     /**
@@ -91,7 +82,19 @@ class AffectationsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user=User::findOrFail($id);
+        $user->username=$request->username;
+        if($request->password!=""&&$request->password!=null){
+        $user->password=Hash::make($request->password);
+        }
+        $user->role=$request->role;
+        if($user->save()){
+            return response()->json(array('user'=> $user), 200);
+
+        }else{
+            return response()->json(array('error'=> error), 404);
+
+        }
     }
 
     /**
@@ -100,10 +103,9 @@ class AffectationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,Request $request){
-        $res=Affectations::where("AdresseIp",$request->AdresseIp)->where("idAgent",$request->idAgent)
-            ->where("Zone",$request->Zone)->delete();
-        if($res){
+    public function destroy($id)
+    {
+        if(User::destroy($id)){
             return response()->json(array('success'=> true), 200);
         }else{
 

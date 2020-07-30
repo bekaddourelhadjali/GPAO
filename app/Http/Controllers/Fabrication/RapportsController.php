@@ -23,10 +23,11 @@ class RapportsController extends Controller
      */
     public function index()
     {
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+            ->where("Zone",'=','Z01')->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $agents = $location->agents;
+        $agents = $location->agents();
         return view ('Fabrication.rapports',['details'=>$details
             ,'agents'=>$agents, ]);
 
@@ -49,7 +50,8 @@ class RapportsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { if(Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
+    {
+        if(Hash::check($request->codeAgent,Agents::where('NomPrenom','=',$request->agent)->first()->Code)){
         $rapport = new Rapport();
         $rapport->Pid= detailprojet::find($request->detail_project)->Pid;
         $rapport->Did= $request->detail_project;

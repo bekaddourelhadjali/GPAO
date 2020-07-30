@@ -19,89 +19,16 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
-//Route::get('/',function(){
-//    return redirect('home');
-//}) ;
+Route::get('/',function(){
+    return redirect('home');
+}) ;
 
 
 Auth::routes();
 
-//Route::get('/forum',function(){
-//    $questions=Question::all();
-//    return view('forum',["questions"=>$questions]);
-//})->name('forum');
-//
-//Route::get('/dashboard',function(){
-//    return view('dashboard');
-//})->name('dashboard')->middleware('auth')->middleware('admin');
-//
-//Route::get('/product/{id}',function(){
-//    return view('product');
-//})->name('product');
-//
-//Route::get('/product',function(){
-//    return redirect('home');
-//})->name('product');
-//
-//Route::get('/product/{id}',function($id){
-//    $product=product::findOrFail($id);
-//    $comments=$product->avis;
-//    return view('product',['product'=>$product,'comments'=>$comments]);
-//})->name('product.index');
-//Route::get('/product/{id}/{comment}',function($id,$comment){
-//
-//    $product=product::findOrFail($id);
-//    $comments=$product->avis;
-//    $comment_e=Avis::findOrFail($comment);
-//    return view('product',['product'=>$product,'comments'=>$comments,'comment_e'=>$comment_e]);
-//})->name('product.index.edit');
-//
-//
-//Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-//
-//Route::get('/settings', function(){
-//    return view("settings");
-//})->name('settings')->middleware('auth');
-//
-//Route::post('/settings',function(){
-//    $user=new User;
-//    $user=User::where('id',Auth::user()->id)->update(["name"=>$_POST['name'],"email"=>$_POST['email'],"daten"=>$_POST['daten'],"address"=>$_POST['address'],"phone"=>$_POST['phone']]);
-//    return redirect()->route('home');
-//})->name('settings')->middleware('auth');
-//
-//Route::resource('category','CategoriesController')->middleware( 'auth')->middleware('admin') ;
-//
-//Route::resource('products','ProductsController')->middleware('auth')->middleware('admin');
-//
-//Route::resource('sales','SalesController')->middleware('auth');
-//
-//Route::resource('avis','AvisController')->middleware('auth');
-///* example */
-//Route::get('/store/category/{id}', function(Request $request,$id){
-//    $category=Category::findOrFail($id);
-//     $products = $category->products;
-//     return view('home',["products"=>$products,"category_s"=>$category]);
-//
-//
-//})->name('store.category');
-//
-//Route::get('search', function( ){
-//    $products = Product::where('name','like',"%".$_GET["search"]."%")->orWhere('description','like',"%".$_GET["search"]."%")->get();
-//
-//      return view('home',['products'=>$products]) ;
-//
-//})->name('search');
-//Route::resource('question','QuestionsController')->middleware('auth');
-//Route::resource('response','ResponsesController')->middleware('auth');
+Route::get('/home', 'Reports\RecBobDailyRepController@index'
+)->name('home')->middleware('auth')->middleware('admin');
 
-/*Route::filter('search',function(){
-    if(Auth::guest()){
-        return Redirect::guest('login');
-    }
-    return Redirect::intended();
-});*/
-//Route::get('rapport',function(){
-//   return view('Fabrication.rapport_info');});
 
 Route::post('/bobine', function () {
     $rapport = \App\Fabrication\Rapport::find($_POST['NumRap']);
@@ -160,20 +87,21 @@ Route::post('/bobine', function () {
 
 //Dashboard
 
-Route::resource('affectations', 'Dashboard\AffectationsController');
-Route::resource('agents', 'Dashboard\AgentsController');
-Route::resource('Locations', 'Dashboard\LocationsController');
-Route::resource('machines', 'Dashboard\MachinesController');
-Route::resource('clients', 'Dashboard\ClientsController');
-Route::resource('projects', 'Dashboard\ProjectsController');
-Route::resource('Defauts', 'Dashboard\DefautsController');
-Route::resource('Operations', 'Dashboard\OperationsController');
+Route::resource('affectations', 'Dashboard\AffectationsController')->middleware('auth')->middleware('admin');
+Route::resource('agents', 'Dashboard\AgentsController')->middleware('auth')->middleware('admin');
+Route::resource('Locations', 'Dashboard\LocationsController')->middleware('auth')->middleware('admin');
+Route::resource('machines', 'Dashboard\MachinesController')->middleware('auth')->middleware('admin');
+Route::resource('clients', 'Dashboard\ClientsController')->middleware('auth')->middleware('admin');
+Route::resource('projects', 'Dashboard\ProjectsController')->middleware('auth')->middleware('admin');
+Route::resource('Defauts', 'Dashboard\DefautsController')->middleware('auth')->middleware('admin');
+Route::resource('Operations', 'Dashboard\OperationsController')->middleware('auth')->middleware('admin');
+Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middleware('admin');
 
 
-//Dashboard Daily Reports
-Route::resource('RecBobReport', 'Reports\RecBobReportController');
-Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController');
-Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController');
+//Dashboard RecBob Daily Reports
+Route::resource('RecBobReport', 'Reports\RecBobReportController')->middleware('auth');
+Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController')->middleware('auth');
+Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController')->middleware('auth');
 
 
 
@@ -182,51 +110,48 @@ Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
 Route::resource('ContRecBob', 'Controle\ContRecBobController');
-Route::resource('rapports_M3', 'M3\M3RapportsController');
-Route::resource('M3', 'M3\M3Controller');
-Route::resource('MasEPrep', 'Fabrication\MasEPrepController');
-Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController');
-Route::resource('RecBob', 'Reception\RecBobController');
-Route::resource('rapports', 'Fabrication\RapportsController');
-//->middleware('UnAuthorized:Z01');
-Route::resource('rapprod', 'Fabrication\RapprodController');
-//->middleware('UnAuthorized:Z01');
-Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController');
-Route::resource('Ultrason', 'Fabrication\UltrasonController');
-Route::resource('arret_machine', 'Fabrication\ArretMachineController');
-Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController');
-Route::resource('visuels', 'Visuel\VisuelsController');
-Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller');
-Route::resource('RX1', 'RX1\RX1Controller');
+Route::resource('rapports_M3', 'M3\M3RapportsController')->middleware('Rapports:Z00');
+Route::resource('M3', 'M3\M3Controller')->middleware('UnAuthorized:Z00');
+Route::resource('MasEPrep', 'Fabrication\MasEPrepController')->middleware('UnAuthorized:Z01');
+Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController')->middleware('Rapports:RecBob');
+Route::resource('RecBob', 'Reception\RecBobController')->middleware('UnAuthorized:RecBob');
+Route::resource('rapports', 'Fabrication\RapportsController')->middleware('Rapports:Z01');
+Route::resource('rapprod', 'Fabrication\RapprodController')->middleware('UnAuthorized:Z01');
+Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController')->middleware('Rapports:US');
+Route::resource('Ultrason', 'Fabrication\UltrasonController')->middleware('UnAuthorized:US');
+Route::resource('arret_machine', 'Fabrication\ArretMachineController')->middleware('UnAuthorized:Z01');
+Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController')->middleware('Rapports:Z02');
+Route::resource('visuels', 'Visuel\VisuelsController')->middleware('UnAuthorized:Z02');
+Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller')->middleware('Rapports:Z03');
+Route::resource('RX1', 'RX1\RX1Controller')->middleware('UnAuthorized:Z03');
 Route::resource('Reparation', 'RepM17\ReparationController');
-Route::resource('rapports_Rep', 'RepM17\ReparationRapportController');
-Route::resource('rapports_M17', 'RepM17\M17RapportController');
-Route::resource('M17', 'RepM17\M17Controller');
-Route::resource('rapports_M24', 'Hydro\M24RapportController');
-Route::resource('M24', 'Hydro\M24Controller');
-Route::resource('rapports_M25', 'Chanf\M25RapportController');
-Route::resource('M25', 'Chanf\M25Controller');
-Route::resource('rapports_Ndt', 'Ndt\NdtRapportController');
-Route::resource('Ndt', 'Ndt\NdtController');
-Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller');
-Route::resource('RX2', 'RX2\RX2Controller');
-Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController');
-Route::resource('VisuelFinal', 'Visuel\VisuelFinalController');
-Route::resource('rapports_VFRefuses', 'Visuel\RapportsVFRefusesController');
-Route::resource('VFRefuses', 'Visuel\VFRefusesController');
-Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController');
-Route::resource('Reception', 'Reception\RecTubeController');
-Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController');
-Route::resource('RevInt', 'Revetement\RevIntController');
-Route::resource('rapports_RevExt', 'Revetement\RevExtRapportsController');
-Route::resource('RevExt', 'Revetement\RevExtController');
-Route::resource('rapports_Expedition', 'Expedition\ExpeditionRapportsController');
-Route::resource('Expedition', 'Expedition\ExpeditionController');
+Route::resource('rapports_Rep', 'RepM17\ReparationRapportController')->middleware('Rapports:Z04');
+Route::resource('rapports_M17', 'RepM17\M17RapportController')->middleware('Rapports:Z05');
+Route::resource('M17', 'RepM17\M17Controller')->middleware('UnAuthorized:Z05');
+Route::resource('rapports_M24', 'Hydro\M24RapportController')->middleware('Rapports:Z06');
+Route::resource('M24', 'Hydro\M24Controller')->middleware('UnAuthorized:Z06');
+Route::resource('rapports_M25', 'Chanf\M25RapportController')->middleware('Rapports:Z07');
+Route::resource('M25', 'Chanf\M25Controller')->middleware('UnAuthorized:Z07');
+Route::resource('rapports_Ndt', 'Ndt\NdtRapportController')->middleware('Rapports:Z08');
+Route::resource('Ndt', 'Ndt\NdtController')->middleware('UnAuthorized:Z08');
+Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller')->middleware('Rapports:Z09');
+Route::resource('RX2', 'RX2\RX2Controller')->middleware('UnAuthorized:Z09');
+Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController')->middleware('Rapports:Z10');
+Route::resource('VisuelFinal', 'Visuel\VisuelFinalController')->middleware('UnAuthorized:Z10');
+Route::resource('rapports_VFRefuses', 'Visuel\RapportsVFRefusesController')->middleware('Rapports:DEC');
+Route::resource('VFRefuses', 'Visuel\VFRefusesController')->middleware('UnAuthorized:DEC');
+Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController')->middleware('Rapports:Z11');
+Route::resource('Reception', 'Reception\RecTubeController')->middleware('UnAuthorized:Z11');
+Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController')->middleware('Rapports:Z12');
+Route::resource('RevInt', 'Revetement\RevIntController')->middleware('UnAuthorized:Z12');
+Route::resource('rapports_RevExt', 'Revetement\RevExtRapportsController')->middleware('Rapports:Z13');
+Route::resource('RevExt', 'Revetement\RevExtController')->middleware('UnAuthorized:Z13');
+Route::resource('rapports_Expedition', 'Expedition\ExpeditionRapportsController')->middleware('Rapports:Z14');
+Route::resource('Expedition', 'Expedition\ExpeditionController')->middleware('UnAuthorized:Z14');
 
 Route::get('CarteTube/getTubes/{Did}', function ($Did) {
     $tubes = $tube = \App\Fabrication\Tube::where('Did', '=', $Did)->select('NumTube', 'Tube', 'Bis')->get();
     return response()->json(array('tubes' => $tubes), 200);
-
 });
 Route::get('CarteTube/getTubeData/{Tube}', function (\Illuminate\Http\Request $request, $Tube) {
 
@@ -266,14 +191,14 @@ Route::get('Rep_M17', function () {
     return view('RepM17.index', ['projet' => $projet]);
 })->name('Rep_M17');
 
-
-Route::get('rapprodsRapport/{id}', function ($id) {
-    $m3 = \App\Fabrication\M3::find(1);
-    $bobine = $m3->Bobine;
-    return $m3->Bobine;
-
-})/*->middleware('UnAuthorized:Z01')*/
-;
+//
+//Route::get('rapprodsRapport/{id}', function ($id) {
+//    $m3 = \App\Fabrication\M3::find(1);
+//    $bobine = $m3->Bobine;
+//    return $m3->Bobine;
+//
+//})/*->middleware('UnAuthorized:Z01')*/
+//;
 
 
 Route::get('UnAuthorized', function () {
@@ -315,7 +240,7 @@ Route::post('/operateur', function () {
 
     }
 
-})->name('operateur');
+})->name('operateur')->middleware('UnAuthorized:Z01');
 Route::post('/delete_operateur', function () {
     $operateur = \App\Fabrication\Operateur::find($_POST['id']);
     if ($operateur->delete()) {
@@ -325,32 +250,32 @@ Route::post('/delete_operateur', function () {
         return response()->json(array('error' => true), 404);
     }
 
-})->name('delete_operateur');
+})->name('delete_operateur')->middleware('UnAuthorized:Z01');
 
-Route::get('reprendreTube/{id}', function ($id) {
-    $rapprod = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Tube', '=', $id)->first();
-    if ($rapprod) {
-        if ($rapprod->rapport->Etat == 'C') {
+//Route::get('reprendreTube/{id}', function ($id) {
+    /*  $rapprod = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Tube', '=', $id)->first();
+      if ($rapprod) {
+          if ($rapprod->rapport->Etat == 'C') {
 
-            $rapportState = [
-                'Etat' => 'C',
-                'Numero' => $rapprod->rapport->Numero
-            ];
-            return response()->json(array('rapportState' => $rapportState), 200);
-        } elseif ($rapprod->rapport->Etat == 'N') {
-            $rapportState = [
-                'Etat' => 'N',
-                'Numero' => $rapprod->rapport->Numero
-            ];
-            return response()->json(array('rapportState' => $rapportState), 200);
-        } else {
-            return response()->json(array('error' => error), 404);
-        }
-    } else {
-        return response()->json(array('message' => "Tube N'existe Pas"), 404);
-    }
+              $rapportState = [
+                  'Etat' => 'C',
+                  'Numero' => $rapprod->rapport->Numero
+              ];
+              return response()->json(array('rapportState' => $rapportState), 200);
+          } elseif ($rapprod->rapport->Etat == 'N') {
+              $rapportState = [
+                  'Etat' => 'N',
+                  'Numero' => $rapprod->rapport->Numero
+              ];
+              return response()->json(array('rapportState' => $rapportState), 200);
+          } else {
+              return response()->json(array('error' => error), 404);
+          }
+      } else {
+          return response()->json(array('message' => "Tube N'existe Pas"), 404);
+      }
 
-});
+  });*/
 Route::post('cloturer/{id}', function ($id, \Illuminate\Http\Request $request) {
     $rapport = \App\Fabrication\Rapport::find($id);
     $rapport->Etat = 'C';
@@ -402,47 +327,6 @@ Route::post('Decloturer/{id}', function ($id) {
     }
 });
 
-Route::get('printRap/{id}', function ($id) {
-    $rapport = \App\Fabrication\Rapport::find($id);
-    if ($rapport != null) {
-        if ($rapport->Zone == 'Z02') {
-            $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-
-            return view('visuel.RapVPrint',
-                ['rapport' => $rapport,
-                    'visuels' => $rapport->visuels,
-                    'projet' => $projet,
-                    'arrets' => $rapport->arrets,]);
-        } else {
-            return redirect(route('rapports_visuels.index'));
-        }
-    } else {
-        return redirect(route('rapports_visuels.index'));
-    }
-})->name('printRap');
-Route::get('printRX1Rap/{id}', function ($id) {
-    $rapport = \App\Fabrication\Rapport::find($id);
-    if ($rapport != null) {
-        if ($rapport->Zone == 'Z03') {
-            $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-
-            return view('RX1.RX1Print',
-                ['rapport' => $rapport,
-                    'rxs' => $rapport->rx1,
-                    'projet' => $projet,
-                    'arrets' => $rapport->arrets,]);
-        } else {
-            return redirect(route('rapports_RX1.index'));
-        }
-    } else {
-        return redirect(route('rapports_RX1.index'));
-    }
-})->name('printRX1Rap');
-
-Route::get('users', function () {
-    $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-    return view('Dashboard.users', ["projet" => $projet]);
-});
 
 Route::post('couleeGet', function (\Illuminate\Http\Request $request) {
     if (isset($request->source)) {

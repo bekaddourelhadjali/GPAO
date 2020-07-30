@@ -34,8 +34,10 @@
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('RecBobReport.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('RecBobDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
+                            <a class="nav-item nav-link  "  href="{{route('RecBobReport.index')}}">
+                                <b>Filtrage par détails de projet</b></a>
                             <a class="nav-item nav-link active " id="nav-RecBobRepAdv-tab" data-toggle="tab"
                                href="#nav-RecBobRepAdv" role="tab" aria-controls="nav-RecBobRepAdv" aria-selected="true">
                                 <b>Filtres Avancés</b></a>

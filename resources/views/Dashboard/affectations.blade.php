@@ -66,7 +66,7 @@
                                     <form id="Location{{$location->AdresseIp}}AffForm" class="row form-inline">
                                         <input type="hidden" name="adresseIP" val="{{$location->AdresseIp}}">
                                         <div class="input-group mb-3 col-12">
-                                            <select class="form-control col-12" name="agentSelect" id="agentSelect"  >
+                                            <select class="form-control col-12" name="agentSelect" id="agent{{$location->id}}Select"  >
                                                 @if(isset($agents))
                                                     @foreach($agents as $agent)
                                                         <option value="{{$agent->id}}">{{$agent->NomPrenom}}</option>
@@ -81,8 +81,8 @@
                                     <div class="table-container-small">
                                          <table id="agents{{$location->AdresseIp}}Table" class="table ">
                                              <tbody>
-                                            @foreach($location->agents as $agent)
-                                                        <tr id="agentAff{{$agent->id}}"> <td>{{$agent->NomPrenom}}</td>
+                                            @foreach($location->agents() as $agent)
+                                                        <tr id="agentAff{{$agent->id}}" locationId="{{$location->id}}"> <td>{{$agent->NomPrenom}}</td>
                                                             <td><button id="agentAff{{$agent->id}}Delete" class="agentAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>
                                                         </tr>
                                             @endforeach
@@ -123,8 +123,11 @@
         addAgentAffListeners();
         $('.agentAffAjouter').each(function(){
             $(this).off('click');$(this).click(function(e){
+
                 adresseIp=$(this).attr("id").replace('agentAff','').replace('Ajouter','');
                 form=$(this).parent().parent().parent();
+                card_body=form.parent().parent().parent();
+                const locationId=card_body.attr("id").replace(/[^0-9]/g,'');
                 tbody=form.next().find('tbody');
                 e.preventDefault();
                 $.ajax({
@@ -133,12 +136,12 @@
                     data: {
                         _token: '{{csrf_token()}}',
                         AdresseIp: adresseIp,
-                        idAgent: $('#agentSelect').val(),
-                        idMachine: null,
+                        idAgent: $('#agent'+locationId+'Select').val(),
+                        Zone: $('#location'+locationId+'Zone').html(),
                     },
                     success: function (result) {
 
-                        tbody.append(' <tr id="agentAff'+result.agent.id+'"> <td>'+result.agent.NomPrenom+'</td>\n' +
+                        tbody.append(' <tr id="agentAff'+result.agent.id+'" locationId="'+locationId+'"> <td>'+result.agent.NomPrenom+'</td>\n' +
                             '                                                        <td><button  id="agentAff'+result.agent.id+'Delete" class="agentAffDelete text-danger" ><i class="fa fa-trash"></i></button></td>\n' +
                             '                                                    </tr>');
                         addAgentAffListeners();
@@ -164,6 +167,7 @@
         $(this).off('click');
             $(this).off('click');$(this).click(function(e){
                 tr= $(this).parent().parent();
+                locationId=tr.attr('locationId');
                 const id=$(this).attr("id").replace(/[^0-9]/g,'');
                 adresseIp=tr.parent().parent().attr("id").replace('agents','').replace('Table','');
                 e.preventDefault();
@@ -181,8 +185,7 @@
                         _token :'{{csrf_token()}}',
                         idAgent :id,
                         AdresseIp:adresseIp,
-                        idMachine: null,
-
+                        Zone: $('#location'+locationId+'Zone').html(),
 
                     },
                     success: function(result){

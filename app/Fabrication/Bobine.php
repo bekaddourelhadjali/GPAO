@@ -10,4 +10,7 @@ class Bobine extends Model
     protected $table = "bobine";
     protected $fillable =['Pid','Did','Bobine','Coulee','Poids','CodeFournis'];
     protected $primaryKey="Id";
+    public function rapport(){
+        return $this->belongsTo('App\Fabrication\Rapport','NumeroRap' );
+    }
 }

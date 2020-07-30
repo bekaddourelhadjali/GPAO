@@ -21,8 +21,9 @@ class RecBobRapportsController extends Controller
     public function index()
     {   $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
-        $agents = $location->agents;
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+            ->where("Zone",'=','RecBob')->first();
+        $agents = $location->agents();
         $rapports=DB::select('select * from rapports where "Zone"=\'RecBob\' order by "DateSaisie" desc limit 3');
         return view ('Reception.RecBobRapports',[
             'agents'=>$agents

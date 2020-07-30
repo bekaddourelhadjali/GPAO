@@ -10,7 +10,6 @@
         .table-container {
             width: 100%;
             overflow: auto;
-            max-height: 400px;
         }
 
     </style>
@@ -27,9 +26,10 @@
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-
+                            <a class="nav-item nav-link  "  href="{{route('RecBobDailyRep.index')}}">
+                                <b>Rapport Journalier</b></a>
                             <a class="nav-item nav-link active " id="nav-RecBobReport-tab" data-toggle="tab"
-                               href="#nav-RecBobReport" role="tab" aria-controls="nav-RecBobReport" aria-selected="true"><b>Rapport Journalier</b></a>
+                               href="#nav-RecBobReport" role="tab" aria-controls="nav-RecBobReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
                             <a class="nav-item nav-link  "  href="{{route('RecBobRepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
@@ -73,7 +73,7 @@
                 </section>
                 <br>
                 <div class="row">
-                    <div class="col-xl-3 col-md-6 ">
+                    <div class="col-xl-3 col-md-6 py-1">
                         <div class="card border-left-info shadow h-100">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6 ">
+                    <div class="col-xl-3 col-md-6 py-1">
                         <div class="card border-left-success shadow h-100 ">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
@@ -120,7 +120,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6 ">
+                    <div class="col-xl-3 col-md-6 py-1">
                         <div class="card border-left-primary shadow h-100">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
@@ -141,7 +141,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6 ">
+                    <div class="col-xl-3 col-md-6 py-1">
                         <div class="card border-left-warning shadow h-100 ">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
@@ -172,16 +172,16 @@
                                 {{--<table class="col-12 table table-borderless  table-striped" id="RecBobReportTable">--}}
                                     <thead style="cursor: pointer">
                                     <tr class="text-white">
-                                        <th >PROJET <i class="fa"></i></th>
-                                        <th >DATE_REC <i class="fa"></i></th>
-                                        <th >DIAMETRE <i class="fa"></i></th>
-                                        <th >EPAISSEUR <i class="fa"></i></th>
-                                        <th >ARRIVAGE <i class="fa"></i></th>
-                                        <th >LARG_BANDE <i class="fa"></i></th>
-                                        <th >FOURNISSEUR <i class="fa"></i></th>
-                                        <th >PROVENANCE <i class="fa"></i></th>
-                                        <th >NB <i class="fa"></i></th>
-                                        <th >POIDS <i class="fa"></i></th>
+                                        <th >PROJET </th>
+                                        <th >DATE_REC </th>
+                                        <th >DIAMETRE </th>
+                                        <th >EPAISSEUR </th>
+                                        <th >ARRIVAGE </th>
+                                        <th >LARG_BANDE </th>
+                                        <th >FOURNISSEUR </th>
+                                        <th >PROVENANCE </th>
+                                        <th >NB </th>
+                                        <th >POIDS </th>
                                     </tr>
                                     </thead>
                                     <tbody id="Reports">
