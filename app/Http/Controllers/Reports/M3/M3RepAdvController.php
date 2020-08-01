@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Reports;
+namespace App\Http\Controllers\Reports\M3;
 
-use App\Fabrication\Bobine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class RecBobDailyRepController extends Controller
+class M3RepAdvController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-            $RecBobReport = Bobine::where("DateRec",'=',[ date('Y-m-d')])
-                ->select('Id','Coulee','Bobine','Poids','Arrivage','Epaisseur','LargeurBande','NumeroRap',
-                    'Fournisseur','NbReception','Source','NbBon','User')->get();
-            $nbT=sizeof($RecBobReport->toArray());
-            $pT=array_sum(array_column($RecBobReport->toArray(),"Poids"))/1000;
 
-        return view('Reports.RecBobDailyRep', [
+
+            $RecBobReport = DB::select('Select   "Nom" as "Filter",Sum("NbTotal") "NBT" ,Sum("PoidsTotal")/1000 "PT"  
+                                from "recbobreport" group by "Nom"');
+        return view('Reports.RecBobRepAdv', [
                 'RecBobReport' => $RecBobReport,
-                'nbT' => $nbT,
-                'pT' => $pT,
             ]
         );
     }
@@ -53,19 +53,13 @@ class RecBobDailyRepController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {  $RecBobReport = DB::table('bobine')
-        ->join('rapports', 'bobine.NumeroRap', '=', 'rapports.Numero')
-        ->where("DateRec",'=',$id)
-        ->select('Id','rapports.Etat','Coulee','Bobine','Poids','Arrivage','Epaisseur','LargeurBande','NumeroRap',
-            'Fournisseur','NbReception','Source','NbBon','rapports.User')->get();
-
-        $nbT=sizeof($RecBobReport->toArray());
-        $pT=array_sum(array_column($RecBobReport->toArray(),"Poids"))/1000;
-
+    {   if($id=="Largeur Bande") $id="LargeurBande";
+        if($id=="Provenance") $id="Source";
+        if($id=="Projet") $id="Nom";
+        $Reports=DB::select('Select  "'.$id.'" as "Filter",Sum("NbTotal") "NBT" ,Sum("PoidsTotal")/1000 "PT"  
+                                from "recbobreport" group by "'.$id.'" ' );
         return response()->json(array(
-            'reports' => $RecBobReport,
-            'nbT' => $nbT,
-            'pT' => $pT,), 200);
+            'reports' => $Reports ), 200);
 
     }
 
@@ -89,8 +83,7 @@ class RecBobDailyRepController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
+        //
     }
 
     /**

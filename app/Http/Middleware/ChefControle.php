@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class AddressCheck
+class ChefControle
 {
     /**
      * Handle an incoming request.
@@ -18,10 +18,10 @@ class AddressCheck
      */
     public function handle($request, Closure $next, $zone)
     {
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->role == "Chef Controle") {
             return $next($request);
         } else {
-            $location = Locations::where('AdresseIp', Request::ip())->where('Zone', $zone)->get();
+            $location = Locations::where('AdresseIp',  Request::ip())->where('Zone', $zone)->get();
             if (sizeof($location) > 0)
                 return $next($request);
         }

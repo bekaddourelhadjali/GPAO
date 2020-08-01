@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\M3;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
 use App\Fabrication\M3;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class M3Controller extends Controller
@@ -61,6 +63,18 @@ class M3Controller extends Controller
         if ($m3->save()) {
             $bobine->Etat = 'Prep';
             $bobine->save();
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$bobine->Bobine;
+                $Edit->Zone="Z00";
+                $Edit->NumeroRap=$m3->NumeroRap;
+                $Edit->ItemId=$m3->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $m3->BobineT = $m3->Bobine->Bobine;
             $m3->CouleeT = $m3->Bobine->Coulee;
             $m3->PoidsT = $m3->Bobine->Poids;
@@ -86,6 +100,7 @@ class M3Controller extends Controller
      */
     public function show($id)
     {
+
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z00') {
@@ -93,7 +108,7 @@ class M3Controller extends Controller
                 $coulees = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
                 $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||Auth::check()) {
                     $rapprods = $rapport->rapprods;
                     return view('M3.M3',
                         ['rapport' => $rapport,
@@ -151,6 +166,18 @@ class M3Controller extends Controller
         $m3->ChutesQ = $request->ChutesQ;
         $m3->Observation = $request->observation;
         if ($m3->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item="M3";
+                $Edit->Zone="Z00";
+                $Edit->NumeroRap=$m3->NumeroRap;
+                $Edit->ItemId=$m3->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $m3->BobineT = $m3->Bobine->Bobine;
             $m3->CouleeT = $m3->Bobine->Coulee;
             $m3->PoidsT = $m3->Bobine->Poids;
@@ -174,11 +201,26 @@ class M3Controller extends Controller
     public function destroy($id)
     {
         $m3 = M3::find($id);
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item="M3";
+            $Edit->Zone="Z00";
+            $Edit->NumeroRap=$m3->NumeroRap;
+            $Edit->ItemId=$m3->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+
+        }
         if ($m3->delete()) {
             if ($m3->Bobine->NbReception != null)
                 $m3->Bobine->Etat = 'REC';
             else
                 $m3->Bobine->Etat = 'M3';
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit->save();
+            }
             $m3->Bobine->save();
             $m3->Bobine;
             $bobines = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();

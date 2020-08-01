@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Fabrication;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\ArretMachine;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ArretMachineController extends Controller
@@ -53,6 +55,18 @@ class ArretMachineController extends Controller
         $arret_machine->NDI=$request->ndi;
         $arret_machine->Obs=$request->obs;
         if ($arret_machine->save()){
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$arret_machine->TypeArret;
+                $Edit->Zone="Arret";
+                $Edit->NumeroRap=$arret_machine->NumRap;
+                $Edit->ItemId=$arret_machine->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
         return response()->json(array('arret'=> $arret_machine), 200);
 
     }else{
@@ -117,6 +131,18 @@ class ArretMachineController extends Controller
         $arret_machine->Obs=$request->obs;
 
         if ($arret_machine->save()){
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$arret_machine->TypeArret;
+                $Edit->Zone="Arret";
+                $Edit->NumeroRap=$arret_machine->NumRap;
+                $Edit->ItemId=$arret_machine->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             return response()->json(array('arret'=> $arret_machine), 200);
 
         }else{
@@ -133,9 +159,22 @@ class ArretMachineController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    { if(Auth::check() && Auth::user()->role=="Chef Production"){
+        $Edit=new RapportsEdits();
+        $Edit->Operation="Add";
+        $Edit->Item=$arret->TypeArret;
+        $Edit->Zone="Arret";
+        $Edit->NumeroRap=$arret->NumRap;
+        $Edit->ItemId=$arret->Id;
+        $Edit->User=Auth::user()->username;
+        $Edit->Computer=gethostname();
+        $Edit->DateSaisie=date('Y-m-d H:i:s');
+    }
         $arret=ArretMachine::findOrFail($id);
         if ($arret->delete()){
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit->save();
+            }
             return response()->json(array('success'=> true), 200);
 
         }else{

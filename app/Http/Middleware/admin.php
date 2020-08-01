@@ -16,10 +16,10 @@ class admin
     public function handle($request, Closure $next)
     {
         if (isset(Auth::user()->role) && Auth::user()->role==='Admin')
-            return $next($request);
+            return redirect()->intended('/');
 
-    else {
-        return redirect('login');
+        else {
+            return $next($request);
 
     }
 

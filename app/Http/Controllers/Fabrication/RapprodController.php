@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Fabrication;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
@@ -9,6 +10,7 @@ use App\Fabrication\Rapprod;
 use App\Fabrication\Tube;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RapprodController extends Controller
@@ -119,6 +121,18 @@ class RapprodController extends Controller
                         $bobine->DateCons=date('Y-m-d');
                         $bobine->save();
                     }
+                    if(Auth::check() && Auth::user()->role=="Chef Production"){
+                        $Edit=new RapportsEdits();
+                        $Edit->Operation="Add";
+                        $Edit->Item=$rapprod->Tube;
+                        $Edit->Zone="Z01";
+                        $Edit->NumeroRap=$rapprod->NumeroRap;
+                        $Edit->ItemId=$rapprod->Id;
+                        $Edit->User=Auth::user()->username;
+                        $Edit->Computer=gethostname();
+                        $Edit->DateSaisie=date('Y-m-d H:i:s');
+                        $Edit->save();
+                    }
                     if ($rapprod->RB) $rapprod->RB_t = 'checked'; else $rapprod->RB_t = '';
                     if ($rapprod->Macro) $rapprod->Macro_t = 'checked'; else $rapprod->Macro_t = '';
                     return response()->json(array('rapprod' => $rapprod), 200);
@@ -152,7 +166,7 @@ class RapprodController extends Controller
                     $coulees = Bobine::where('Etat', '=', 'Prep')->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();
                 }
 
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||Auth::check()) {
                     $rapprods = $rapport->rapprods;
                     return view('fabrication.rapprod',
                         ['rapport' => $rapport,
@@ -214,6 +228,18 @@ class RapprodController extends Controller
             $tube->DateFab = date('Y-m-d');
             $tube->DateSaisie = date('Y-m-d H:i:s');
             if ($rapprod->save() && $tube->save()) {
+                if(Auth::check() && Auth::user()->role=="Chef Production"){
+                    $Edit=new RapportsEdits();
+                    $Edit->Operation="update";
+                    $Edit->Item=$rapprod->Tube;
+                    $Edit->Zone="Z01";
+                    $Edit->NumeroRap=$rapprod->NumeroRap;
+                    $Edit->ItemId=$rapprod->Id;
+                    $Edit->User=Auth::user()->username;
+                    $Edit->Computer=gethostname();
+                    $Edit->DateSaisie=date('Y-m-d H:i:s');
+                    $Edit->save();
+                }
                 if ($rapprod->RB) $rapprod->RB_t = 'checked'; else $rapprod->RB_t = '';
                 if ($rapprod->Macro) $rapprod->Macro_t = 'checked'; else $rapprod->Macro_t = '';
                 return response()->json(array('rapprod' => $rapprod), 200);
@@ -236,6 +262,19 @@ class RapprodController extends Controller
     public function destroy($id)
     {
         $rapprod = Rapprod::findOrFail($id);
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+        $Edit=new RapportsEdits();
+        $Edit->Operation="update";
+        $Edit->Item=$rapprod->Tube;
+        $Edit->Zone="Z01";
+        $Edit->NumeroRap=$rapprod->NumeroRap;
+        $Edit->ItemId=$rapprod->Id;
+        $Edit->User=Auth::user()->username;
+        $Edit->Computer=gethostname();
+        $Edit->DateSaisie=date('Y-m-d H:i:s');
+
+    }
+
         if ($rapprod->tube != null && (!$rapprod->tube->Z02)) $rapprod->tube->delete();
         else if ($rapprod->tube != null && $rapprod->tube->Z01) {
             $rapprod->tube->Z01 = false;
@@ -251,7 +290,9 @@ class RapprodController extends Controller
         $bobine=Bobine::where('Bobine','=',$rapprod->Bobine)->where('Coulee','=',$rapprod->Coulee)
             ->where('Did','=',$rapprod->Did)->first();
         if ($rapprod->delete()) {
-
+            if(Auth::check() && Auth::user()->role=="Chef Production") {
+                $Edit->save();
+            }
             $tubesNb = Tube::where('Bobine', '=', $bobine->Bobine)
                 ->where('Coulee', '=',  $bobine->Coulee)
                 ->where('Did', '=',  $bobine->Did)->count();

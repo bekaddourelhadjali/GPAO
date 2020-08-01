@@ -44,10 +44,14 @@
   <div id="container">
 
 <div class="row">
-    <h1 class="text-danger col-12 text-center" style="    top: 50%;
+  <div class=" col-12 text-center"  style="    top: 50%;
     position: absolute;
     left: 50%;
-    transform: translate(-50%,-50%);">Accès Non Autorisé</h1>
+    transform: translate(-50%,-50%);">
+    <h1 class="text-danger ">Accès Non Autorisé</h1>
+
+  <a  href="{{route('home')}}" class=" col-12"><h2>Retour à la page d'accueil</h2></a>
+  </div>
 </div>
 
   </div>

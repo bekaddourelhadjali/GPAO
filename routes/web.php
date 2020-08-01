@@ -102,19 +102,21 @@ Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middl
 Route::resource('RecBobReport', 'Reports\RecBobReportController')->middleware('auth');
 Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController')->middleware('auth');
 Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController')->middleware('auth');
-
-
+Route::resource('ContRecBob', 'Controle\ContRecBobController');
+Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController')->middleware('Rapports:RecBob');
+Route::resource('RecBob', 'Reception\RecBobController')->middleware('ChefProd:RecBob');
+//M3
+Route::resource('M3Report', 'Reports\M3\M3ReportController')->middleware('auth');
+Route::resource('M3RepAdv', 'Reports\M3\M3RepAdvController')->middleware('auth');
+Route::resource('M3DailyRep', 'Reports\M3\M3DailyRepController')->middleware('auth');
+Route::resource('rapports_M3', 'M3\M3RapportsController')->middleware('Rapports:Z00');
+Route::resource('M3', 'M3\M3Controller')->middleware('ChefProd:Z00');
 
 //Rapports
 Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
-Route::resource('ContRecBob', 'Controle\ContRecBobController');
-Route::resource('rapports_M3', 'M3\M3RapportsController')->middleware('Rapports:Z00');
-Route::resource('M3', 'M3\M3Controller')->middleware('UnAuthorized:Z00');
 Route::resource('MasEPrep', 'Fabrication\MasEPrepController')->middleware('UnAuthorized:Z01');
-Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController')->middleware('Rapports:RecBob');
-Route::resource('RecBob', 'Reception\RecBobController')->middleware('UnAuthorized:RecBob');
 Route::resource('rapports', 'Fabrication\RapportsController')->middleware('Rapports:Z01');
 Route::resource('rapprod', 'Fabrication\RapprodController')->middleware('UnAuthorized:Z01');
 Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController')->middleware('Rapports:US');
@@ -326,6 +328,21 @@ Route::post('Decloturer/{id}', function ($id) {
         return response()->json(array('error' => error), 404);
     }
 });
+//Reports Rapports State Management
+Route::post('RapportState/{id}', function (\Illuminate\Http\Request $request,$id) {
+    $rapport = \App\Fabrication\Rapport::find($id);
+    $rapport->Etat = $request->Etat;
+    if ($rapport->save()) {
+        $rapportState = [
+            'Etat' => $rapport->Etat,
+            'Numero' => $id
+        ];
+        return response()->json(array('rapportState' => $rapportState), 200);
+    } else {
+        return response()->json(array('error' => error), 404);
+    }
+});
+
 
 
 Route::post('couleeGet', function (\Illuminate\Http\Request $request) {

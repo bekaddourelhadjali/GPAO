@@ -62,6 +62,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'UnAuthorized' => \App\Http\Middleware\AddressCheck::class,
         'Rapports' => \App\Http\Middleware\Rapports::class,
+        'ChefProd' => \App\Http\Middleware\ChefProduction::class,
+        'ChefCont' => \App\Http\Middleware\ChefControle::class,
 
     ];
 }

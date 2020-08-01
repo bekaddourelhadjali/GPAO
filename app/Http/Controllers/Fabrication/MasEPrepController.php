@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Fabrication;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
 use App\Fabrication\M3;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MasEPrepController extends Controller
 {
@@ -58,6 +60,18 @@ class MasEPrepController extends Controller
         if ($m3->save()) {
             $bobine->Etat='MasEPrep';
             $bobine->save();
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$bobine->Bobine;
+                $Edit->Zone="Z01";
+                $Edit->NumeroRap=$m3->NumeroRap;
+                $Edit->ItemId=$m3->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $m3->BobineT=$m3->Bobine->Bobine;
             $m3->CouleeT=$m3->Bobine->Coulee;
             $m3->PoidsT=$m3->Bobine->Poids;
@@ -87,7 +101,7 @@ class MasEPrepController extends Controller
         if($rapport->Zone=='Z01'&&$rapport->Machine=="E"){
                 $bobines = Bobine::where('Etat','=','MasE')->orWhere('Etat','=','REC')->select('Bobine')->get();
                 $coulees = Bobine::where('Etat','=','MasE')->orWhere('Etat','=','REC')->select('Coulee')->distinct('Coulee')->get();
-                if($rapport->Etat=='N'){
+                if($rapport->Etat=='N'||Auth::check()){
                     $rapprods= $rapport->rapprods;
                      return view('Fabrication.MasEPrep',
                         ['rapport'=>$rapport,
@@ -144,6 +158,18 @@ class MasEPrepController extends Controller
         $m3->ChutesQ= $request->ChutesQ;
         $m3->Observation= $request->observation;
         if ($m3->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item='MasEPrep';
+                $Edit->Zone="Z01";
+                $Edit->NumeroRap=$m3->NumeroRap;
+                $Edit->ItemId=$m3->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $m3->BobineT=$m3->Bobine->Bobine;
             $m3->CouleeT=$m3->Bobine->Coulee;
             $m3->PoidsT=$m3->Bobine->Poids;
@@ -166,11 +192,25 @@ class MasEPrepController extends Controller
      */
     public function destroy($id)
     {    $m3=M3::find($id);
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Update";
+            $Edit->Item='MasEPrep';
+            $Edit->Zone="Z01";
+            $Edit->NumeroRap=$m3->NumeroRap;
+            $Edit->ItemId=$m3->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+
+        }
         if ($m3->delete()) {
             if($m3->Bobine->NbReception!=null)
             $m3->Bobine->Etat='REC';
             else $m3->Bobine->Etat='MasE';
             $m3->Bobine->save();
+            if(Auth::check() && Auth::user()->role=="Chef Production"){ $Edit->save();}
+
             $m3->Bobine;
             $bobines = Bobine::where('Etat','=','MasE')->orWhere('Etat','=','REC')->select('Bobine')->get();
             $coulees = Bobine::where('Etat','=','MasE')->orWhere('Etat','=','REC')->select('Coulee')->distinct('Coulee')->get();

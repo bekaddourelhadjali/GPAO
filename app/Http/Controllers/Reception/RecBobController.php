@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reception;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
@@ -39,6 +40,7 @@ class RecBobController extends Controller
      */
     public function store(Request $request)
     {
+
         $bobine = Bobine::where("Bobine", '=', $request->bobine)->where('Coulee', '=', $request->coulee)
             ->where('Did','=',$request->Did)->whereNull('DateRec')->first();
         if ($bobine) {
@@ -50,7 +52,7 @@ class RecBobController extends Controller
             $bobine->Source = $request->Source;
             $bobine->NbBon = $request->NbBon;
             $bobine->Etat = 'REC';
-            if(Auth::check()){
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
                 $bobine->User=Auth::user()->username;
             }else{
                 $bobine->User = Rapport::find($request->NumRap)->NomAgents;
@@ -59,6 +61,18 @@ class RecBobController extends Controller
             $bobine->Computer = gethostname();
             $bobine->NumeroRap = $request->NumRap;
             if ($bobine->save()) {
+                if(Auth::check() && Auth::user()->role=="Chef Production"){
+                    $Edit=new RapportsEdits();
+                    $Edit->Operation="Add";
+                    $Edit->Item=$bobine->Bobine;
+                    $Edit->Zone="RecBob";
+                    $Edit->NumeroRap=$bobine->NumeroRap;
+                    $Edit->ItemId=$bobine->Id;
+                    $Edit->User=Auth::user()->username;
+                    $Edit->Computer=gethostname();
+                    $Edit->DateSaisie=date('Y-m-d H:i:s');
+                    $Edit->save();
+                }
                 return response()->json(array('RecBob' => $bobine), 200);
             } else {
                 return response()->json(array('error' => error), 404);
@@ -75,6 +89,7 @@ class RecBobController extends Controller
      */
     public function show($id)
     {
+
         $rapport = Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'RecBob') {
@@ -132,6 +147,18 @@ class RecBobController extends Controller
         $bobine->NbBon = $request->NbBon;
         $bobine->NumeroRap = $request->NumRap;
         if ($bobine->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$bobine->Bobine;
+                $Edit->Zone="RecBob";
+                $Edit->NumeroRap=$bobine->NumeroRap;
+                $Edit->ItemId=$bobine->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             return response()->json(array('RecBob' => $bobine), 200);
         } else {
             return response()->json(array('error' => error), 404);
@@ -155,8 +182,21 @@ class RecBobController extends Controller
         $bobine->Etat = 'NonREC';
         $bobine->Computer = null;
         $bobine->User = null;
+        $numRap= $bobine->NumeroRap ;
         $bobine->NumeroRap = null;
         if ($bobine->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Delete";
+                $Edit->Item=$bobine->Bobine;
+                $Edit->Zone="RecBob";
+                $Edit->NumeroRap=$numRap;
+                $Edit->ItemId=$bobine->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             return response()->json(array('RecBob' => $bobine), 200);
         } else {
             return response()->json(array('error' => error), 404);

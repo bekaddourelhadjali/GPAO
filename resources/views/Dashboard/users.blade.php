@@ -58,7 +58,6 @@
                             <label   for="username" > username : </label>
                             <input class="  form-control"  name="username" id="username" type="text"  required >
                         </div>
-                        {{Auth::user()->username}}
                         <div class="form-group col-md-3  col-5">
                             <label  for="password"  > Mot de passe : </label>
                             <input class=" form-control"  name="password" id="password" type="text" minlength="8" maxlength="20" required >
@@ -68,8 +67,8 @@
                             <select class=" form-control" name="role" id="role" required>
                                 <option value="Admin">Admin</option>
                                 <option value="Directeur">Directeur</option>
-                                <option value="ChefControle">Chef Controle</option>
-                                <option value="ChefProduction">Chef Production</option>
+                                <option value="Chef Controle">Chef Controle</option>
+                                <option value="Chef Production">Chef Production</option>
                             </select>
                                   </div>
                         <div class="col-md-2 col-6 form-group  actions ">

@@ -175,7 +175,6 @@
     <script>
 
         $(document).ready(function () {
-            $('#RecBobReportTable').DataTable();
             addActions();
 
             $('.reportEdit').click(function () {
@@ -191,10 +190,15 @@
             });
         });
         function addActions() {
+            $('#RecBobReportTable').DataTable({
+                "bDestroy": true,
+                "bRetrieve": true
+            });
             reportID=0;
             $("#Reports TR").each(function () {
                 $(this).off('mouseenter');
                 $(this).mouseenter(function () {
+                    rapportID=$(this).attr('rapportId');
 
                     $(this).css({
                         'color': '#858796',
@@ -204,10 +208,13 @@
                     var o = $(this);
                     var offset = o.offset();
                     const id = $(this).attr("id").replace(/[^0-9]/g, '');
-                    reportID=id
+                    reportID=id;
                     $('#tr-actions .reportDelete').each(function () {
                         $(this).attr('id', 'report' + id + 'Delete');
+                        $('#tr-actions #report'+id+'Delete').attr('rapportId',rapportID);
                     });
+
+
                     $('#tr-actions .reportEdit').each(function () {
                         $(this).attr('id', 'report' + id + 'Edit');
                     });
@@ -237,6 +244,50 @@
 
         }
 
+        $('.reportDelete').each(function(){
+            $(this).off("click");
+            $(this).click(function (e) {
+                const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
+                const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                Etat='N';
+                if($(this).html()==='Clôturer') Etat='C'
+                $.ajax({
+                    url: "{{url('/RapportState')}}/" + id,
+                    method: 'post',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        Etat:Etat
+                    },
+                    success: function (result) {
+                        if (result.rapportState.Etat === 'C') {
+                            alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
+
+                        }
+                        else{
+                            alert('Rapport n°= ' + result.rapportState.Numero + ' est Décloturé avec succès');
+
+                        }
+
+                        $('#Reports tr[rapportId='+id+'] ').attr("rapportEtat",result.rapportState.Etat);
+
+
+
+                    },
+                    error: function (result) {
+
+                        alert(result.responseJSON.message);
+                        console.log(result)
+
+                    }
+                });
+            });
+        });
         $('#tr-actions').mouseenter(function () {
             $(this).show();
             $('#report' + reportID ).css({
