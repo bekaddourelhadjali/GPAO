@@ -109,7 +109,6 @@
                                     </div>
                                     <div class="col-auto">
                                         <img src="{{asset('img/bob3.png')}}" width="60px" height="40px" alt="">
-                                        {{--<i class="fas fa-calendar fa-2x text-gray-300"></i>--}}
                                     </div>
                                 </div>
                             </div>
@@ -380,9 +379,7 @@
                 },
                 success: function (result) {
 
-                    table
-                        .clear()
-                        .draw();
+                    table.clear().draw();
                     $('#NBT').html('');
                     $('#PT').html('');
                     $('#PCT').html('');

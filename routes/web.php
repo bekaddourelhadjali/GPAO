@@ -27,7 +27,7 @@ Route::get('/',function(){
 Auth::routes();
 
 Route::get('/home', 'Reports\RecBobDailyRepController@index'
-)->name('home')->middleware('auth')->middleware('admin');
+)->name('home')->middleware('auth');
 
 
 Route::post('/bobine', function () {

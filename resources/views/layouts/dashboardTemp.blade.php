@@ -231,7 +231,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <b><span class="mr-2 d-none d-lg-inline text-gray-600 ">{{\Illuminate\Support\Facades\Auth::user()->username}}</span>
+                <b><span class="mr-2 d-none d-lg-inline text-gray-600 ">@if(\Illuminate\Support\Facades\Auth::check()){{\Illuminate\Support\Facades\Auth::user()->username}}@endif</span>
                 <i class="fa fa-user-circle"></i></b>
               </a>
               <!-- Dropdown - User Information -->

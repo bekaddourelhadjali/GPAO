@@ -20,17 +20,17 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-RecBobReport" role="tabpanel"
-                 aria-labelledby="nav-RecBobReport-tab">
+            <div class="tab-pane fade show active" id="nav-M3Report" role="tabpanel"
+                 aria-labelledby="nav-M3Report-tab ">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('RecBobDailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('M3DailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link active " id="nav-RecBobReport-tab" data-toggle="tab"
-                               href="#nav-RecBobReport" role="tab" aria-controls="nav-RecBobReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('RecBobRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link active " id="nav-M3Report-tab" data-toggle="tab"
+                               href="#nav-M3Report" role="tab" aria-controls="nav-M3Report" aria-selected="true"><b>Filtrage par détails de projet</b></a>
+                            <a class="nav-item nav-link  "  href="{{route('M3RepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
                     </nav>
@@ -49,25 +49,27 @@
                                 </select>
                             </div>
                         </div>
-                        <div class=" col-lg-3 col-sm-4 col-6">
+                        <div class=" col-lg-2 col-md-4 col-6">
                             <div class="form-group ">
-                                <label class="col-lg-12" for="date">La Date: </label>
-                                <input class="form-control" type="date" value="" id="date" max="{{date('Y-m-d')}}"
-                                       onchange="filterTab('date','RecBobReportTable')">
+                                <label class="col-lg-12" for="Rive">Rive (mm) : </label>
+                                <input class="form-control" type="number" min="1" max="100" value="50" id="Rive"
+                                       name="Rive"
+                                >
                             </div>
                         </div>
-                        <div class=" col-lg-4 col-sm-4 col-6">
-
-                            <label class="col-lg-12" for="filterTxt">Rechercher: </label>
-                            <div class="input-group-append ">
-                                <input class="form-control" aria-describedby="basic-addon2" onkeyup="filterTab('filterTxt','RecBobReportTable')"
-                                       type="text"
-                                       id="filterTxt">
-                                <div class="input-group-append">
-                                    <button onclick="refreshData()" class="btn btn-danger"><i class="fa fa-times-circle"></i>
-                                    </button>
-                                </div>
+                        <div class=" col-lg-2 col-md-4 col-6">
+                            <div class="form-group ">
+                                <label class="col-lg-12" for="RiveE">Rive E (mm): </label>
+                                <input class="form-control" type="number" min="1" max="100" value="11" id="RiveE"
+                                       name="RiveE"
+                                >
                             </div>
+                        </div>
+                        <div class=" col-2">
+                            <label class="col-12">&nbsp;</label>
+                            <button class=" btn btn-danger" onclick="getData()"><b><i class="fa fa-sync col-12"></i></b>
+                            </button>
+
                         </div>
                     </div>
                 </section>
@@ -80,17 +82,16 @@
                                     <div class="col mr-2">
                                         <div class="text-md font-weight-bold text-info text-uppercase mb-1">
 
-                                            NB t <span class="MonthRep">@if(isset($MonthRep))
-                                                    ({{$MonthRep->Month}})
-                                                     @endif </span>
+                                            NB t <span class="MonthRep">
+                                                    ({{$monthW}})  </span>
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <span id="MonthNBT"> @if(isset($MonthRep)){{$MonthRep->NBT}} @endif</span>
+                                            <span id="MonthNBT">{{$MonthNBT}}</span>
                                         </div>
                                     </div>
                                     <div class="col-auto">
                                         <img src="{{asset('img/bob3.png')}}" width="60px" height="40px" alt="">
-                                        {{--<i class="fas fa-calendar fa-2x text-gray-300"></i>--}}
+
                                     </div>
                                 </div>
                             </div>
@@ -104,11 +105,15 @@
                                     <div class="col mr-2">
                                         <div class="text-md font-weight-bold text-success text-uppercase mb-1">
 
-                                            poids t <span class="MonthRep">@if(isset($MonthRep))
-                                                    ({{$MonthRep->Month}})</span> @endif
+                                            poids t <span class="MonthRep">
+                                                    ({{$monthW}})</span>
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <span id="MonthPT">@if(isset($MonthRep)){{($MonthRep->PT)/1000}} @endif</span>
+                                            <span id="MonthPT">{{$MonthPT}}</span>
+                                            Tonnes
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-danger">
+                                            <span id="MonthCT">{{$MonthCT}}</span>
                                             Tonnes
                                         </div>
                                     </div>
@@ -126,11 +131,10 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-md font-weight-bold text-primary text-uppercase mb-1">
-                                            NB T <span class="YearRep"> @if(isset($YearRep))({{ $YearRep->Year }})
-                                                 @endif</span>
+                                            NB T <span class="YearRep"> ({{date('Y')}}) </span>
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <span id="YearNBT"> @if(isset($YearRep)){{$YearRep->NBT}}  @endif</span>
+                                            <span id="YearNBT"> {{$YearNBT}}  </span>
                                         </div>
                                     </div>
                                     <div class="col-auto">
@@ -147,11 +151,14 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-md font-weight-bold text-warning text-uppercase mb-1">
-                                            poids t <span class="YearRep">@if(isset($YearRep))({{ $YearRep->Year }})
-                                                 @endif</span>
+                                            poids t <span class="YearRep">({{date('Y')}})</span>
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <span id="YearPT">@if(isset($YearRep)){{($YearRep->PT)/1000}} @endif</span>
+                                            <span id="YearPT">{{$YearPT}}</span>
+                                            Tonnes
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-danger">
+                                            <span id="YearCT">{{$YearCT}}</span>
                                             Tonnes
                                         </div>
                                     </div>
@@ -168,39 +175,43 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-container">
-                                <table class="table table-borderless table-striped" id="RecBobReportTable" width="120%" cellspacing="0">
-                                {{--<table class="col-12 table table-borderless  table-striped" id="RecBobReportTable">--}}
-                                    <thead style="cursor: pointer">
+                                <table class="table table-borderless table-striped" id="M3ReportTable" width="120%" cellspacing="0">
+                                     <thead style="cursor: pointer">
                                     <tr class="text-white">
-                                        <th >PROJET </th>
-                                        <th >DATE_REC </th>
-                                        <th >DIAMETRE </th>
-                                        <th >EPAISSEUR </th>
-                                        <th >ARRIVAGE </th>
-                                        <th >LARG_BANDE </th>
-                                        <th >FOURNISSEUR </th>
-                                        <th >PROVENANCE </th>
-                                        <th >NB </th>
-                                        <th >POIDS </th>
+                                        <th>Poste</th>
+                                        <th>DateSaisie</th>
+                                        <th>Projet</th>
+                                        <th>Epaisseur</th>
+                                        <th>Diametre</th>
+                                        <th>Arrivage</th>
+                                        <th>LARG_BANDE</th>
+                                        <th>Coulee</th>
+                                        <th>MasE</th>
+                                        <th>NBT</th>
+                                        <th>PoidsTotal</th>
+                                        <th>ChuteTotal</th>
                                     </tr>
                                     </thead>
                                     <tbody id="Reports">
 
+                                    @if(isset($reports))
 
-                                    @if(isset($RecBobReport))
-                                        @foreach($RecBobReport as $item)
-                                            <tr style="display: table-row;">
+                                        @foreach($reports as $item)
+                                            <tr  style="display: table-row;" >
+                                                <td>Poste {{$item->Poste}}</td>
+                                                <td>{{$item->DateSaisie}}</td>
                                                 <td>{{$item->Nom}}</td>
-                                                <td>{{$item->DateRec}}</td>
-                                                <td>{{$item->Diametre}}</td>
                                                 <td>{{$item->Epaisseur}}</td>
+                                                <td>{{$item->Diametre}}</td>
                                                 <td>{{$item->Arrivage}}</td>
                                                 <td>{{$item->LargeurBande}}</td>
-                                                <td>{{$item->Fournisseur}}</td>
-                                                <td>{{$item->Source}}</td>
-                                                <td>{{$item->NbTotal }}</td>
-                                                <td>{{$item->PoidsTotal }}</td>
+                                                <td>{{$item->Coulee}}</td>
+                                                <td>{{str_replace("Prep",'',$item->Etat)}}</td>
+                                                <td>{{$item->NBT}}</td>
+                                                <td>{{$item->PoidsTotal}}</td>
+                                                <td>{{$item->ChuteTotal}}</td>
                                             </tr>
+
                                         @endforeach
                                     @endif
 
@@ -217,6 +228,8 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td> </td>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -244,36 +257,13 @@
     <script>
 
         $(document).ready(function () {
-            $('#RecBobReportTable').DataTable();
-            $('#RecBobReportTable_filter').remove();
-            calculateColumn(8); calculateColumn(9);
-            // $('th').each(function () {
-            //     var nbclick = 0;
-            //     $(this).click(function () {
-            //         $('th').find('i.fa').removeClass('fa-angle-up').removeClass('fa-angle-down');
-            //         nbclick++;
-            //         if (nbclick % 2 === 0) {
-            //             $(this).find('i.fa').addClass('fa-angle-down');
-            //             $(this).find('i.fa').removeClass('fa-angle-up');
-            //         } else {
-            //
-            //             $(this).find('i.fa').addClass('fa-angle-up');
-            //             $(this).find('i.fa').removeClass('fa-angle-down');
-            //         }
-            //
-            //     });
-            // });
 
-
+            $('#M3ReportTable').DataTable();
+            calculateColumn(9); calculateColumn(10); calculateColumn(11);
+        $('#M3ReportTable_filter input[type=search]').keyup(function () {
+            calculateColumn(9); calculateColumn(10); calculateColumn(11);
         });
-
-        function filterTab(input, tab) {
-            var value = $("#" + input).val().toLowerCase();
-            $("#" + tab + " tbody tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-            calculateColumn(8); calculateColumn(9);
-        }
+        });
 
         function getData() {
 
@@ -284,48 +274,41 @@
             });
 
             $.ajax({
-                url: "{{url('/RecBobReport')}}/" + $('#Did').val(),
+                url: "{{url('/M3Report')}}/" + $('#Did').val(),
                 method: 'get',
-                data: {},
+                data: {
+                    Rive: $('#Rive').val(),
+                    RiveE: $('#RiveE').val(),
+                },
                 success: function (result) {
-                    $('#Reports').html('');
-                    $('#date').val('');
-                    $('#filterTxt').val('');
+                    $('#M3ReportTable').DataTable().clear().draw();
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#Reports').append(' <tr style="display: table-row;">\n' +
-                                '                                                <td>' + item.Nom + '</td>\n' +
-                                '                                                <td>' + item.DateRec + '</td>\n' +
-                                '                                                <td>' + item.Diametre + '</td>\n' +
-                                '                                                <td>' + item.Epaisseur + '</td>\n' +
-                                '                                                <td>' + item.Arrivage + '</td>\n' +
-                                '                                                <td>' + item.LargeurBande + '</td>\n' +
-                                '                                                <td>' + item.Fournisseur + '</td>\n' +
-                                '                                                <td>' + item.Source + '</td>\n' +
-                                '                                                <td>' + item.NbTotal + '</td>\n' +
-                                '                                                <td>' + item.PoidsTotal + '</td>\n' +
-                                '                                                </tr>');
+                            $('#M3ReportTable').DataTable().row.add([
+                                'Poste '+item.Poste,
+                                item.DateSaisie,
+                                item.Nom,
+                                item.Epaisseur,
+                                item.Diametre,
+                                item.Arrivage,
+                                item.LargeurBande,
+                                item.Coulee,
+                                item.Etat.replace('Prep', ''),
+                                item.NBT,
+                                item.PoidsTotal,
+                                item.ChuteTotal,]
+                            ).draw(false);
+                            $('#RecBobReportTable tbody tr:last-child').css('display','table-row');
+
                         });
                     }
-                    if (result.MonthRep != null) {
-                        $('.MonthRep').html('(' + result.MonthRep.Month + ')');
-                        $('#MonthNBT').html(result.MonthRep.NBT);
-                        $('#MonthPT').html(result.MonthRep.PT / 1000);
-                    } else {
-                        $('.MonthRep').html('');
-                        $('#MonthNBT').html('0');
-                        $('#MonthPT').html('0');
-                    }
-                    if (result.YearRep != null) {
-                        $('.YearRep').html('(' + result.YearRep.Year + ')');
-                        $('#YearNBT').html(result.YearRep.NBT);
-                        $('#YearPT').html(result.YearRep.PT / 1000);
-                    } else {
-                        $('.YearRep').html('');
-                        $('#YearNBT').html('0');
-                        $('#YearPT').html('0');
-                    }
-                    calculateColumn(8); calculateColumn(9);
+                    $('#MonthNBT').html(result.MonthNBT);
+                    $('#MonthCT').html(Number(Math.round(result.MonthCT+'e3')+'e-3'));
+                    $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
+                    $('#YearNBT').html(result.YearNBT);
+                    $('#YearCT').html(Number(Math.round(result.YearCT+'e3')+'e-3'));
+                    $('#YearPT').html(Number(Math.round(result.YearPT+'e3')+'e-3'));
+                    calculateColumn(9); calculateColumn(10); calculateColumn(11);
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);
@@ -333,23 +316,16 @@
             });
         }
 
-        function refreshData() {
-
-            $('#date').val('');
-            $('#filterTxt').val('');
-            filterTab('date', 'RecBobReportTable');
-            calculateColumn(8); calculateColumn(9);
-        }
-
         function calculateColumn(index) {
-            var total = 0;
+            var total = 0.000;
             $('table tbody tr[style*="display: table-row;"]').each(function() {
-                var value = parseInt($('td', this).eq(index).text());
+                var value = parseFloat($('td', this).eq(index).text());
                 if (!isNaN(value)) {
                     total += value;
                 }
             });
-            $('table tfoot td').eq(index).html('<span class="text-danger"><b>' + total+"</b></span>");
+                $('table tfoot td').eq(index).html('<span class="text-danger"><b>' + total+"</b></span>");
+
         }
     </script>
 @endsection

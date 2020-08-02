@@ -16,42 +16,57 @@ class M3ReportController extends Controller
      */
     public function index()
     {
-         $month = array(
-        1 => 'Janvier',2 => 'Février',3 => 'Mars',4 => 'Avril',
-        5 => 'Mai',6 => 'Juin',7 => 'Juillet',
-        8 => 'Août',9=> 'Septembre',10=> 'Octobre',
-        11 => 'Novembre',12 => 'Décembre'   );
+        $months = array(
+            1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+            5 => 'Mai', 6 => 'Juin', 7 => 'Juillet',
+            8 => 'Août', 9 => 'Septembre', 10 => 'Octobre',
+            11 => 'Novembre', 12 => 'Décembre');
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
 
         if (sizeof($details) > 0)
-            $RecBobReport = DB::select('Select * from "recbobreport" where "Did"=?', [$details[0]->Did]);
+            $M3Report = DB::select('select "Poste","DateSaisie"::date,"Nom","Epaisseur","Diametre","Arrivage","LargeurBande","Coulee","Etat",Count(*) "NBT", SUM("Poids")/1000 "PoidsTotal",SUM("ChuteTotal") "ChuteTotal" from (select m.*,p."Nom",
+ CASE WHEN m."Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-50)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)
+ Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-11)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
+  "ChuteTotal"  from  "m3report" m join "projet" p  on m."Pid"=p."Pid" where m."Did"=?) q1 
+  group by "Poste","DateSaisie"::date,"Nom","Epaisseur","Diametre","Arrivage","LargeurBande","Coulee","Etat" order by "DateSaisie" desc', [$details[0]->Did]);
 
+        else
+            $M3Report = [];
 
-    else
-        $RecBobReport = [];
-        $MonthRep = DB::select('SELECT    EXTRACT(month FROM "DateRec")  as "Month" ,Sum("NbTotal") as "NBT",Sum("PoidsTotal") as "PT" FROM "recbobreport"
-                                  WHERE EXTRACT(month FROM "DateRec") =?
-                                  AND EXTRACT(year FROM "DateRec") = ? and "Did"=? group by  EXTRACT(month FROM "DateRec") ', [date("m"),date("Y"),$details[0]->Did]);
-        if(sizeof($MonthRep)>0){
-            $MonthRep=$MonthRep[0];
-            $MonthRep->Month=$month[$MonthRep->Month];
-        }else{
-            $MonthRep=null;
-        }
-        $YearRep = DB::select('SELECT    EXTRACT(year FROM "DateRec")  as "Year" ,Sum("NbTotal") as "NBT",Sum("PoidsTotal") as "PT" FROM "recbobreport" where
-                                    EXTRACT(year FROM "DateRec") = ? and "Did"=? group by  EXTRACT(year FROM "DateRec") ' ,[date("Y"),$details[0]->Did]) ;
+        $MonthCT = 0;
+        $MonthNBT = 0;
+        $MonthPT = 0;
+        $YearCT = 0;
+        $YearNBT = 0;
+        $YearPT = 0;
 
-        if(sizeof($YearRep)>0){
-            $YearRep=$YearRep[0];
-        }else{
-            $YearRep=null;
+        foreach($M3Report as $item){
+
+        $time=strtotime($item->DateSaisie);
+        $month = date("m",$time);
+        $year=date("Y",$time);
+            if($month==date('m')&&$year==date('Y')){
+                $MonthPT+=$item->PoidsTotal;
+                $MonthNBT+=$item->NBT;
+                $MonthCT+=$item->ChuteTotal;
+            }
+            if($year==date('Y')){
+                $YearPT+=$item->PoidsTotal;
+                $YearNBT+=$item->NBT;
+                $YearCT+=$item->ChuteTotal;
+            }
         }
         return view('Reports.M3.M3Report', [
-                'RecBobReport' => $RecBobReport,
-                'MonthRep' => $MonthRep,
-                'YearRep' => $YearRep,
+                'reports' => $M3Report,
+                'MonthCT' => $MonthCT,
+                'MonthNBT' => $MonthNBT,
+                'MonthPT' => $MonthPT,
+                'YearCT' => $YearCT,
+                'YearNBT' => $YearNBT,
+                'YearPT' => $YearPT,
                 'details' => $details,
+                'monthW'=>$months[intval(date('m'))]
             ]
         );
     }
@@ -83,33 +98,51 @@ class M3ReportController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {   $month = array(
-        1 => 'Janvier',2 => 'Février',3 => 'Mars',4 => 'Avril',
-        5 => 'Mai',6 => 'Juin',7 => 'Juillet',
-        8 => 'Août',9=> 'Septembre',10=> 'Octobre',
-        11 => 'Novembre',12 => 'Décembre'   );
-        $Reports = DB::select('Select * from "recbobreport" where "Did"=?', [$id]);
-        $MonthRep = DB::select('SELECT    EXTRACT(month FROM "DateRec")  as "Month" ,Sum("NbTotal") as "NBT",Sum("PoidsTotal") as "PT" FROM "recbobreport"
-                                  WHERE EXTRACT(month FROM "DateRec") =?
-                                  AND EXTRACT(year FROM "DateRec") = ? and "Did"=? group by  EXTRACT(month FROM "DateRec") ', [date("m"),date("Y"),$id]) ;
-        if(sizeof($MonthRep)>0){
-            $MonthRep=$MonthRep[0];
-            $MonthRep->Month=$month[$MonthRep->Month];
-        }else{
-            $MonthRep=null;
-        }
-        $YearRep = DB::select('SELECT    EXTRACT(year FROM "DateRec")  as "Year" ,Sum("NbTotal") as "NBT",Sum("PoidsTotal") as "PT" FROM "recbobreport" where
-                                    EXTRACT(year FROM "DateRec") = ? and "Did"=? group by  EXTRACT(year FROM "DateRec") ' ,[date("Y"),$id]) ;
-        if(sizeof($YearRep)>0){
-            $YearRep=$YearRep[0];
-        }else{
-            $YearRep=null;
+    public function show(Request $request,$id)
+    {
+        $months = array(
+            1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+            5 => 'Mai', 6 => 'Juin', 7 => 'Juillet',
+            8 => 'Août', 9 => 'Septembre', 10 => 'Octobre',
+            11 => 'Novembre', 12 => 'Décembre');
+
+            $M3Report = DB::select('select "Poste","DateSaisie"::date,"Nom","Epaisseur","Diametre","Arrivage","LargeurBande","Coulee","Etat",Count(*) "NBT", SUM("Poids")/1000 "PoidsTotal",SUM("ChuteTotal") "ChuteTotal" from (select m.*,p."Nom",
+ CASE WHEN m."Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)
+ Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
+  "ChuteTotal"  from  "m3report" m join "projet" p  on m."Pid"=p."Pid" where m."Did"=?) q1 
+  group by "Poste","DateSaisie"::date,"Nom","Epaisseur","Diametre","Arrivage","LargeurBande","Coulee","Etat" order by "DateSaisie" desc', [$request->Rive,$request->RiveE,$id]);
+
+        $MonthCT = 0;
+        $MonthNBT = 0;
+        $MonthPT = 0;
+        $YearCT = 0;
+        $YearNBT = 0;
+        $YearPT = 0;
+        foreach($M3Report as $item){
+
+            $time=strtotime($item->DateSaisie);
+            $month = date("m",$time);
+            $year=date("Y",$time);
+            if($month==date('m')&&$year==date('Y')){
+                $MonthPT+=$item->PoidsTotal;
+                $MonthNBT+=$item->NBT;
+                $MonthCT+=$item->ChuteTotal;
+            }
+            if($year==date('Y')){
+                $YearPT+=$item->PoidsTotal;
+                $YearNBT+=$item->NBT;
+                $YearCT+=$item->ChuteTotal;
+            }
         }
         return response()->json(array(
-            'reports' => $Reports,
-            'MonthRep' => $MonthRep,
-            'YearRep' => $YearRep,), 200);
+            'reports' => $M3Report,
+            'MonthCT' =>  $MonthCT,
+            'MonthNBT' => $MonthNBT,
+            'MonthPT' =>  $MonthPT,
+            'YearCT' =>   $YearCT,
+            'YearNBT' =>  $YearNBT,
+            'YearPT' =>   $YearPT,
+            'monthW'=>$months[intval(date('m'))]), 200);
 
     }
 
