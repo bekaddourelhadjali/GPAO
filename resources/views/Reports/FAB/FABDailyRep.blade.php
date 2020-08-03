@@ -218,48 +218,35 @@
                 </section>
                 <section>
                     <div class="row">
-                        <h3 class="col-12">Fonctionnement</h3>
+                        <div class="col-12 col-md-6" style="padding: 20px 0" >
+                        <h2 class=" text-center text-danger " ><i class="fa fa-cog"></i>&nbsp; Rapport de Fonctionnement</h2>
+                        </div>
+                        <div class=" col-12 col-md-6 text-left">
+                            <canvas width="100px" height="100px" id="myPieChart"></canvas>
+                        </div>
+                    </div>
+                    <hr>
+                        <div class="row">
                         <div class="col-12">
                             <div class="table-container" id="FABReportTableContainer">
-                                <table class="table table-borderless table-striped" id="FoncTable" width="120%"
+                                <table class="table table-borderless table-striped" id="FoncTable"
                                        cellspacing="0">
 
                                     <thead style="cursor: pointer" id="TheadID"  >
                                     <tr class="text-white">
                                         <th>Poste</th>
                                         <th>Machine</th>
-                                        <th>Coulee</th>
-                                        <th>Bobine</th>
-                                        <th>Tube</th>
-                                        <th>Longueur</th>
-                                        <th>Poids</th>
-                                        <th>RB</th>
-                                        <th>Macro</th>
-                                        <th>Observation</th>
+                                        <th>TypeArret</th>
+                                        <th>Cause</th>
+                                        <th>Du</th>
+                                        <th>Au</th>
+                                        <th>Duree</th>
+                                        <th>Obs</th>
+                                        <th>NDI</th>
                                         <th>Agent</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="Reports">
-
-                                    @if(isset($reports))
-
-                                        @foreach($reports as $item)
-                                            <tr id="report{{$item->Numero}}"  rapportEtat="{{$item->Etat}}"
-                                                rapportId="{{$item->NumeroRap}}">
-                                                <td>Poste {{$item->Poste}}</td>
-                                                <td>{{$item->Machine}}</td>
-                                                <td>{{$item->Coulee}}</td>
-                                                <td>{{$item->Bobine}}</td>
-                                                <td>{{$item->Ntube}}</td>
-                                                <td>{{$item->Longueur}}</td>
-                                                <td>{{$item->Poids}}</td>
-                                                <td>{{$item->RB}}</td>
-                                                <td>{{$item->Macro}}</td>
-                                                <td>{{$item->Observation}}</td>
-                                                <td>{{$item->User}}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
+                                    <tbody id="ArretReports">
                                     </tbody>
                                 </table>
                                 <div id="tr-actions">
@@ -287,15 +274,16 @@
 
     <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
-
+    <script src="{{asset('js/chart.min.js')}}"></script>
+    <script src="{{asset('js/chart-pie-demo.js')}}"></script>
     <script>
         var table = $('#FABReportTable').DataTable({
             "bDestroy": true,
             "bRetrieve": true
         });
+
+        $('#FoncTable').DataTable();
         $(document).ready(function () {
-
-
             addActions();
 
             $('.reportEdit').click(function () {
@@ -315,7 +303,7 @@
         function addActions() {
 
             reportID = 0;
-            $("#Reports TR").each(function () {
+            $("#Reports TR, #ArretReports TR").each(function () {
                 $(this).off('mouseenter');
                 $(this).mouseenter(function () {
                     rapportID = $(this).attr('rapportId');
@@ -388,8 +376,9 @@
                         }
 
                         $('#Reports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
+                        $('#ArretReports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
 
-
+                    addActions();
                     },
                     error: function (result) {
 
@@ -410,6 +399,11 @@
         });
 
         function getData() {
+            parent=$('#myPieChart').parent();
+            parent.html('');
+            parent.append('<canvas id="myPieChart"></canvas>');
+            labels=[];
+            data=[];
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -449,13 +443,41 @@
                             $('#FABReportTable tbody tr:last-child')
                                 .attr('id','report'+item.Numero).attr('rapportEtat',item.Etat).attr('rapportId',item.NumeroRap);
                         });
+
+
+
                         $('#NBT').html(result.nbT);
                         $('#PT').html(result.PT);
                         $('#LT').html(result.LT);
 
                         addActions();
                     }
-
+                    $('#FoncTable').DataTable().clear().draw();
+                    if (result.ArretsReport.length > 0){
+                        result.ArretsReport.forEach(function (item) {
+                            $('#FoncTable').DataTable().row.add([
+                                'Poste '+item.Poste,
+                                item.Machine,
+                                item.TypeArret,
+                                item.Cause,
+                                item.Du,
+                                item.Au,
+                                item.Durée,
+                                item.Obs,
+                                item.NDI,
+                                item.User]
+                            ).draw(false);
+                            $('#FoncTable tbody tr:last-child')
+                                .attr('id','report'+item.id).attr('rapportEtat',item.Etat).attr('rapportId',item.NumRap);
+                        });
+                        if($('#machine').val()!=='Tous'){
+                            chartId='myPieChart';
+                            labels=result.ChartLabels;
+                            data=result.ChartData;
+                            drawPieChart(chartId,data,labels );
+                        }
+                    }
+                    addActions();
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);

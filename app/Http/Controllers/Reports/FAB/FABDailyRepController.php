@@ -13,17 +13,17 @@ class FABDailyRepController extends Controller
     {
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $FABReport=[];
-        if(sizeof($details)>0){
+        $FABReport = [];
+        if (sizeof($details) > 0) {
 
-            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
         }
-        $nbT=sizeof($FABReport);
-        $LT=array_sum(array_column($FABReport,"Longueur"));
-        $PT=round(array_sum(array_column($FABReport,"Poids")),3);
+        $nbT = sizeof($FABReport);
+        $LT = array_sum(array_column($FABReport, "Longueur"));
+        $PT = round(array_sum(array_column($FABReport, "Poids")), 3);
 
         return view('Reports.FAB.FABDailyRep', [
-                'reports' => (object) $FABReport,
+                'reports' => (object)$FABReport,
                 'nbT' => $nbT,
                 'LT' => $LT,
                 'PT' => $PT,
@@ -59,30 +59,46 @@ class FABDailyRepController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
-    {   $FABReport=[];
-        if($request->poste=='Tous'&& $request->Machine=='Tous'){
-            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  ',[$request->Did , $id, $id]);
-        }else if($request->poste!='Tous' && $request->Machine=='Tous') {
-            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Poste"=?',[$request->Did , $id, $id,$request->poste]);
-        }else if($request->Machine!='Tous' && $request->poste=='Tous'){
-            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Machine"=?',[$request->Did , $id, $id,$request->Machine]);
-        }else{
+    public function show(Request $request, $id)
+    {
+        $FABReport = [];
+        $ArretsReport = [];
+        if ($request->poste == 'Tous' && $request->Machine == 'Tous') {
+            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  ', [$request->Did, $id, $id]);
+        } else if ($request->poste != 'Tous' && $request->Machine == 'Tous') {
+            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Poste"=?', [$request->Did, $id, $id, $request->poste]);
+        } else if ($request->Machine != 'Tous' && $request->poste == 'Tous') {
+            $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Machine"=?', [$request->Did, $id, $id, $request->Machine]);
+            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )  and "Machine"=? ', [$request->Did, $id, $id, $request->Machine]);
+        } else {
             $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Machine"=? and "Poste"=?'
-                ,[$request->Did , $id,$id,$request->Machine,$request->poste]);
+                , [$request->Did, $id, $id, $request->Machine, $request->poste]);
+            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) and "Machine"=? and "Poste"=?'
+                , [$request->Did, $id, $id, $request->Machine, $request->poste]);
         }
-        $nbT=sizeof($FABReport);
-        $LT=array_sum(array_column($FABReport,"Longueur"));
-        $PT=round(array_sum(array_column($FABReport,"Poids")),3);
-
+        $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        $nbT = sizeof($FABReport);
+        $LT = array_sum(array_column($FABReport, "Longueur"));
+        $PT = round(array_sum(array_column($FABReport, "Poids")), 3);
+        $dureeFonc = 0;
+        if ($request->Machine != 'Tous') {
+            if ($request->poste != 'Tous') {
+                $dureeFonc = 8 * 60;
+            } else {
+                $dureeFonc = 24 * 60;
+            }
+        }
         return response()->json(array(
-            'reports' =>  $FABReport,
+            'reports' => $FABReport,
             'nbT' => $nbT,
             'LT' => $LT,
             'PT' => $PT,
-            'poste'=>$request->poste=='Tous',
-            'Machine'=>$request->Machine=='Tous',
-            ), 200);
+            'poste' => $request->poste == 'Tous',
+            'Machine' => $request->Machine == 'Tous',
+            'ArretsReport' => $ArretsReport,
+            "ChartData" => [$dureeTotal, $dureeFonc - $dureeTotal],
+            "ChartLabels" => ["Durée des arrets", "Durée de fonctionnement"]
+        ), 200);
 
     }
 

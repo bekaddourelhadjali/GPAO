@@ -997,11 +997,6 @@
                 $('#removeObsSoudure').prop('disabled', false);
             }
         });
-        $('#imprimer').click(function (e) {
-            e.preventDefault();
-
-            window.open('{{route("printRap",["id"=>$rapport->Numero])}}', '_blank');
-        });
 
     </script>
 
