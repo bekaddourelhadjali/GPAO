@@ -22,6 +22,7 @@ class CreateDetailProjetTable extends Migration
             $table->integer('Psl')->nullable();
             $table->integer('Longueur');
             $table->string('Libelle')->nullable();
+            $table->double('PoidsMetrique');
             $table->unique(['Did','Pid']);
         });
     }

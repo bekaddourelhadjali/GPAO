@@ -53,6 +53,7 @@ class ProjectDetailsController extends Controller
         $detail_project->Psl=$request->Psl;
         $detail_project->Longueur=$request->Longueur;
         $detail_project->Libelle=$request->Libelle;
+        $detail_project->PoidsMetrique=(($request->Epaisseur*pi()*7.85*($request->Diametre-$request->Epaisseur))/1000);
         if($detail_project->save()){
             $detail_project->projectName=$detail_project->project->Nom;
             return response()->json(array('detail_project'=> $detail_project), 200);
@@ -102,6 +103,7 @@ class ProjectDetailsController extends Controller
         $detail_project->Psl=$request->Psl;
         $detail_project->Longueur=$request->Longueur;
         $detail_project->Libelle=$request->Libelle;
+        $detail_project->PoidsMetrique=(($request->Epaisseur*pi()*7.85*($request->Diametre-$request->Epaisseur))/1000);
         if($detail_project->save()){
             $detail_project->projectName=$detail_project->project->Nom;
             return response()->json(array('detail_project'=> $detail_project), 200);

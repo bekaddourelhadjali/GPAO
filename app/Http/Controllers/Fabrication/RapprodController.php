@@ -99,7 +99,7 @@ class RapprodController extends Controller
                     $tube->Bobine = $request->bobine;
                     $tube->Coulee = $request->coulee;
                     $tube->DateFab = date('Y-m-d');
-                    $tube->User = $rapport->NomAgents.'/'.$rapport->NomAgents1;
+                    $tube->User = $rapport->NomAgents;
                     $tube->Computer = gethostname();
                     $tube->DateSaisie = date('Y-m-d H:i:s');
                     $tube->Z01 = true;
@@ -107,7 +107,7 @@ class RapprodController extends Controller
                 }
 
                 $rapprod->NumTube = $tube->NumTube;
-                $rapprod->User = $rapport->NomAgents.'/'.$rapport->NomAgents1;
+                $rapprod->User = $rapport->NomAgents;
                 $rapprod->Computer = gethostname();
                 $rapprod->DateSaisie = date('Y-m-d H:i:s');
                 if ($rapprod->save()) {
@@ -127,7 +127,7 @@ class RapprodController extends Controller
                         $Edit->Item=$rapprod->Tube;
                         $Edit->Zone="Z01";
                         $Edit->NumeroRap=$rapprod->NumeroRap;
-                        $Edit->ItemId=$rapprod->Id;
+                        $Edit->ItemId=$rapprod->Numero;
                         $Edit->User=Auth::user()->username;
                         $Edit->Computer=gethostname();
                         $Edit->DateSaisie=date('Y-m-d H:i:s');
@@ -234,7 +234,7 @@ class RapprodController extends Controller
                     $Edit->Item=$rapprod->Tube;
                     $Edit->Zone="Z01";
                     $Edit->NumeroRap=$rapprod->NumeroRap;
-                    $Edit->ItemId=$rapprod->Id;
+                    $Edit->ItemId=$rapprod->Numero;
                     $Edit->User=Auth::user()->username;
                     $Edit->Computer=gethostname();
                     $Edit->DateSaisie=date('Y-m-d H:i:s');
@@ -268,7 +268,7 @@ class RapprodController extends Controller
         $Edit->Item=$rapprod->Tube;
         $Edit->Zone="Z01";
         $Edit->NumeroRap=$rapprod->NumeroRap;
-        $Edit->ItemId=$rapprod->Id;
+        $Edit->ItemId=$rapprod->Numero;
         $Edit->User=Auth::user()->username;
         $Edit->Computer=gethostname();
         $Edit->DateSaisie=date('Y-m-d H:i:s');

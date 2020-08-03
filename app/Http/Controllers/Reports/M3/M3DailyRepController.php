@@ -14,7 +14,7 @@ class M3DailyRepController extends Controller
         $M3Report = DB::select('select *,
  CASE WHEN "Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-50)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)
  Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-11)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
-  "ChuteTotal"  from  "m3report" where "DateSaisie"::date=?',[date('Y-m-d')]);
+  "ChuteTotal"  from  "m3report" where "DateSaisie"::timestamp between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ');
 
         $nbT=sizeof($M3Report);
         $pT=array_sum(array_column($M3Report,"Poids"))/1000;
@@ -62,12 +62,12 @@ class M3DailyRepController extends Controller
             $M3Report = DB::select('select *,
  CASE WHEN "Etat"=\'Prep\' then Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000as numeric),3)
  Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
-  "ChuteTotal"  from  "m3report" where "DateSaisie"::date=? ',[$request->Rive,$request->RiveE,$id]);
+  "ChuteTotal"  from  "m3report" where "DateSaisie"::timestamp between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$request->Rive,$request->RiveE,$id,$id]);
         }else {
             $M3Report = DB::select('select *,
  CASE WHEN "Etat"=\'Prep\' then Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000as numeric),3)
  Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
-  "ChuteTotal"  from  "m3report" where "Poste"=? and "DateSaisie"::date=? ', [$request->Rive, $request->RiveE, $request->poste, $id]);
+  "ChuteTotal"  from  "m3report" where "Poste"=? and "DateSaisie"::timestamp between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$request->Rive, $request->RiveE, $request->poste, $id, $id]);
         }
         $nbT=sizeof($M3Report);
         $pT=array_sum(array_column($M3Report,"Poids"))/1000;

@@ -86,6 +86,10 @@
        .container-fluid{
            padding-bottom: 50px;
        }
+       #FoncTable thead th{
+         background-color: #fe4c50;
+         color:white;
+       }
    </style>
   @yield('style')
 
@@ -343,12 +347,15 @@
      function calculateColumn(index) {
          var total = 0;
          $('table tbody tr[style*="display: table-row;"]').each(function() {
-             var value = parseInt($('td', this).eq(index).text());
+
+             var value =  Number($('td', this).eq(index).text());
+
              if (!isNaN(value)) {
                  total += value;
              }
          });
-         $('table tfoot td').eq(index).html('<span class="text-danger"><b>' + total+"</b></span>");
+
+         $('table tfoot td').eq(index).html('<span class="text-danger"><b>' +(Math.round((total + Number.EPSILON) * 1000) / 1000 )+"</b></span>");
      }
  </script>
 

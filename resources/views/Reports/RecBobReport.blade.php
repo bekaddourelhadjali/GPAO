@@ -354,15 +354,5 @@
             calculateColumn(8); calculateColumn(9);
         }
 
-        function calculateColumn(index) {
-            var total = 0;
-            $('table tbody tr[style*="display: table-row;"]').each(function() {
-                var value = parseInt($('td', this).eq(index).text());
-                if (!isNaN(value)) {
-                    total += value;
-                }
-            });
-            $('table tfoot td').eq(index).html('<span class="text-danger"><b>' + total+"</b></span>");
-        }
     </script>
 @endsection

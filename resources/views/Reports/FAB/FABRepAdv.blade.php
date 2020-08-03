@@ -28,18 +28,18 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-M3RepAdv" role="tabpanel"
-                 aria-labelledby="nav-M3RepAdv-tab">
+            <div class="tab-pane fade show active" id="nav-FABRepAdv" role="tabpanel"
+                 aria-labelledby="nav-FABRepAdv-tab">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('M3DailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('FabDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('M3Report.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('FabReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link active " id="nav-M3RepAdv-tab" data-toggle="tab"
-                               href="#nav-M3RepAdv" role="tab" aria-controls="nav-M3RepAdv" aria-selected="true">
+                            <a class="nav-item nav-link active " id="nav-FABRepAdv-tab" data-toggle="tab"
+                               href="#nav-FABRepAdv" role="tab" aria-controls="nav-FABRepAdv" aria-selected="true">
                                 <b>Filtres Avancés</b></a>
 
                         </div>
@@ -57,33 +57,9 @@
                                     <option value="Projet" selected>Projets</option>
                                     <option value="Diametre">Diametres</option>
                                     <option value="Epaisseur">Epaisseurs</option>
-                                    <option value="Arrivage">Arrivages</option>
-                                    <option value="Largeur Bande">Largeur de Bande</option>
                                 </select>
                             </div>
                         </div>
-                            <div class=" col-lg-2 col-md-4 col-6">
-                                <div class="form-group ">
-                                    <label class="col-lg-12" for="Rive">Rive (mm) : </label>
-                                    <input class="form-control" type="number" min="1" max="100" value="50" id="Rive"
-                                           name="Rive"
-                                    >
-                                </div>
-                            </div>
-                            <div class=" col-lg-2 col-md-4 col-6">
-                                <div class="form-group ">
-                                    <label class="col-lg-12" for="RiveE">Rive E (mm): </label>
-                                    <input class="form-control" type="number" min="1" max="100" value="11" id="RiveE"
-                                           name="RiveE"
-                                    >
-                                </div>
-                            </div>
-                            <div class=" col-2">
-                                <label class="col-12">&nbsp;</label>
-                                <button class=" btn btn-danger" onclick="getData()"><b><i class="fa fa-sync col-12"></i></b>
-                                </button>
-
-                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -94,33 +70,33 @@
                     </div>
                 </div>
                     <div class="table-container">
-                        <table class="col-12 table table-bordered  table-striped" id="M3ReportTable" style="min-width: 800px">
+                        <table class="col-12 table table-bordered  table-striped" id="FABReportTable" style="min-width: 800px">
                             <tbody id="Reports">
                             <tr id="Filter_TR">
-                                @if(isset($M3Report))
-                                    @foreach($M3Report as $item)
+                                @if(isset($FABReport))
+                                    @foreach($FABReport as $item)
                                     <th >{{$item->Filter}}</th>
                                 @endforeach
                                 @endif
                             </tr>
                             <tr id="NBT_TR">
-                                @if(isset($M3Report))
-                                    @foreach($M3Report as $item)
-                                    <td><span class="text-danger"><b>{{$item->NBT}}</b></span> Bobs</td>
+                                @if(isset($FABReport))
+                                    @foreach($FABReport as $item)
+                                    <td><span class="text-danger"><b>{{$item->NBT}}</b></span> Tubes</td>
+                                    @endforeach
+                                @endif
+                            </tr>
+                            <tr id="LT_TR">
+                                @if(isset($FABReport))
+                                    @foreach($FABReport as $item)
+                                        <td><span class="text-danger"><b>{{$item->LT}}</b></span> Mètres</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="PT_TR">
-                                @if(isset($M3Report))
-                                    @foreach($M3Report as $item)
+                                @if(isset($FABReport))
+                                    @foreach($FABReport as $item)
                                     <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tons</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr id="CT_TR">
-                                @if(isset($M3Report))
-                                    @foreach($M3Report as $item)
-                                        <td><span class="text-danger"><b>{{$item->CT}}</b></span> Tons</td>
                                     @endforeach
                                 @endif
                             </tr>
@@ -147,10 +123,10 @@
         $(document).ready(function () {
 
             chartId='myBarChart';
-            labels=@json(array_column($M3Report,'Filter'));
-            data=@json(array_column($M3Report,'CT'));
+            labels=@json(array_column($FABReport,'Filter'));
+            data=@json(array_column($FABReport,'LT'));
             var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,$('#Filtre').val(),'Tons',max);
+            DrawChart(chartId,labels,data,$('#Filtre').val(),'Mètres',max);
 
         });
 
@@ -163,11 +139,9 @@
             });
 
             $.ajax({
-                url: "{{url('/M3RepAdv')}}/" + $('#Filtre').val(),
+                url: "{{url('/FabRepAdv')}}/" + $('#Filtre').val(),
                 method: 'get',
                 data: {
-                    Rive: $('#Rive').val(),
-                    RiveE: $('#RiveE').val(),
                 },
                 success: function (result) {
                     parent=$('#myBarChart').parent();
@@ -181,21 +155,21 @@
                             '<tr id="Filter_TR"></tr>'+
                             '<tr id="NBT_TR"></tr>'+
                             '<tr id="PT_TR"></tr>'  +
-                            '<tr id="CT_TR"></tr>'   ) ;
+                            '<tr id="LT_TR"></tr>'   ) ;
 
                         result.reports.forEach(function (item) {
                             $('#Filter_TR').append( ' <th  >' + item.Filter + '</th> ');
                             $('#NBT_TR').append( '<td><span class="text-danger"><b>' + item.NBT + '</b></span> Bobs</td> ');
                             $('#PT_TR').append( '<td><span class="text-danger"><b>' + item.PT + '</b></span> Tons</td>');
-                            $('#CT_TR').append( '<td><span class="text-danger"><b>' + item.CT + '</b></span> Tons</td>');
+                            $('#LT_TR').append( '<td><span class="text-danger"><b>' + item.LT + '</b></span> Tons</td>');
 
 
                             labels.push(item.Filter);
-                            data.push(item.CT);
+                            data.push(item.LT);
                         });
                          chartId = 'myBarChart';
                         var max = Math.max.apply(Math, data);
-                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Tons', max);
+                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Mètres', max);
                     }
                 },
                 error: function (result) {

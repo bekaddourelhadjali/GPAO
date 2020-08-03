@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reception;
 
 use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
+use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -93,8 +94,8 @@ class RecBobController extends Controller
         $rapport = Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'RecBob') {
-                $bobines = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->select('Bobine')->get();
-                $coulees = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();
+                $bobines = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->where('Epaisseur','=',detailprojet::find($rapport->Did)->Epaisseur)->select('Bobine')->get();
+                $coulees = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->where('Epaisseur','=',detailprojet::find($rapport->Did)->Epaisseur)->select('Coulee')->distinct('Coulee')->get();
                 if ($rapport->Etat == 'N'||Auth::check()) {
                     $maxArr = Bobine::where('Etat', '=', 'NonREC')->max('Arrivage');
                     $maxRec = Bobine::where('Etat', '=', 'REC')->max('NbReception') + 1;
@@ -125,8 +126,8 @@ class RecBobController extends Controller
      */
     public function edit($id)
     {
-        $bobines = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Bobine')->get();
-        $coulees = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->select('Coulee')->distinct('Coulee')->get();
+        $bobines = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->where('Epaisseur','=',detailprojet::find($id)->Epaisseur)->select('Bobine')->get();
+        $coulees = Bobine::where('NbReception', '=', null)->where('Did', '=', $id)->where('Epaisseur','=',detailprojet::find($id)->Epaisseur)->select('Coulee')->distinct('Coulee')->get();
         return response()->json(array('bobines' => $bobines, 'coulees' => $coulees), 200);
     }
 

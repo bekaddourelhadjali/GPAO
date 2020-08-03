@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Reports\M3;
+namespace App\Http\Controllers\Reports\FAB;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class M3RepAdvController extends Controller
+class FABRepAdvController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,13 +17,12 @@ class M3RepAdvController extends Controller
     {
 
 
-        $M3Report = DB::select('select "Nom" as "Filter",Count(*) "NBT", SUM("Poids")/1000 "PT",SUM("ChuteTotal") "CT" from (select m.*,p."Nom",
- CASE WHEN m."Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-50)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)
- Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-11)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
-  "ChuteTotal"  from  "m3report" m join "projet" p  on m."Pid"=p."Pid" ) q1 
-  group by "Nom" ');
-        return view('Reports.M3.M3RepAdv', [
-                'M3Report' => $M3Report,
+        $FABReport = DB::select('select q."Nom" "Filter",Sum(q."NBT") "NBT",Sum("LongueurTotal") "LT",Sum("PoidsTotal") "PT" from(select p."Nom","Epaisseur","Diametre",
+                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "fabreport" f join "projet" p on f."Pid"=p."Pid"
+                    group by "Nom","Epaisseur","Diametre") q group by q."Nom"');
+
+        return view('Reports.FAB.FABRepAdv', [
+                'FABReport' => $FABReport,
             ]
         );
     }
@@ -56,14 +55,12 @@ class M3RepAdvController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request,$id)
-    {   if($id=="Largeur Bande") $id="LargeurBande";
-        if($id=="Provenance") $id="Source";
+    {
         if($id=="Projet") $id="Nom";
-        $Reports=DB::select('select "'.$id.'" as "Filter",Count(*) "NBT", SUM("Poids")/1000 "PT",SUM("ChuteTotal") "CT" from (select m.*,p."Nom",
- CASE WHEN m."Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)
- Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-?)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
-  "ChuteTotal"  from  "m3report" m join "projet" p  on m."Pid"=p."Pid" ) q1 
-  group by "'.$id.'" ',[$request->Rive,$request->RiveE] );
+        $Reports = DB::select('select q."'.$id.'" "Filter",Sum(q."NBT") "NBT",Sum("LongueurTotal") "LT",Sum("PoidsTotal") "PT" from(select p."Nom","Epaisseur","Diametre",
+                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "fabreport" f join "projet" p on f."Pid"=p."Pid"
+                    group by "Nom","Epaisseur","Diametre") q group by q."'.$id.'"');
+
         return response()->json(array(
             'reports' => $Reports ), 200);
 

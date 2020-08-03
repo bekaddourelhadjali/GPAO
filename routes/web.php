@@ -97,8 +97,9 @@ Route::resource('Defauts', 'Dashboard\DefautsController')->middleware('auth')->m
 Route::resource('Operations', 'Dashboard\OperationsController')->middleware('auth')->middleware('admin');
 Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middleware('admin');
 
+Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 
-//Dashboard RecBob Daily Reports
+//RecBob
 Route::resource('RecBobReport', 'Reports\RecBobReportController')->middleware('auth');
 Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController')->middleware('auth');
 Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController')->middleware('auth');
@@ -111,17 +112,19 @@ Route::resource('M3RepAdv', 'Reports\M3\M3RepAdvController')->middleware('auth')
 Route::resource('M3DailyRep', 'Reports\M3\M3DailyRepController')->middleware('auth');
 Route::resource('rapports_M3', 'M3\M3RapportsController')->middleware('Rapports:Z00');
 Route::resource('M3', 'M3\M3Controller')->middleware('ChefProd:Z00');
-
+//Fabrication
+Route::resource('MasEPrep', 'Fabrication\MasEPrepController')->middleware('ChefProd:Z01');
+Route::resource('rapports', 'Fabrication\RapportsController')->middleware('Rapports:Z01');
+Route::resource('rapprod', 'Fabrication\RapprodController')->middleware('ChefProd:Z01');
+Route::resource('arret_machine', 'Fabrication\ArretMachineController');
+Route::resource('FabReport', 'Reports\FAB\FABReportController')->middleware('auth');
+Route::resource('FabRepAdv', 'Reports\FAB\FABRepAdvController')->middleware('auth');
+Route::resource('FabDailyRep', 'Reports\FAB\FABDailyRepController')->middleware('auth');
 //Rapports
-Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
-Route::resource('MasEPrep', 'Fabrication\MasEPrepController')->middleware('UnAuthorized:Z01');
-Route::resource('rapports', 'Fabrication\RapportsController')->middleware('Rapports:Z01');
-Route::resource('rapprod', 'Fabrication\RapprodController')->middleware('UnAuthorized:Z01');
 Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController')->middleware('Rapports:US');
 Route::resource('Ultrason', 'Fabrication\UltrasonController')->middleware('UnAuthorized:US');
-Route::resource('arret_machine', 'Fabrication\ArretMachineController')->middleware('UnAuthorized:Z01');
 Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController')->middleware('Rapports:Z02');
 Route::resource('visuels', 'Visuel\VisuelsController')->middleware('UnAuthorized:Z02');
 Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller')->middleware('Rapports:Z03');
