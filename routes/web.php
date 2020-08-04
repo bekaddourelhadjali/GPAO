@@ -132,7 +132,7 @@ Route::resource('USDailyRep', 'Reports\US\USDailyRepController')->middleware('au
 Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController')->middleware('Rapports:Z02');
 Route::resource('visuels', 'Visuel\VisuelsController')->middleware('UnAuthorized:Z02');
 Route::resource('VisuelReport', 'Reports\Visuel\VisuelReportController')->middleware('auth');
-Route::resource('VisuelRepAdv', 'Reports\Visuel\VisuelRepAdvCon²troller')->middleware('auth');
+Route::resource('VisuelRepAdv', 'Reports\Visuel\VisuelRepAdvController')->middleware('auth');
 Route::resource('VisuelDailyRep', 'Reports\Visuel\VisuelDailyRepController')->middleware('auth');
 
 //Rapports

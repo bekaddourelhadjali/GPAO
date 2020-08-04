@@ -64,7 +64,7 @@ function DrawChart(chartId,labels,data,unit,label,max,type="bar",backgroundColor
           drawBorder: false
         },
         ticks: {
-          maxTicksLimit: 20
+          maxTicksLimit: 100
         },
         maxBarThickness: 25,
       }],
@@ -76,7 +76,7 @@ function DrawChart(chartId,labels,data,unit,label,max,type="bar",backgroundColor
           padding: 10,
           // Include a dollar sign in the ticks
           callback: function(value, index, values) {
-            return '' + number_format(value);
+            return '' + value;
           }
         },
         gridLines: {
@@ -106,7 +106,10 @@ function DrawChart(chartId,labels,data,unit,label,max,type="bar",backgroundColor
       callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+          if(type==='horizontalBar'){
+              return datasetLabel + ': ' +  tooltipItem.xLabel ;
+          }
+          return datasetLabel + ': ' +  tooltipItem.yLabel ;
         }
       }
     },

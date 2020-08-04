@@ -141,22 +141,7 @@
                     </div>
 
                 </div>
-                {{--<div class="row">--}}
-                    {{--<div class=" col-md-2 col-sm-3 col-6 py-1">--}}
-                        {{--<div class="card border-bottom-danger shadow h-100 ">--}}
-                            {{--<div class="card-body">--}}
-                                {{--<div class="row no-gutters align-items-center">--}}
-                                    {{--<div class="col mr-2">--}}
-                                        {{--<div class="text-md font-weight-bold text-success text-uppercase mb-1">--}}
 
-                                            {{--NB RB  <span id="nbRB">@if(isset($nbRB)){{($nbRB)}} @endif</span>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
                 <section>
                     <div class="row">
                         <div class="col-12">

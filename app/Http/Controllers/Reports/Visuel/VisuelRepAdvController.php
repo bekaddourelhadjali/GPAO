@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Reports\FAB;
+namespace App\Http\Controllers\Reports\Visuel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,12 +17,12 @@ class VisuelRepAdvController extends Controller
     {
 
 
-        $FABReport = DB::select('select q."Nom" "Filter",Sum(q."NBT") "NBT",Sum("LongueurTotal") "LT",Sum("PoidsTotal") "PT" from(select p."Nom","Epaisseur","Diametre",
-                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "fabreport" f join "projet" p on f."Pid"=p."Pid"
+        $VisuelReport = DB::select('select q."Nom" "Filter",Sum(q."NBT") "NBT",Sum("LongueurTotal") "LT",Sum("PoidsTotal") "PT" from(select p."Nom","Epaisseur","Diametre",
+                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "visuelreport" f join "projet" p on f."Pid"=p."Pid"
                     group by "Nom","Epaisseur","Diametre") q group by q."Nom"');
 
-        return view('Reports.FAB.FABRepAdv', [
-                'FABReport' => $FABReport,
+        return view('Reports.Visuel.VisuelRepAdv', [
+                'VisuelReport' => $VisuelReport,
             ]
         );
     }
@@ -58,7 +58,7 @@ class VisuelRepAdvController extends Controller
     {
         if($id=="Projet") $id="Nom";
         $Reports = DB::select('select q."'.$id.'" "Filter",Sum(q."NBT") "NBT",Sum("LongueurTotal") "LT",Sum("PoidsTotal") "PT" from(select p."Nom","Epaisseur","Diametre",
-                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "fabreport" f join "projet" p on f."Pid"=p."Pid"
+                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "visuelreport" f join "projet" p on f."Pid"=p."Pid"
                     group by "Nom","Epaisseur","Diametre") q group by q."'.$id.'"');
 
         return response()->json(array(

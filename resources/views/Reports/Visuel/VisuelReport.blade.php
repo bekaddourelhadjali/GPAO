@@ -148,21 +148,37 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="row" id="OperationsReport">
+                    @if(isset($OperationsReport))
+                        @foreach($OperationsReport as $item)
+                            <div class=" col-lg-3 col-md-4 col-6 py-1">
+                                <div class="card border-bottom-danger shadow text-center h-100 ">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">
+                                                    opr: <span class="Operation text-danger ">{{$item->Opr}}</span>&nbsp
+                                                    nb: <span  class="NBT text-danger">{{$item->NBT}}</span>&nbsp
+                                                    <span  class="VT text-danger">({{$item->VT}})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
                 <section>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-container">
-                                <table class="table table-borderless table-striped" id="VisuelReportTable" width="120%" cellspacing="0">
+                                <table class="table table-borderless table-striped" id="VisuelReportTable"  cellspacing="0">
                                      <thead style="cursor: pointer">
                                     <tr class="text-white">
                                         <th>DateSaisie</th>
-                                        <th>Epaisseur</th>
-                                        <th>Diametre</th>
                                         <th>Poste</th>
                                         <th>Machine</th>
-                                        <th>Coulee</th>
-                                        <th>Bobine</th>
                                         <th>NBT</th>
                                         <th>PoidsTotal</th>
                                         <th>LongueurTotal</th>
@@ -175,12 +191,8 @@
                                         @foreach($reports as $item)
                                             <tr  style="display: table-row;" >
                                                 <td>{{$item->DateSaisie}}</td>
-                                                <td>{{$item->Epaisseur}}</td>
-                                                <td>{{$item->Diametre}}</td>
                                                 <td>Poste {{$item->Poste}}</td>
-                                                <td>{{$item->Machine}}</td>
-                                                <td>{{$item->Coulee}}</td>
-                                                <td>{{$item->Bobine}}</td>
+                                                <td>{{$item->Machine}}</td> 
                                                 <td>{{$item->NBT}}</td>
                                                 <td>{{$item->PoidsTotal}}</td>
                                                 <td>{{$item->LongueurTotal}}</td>
@@ -197,10 +209,6 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>  
                                     </tr>
                                     </tfoot>
@@ -208,6 +216,38 @@
                             </div>
                         </div>
 
+                    </div>
+                </section>
+                <section>
+                    <h2 class="text-primary ">Rapport des Defauts</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="table-container">
+                                <table class="table table-borderless table-striped" id="DefautsTable"
+                                       cellspacing="0">
+                                    <thead class="text-white">
+                                    <th>Defaut</th>
+                                    <th>NB_Total</th>
+                                    </thead>
+                                    <tbody>
+                                    @if(isset($DefautsReport))
+                                        @foreach($DefautsReport as $item)
+                                            <tr>
+                                                <td>{{$item->Defaut}}</td>
+                                                <td>{{$item->NBT}}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="chart-bar" >
+                                <canvas id="myBarChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -226,14 +266,21 @@
     <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
 
+    <script src="{{asset('js/chart.min.js')}}"></script>
+    <script src="{{asset('js/chart-bar-demo.js')}}"></script>
     <script>
 
         $(document).ready(function () {
 
+            chartId='myBarChart';
+            labels=@json(array_column($DefautsReport,'Defaut'));
+            data=@json(array_column($DefautsReport,'NBT'));
+            var max = Math.max.apply(Math, data);
+            DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
             $('#VisuelReportTable').DataTable();
-            calculateColumn(7); calculateColumn(8); calculateColumn(9);
+            calculateColumn(3); calculateColumn(4); calculateColumn(5);
         $('#VisuelReportTable_filter input[type=search]').keyup(function () {
-            calculateColumn(7); calculateColumn(8); calculateColumn(9);
+            calculateColumn(3); calculateColumn(4); calculateColumn(5);
         });
         });
 
@@ -251,17 +298,46 @@
                 data: {
                 },
                 success: function (result) {
+                    parent = $('#myBarChart').parent();
+                    parent.html('');
+                    parent.append('<canvas id="myBarChart"></canvas>');
+                    labels = [];
+                    data = [];
+                    $('#OperationsReport').html('');
+                    $('#DefautsTable tbody').html('');
                     $('#VisuelReportTable').DataTable().clear().draw();
+                    $('#MonthNBT').html(result.MonthNBT);
+                    $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
+                    $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
+                    $('#YearNBT').html(result.YearNBT);
+                    $('#YearLT').html(Number(Math.round(result.YearLT+'e3')+'e-3'));
+                    $('#YearPT').html(Number(Math.round(result.YearPT+'e3')+'e-3'));
+
+                    if(result.OperationsReport.length>0){
+                        result.OperationsReport.forEach(function (item) {
+                            $('#OperationsReport').append(' <div class=" col-lg-3 col-md-4 col-6 py-1">\n' +
+                                '                                <div class="card border-bottom-danger shadow text-center h-100 ">\n' +
+                                '                                    <div class="card-body">\n' +
+                                '                                        <div class="row no-gutters align-items-center">\n' +
+                                '                                            <div class="col mr-2">\n' +
+                                '                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">\n' +
+                                '                                                    opr: <span class="Operation text-danger ">'+item.Opr+'</span>&nbsp\n' +
+                                '                                                    nb: <span  class="NBT text-danger">'+item.NBT+'</span>&nbsp\n' +
+                                '                                                     <span  class="VT text-danger">('+(item.VT === null ? '' : Number(item.VT))+')</span>\n' +
+                                '                                                </div>\n' +
+                                '                                            </div>\n' +
+                                '                                        </div>\n' +
+                                '                                    </div>\n' +
+                                '                                </div>\n' +
+                                '                            </div>');
+                        });
+                    }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
                             $('#VisuelReportTable').DataTable().row.add([
                                 item.DateSaisie,
-                                item.Epaisseur,
-                                item.Diametre,
                                 "Poste "+item.Poste,
                                 item.Machine,
-                                item.Coulee,
-                                item.Bobine,
                                 item.NBT,
                                 item.PoidsTotal,
                                 item.LongueurTotal,]
@@ -271,14 +347,22 @@
                         $('#VisuelReportTable').DataTable().draw(false);
                         $('#VisuelReportTable tbody tr').attr('style','display: table-row;');
                     }
-                    $('#MonthNBT').html(result.MonthNBT);
-                    $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
-                    $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
-                    $('#YearNBT').html(result.YearNBT);
-                    $('#YearLT').html(Number(Math.round(result.YearLT+'e3')+'e-3'));
-                    $('#YearPT').html(Number(Math.round(result.YearPT+'e3')+'e-3'));
-                    
-                    calculateColumn(7); calculateColumn(8); calculateColumn(9);
+                    if (result.DefautsReport.length > 0) {
+                        labels=[];
+                        data=[];
+                        result.DefautsReport.forEach(function (item) {
+                            $('#DefautsTable tbody').append('<tr>' +
+                                '<td>'+item.Defaut+'</td>' +
+                                '<td>'+item.NBT+'</td>' +
+                                '</tr> ');
+                            labels.push(item.Defaut);
+                            data.push(item.NBT);
+                        });
+                        max=Math.max.apply(Math, data);
+                        chartId = 'myBarChart';
+                        DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
+                    }
+                    calculateColumn(3); calculateColumn(4); calculateColumn(5);
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);

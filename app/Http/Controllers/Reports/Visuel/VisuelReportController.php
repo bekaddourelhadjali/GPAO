@@ -26,11 +26,16 @@ class VisuelReportController extends Controller
         $VisuelReport=[];
         if(sizeof($details)>0){
 
-            $VisuelReport = DB::select('select "DateSaisie"::date,"Epaisseur","Diametre","Poste","Machine","Coulee","Bobine",
-                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "fabreport" where "Did"=?
-                    group by "DateSaisie"::date,"Epaisseur","Diametre","Poste","Machine","Coulee","Bobine" order by "DateSaisie"::date Desc  ',[$details[0]->Did ]);
-        }
+            $VisuelReport = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
+            SUM("Poids") "PoidsTotal" from "visuelreport" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
 
+        }
+        $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
+                      where "Did"=? and "Zone"=\'Z02\'  group by "Opr"   '
+            , [$details[0]->Did]);
+        $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
+                      where "Did"=? and "Zone"=\'Z02\'   group by "Defaut"   '
+            , [$details[0]->Did]);
         $MonthLT = 0;
         $MonthNBT = 0;
         $MonthPT = 0;
@@ -63,6 +68,8 @@ class VisuelReportController extends Controller
                 'YearNBT' => $YearNBT,
                 'YearPT' => $YearPT,
                 'details' => $details,
+                'DefautsReport' => $DefautsReport,
+                'OperationsReport' => $OperationsReport,
                 'monthW'=>$months[intval(date('m'))]
             ]
         );
@@ -102,10 +109,15 @@ class VisuelReportController extends Controller
             5 => 'Mai', 6 => 'Juin', 7 => 'Juillet',
             8 => 'Août', 9 => 'Septembre', 10 => 'Octobre',
             11 => 'Novembre', 12 => 'Décembre');
-        $VisuelReport = DB::select('select "DateSaisie"::date,"Epaisseur","Diametre","Poste","Machine","Coulee","Bobine",
-                    Count(*) "NBT",Sum("Longueur") "LongueurTotal",Sum("Poids") "PoidsTotal" from "fabreport" where "Did"=?
-                    group by "DateSaisie"::date,"Epaisseur","Diametre","Poste","Machine","Coulee","Bobine" order by "DateSaisie"::date desc  ',[$id ]);
+        $VisuelReport = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
+            SUM("Poids") "PoidsTotal" from "visuelreport" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$id]);
 
+        $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
+                      where "Did"=? and "Zone"=\'Z02\'  group by "Opr"   '
+            , [$id ]);
+        $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
+                      where "Did"=? and "Zone"=\'Z02\'   group by "Defaut"   '
+            , [$id ]);
         $MonthLT = 0;
         $MonthNBT = 0;
         $MonthPT = 0;
@@ -137,6 +149,8 @@ class VisuelReportController extends Controller
             'YearLT' =>   $YearLT,
             'YearNBT' =>  $YearNBT,
             'YearPT' =>   $YearPT,
+            'DefautsReport' => $DefautsReport,
+            'OperationsReport' => $OperationsReport,
             'monthW'=>$months[intval(date('m'))]), 200);
 
     }

@@ -69,11 +69,11 @@ class FABDailyRepController extends Controller
             $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Poste"=?', [$request->Did, $id, $id, $request->poste]);
         } else if ($request->Machine != 'Tous' && $request->poste == 'Tous') {
             $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Machine"=?', [$request->Did, $id, $id, $request->Machine]);
-            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )  and "Machine"=? ', [$request->Did, $id, $id, $request->Machine]);
+            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )  and "Machine"=?  and "Zone"=\'Z01\' ', [$request->Did, $id, $id, $request->Machine]);
         } else {
             $FABReport = DB::select('select * from "fabreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00:00\')  and "Machine"=? and "Poste"=?'
                 , [$request->Did, $id, $id, $request->Machine, $request->poste]);
-            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) and "Machine"=? and "Poste"=?'
+            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) and "Machine"=? and "Poste"=? and "Zone"=\'Z01\' '
                 , [$request->Did, $id, $id, $request->Machine, $request->poste]);
         }
         $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));

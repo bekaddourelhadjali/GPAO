@@ -108,7 +108,7 @@
                                             NB total des Tubes
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                           &nbsp; <span id="NBT"> @if(isset($nbT)){{$nbT}} @endif</span>
+                                            &nbsp; <span id="NBT"> @if(isset($nbT)){{$nbT}} @endif</span>
                                         </div>
                                     </div>
                                     <div class="col-auto">
@@ -161,25 +161,51 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" id="OperationsReport">
+                @if(isset($OperationsReport))
+                        @foreach($OperationsReport as $item)
+                            <div class=" col-lg-3 col-md-4 col-6 py-1">
+                                <div class="card border-bottom-danger shadow text-center h-100 ">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">
+                                                    opr: <span class="Operation text-danger ">{{$item->Opr}}</span>&nbsp
+                                                    nb: <span  class="NBT text-danger">{{$item->NBT}}</span>&nbsp
+                                                     <span  class="VT text-danger">({{$item->VT}})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                @endif
+                </div>
                 <section>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-container" id="VisuelReportTableContainer">
-                                <table class="table table-borderless table-striped" id="VisuelReportTable" width="120%"
+                                <table class="table table-bordered table-striped" id="VisuelReportTable" width="120%"
                                        cellspacing="0">
 
                                     <thead style="cursor: pointer" id="TheadID">
                                     <tr class="text-white">
                                         <th>Poste</th>
                                         <th>Machine</th>
-                                        <th>Coulee</th>
-                                        <th>Bobine</th>
                                         <th>Tube</th>
+                                        <th>Bis</th>
                                         <th>Longueur</th>
                                         <th>Poids</th>
+                                        <th>ObsMetal</th>
+                                        <th>ObsSoudure</th>
                                         <th>RB</th>
-                                        <th>Macro</th>
-                                        <th>Observation</th>
+                                        <th>Sond</th>
+                                        <th>E</th>
+                                        <th>EY</th>
+                                        <th>Y</th>
+                                        <th>DiamD</th>
+                                        <th>DiamF</th>
                                         <th>Agent</th>
                                     </tr>
                                     </thead>
@@ -188,18 +214,23 @@
                                     @if(isset($reports))
 
                                         @foreach($reports as $item)
-                                            <tr id="report{{$item->Numero}}"  rapportEtat="{{$item->Etat}}"
+                                            <tr id="report{{$item->Numero}}" rapportEtat="{{$item->Etat}}"
                                                 rapportId="{{$item->NumeroRap}}">
                                                 <td>Poste {{$item->Poste}}</td>
                                                 <td>{{$item->Machine}}</td>
-                                                <td>{{$item->Coulee}}</td>
-                                                <td>{{$item->Bobine}}</td>
-                                                <td>{{$item->Ntube}}</td>
+                                                <td>{{$item->Tube}}</td>
+                                                <td>{{(int)$item->Bis}}</td>
                                                 <td>{{$item->Longueur}}</td>
                                                 <td>{{$item->Poids}}</td>
+                                                <td>{{$item->ObsMetal}}</td>
+                                                <td>{{$item->ObsSoudure}}</td>
                                                 <td>{{(int)$item->RB}}</td>
-                                                <td>{{(int)$item->Macro}}</td>
-                                                <td>{{$item->Observation}}</td>
+                                                <td>{{(int)$item->Sond}}</td>
+                                                <td>{{$item->E}}</td>
+                                                <td>{{$item->EY}}</td>
+                                                <td>{{$item->Y}}</td>
+                                                <td>{{$item->DiamD}}</td>
+                                                <td>{{$item->DiamF}}</td>
                                                 <td>{{$item->User}}</td>
                                             </tr>
                                         @endforeach
@@ -218,24 +249,24 @@
                 </section>
                 <section>
                     <div class="row">
-                        <div class="col-12 col-md-6" style="padding: 20px 0" >
-                        <h2 class=" text-center text-danger " ><i class="fa fa-cog"></i>&nbsp; Rapport de Fonctionnement</h2>
+                        <div class="col-12 col-md-6" style="padding: 20px 0">
+                            <h2 class=" text-center text-danger "><i class="fa fa-cog"></i>&nbsp; Rapport de
+                                Fonctionnement</h2>
                         </div>
                         <div class=" col-12 col-md-6 text-left">
                             <canvas width="100px" height="100px" id="myPieChart"></canvas>
                         </div>
                     </div>
                     <hr>
-                        <div class="row">
+                    <div class="row">
                         <div class="col-12">
                             <div class="table-container" id="VisuelReportTableContainer">
                                 <table class="table table-borderless table-striped" id="FoncTable"
                                        cellspacing="0">
 
-                                    <thead style="cursor: pointer" id="TheadID"  >
+                                    <thead style="cursor: pointer" id="TheadID">
                                     <tr class="text-white">
                                         <th>Poste</th>
-                                        <th>Machine</th>
                                         <th>TypeArret</th>
                                         <th>Cause</th>
                                         <th>Du</th>
@@ -247,6 +278,23 @@
                                     </tr>
                                     </thead>
                                     <tbody id="ArretReports">
+                                    @if(isset($ArretsReport))
+
+                                        @foreach($ArretsReport as $item)
+                                            <tr id="report{{$item->id}}" rapportEtat="{{$item->Etat}}"
+                                                rapportId="{{$item->NumRap}}">
+                                                <td>Poste {{$item->Poste}}</td>
+                                                <td>{{$item->TypeArret}}</td>
+                                                <td>{{$item->Cause}}</td>
+                                                <td>{{$item->Du}}</td>
+                                                <td>{{$item->Au}}</td>
+                                                <td>{{$item->Durée}}</td>
+                                                <td>{{$item->Obs}}</td>
+                                                <td>{{$item->NDI}}</td>
+                                                <td>{{$item->User}}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
                                 <div id="tr-actions">
@@ -257,6 +305,38 @@
                             </div>
                         </div>
 
+                    </div>
+                </section>
+                <section>
+                    <h2 class="text-primary ">Rapport des Defauts</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="table-container">
+                                <table class="table table-borderless table-striped" id="DefautsTable"
+                                       cellspacing="0">
+                                    <thead class="text-white">
+                                    <th>Defaut</th>
+                                    <th>NB_Total</th>
+                                    </thead>
+                                    <tbody>
+                                    @if(isset($DefautsReport))
+                                            @foreach($DefautsReport as $item)
+                                                <tr>
+                                                    <td>{{$item->Defaut}}</td>
+                                                    <td>{{$item->NBT}}</td>
+                                                </tr>
+                                                @endforeach
+                                    @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="chart-bar" >
+                                <canvas id="myBarChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -276,7 +356,9 @@
     <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('js/chart.min.js')}}"></script>
     <script src="{{asset('js/chart-pie-demo.js')}}"></script>
+    <script src="{{asset('js/chart-bar-demo.js')}}"></script>
     <script>
+
         var table = $('#VisuelReportTable').DataTable({
             "bDestroy": true,
             "bRetrieve": true
@@ -284,12 +366,22 @@
 
         $('#FoncTable').DataTable();
         $(document).ready(function () {
-            addActions();
 
+            chartId = 'myPieChart';
+            labels =@json( $ChartLabels);
+            data =@json( $ChartData) ;
+            drawPieChart(chartId, data, labels);
+            chartId='myBarChart';
+            labels=@json(array_column($DefautsReport,'Defaut'));
+            data=@json(array_column($DefautsReport,'NBT'));
+            var max = Math.max.apply(Math, data);
+            DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
+            addActions();
+            console.log(max);
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
-                const reportId= $(this).attr("id").replace(/[^0-9]/g, '');
-                var win = window.open("{{url('/rapprod/')}}/" + id, '_blank');
+                const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
+                var win = window.open("{{url('/visuels/')}}/" + id, '_blank');
                 if (win) {
                     //Browser has allowed it to be opened
                     win.focus();
@@ -378,7 +470,7 @@
                         $('#Reports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
                         $('#ArretReports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
 
-                    addActions();
+                        addActions();
                     },
                     error: function (result) {
 
@@ -399,11 +491,7 @@
         });
 
         function getData() {
-            parent=$('#myPieChart').parent();
-            parent.html('');
-            parent.append('<canvas id="myPieChart"></canvas>');
-            labels=[];
-            data=[];
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -420,30 +508,63 @@
 
                 },
                 success: function (result) {
-                    console.log(result);
+                    parent = $('#myPieChart').parent();
+                    parent.html('');
+                    parent.append('<canvas id="myPieChart"></canvas>');
+                    parent = $('#myBarChart').parent();
+                    parent.html('');
+                    parent.append('<canvas id="myBarChart"></canvas>');
+                    labels = [];
+                    data = [];
+                    $('#OperationsReport').html('');
+                    $('#DefautsTable tbody').html('');
                     table.clear().draw();
                     $('#NBT').html('');
                     $('#PT').html('');
                     $('#LT').html('');
-                    if (result.reports.length > 0){
+                    $('#FoncTable').DataTable().clear().draw();
+                    if(result.OperationsReport.length>0){
+                        result.OperationsReport.forEach(function (item) {
+                            $('#OperationsReport').append(' <div class=" col-lg-3 col-md-4 col-6 py-1">\n' +
+                                '                                <div class="card border-bottom-danger shadow text-center h-100 ">\n' +
+                                '                                    <div class="card-body">\n' +
+                                '                                        <div class="row no-gutters align-items-center">\n' +
+                                '                                            <div class="col mr-2">\n' +
+                                '                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">\n' +
+                                '                                                    opr: <span class="Operation text-danger ">'+item.Opr+'</span>&nbsp\n' +
+                                '                                                    nb: <span  class="NBT text-danger">'+item.NBT+'</span>&nbsp\n' +
+                                '                                                     <span  class="VT text-danger">('+(item.VT === null ? '' : Number(item.VT))+')</span>\n' +
+                                '                                                </div>\n' +
+                                '                                            </div>\n' +
+                                '                                        </div>\n' +
+                                '                                    </div>\n' +
+                                '                                </div>\n' +
+                                '                            </div>');
+                        });
+                    }
+                    if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
                             $('#VisuelReportTable').DataTable().row.add([
-                                'Poste '+item.Poste,
+                                'Poste ' + item.Poste,
                                 item.Machine,
-                                item.Coulee,
-                                item.Bobine,
-                                item.Ntube,
+                                item.Tube,
+                                +item.Bis,
                                 item.Longueur,
                                 item.Poids,
+                                item.ObsMetal,
+                                item.ObsSoudure,
                                 +item.RB,
-                                +item.Macro,
-                                item.Observation,
+                                +item.Sond,
+                                item.E,
+                                item.EY,
+                                item.Y,
+                                item.DiamD,
+                                item.DiamF,
                                 item.User]
                             ).draw(false);
                             $('#VisuelReportTable tbody tr:last-child')
-                                .attr('id','report'+item.Numero).attr('rapportEtat',item.Etat).attr('rapportId',item.NumeroRap);
+                                .attr('id', 'report' + item.Numero).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
                         });
-
 
 
                         $('#NBT').html(result.nbT);
@@ -452,12 +573,10 @@
 
                         addActions();
                     }
-                    $('#FoncTable').DataTable().clear().draw();
-                    if (result.ArretsReport.length > 0){
+                    if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
                             $('#FoncTable').DataTable().row.add([
-                                'Poste '+item.Poste,
-                                item.Machine,
+                                'Poste ' + item.Poste,
                                 item.TypeArret,
                                 item.Cause,
                                 item.Du,
@@ -468,14 +587,27 @@
                                 item.User]
                             ).draw(false);
                             $('#FoncTable tbody tr:last-child')
-                                .attr('id','report'+item.id).attr('rapportEtat',item.Etat).attr('rapportId',item.NumRap);
+                                .attr('id', 'report' + item.id).attr('rapportEtat', item.Etat).attr('rapportId', item.NumRap);
                         });
-                        if($('#machine').val()!=='Tous'){
-                            chartId='myPieChart';
-                            labels=result.ChartLabels;
-                            data=result.ChartData;
-                            drawPieChart(chartId,data,labels );
-                        }
+                        chartId = 'myPieChart';
+                        labels = result.ChartLabels;
+                        data = result.ChartData;
+                        drawPieChart(chartId, data, labels);
+                    }
+                    if (result.DefautsReport.length > 0) {
+                        labels=[];
+                        data=[];
+                        result.DefautsReport.forEach(function (item) {
+                                $('#DefautsTable tbody').append('<tr>' +
+                                    '<td>'+item.Defaut+'</td>' +
+                                    '<td>'+item.NBT+'</td>' +
+                                    '</tr> ');
+                            labels.push(item.Defaut);
+                            data.push(item.NBT);
+                              });
+                        max=Math.max.apply(Math, data);
+                        chartId = 'myBarChart';
+                        DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
                     }
                     addActions();
                 },
