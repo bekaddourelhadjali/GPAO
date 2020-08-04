@@ -28,18 +28,18 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-FABRepAdv" role="tabpanel"
-                 aria-labelledby="nav-FABRepAdv-tab">
+            <div class="tab-pane fade show active" id="nav-USRepAdv" role="tabpanel"
+                 aria-labelledby="nav-USRepAdv-tab">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('FabDailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('USDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('FabReport.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('USReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link active " id="nav-FABRepAdv-tab" data-toggle="tab"
-                               href="#nav-FABRepAdv" role="tab" aria-controls="nav-FABRepAdv" aria-selected="true">
+                            <a class="nav-item nav-link active " id="nav-USRepAdv-tab" data-toggle="tab"
+                               href="#nav-USRepAdv" role="tab" aria-controls="nav-USRepAdv" aria-selected="true">
                                 <b>Filtres Avancés</b></a>
 
                         </div>
@@ -70,33 +70,26 @@
                     </div>
                 </div>
                     <div class="table-container">
-                        <table class="col-12 table table-bordered  table-striped" id="FABReportTable" style="min-width: 800px">
+                        <table class="col-12 table table-bordered  table-striped" id="USReportTable" style="min-width: 800px">
                             <tbody id="Reports">
                             <tr id="Filter_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
+                                @if(isset($USReport))
+                                    @foreach($USReport as $item)
                                     <th >{{$item->Filter}}</th>
                                 @endforeach
                                 @endif
                             </tr>
                             <tr id="NBT_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
+                                @if(isset($USReport))
+                                    @foreach($USReport as $item)
                                     <td><span class="text-danger"><b>{{$item->NBT}}</b></span> Tubes</td>
                                     @endforeach
                                 @endif
                             </tr>
-                            <tr id="LT_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
-                                        <td><span class="text-danger"><b>{{$item->LT}}</b></span> Mètres</td>
-                                    @endforeach
-                                @endif
-                            </tr>
-                            <tr id="PT_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
-                                    <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tons</td>
+                            <tr id="RB_TR">
+                                @if(isset($USReport))
+                                    @foreach($USReport as $item)
+                                        <td><span class="text-danger"><b>{{$item->RB}}</b></span> </td>
                                     @endforeach
                                 @endif
                             </tr>
@@ -123,10 +116,10 @@
         $(document).ready(function () {
 
             chartId='myBarChart';
-            labels=@json(array_column($FABReport,'Filter'));
-            data=@json(array_column($FABReport,'LT'));
+            labels=@json(array_column($USReport,'Filter'));
+            data=@json(array_column($USReport,'RB'));
             var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,$('#Filtre').val(),'Mètres',max);
+            DrawChart(chartId,labels,data,$('#Filtre').val(),' nbRB',max);
 
         });
 
@@ -139,7 +132,7 @@
             });
 
             $.ajax({
-                url: "{{url('/FabRepAdv')}}/" + $('#Filtre').val(),
+                url: "{{url('/USRepAdv')}}/" + $('#Filtre').val(),
                 method: 'get',
                 data: {
                 },
@@ -154,22 +147,20 @@
                         $('#Reports').append(
                             '<tr id="Filter_TR"></tr>'+
                             '<tr id="NBT_TR"></tr>'+
-                            '<tr id="PT_TR"></tr>'  +
-                            '<tr id="LT_TR"></tr>'   ) ;
+                            '<tr id="RB_TR"></tr>'     ) ;
 
                         result.reports.forEach(function (item) {
                             $('#Filter_TR').append( ' <th  >' + item.Filter + '</th> ');
                             $('#NBT_TR').append( '<td><span class="text-danger"><b>' + item.NBT + '</b></span> Tubes</td> ');
-                            $('#PT_TR').append( '<td><span class="text-danger"><b>' + item.PT + '</b></span> Tons</td>');
-                            $('#LT_TR').append( '<td><span class="text-danger"><b>' + item.LT + '</b></span> Mètres</td>');
+                            $('#RB_TR').append( '<td><span class="text-danger"><b>' + item.RB + '</b></span> </td>');
 
 
                             labels.push(item.Filter);
-                            data.push(item.LT);
+                            data.push(item.RB);
                         });
                          chartId = 'myBarChart';
                         var max = Math.max.apply(Math, data);
-                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Mètres', max);
+                        DrawChart(chartId, labels, data, $('#Filter').val(), ' nbRB', max);
                     }
                 },
                 error: function (result) {

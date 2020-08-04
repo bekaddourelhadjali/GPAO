@@ -128,7 +128,7 @@ class RapportsController extends Controller
     public function destroy($id)
     {
         $rapport=\App\Fabrication\Rapport::find($id);
-        if(sizeof($rapport->rapprods) || sizeof($rapport->arrets || sizeof($rapport->m3) )){
+        if(sizeof($rapport->rapprods) || sizeof($rapport->arrets  )|| sizeof($rapport->m3)){
         }else{
             foreach($rapport->operateurs as $operateur){
                 $operateur->delete();

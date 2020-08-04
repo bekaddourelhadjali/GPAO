@@ -120,13 +120,24 @@ Route::resource('arret_machine', 'Fabrication\ArretMachineController');
 Route::resource('FabReport', 'Reports\FAB\FABReportController')->middleware('auth');
 Route::resource('FabRepAdv', 'Reports\FAB\FABRepAdvController')->middleware('auth');
 Route::resource('FabDailyRep', 'Reports\FAB\FABDailyRepController')->middleware('auth');
+
+//US
+Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController')->middleware('Rapports:US');
+Route::resource('Ultrason', 'Fabrication\UltrasonController')->middleware('UnAuthorized:US');
+Route::resource('USReport', 'Reports\US\USReportController')->middleware('auth');
+Route::resource('USRepAdv', 'Reports\US\USRepAdvController')->middleware('auth');
+Route::resource('USDailyRep', 'Reports\US\USDailyRepController')->middleware('auth');
+
+//Visuel
+Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController')->middleware('Rapports:Z02');
+Route::resource('visuels', 'Visuel\VisuelsController')->middleware('UnAuthorized:Z02');
+Route::resource('VisuelReport', 'Reports\Visuel\VisuelReportController')->middleware('auth');
+Route::resource('VisuelRepAdv', 'Reports\Visuel\VisuelRepAdvCon²troller')->middleware('auth');
+Route::resource('VisuelDailyRep', 'Reports\Visuel\VisuelDailyRepController')->middleware('auth');
+
 //Rapports
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
-Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController')->middleware('Rapports:US');
-Route::resource('Ultrason', 'Fabrication\UltrasonController')->middleware('UnAuthorized:US');
-Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController')->middleware('Rapports:Z02');
-Route::resource('visuels', 'Visuel\VisuelsController')->middleware('UnAuthorized:Z02');
 Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller')->middleware('Rapports:Z03');
 Route::resource('RX1', 'RX1\RX1Controller')->middleware('UnAuthorized:Z03');
 Route::resource('Reparation', 'RepM17\ReparationController');
@@ -432,3 +443,6 @@ Route::post('bobineGet', function (\Illuminate\Http\Request $request) {
         return response()->json(array('error' => "Coulee n'existe pas"), 404);
     }
 })->name('bobineGet');
+Route::fallback(function () {
+    return \redirect('UnAuthorized');
+});

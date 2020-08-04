@@ -28,18 +28,18 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-FABRepAdv" role="tabpanel"
-                 aria-labelledby="nav-FABRepAdv-tab">
+            <div class="tab-pane fade show active" id="nav-VisuelRepAdv" role="tabpanel"
+                 aria-labelledby="nav-VisuelRepAdv-tab">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('FabDailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('VisuelDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('FabReport.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('VisuelReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link active " id="nav-FABRepAdv-tab" data-toggle="tab"
-                               href="#nav-FABRepAdv" role="tab" aria-controls="nav-FABRepAdv" aria-selected="true">
+                            <a class="nav-item nav-link active " id="nav-VisuelRepAdv-tab" data-toggle="tab"
+                               href="#nav-VisuelRepAdv" role="tab" aria-controls="nav-VisuelRepAdv" aria-selected="true">
                                 <b>Filtres Avancés</b></a>
 
                         </div>
@@ -70,32 +70,32 @@
                     </div>
                 </div>
                     <div class="table-container">
-                        <table class="col-12 table table-bordered  table-striped" id="FABReportTable" style="min-width: 800px">
+                        <table class="col-12 table table-bordered  table-striped" id="VisuelReportTable" style="min-width: 800px">
                             <tbody id="Reports">
                             <tr id="Filter_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
+                                @if(isset($VisuelReport))
+                                    @foreach($VisuelReport as $item)
                                     <th >{{$item->Filter}}</th>
                                 @endforeach
                                 @endif
                             </tr>
                             <tr id="NBT_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
+                                @if(isset($VisuelReport))
+                                    @foreach($VisuelReport as $item)
                                     <td><span class="text-danger"><b>{{$item->NBT}}</b></span> Tubes</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="LT_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
+                                @if(isset($VisuelReport))
+                                    @foreach($VisuelReport as $item)
                                         <td><span class="text-danger"><b>{{$item->LT}}</b></span> Mètres</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="PT_TR">
-                                @if(isset($FABReport))
-                                    @foreach($FABReport as $item)
+                                @if(isset($VisuelReport))
+                                    @foreach($VisuelReport as $item)
                                     <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tons</td>
                                     @endforeach
                                 @endif
@@ -123,8 +123,8 @@
         $(document).ready(function () {
 
             chartId='myBarChart';
-            labels=@json(array_column($FABReport,'Filter'));
-            data=@json(array_column($FABReport,'LT'));
+            labels=@json(array_column($VisuelReport,'Filter'));
+            data=@json(array_column($VisuelReport,'LT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,$('#Filtre').val(),'Mètres',max);
 
@@ -139,7 +139,7 @@
             });
 
             $.ajax({
-                url: "{{url('/FabRepAdv')}}/" + $('#Filtre').val(),
+                url: "{{url('/VisuelRepAdv')}}/" + $('#Filtre').val(),
                 method: 'get',
                 data: {
                 },

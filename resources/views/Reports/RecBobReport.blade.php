@@ -85,7 +85,7 @@
                                                      @endif </span>
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <span id="MonthNBT"> @if(isset($MonthRep)){{$MonthRep->NBT}} @endif</span>
+                                            &nbsp;<span id="MonthNBT"> @if(isset($MonthRep)){{$MonthRep->NBT}} @endif</span>
                                         </div>
                                     </div>
                                     <div class="col-auto">

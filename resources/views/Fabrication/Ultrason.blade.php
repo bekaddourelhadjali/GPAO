@@ -170,10 +170,11 @@
                 <div class="col-md-3 col-sm-6 ">
                     <div class="row">Equipe: &nbsp; <span class="valeur"> {{$rapport->Equipe}}</span></div>
                     <div class="row">Poste: &nbsp; <span class="valeur"> {{$rapport->Poste}}</span></div>
+                    <div class="row">Machine: &nbsp; <span class="valeur"> {{$rapport->Machine}}</span></div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="row">Agent1: &nbsp; <span class="valeur"> {{$rapport->NomAgents}}
-                            / {{$rapport->CodeAgent}}</span></div>
+                       </span></div>
                     <div class="row">Nº Rapport: &nbsp; <span class="valeur">{{$rapport->Numero}}</span></div>
                 </div>
 

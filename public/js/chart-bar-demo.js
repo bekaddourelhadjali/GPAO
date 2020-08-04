@@ -28,18 +28,19 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 // Bar Chart Example
-function DrawChart(chartId,labels,data,unit,label,max){
+function DrawChart(chartId,labels,data,unit,label,max,type="bar",backgroundColor="#FF4500"
+                   ,hoverBackgroundColor= "#FF2000",borderColor="#FF4500"){
 
     var ctx = document.getElementById(chartId);
    var myBarChart=new Chart(ctx, {
-  type: 'bar',
+  type: type,
   data: {
     labels: labels,
     datasets: [{
       label: label,
-      backgroundColor: "#FF4500",
-      hoverBackgroundColor: "#FF2000",
-      borderColor: "#FF4500",
+      backgroundColor: backgroundColor,
+      hoverBackgroundColor:hoverBackgroundColor,
+      borderColor:borderColor ,
       data: data,
     }],
   },

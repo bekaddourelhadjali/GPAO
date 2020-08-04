@@ -197,8 +197,8 @@
                                                 <td>{{$item->Ntube}}</td>
                                                 <td>{{$item->Longueur}}</td>
                                                 <td>{{$item->Poids}}</td>
-                                                <td>{{$item->RB}}</td>
-                                                <td>{{$item->Macro}}</td>
+                                                <td>{{(int)$item->RB}}</td>
+                                                <td>{{(int)$item->Macro}}</td>
                                                 <td>{{$item->Observation}}</td>
                                                 <td>{{$item->User}}</td>
                                             </tr>
@@ -435,8 +435,8 @@
                                 item.Ntube,
                                 item.Longueur,
                                 item.Poids,
-                                item.RB,
-                                item.Macro,
+                                +item.RB,
+                                +item.Macro,
                                 item.Observation,
                                 item.User]
                             ).draw(false);

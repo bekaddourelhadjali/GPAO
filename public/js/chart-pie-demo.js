@@ -11,8 +11,8 @@ function drawPieChart(chartID,data,labels){
             labels: labels,
             datasets: [{
                 data: data,
-                backgroundColor: ['#f00', '#4e73df'],
-                hoverBackgroundColor: ['#f11', '#2e59d9'],
+                backgroundColor: ['#e00', '#1cc88a'],
+                hoverBackgroundColor: ['#ff1111', '#1ce88a'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
             }],
         },

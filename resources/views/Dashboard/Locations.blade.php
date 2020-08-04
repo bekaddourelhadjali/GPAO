@@ -59,6 +59,7 @@
                                     <option value="RecBob">Reception Bobine</option>
                                     <option value="Z00">Préparation Bobine</option>
                                     <option value="Z01">Fabrication</option>
+                                    <option value="US">US Automatique</option>
                                     <option value="Z02">Contrôle Visuel</option>
                                     <option value="Z03">RX1</option>
                                     <option value="Z04">Réparation</option>
