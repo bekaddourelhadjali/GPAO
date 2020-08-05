@@ -201,7 +201,7 @@
                             <div class=" col-lg-9 col-sm-12">
                                 <div class="form-group ">
                                     <label class="col-lg-12" style="padding-left: 0">Detail Projet</label>
-                                    <select class="form-control col-12" id="detail_project" name="detail_project">
+                                    <select class="form-control col-12"  id="Did" name="Did">
                                         @foreach($details as $detail)
                                             <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                         @endforeach
@@ -504,7 +504,7 @@
                                 method: 'post',
                                 data: {
                                     _token: '{{csrf_token()}}',
-                                    Did: $('#detail_project').val(),
+                                    Did: $('#Did').val(),
                                     NumeroRap: $('#NumRap').val(),
                                     ntube: ntube,
                                     bis: $('#bis:checked').length > 0,
@@ -553,7 +553,7 @@
                                 data: {
                                     _method: 'put',
                                     _token: '{{csrf_token()}}',
-                                    Did: $('#detail_project').val(),
+                                    Did: $('#Did').val(),
                                     ntube: ntube,
                                     bis: $('#bis:checked').length > 0,
                                     Obs: obs,
@@ -685,7 +685,7 @@
                                 $('#Numero').val(id);
                                 rxdef = 0;
                                 rx1 = result.rx1;
-                                $('#detail_project').val(rx1.Did);
+                                $('#Did').val(rx1.Did);
                                 $('#ntube').val(rx1.Tube);
                                 Defauts = [];
                                 $('#ObsTube').val($('#Observation'+id).html());

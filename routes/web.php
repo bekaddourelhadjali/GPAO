@@ -103,7 +103,7 @@ Route::resource('details_project', 'Dashboard\ProjectDetailsController');
 Route::resource('RecBobReport', 'Reports\RecBobReportController')->middleware('auth');
 Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController')->middleware('auth');
 Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController')->middleware('auth');
-Route::resource('ContRecBob', 'Controle\ContRecBobController');
+Route::resource('ContRecBob', 'Controle\ContRecBobController')->middleware('ChefProd:000');
 Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController')->middleware('Rapports:RecBob');
 Route::resource('RecBob', 'Reception\RecBobController')->middleware('ChefProd:RecBob');
 //M3
@@ -123,27 +123,41 @@ Route::resource('FabDailyRep', 'Reports\FAB\FABDailyRepController')->middleware(
 
 //US
 Route::resource('rapports_Ultrason', 'Fabrication\UltrasonRapportsController')->middleware('Rapports:US');
-Route::resource('Ultrason', 'Fabrication\UltrasonController')->middleware('UnAuthorized:US');
+Route::resource('Ultrason', 'Fabrication\UltrasonController')->middleware('ChefCont:US');
 Route::resource('USReport', 'Reports\US\USReportController')->middleware('auth');
 Route::resource('USRepAdv', 'Reports\US\USRepAdvController')->middleware('auth');
 Route::resource('USDailyRep', 'Reports\US\USDailyRepController')->middleware('auth');
 
 //Visuel
 Route::resource('rapports_visuels', 'Visuel\RapportsVisuelsController')->middleware('Rapports:Z02');
-Route::resource('visuels', 'Visuel\VisuelsController')->middleware('UnAuthorized:Z02');
+Route::resource('visuels', 'Visuel\VisuelsController')->middleware('ChefCont:Z02');
 Route::resource('VisuelReport', 'Reports\Visuel\VisuelReportController')->middleware('auth');
 Route::resource('VisuelRepAdv', 'Reports\Visuel\VisuelRepAdvController')->middleware('auth');
 Route::resource('VisuelDailyRep', 'Reports\Visuel\VisuelDailyRepController')->middleware('auth');
 
+//RX1
+Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller')->middleware('Rapports:Z03');
+Route::resource('RX1', 'RX1\RX1Controller')->middleware('ChefProd:Z01');
+Route::resource('RX1Report', 'Reports\RX1\RX1ReportController')->middleware('auth');
+Route::resource('RX1RepAdv', 'Reports\RX1\RX1RepAdvController')->middleware('auth');
+Route::resource('RX1DailyRep', 'Reports\RX1\RX1DailyRepController')->middleware('auth');
+
+//Reparation
+Route::resource('Reparation', 'RepM17\ReparationController')->middleware('ChefProd:Z01');
+Route::resource('rapports_Rep', 'RepM17\ReparationRapportController')->middleware('Rapports:Z04');
+Route::resource('RepReport', 'Reports\Rep\RepReportController')->middleware('auth');
+Route::resource('RepRepAdv', 'Reports\Rep\RepRepAdvController')->middleware('auth');
+Route::resource('RepDailyRep', 'Reports\Rep\RepDailyRepController')->middleware('auth');
+
+//Chutage M17
+Route::resource('rapports_M17', 'RepM17\M17RapportController')->middleware('Rapports:Z05');
+Route::resource('M17', 'RepM17\M17Controller')->middleware('UnAuthorized:Z05');
+Route::resource('M17Report', 'Reports\M17\M17ReportController')->middleware('auth');
+Route::resource('M17RepAdv', 'Reports\M17\M17RepAdvController')->middleware('auth');
+Route::resource('M17DailyRep', 'Reports\M17\M17DailyRepController')->middleware('auth');
 //Rapports
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
-Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller')->middleware('Rapports:Z03');
-Route::resource('RX1', 'RX1\RX1Controller')->middleware('UnAuthorized:Z03');
-Route::resource('Reparation', 'RepM17\ReparationController');
-Route::resource('rapports_Rep', 'RepM17\ReparationRapportController')->middleware('Rapports:Z04');
-Route::resource('rapports_M17', 'RepM17\M17RapportController')->middleware('Rapports:Z05');
-Route::resource('M17', 'RepM17\M17Controller')->middleware('UnAuthorized:Z05');
 Route::resource('rapports_M24', 'Hydro\M24RapportController')->middleware('Rapports:Z06');
 Route::resource('M24', 'Hydro\M24Controller')->middleware('UnAuthorized:Z06');
 Route::resource('rapports_M25', 'Chanf\M25RapportController')->middleware('Rapports:Z07');

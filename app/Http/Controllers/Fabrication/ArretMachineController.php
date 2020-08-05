@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Fabrication;
 
 use App\Dashboard\RapportsEdits;
 use App\Fabrication\ArretMachine;
+use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -43,8 +44,9 @@ class ArretMachineController extends Controller
     {
         $arret_machine=new ArretMachine();
         $rapport=Rapport::find($request->NumRap);
-        $arret_machine->Pid=$rapport->Pid;
-        $arret_machine->Did=$rapport->Did;
+
+        $arret_machine->Pid=detailprojet::find($request->Did)->Pid;
+        $arret_machine->Did=$request->Did;
         $arret_machine->NumRap=$request->NumRap;
         $arret_machine->Machine=$rapport->Machine;
         $arret_machine->TypeArret=$request->type_arret;
