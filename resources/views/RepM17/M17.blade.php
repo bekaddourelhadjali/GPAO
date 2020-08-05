@@ -556,11 +556,7 @@
                     }
                 });
             });
-            $('#imprimer').click(function (e) {
-                e.preventDefault();
 
-                window.open('{{route("printRX1Rap",["id"=>$rapport->Numero])}}', '_blank');
-            });
 
         });
 

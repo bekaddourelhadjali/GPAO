@@ -137,13 +137,13 @@ Route::resource('VisuelDailyRep', 'Reports\Visuel\VisuelDailyRepController')->mi
 
 //RX1
 Route::resource('rapports_RX1', 'RX1\RapportsRX1Controller')->middleware('Rapports:Z03');
-Route::resource('RX1', 'RX1\RX1Controller')->middleware('ChefProd:Z01');
+Route::resource('RX1', 'RX1\RX1Controller')->middleware('ChefCont:Z03');
 Route::resource('RX1Report', 'Reports\RX1\RX1ReportController')->middleware('auth');
 Route::resource('RX1RepAdv', 'Reports\RX1\RX1RepAdvController')->middleware('auth');
 Route::resource('RX1DailyRep', 'Reports\RX1\RX1DailyRepController')->middleware('auth');
 
 //Reparation
-Route::resource('Reparation', 'RepM17\ReparationController')->middleware('ChefProd:Z01');
+Route::resource('Reparation', 'RepM17\ReparationController')->middleware('ChefProd:Z04');
 Route::resource('rapports_Rep', 'RepM17\ReparationRapportController')->middleware('Rapports:Z04');
 Route::resource('RepReport', 'Reports\Rep\RepReportController')->middleware('auth');
 Route::resource('RepRepAdv', 'Reports\Rep\RepRepAdvController')->middleware('auth');
@@ -151,19 +151,36 @@ Route::resource('RepDailyRep', 'Reports\Rep\RepDailyRepController')->middleware(
 
 //Chutage M17
 Route::resource('rapports_M17', 'RepM17\M17RapportController')->middleware('Rapports:Z05');
-Route::resource('M17', 'RepM17\M17Controller')->middleware('UnAuthorized:Z05');
+Route::resource('M17', 'RepM17\M17Controller')->middleware('ChefProd:Z05');
 Route::resource('M17Report', 'Reports\M17\M17ReportController')->middleware('auth');
 Route::resource('M17RepAdv', 'Reports\M17\M17RepAdvController')->middleware('auth');
 Route::resource('M17DailyRep', 'Reports\M17\M17DailyRepController')->middleware('auth');
+
+//M24
+Route::resource('rapports_M24', 'Hydro\M24RapportController')->middleware('Rapports:Z06');
+Route::resource('M24', 'Hydro\M24Controller')->middleware('ChefProd:Z06');
+Route::resource('M24Report', 'Reports\M24\M24ReportController')->middleware('auth');
+Route::resource('M24RepAdv', 'Reports\M24\M24RepAdvController')->middleware('auth');
+Route::resource('M24DailyRep', 'Reports\M24\M24DailyRepController')->middleware('auth');
+
+//M25
+Route::resource('rapports_M25', 'Chanf\M25RapportController')->middleware('Rapports:Z07');
+Route::resource('M25', 'Chanf\M25Controller')->middleware('ChefProd:Z07');
+Route::resource('M25Report', 'Reports\M25\M25ReportController')->middleware('auth');
+Route::resource('M25RepAdv', 'Reports\M25\M25RepAdvController')->middleware('auth');
+Route::resource('M25DailyRep', 'Reports\M25\M25DailyRepController')->middleware('auth');
+
+//NDT
+Route::resource('rapports_Ndt', 'Ndt\NdtRapportController')->middleware('Rapports:Z08');
+Route::resource('Ndt', 'Ndt\NdtController')->middleware('ChefCont:Z08');
+Route::resource('NDTReport', 'Reports\NDT\NDTReportController')->middleware('auth');
+Route::resource('NDTRepAdv', 'Reports\NDT\NDTRepAdvController')->middleware('auth');
+Route::resource('NDTDailyRep', 'Reports\NDT\NDTDailyRepController')->middleware('auth');
+
+
 //Rapports
 Route::resource('ContBobine', 'Controle\ContBobineController');
 Route::resource('ContM3', 'Controle\ContM3Controller');
-Route::resource('rapports_M24', 'Hydro\M24RapportController')->middleware('Rapports:Z06');
-Route::resource('M24', 'Hydro\M24Controller')->middleware('UnAuthorized:Z06');
-Route::resource('rapports_M25', 'Chanf\M25RapportController')->middleware('Rapports:Z07');
-Route::resource('M25', 'Chanf\M25Controller')->middleware('UnAuthorized:Z07');
-Route::resource('rapports_Ndt', 'Ndt\NdtRapportController')->middleware('Rapports:Z08');
-Route::resource('Ndt', 'Ndt\NdtController')->middleware('UnAuthorized:Z08');
 Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller')->middleware('Rapports:Z09');
 Route::resource('RX2', 'RX2\RX2Controller')->middleware('UnAuthorized:Z09');
 Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController')->middleware('Rapports:Z10');

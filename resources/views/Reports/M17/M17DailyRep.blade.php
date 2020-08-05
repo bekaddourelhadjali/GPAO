@@ -31,19 +31,19 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-RepReport" role="tabpanel"
-                 aria-labelledby="nav-RepReport-tab">
+            <div class="tab-pane fade show active" id="nav-M17Report" role="tabpanel"
+                 aria-labelledby="nav-M17Report-tab">
 
                 <section>
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
-                            <a class="nav-item nav-link active " id="nav-RepReport-tab" data-toggle="tab"
-                               href="#nav-RepReport" role="tab" aria-controls="nav-RepReport"
+                            <a class="nav-item nav-link active " id="nav-M17Report-tab" data-toggle="tab"
+                               href="#nav-M17Report" role="tab" aria-controls="nav-M17Report"
                                aria-selected="true"><b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  " href="{{route('RepReport.index')}}">
+                            <a class="nav-item nav-link  " href="{{route('M17Report.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  " href="{{route('RepRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link  " href="{{route('M17RepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
                     </nav>
@@ -119,6 +119,47 @@
                         </div>
                     </div>
 
+                    <div class="col-md-4 py-1">
+                        <div class="card border-left-success shadow h-100 ">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-success text-uppercase mb-1">
+
+                                            Longueur total des Chutes
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <span id="LT">@if(isset($LT)){{($LT)}} @endif</span>
+                                            Mètres
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-ruler-horizontal fa-2x text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 py-1">
+                        <div class="card border-left-warning shadow h-100 ">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-warning text-uppercase mb-1">
+                                            poids total des Chutes
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <span id="PT">@if(isset($PT)){{($PT)}} @endif</span>
+                                            Tonnes
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-balance-scale fa-2x text-warning"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row" id="OperationsReport">
                 @if(isset($OperationsReport))
@@ -144,8 +185,8 @@
                 <section>
                     <div class="row">
                         <div class="col-12">
-                            <div class="table-container" id="RepReportTableContainer">
-                                <table class="table table-bordered table-striped" id="RepReportTable" width="120%"
+                            <div class="table-container" id="M17ReportTableContainer">
+                                <table class="table table-bordered table-striped" id="M17ReportTable"
                                        cellspacing="0">
 
                                     <thead style="cursor: pointer" id="TheadID">
@@ -154,6 +195,8 @@
                                         <th>Machine</th>
                                         <th>Tube</th>
                                         <th>Bis</th>
+                                        <th>LongueurCh</th>
+                                        <th>PoidsCh</th>
                                         <th>Defauts</th>
                                         <th>Observation</th>
                                         <th>Agent</th>
@@ -164,12 +207,14 @@
                                     @if(isset($reports))
 
                                         @foreach($reports as $item)
-                                            <tr id="report{{$item->Id}}" rapportEtat="{{$item->Etat}}"
+                                            <tr id="report{{$item->Numero}}" rapportEtat="{{$item->Etat}}"
                                                 rapportId="{{$item->NumeroRap}}">
                                                 <td>Poste {{$item->Poste}}</td>
                                                 <td>{{$item->Machine}}</td>
                                                 <td>{{$item->Tube}}</td>
                                                 <td>{{(int)$item->Bis}}</td>
+                                                <td>{{$item->Longueur}}</td>
+                                                <td>{{$item->Poids}}</td>
                                                 <td>{{$item->Defauts}}</td>
                                                 <td>{{$item->Observation}}</td>
                                                 <td>{{$item->User}}</td>
@@ -201,7 +246,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <div class="table-container" id="RepReportTableContainer">
+                            <div class="table-container" id="M17ReportTableContainer">
                                 <table class="table table-borderless table-striped" id="FoncTable"
                                        cellspacing="0">
 
@@ -300,7 +345,7 @@
     <script src="{{asset('js/chart-bar-demo.js')}}"></script>
     <script>
 
-        var table = $('#RepReportTable').DataTable({
+        var table = $('#M17ReportTable').DataTable({
             "bDestroy": true,
             "bRetrieve": true
         });
@@ -322,7 +367,7 @@
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
                 const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
-                var win = window.open("{{url('/Reparation/')}}/" + id, '_blank');
+                var win = window.open("{{url('/M17/')}}/" + id, '_blank');
                 if (win) {
                     //Browser has allowed it to be opened
                     win.focus();
@@ -355,8 +400,8 @@
                     $('#tr-actions .reportEdit').each(function () {
                         $(this).attr('id', 'report' + id + 'Edit');
                     });
-                    var height = ((($(this).height()) - $('#tr-actions').height()) / 2) + $('#RepReportTable_wrapper .row').height() + 5;
-                    var width = (($('#RepReportTableContainer').width() - $('#tr-actions').width()) / 2);
+                    var height = ((($(this).height()) - $('#tr-actions').height()) / 2) + $('#M17ReportTable_wrapper .row').height() + 5;
+                    var width = (($('#M17ReportTableContainer').width() - $('#tr-actions').width()) / 2);
                     if ($(this).attr('rapportEtat') == 'C') {
                         $('#tr-actions #report' + id + 'Delete').html("Déclôturer").addClass("btn-danger").removeClass("btn-success");
 
@@ -440,7 +485,7 @@
             });
 
             $.ajax({
-                url: "{{url('/RepDailyRep')}}/" + $('#date').val(),
+                url: "{{url('/M17DailyRep')}}/" + $('#date').val(),
                 method: 'get',
                 data: {
                     poste: $('#poste').val(),
@@ -461,6 +506,8 @@
                     $('#DefautsTable tbody').html('');
                     table.clear().draw();
                     $('#NBT').html('');
+                    $('#PT').html('');
+                    $('#LT').html('');
                     $('#FoncTable').DataTable().clear().draw();
                     if(result.OperationsReport.length>0){
                         result.OperationsReport.forEach(function (item) {
@@ -483,21 +530,25 @@
                     }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RepReportTable').DataTable().row.add([
+                            $('#M17ReportTable').DataTable().row.add([
                                 'Poste ' + item.Poste,
                                 item.Machine,
                                 item.Tube,
                                 +item.Bis,
+                                item.Longueur,
+                                item.Poids,
                                 item.Defauts,
                                 item.Observation,
                                 item.User]
                             ).draw(false);
-                            $('#RepReportTable tbody tr:last-child')
-                                .attr('id', 'report' + item.Id).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
+                            $('#M17ReportTable tbody tr:last-child')
+                                .attr('id', 'report' + item.Numero).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
                         });
 
 
                         $('#NBT').html(result.nbT);
+                        $('#PT').html(result.PT);
+                        $('#LT').html(result.LT);
 
                         addActions();
                     }

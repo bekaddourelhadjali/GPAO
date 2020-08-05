@@ -5,6 +5,7 @@ namespace App\Http\Controllers\RepM17;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Defauts;
+use App\Visuel\DetailDefauts;
 use App\Visuel\M17;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -71,6 +72,19 @@ class M17Controller extends Controller
         $m17->Computer=gethostname();
         $m17->DateSaisie = date('Y-m-d H:i:s');
         if ($m17->save()) {
+            foreach ( $request->Defauts as $item) {
+                $detailDefaut = new \App\Visuel\DetailDefauts();
+                $detailDefaut->Pid = $m17->Pid;
+                $detailDefaut->Did = $m17->Did;
+                $detailDefaut->Zone = "Z05";
+                $detailDefaut->NumRap = $request->NumeroRap;
+                $detailDefaut->NumVisuel = $m17->Id;
+                $detailDefaut->Tube = $m17->Tube;
+                $detailDefaut->Opr = "Chuté";
+                $detailDefaut->Defaut = $item;
+                $detailDefaut->NbOpr = 0;
+                $detailDefaut->save();
+            }
             $tube->Z05 = true;
             $tube->save();
             if ($m17->Bis == "true") $m17->Bis_t = 'checked'; else $m17->Bis_t = "";
@@ -144,7 +158,26 @@ class M17Controller extends Controller
         $m17->LongCh = $request->LongCh;
         $m17->Observation = $request->Observation;
         $m17->DateSaisie = date('Y-m-d H:i:s');
+        $oldDefs = $m17->Defs;
+        $defauts=$request->Defauts;
         if ($m17->save()) {
+
+            foreach ( $defauts as $item) {
+                $detailDefaut = new \App\Visuel\DetailDefauts();
+                $detailDefaut->Pid = $m17->Pid;
+                $detailDefaut->Did = $m17->Did;
+                $detailDefaut->Zone = "Z05";
+                $detailDefaut->NumRap = $request->NumeroRap;
+                $detailDefaut->NumVisuel = $m17->Id;
+                $detailDefaut->Tube = $m17->Tube;
+                $detailDefaut->Opr = "Chuté";
+                $detailDefaut->Defaut = $item;
+                $detailDefaut->NbOpr = 0;
+                $detailDefaut->save();
+            }
+            foreach ($oldDefs as $olddef) {
+                DetailDefauts::destroy($olddef->id);
+            }
             if ($m17->Bis == "true") $m17->Bis_t = 'checked'; else $m17->Bis_t = "";
             return response()->json(array('m17' => $m17), 200);
         } else {
@@ -161,11 +194,13 @@ class M17Controller extends Controller
     public function destroy($id)
     {
         $m17 = \App\Visuel\M17::findOrFail($id);
-
+        $oldDefs=$m17->defs;
         if ($m17->delete()) {
             $m17->tube->Z05 = false;
             $m17->tube->save();
-
+            foreach ($oldDefs as $olddef) {
+                DetailDefauts::destroy($olddef->id);
+            }
             return response()->json(array('success' => true), 200);
 
         } else {

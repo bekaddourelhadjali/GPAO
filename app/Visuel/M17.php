@@ -14,4 +14,8 @@ class M17 extends Model
     public function tube(){
         return $this->hasOne('App\Fabrication\Tube','NumTube','NumTube');
     }
+    public function Defs(){
+    return $this->hasMany('App\Visuel\DetailDefauts','NumVisuel','Id')->where("Zone","=","Z05")
+        ->select(['id','Opr', 'Defaut'  ]);
+}
 }

@@ -31,19 +31,19 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-RepReport" role="tabpanel"
-                 aria-labelledby="nav-RepReport-tab">
+            <div class="tab-pane fade show active" id="nav-NDTReport" role="tabpanel"
+                 aria-labelledby="nav-NDTReport-tab">
 
                 <section>
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
-                            <a class="nav-item nav-link active " id="nav-RepReport-tab" data-toggle="tab"
-                               href="#nav-RepReport" role="tab" aria-controls="nav-RepReport"
+                            <a class="nav-item nav-link active " id="nav-NDTReport-tab" data-toggle="tab"
+                               href="#nav-NDTReport" role="tab" aria-controls="nav-NDTReport"
                                aria-selected="true"><b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  " href="{{route('RepReport.index')}}">
+                            <a class="nav-item nav-link  " href="{{route('NDTReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  " href="{{route('RepRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link  " href="{{route('NDTRepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
                     </nav>
@@ -118,34 +118,12 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class="row" id="OperationsReport">
-                @if(isset($OperationsReport))
-                        @foreach($OperationsReport as $item)
-                            <div class=" col-lg-3 col-md-4 col-6 py-1">
-                                <div class="card border-bottom-danger shadow text-center h-100 ">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">
-                                                    opr: <span class="Operation text-danger ">{{$item->Opr}}</span>&nbsp
-                                                    nb: <span  class="NBT text-danger">{{$item->NBT}}</span>&nbsp
-                                                     <span  class="VT text-danger">({{$item->VT}})</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                @endif
                 </div>
                 <section>
                     <div class="row">
                         <div class="col-12">
-                            <div class="table-container" id="RepReportTableContainer">
-                                <table class="table table-bordered table-striped" id="RepReportTable" width="120%"
+                            <div class="table-container" id="NDTReportTableContainer">
+                                <table class="table table-bordered table-striped" id="NDTReportTable"
                                        cellspacing="0">
 
                                     <thead style="cursor: pointer" id="TheadID">
@@ -154,7 +132,10 @@
                                         <th>Machine</th>
                                         <th>Tube</th>
                                         <th>Bis</th>
-                                        <th>Defauts</th>
+                                        <th>SNUP</th>
+                                        <th>OPR</th>
+                                        <th>REP.D</th>
+                                        <th>REP.G</th>
                                         <th>Observation</th>
                                         <th>Agent</th>
                                     </tr>
@@ -170,7 +151,10 @@
                                                 <td>{{$item->Machine}}</td>
                                                 <td>{{$item->Tube}}</td>
                                                 <td>{{(int)$item->Bis}}</td>
-                                                <td>{{$item->Defauts}}</td>
+                                                <td>{{$item->Snup}}</td>
+                                                <td>{{$item->OPR}}</td>
+                                                <td>{{$item->Repd}}</td>
+                                                <td>{{$item->Repg}}</td>
                                                 <td>{{$item->Observation}}</td>
                                                 <td>{{$item->User}}</td>
                                             </tr>
@@ -201,7 +185,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <div class="table-container" id="RepReportTableContainer">
+                            <div class="table-container" id="NDTReportTableContainer">
                                 <table class="table table-borderless table-striped" id="FoncTable"
                                        cellspacing="0">
 
@@ -248,38 +232,7 @@
 
                     </div>
                 </section>
-                <section>
-                    <h2 class="text-primary ">Rapport des Defauts</h2>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-lg-4">
-                            <div class="table-container">
-                                <table class="table table-borderless table-striped" id="DefautsTable"
-                                       cellspacing="0">
-                                    <thead class="text-white">
-                                    <th>Defaut</th>
-                                    <th>NB_Total</th>
-                                    </thead>
-                                    <tbody>
-                                    @if(isset($DefautsReport))
-                                            @foreach($DefautsReport as $item)
-                                                <tr>
-                                                    <td>{{$item->Defaut}}</td>
-                                                    <td>{{$item->NBT}}</td>
-                                                </tr>
-                                                @endforeach
-                                    @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="chart-bar" >
-                                <canvas id="myBarChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+
             </div>
         </div>
     </div>
@@ -300,7 +253,7 @@
     <script src="{{asset('js/chart-bar-demo.js')}}"></script>
     <script>
 
-        var table = $('#RepReportTable').DataTable({
+        var table = $('#NDTReportTable').DataTable({
             "bDestroy": true,
             "bRetrieve": true
         });
@@ -308,21 +261,17 @@
         $('#FoncTable').DataTable();
         $(document).ready(function () {
 
+
             chartId = 'myPieChart';
             labels =@json( $ChartLabels);
             data =@json( $ChartData) ;
             drawPieChart(chartId, data, labels);
-            chartId='myBarChart';
-            labels=@json(array_column($DefautsReport,'Defaut'));
-            data=@json(array_column($DefautsReport,'NBT'));
-            var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
+
             addActions();
-            console.log(max);
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
                 const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
-                var win = window.open("{{url('/Reparation/')}}/" + id, '_blank');
+                var win = window.open("{{url('/Ndt/')}}/" + id, '_blank');
                 if (win) {
                     //Browser has allowed it to be opened
                     win.focus();
@@ -355,8 +304,8 @@
                     $('#tr-actions .reportEdit').each(function () {
                         $(this).attr('id', 'report' + id + 'Edit');
                     });
-                    var height = ((($(this).height()) - $('#tr-actions').height()) / 2) + $('#RepReportTable_wrapper .row').height() + 5;
-                    var width = (($('#RepReportTableContainer').width() - $('#tr-actions').width()) / 2);
+                    var height = ((($(this).height()) - $('#tr-actions').height()) / 2) + $('#NDTReportTable_wrapper .row').height() + 5;
+                    var width = (($('#NDTReportTableContainer').width() - $('#tr-actions').width()) / 2);
                     if ($(this).attr('rapportEtat') == 'C') {
                         $('#tr-actions #report' + id + 'Delete').html("Déclôturer").addClass("btn-danger").removeClass("btn-success");
 
@@ -440,7 +389,7 @@
             });
 
             $.ajax({
-                url: "{{url('/RepDailyRep')}}/" + $('#date').val(),
+                url: "{{url('/NDTDailyRep')}}/" + $('#date').val(),
                 method: 'get',
                 data: {
                     poste: $('#poste').val(),
@@ -449,50 +398,29 @@
 
                 },
                 success: function (result) {
+                    table.clear().draw();
+                    $('#NBT').html('');
                     parent = $('#myPieChart').parent();
                     parent.html('');
                     parent.append('<canvas id="myPieChart"></canvas>');
-                    parent = $('#myBarChart').parent();
-                    parent.html('');
-                    parent.append('<canvas id="myBarChart"></canvas>');
                     labels = [];
                     data = [];
-                    $('#OperationsReport').html('');
-                    $('#DefautsTable tbody').html('');
-                    table.clear().draw();
-                    $('#NBT').html('');
                     $('#FoncTable').DataTable().clear().draw();
-                    if(result.OperationsReport.length>0){
-                        result.OperationsReport.forEach(function (item) {
-                            $('#OperationsReport').append(' <div class=" col-lg-3 col-md-4 col-6 py-1">\n' +
-                                '                                <div class="card border-bottom-danger shadow text-center h-100 ">\n' +
-                                '                                    <div class="card-body">\n' +
-                                '                                        <div class="row no-gutters align-items-center">\n' +
-                                '                                            <div class="col mr-2">\n' +
-                                '                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">\n' +
-                                '                                                    opr: <span class="Operation text-danger ">'+item.Opr+'</span>&nbsp\n' +
-                                '                                                    nb: <span  class="NBT text-danger">'+item.NBT+'</span>&nbsp\n' +
-                                '                                                     <span  class="VT text-danger">('+(item.VT === null ? '' : Number(item.VT))+')</span>\n' +
-                                '                                                </div>\n' +
-                                '                                            </div>\n' +
-                                '                                        </div>\n' +
-                                '                                    </div>\n' +
-                                '                                </div>\n' +
-                                '                            </div>');
-                        });
-                    }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RepReportTable').DataTable().row.add([
+                            $('#NDTReportTable').DataTable().row.add([
                                 'Poste ' + item.Poste,
                                 item.Machine,
                                 item.Tube,
                                 +item.Bis,
-                                item.Defauts,
+                                item.Snup,
+                                item.OPR,
+                                item.Repd,
+                                item.Repg,
                                 item.Observation,
                                 item.User]
                             ).draw(false);
-                            $('#RepReportTable tbody tr:last-child')
+                            $('#NDTReportTable tbody tr:last-child')
                                 .attr('id', 'report' + item.Id).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
                         });
 
@@ -521,21 +449,6 @@
                         labels = result.ChartLabels;
                         data = result.ChartData;
                         drawPieChart(chartId, data, labels);
-                    }
-                    if (result.DefautsReport.length > 0) {
-                        labels=[];
-                        data=[];
-                        result.DefautsReport.forEach(function (item) {
-                                $('#DefautsTable tbody').append('<tr>' +
-                                    '<td>'+item.Defaut+'</td>' +
-                                    '<td>'+item.NBT+'</td>' +
-                                    '</tr> ');
-                            labels.push(item.Defaut);
-                            data.push(item.NBT);
-                              });
-                        max=Math.max.apply(Math, data);
-                        chartId = 'myBarChart';
-                        DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
                     }
                     addActions();
                 },
