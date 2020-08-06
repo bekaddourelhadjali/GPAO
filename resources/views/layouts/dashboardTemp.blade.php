@@ -119,6 +119,7 @@
          background-color: #fe4c50;
          color:white;
        }
+
    </style>
   @yield('style')
 
@@ -237,7 +238,11 @@
       @endif
     <!-- Divider -->
       <hr class="sidebar-divider my-0">
-
+      <li class="nav-item active">
+        <a class="nav-link" href="{{route('ListeGlobale.index')}}">
+          <i class="fas fa-fw fa-file"></i>
+          <span style="font-size: 16px">Liste Globale</span></a>
+      </li>
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <button class="nav-link btn "  data-toggle="modal" data-target="#cardBackdrop" >

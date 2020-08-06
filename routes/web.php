@@ -97,6 +97,7 @@ Route::resource('Operations', 'Dashboard\OperationsController')->middleware('aut
 Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middleware('admin');
 Route::resource('details_project', 'Dashboard\ProjectDetailsController')->middleware('auth')->middleware('admin');
 Route::resource('ContRecBob', 'Controle\ContRecBobController')->middleware('ChefProd:000');
+Route::resource('ListeGlobale', 'Dashboard\ListeGlobaleController')->middleware('auth');
 Route::get('resetpassword',function(){
    return view('auth.passwords.reset',['token'=>csrf_token()]);
 })->name('resetpassword')->middleware('auth');
