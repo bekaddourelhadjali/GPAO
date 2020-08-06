@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Chanf;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\m25;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class M25Controller extends Controller
@@ -62,6 +64,18 @@ class M25Controller extends Controller
         $m25->User = $rapport->NomAgents;
         $m25->DateSaisie = date('Y-m-d H:i:s');
         if ($m25->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$m25->Tube;
+                $Edit->Zone="Z07";
+                $Edit->NumeroRap=$m25->NumeroRap;
+                $Edit->ItemId=$m25->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z07 = true;
             $tube->save();
             if ($m25->Bis == "true") $m25->Bis_t = 'checked'; else $m25->Bis_t = "";
@@ -136,6 +150,18 @@ class M25Controller extends Controller
         $m25->Observation = $request->Observation;
         $m25->DateSaisie = date('Y-m-d H:i:s');
         if ($m25->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$m25->Tube;
+                $Edit->Zone="Z07";
+                $Edit->NumeroRap=$m25->NumeroRap;
+                $Edit->ItemId=$m25->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($m25->Bis == "true") $m25->Bis_t = 'checked'; else $m25->Bis_t = "";
             if ($m25->Debut == "true") $m25->Debut_t = 'checked'; else $m25->Debut_t = "";
             if ($m25->Fin == "true") $m25->Fin_t = 'checked'; else $m25->Fin_t = "";
@@ -154,8 +180,21 @@ class M25Controller extends Controller
     public function destroy($id)
     {
         $m25 = \App\Visuel\M25::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$m25->Tube;
+            $Edit->Zone="Z07";
+            $Edit->NumeroRap=$m25->NumeroRap;
+            $Edit->ItemId=$m25->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($m25->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit->save();
+            }
             $m25->tube->Z07 = false;
             $m25->tube->save();
 

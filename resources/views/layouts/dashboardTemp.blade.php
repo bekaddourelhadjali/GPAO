@@ -22,8 +22,37 @@
        body{
          color: #000;
          background-color: #f8f9fc;
-         font-family: Arial, Helvetica, sans-serif;
+         /*font-family: Arial, Helvetica, sans-serif;*/
 
+       }
+       @media (min-width: 576px) {
+         #CarteTubeModal {
+           max-width: 1000px;
+         }
+       }
+       #cardBackdrop table{
+         min-width: 0;
+       }
+       #CarteTubeTable > tbody > tr > td ,#CarteTubeTable > tbody > tr > th  {
+         border:1px solid blue;
+         font-weight: bold;
+
+       }
+       #CarteTubeTable > tbody > tr > th{
+         background-color: #0275d8;
+         color:#fff;
+       }
+       .TCVal{
+         color: orangered;
+       }
+       .CTCollapse{
+         background-color: #043084;
+         color:#fff;
+         margin-top:15px;
+       }
+       .CTButton{
+         background-color: #043084;
+         color:#fff;
        }
        section{
          background-color: #fff;
@@ -104,11 +133,13 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
+        <div class="sidebar-brand-icon ">
+
+          <img    src="{{asset('img/favicon.jpg')}}"  width="70px" height="70px"/>
+          <div class="sidebar-brand-text mx-3" style="font-size: 20px">GPAO</div>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+
       </a>
 
       <!-- Divider -->
@@ -116,101 +147,110 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{route('home')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+          <span style="font-size: 14px">Dashboard</span></a>
       </li>
 
+    @if(Auth::check() && Auth::user()->role == "Chef Production")
+      <!-- Divider -->
+        <hr class="sidebar-divider" style="margin-bottom: 0"><!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('ContRecBob.index')}}">
+            <i class="fas fa-fw fa-vial"></i>
+            <span style="font-size: 14px">Tests des Bobines</span></a>
+        </li>
+
+    @endif
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
+      <div style="font-size: 12px" class="sidebar-heading text-white">
+        Rapports
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
+      <!-- Nav Item - Fabrication Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" style="cursor: pointer" data-toggle="collapse" data-target="#collapseFabrication" aria-expanded="true" aria-controls="collapseFabrication">
           <i class="fas fa-fw fa-cog"></i>
-          <i class="fa fa-bars"></i>
-          <span>Components</span>
+          <span   style="font-size: 16px" >Fabrication</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
+        <div id="collapseFabrication" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded"  >
+            <h6 class="collapse-header ">Rapports Journaliers:</h6>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RecBobDailyRep.index')}}">Réception Bobine</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M3DailyRep.index')}}">Préparation Bobine</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('FabDailyRep.index')}}">Production</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RepDailyRep.index')}}">Soudure Manuelle</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M17DailyRep.index')}}">Chutage M17</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M24DailyRep.index')}}">Test Hydrostatique M24</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M25DailyRep.index')}}">Chanfreinage M25</a>
           </div>
         </div>
       </li>
 
-      <!-- Nav Item - Utilities Collapse Menu -->
+      <!-- Nav Item - Contrôle Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
+        <a class="nav-link collapsed" style="cursor: pointer"  data-toggle="collapse" data-target="#collapseContrôle" aria-expanded="true" aria-controls="collapseContrôle">
+          <i class="fas fa-fw fa-eye"></i>
+          <span  style="font-size: 16px">Contrôle</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+        <div id="collapseContrôle" class="collapse" aria-labelledby="headingContrôle" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded" >
+            <h6 class="collapse-header">Rapports Journaliers:</h6>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('USDailyRep.index')}}">US Automatique</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('VisuelDailyRep.index')}}">Contrôle Visuel</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RX1DailyRep.index')}}">Radiographie Numérique</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('NDTDailyRep.index')}}">UT Automatique</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RX2DailyRep.index')}}">Radioscopique RX2</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('VFDailyRep.index')}}">Contrôle Visuel Final</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('VFRDailyRep.index')}}">Tubes Réfusés Au Final</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RecDailyRep.index')}}">Réception</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RevIntDailyRep.index')}}">Revêtement Intérieur</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RevExtDailyRep.index')}}">Revêtement Extérieur</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('ExpDailyRep.index')}}">Expédiditon</a>
           </div>
         </div>
       </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
+      @if (isset(Auth::user()->role) && (strpos(Auth::user()->role,'Admin')!==false) )
+      <!-- Nav Item - Gestion de l'application Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
+        <a class="nav-link collapsed" style="cursor: pointer" data-toggle="collapse" data-target="#collapseGestion" aria-expanded="true" aria-controls="collapseGestion">
+          <i class="fas fa-fw fa-eye"></i>
+          <span  style="font-size: 16px">Gestion Générale</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+        <div id="collapseGestion" class="collapse" aria-labelledby="headingContrôle" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded" >
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('projects.index')}}">Gestion Des Projets</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('details_project.index')}}">Détails Des Projets</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('clients.index')}}">Gestion des Clients</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('Defauts.index')}}">Gestion des Defauts</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('Operations.index')}}">Gestion des Opérations</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('affectations.index')}}">Affectation Des Agents</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('Locations.index')}}">Gestion Des Locations</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('agents.index')}}">Gestion Des Agents</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('users.index')}}">Gestion Des Utilisateurs</a>
           </div>
         </div>
       </li>
+      @endif
+    <!-- Divider -->
+      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <button class="nav-link btn "  data-toggle="modal" data-target="#cardBackdrop" >
+          <i class="fas fa-fw fa-file-invoice"></i>
+          <span style="font-size: 16px">Carte Tube</span></button>
       </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li>
-
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
-      {{--<div class="text-center d-none d-md-inline">--}}
-        {{--<button class="rounded-circle border-0" id="sidebarToggle"></button>--}}
-      {{--</div>--}}
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
 
     </ul>
     <!-- End of Sidebar -->
@@ -240,19 +280,11 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                {{--<a class="dropdown-item" href="#">--}}
-                  {{--<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>--}}
-                  {{--Profile--}}
-                {{--</a>--}}
-                {{--<a class="dropdown-item" href="#">--}}
-                  {{--<i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>--}}
-                  {{--Settings--}}
-                {{--</a>--}}
-                {{--<a class="dropdown-item" href="#">--}}
-                  {{--<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>--}}
-                  {{--Activity Log--}}
-                {{--</a>--}}
-                {{--<div class="dropdown-divider"></div>--}}
+
+                <a class="dropdown-item" href="{{route('resetpassword')}}">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Changer Le Mot de Passe
+                </a>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
@@ -265,7 +297,6 @@
         </nav>
         <!-- End of Topbar -->
     @yield('content')
-
 
       </div>
       <!-- End of Main Content -->
@@ -306,6 +337,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+  @include('layouts.CarteTubeLayout')
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -359,6 +391,7 @@
      }
  </script>
 
+  @include('layouts.CarteTubeScript')
 </body>
 
 </html>

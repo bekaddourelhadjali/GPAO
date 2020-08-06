@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Hydro;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\M24;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class M24Controller extends Controller
@@ -61,6 +63,18 @@ class M24Controller extends Controller
         $m24->User = $rapport->NomAgents;
         $m24->DateSaisie = date('Y-m-d H:i:s');
         if ($m24->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Add";
+            $Edit->Item=$m24->Tube;
+            $Edit->Zone="Z06";
+            $Edit->NumeroRap=$m24->NumeroRap;
+            $Edit->ItemId=$m24->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+            $Edit->save();
+        }
             $tube->Z06 = true;
             $tube->save();
             if ($m24->Bis == "true") $m24->Bis_t = 'checked'; else $m24->Bis_t = "";
@@ -132,6 +146,18 @@ class M24Controller extends Controller
         $m24->Observation = $request->Observation;
         $m24->DateSaisie = date('Y-m-d H:i:s');
         if ($m24->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$m24->Tube;
+                $Edit->Zone="Z06";
+                $Edit->NumeroRap=$m24->NumeroRap;
+                $Edit->ItemId=$m24->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($m24->Bis == "true") $m24->Bis_t = 'checked'; else $m24->Bis_t = "";
             return response()->json(array('m24' => $m24), 200);
         } else {
@@ -148,8 +174,21 @@ class M24Controller extends Controller
     public function destroy($id)
     {
         $m24 = \App\Visuel\M24::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$m24->Tube;
+            $Edit->Zone="Z06";
+            $Edit->NumeroRap=$m24->NumeroRap;
+            $Edit->ItemId=$m24->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($m24->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit->save();
+            }
             $m24->tube->Z06 = false;
             $m24->tube->save();
 

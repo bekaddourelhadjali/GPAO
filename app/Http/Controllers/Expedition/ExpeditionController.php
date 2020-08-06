@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Expedition;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Expedition;
@@ -9,6 +10,7 @@ use App\Visuel\M24;
 use App\Visuel\Reception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ExpeditionController extends Controller
@@ -69,6 +71,18 @@ class ExpeditionController extends Controller
         $exp->User = $rapport->NomAgents;
         $exp->DateSaisie = date('Y-m-d H:i:s');
         if ($exp->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$exp->Tube;
+                $Edit->Zone="Z14";
+                $Edit->NumeroRap=$exp->NumeroRap;
+                $Edit->ItemId=$exp->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z14 = true;
             $tube->save();
             if ($exp->Bis == "true") $exp->Bis_t = 'checked'; else $exp->Bis_t = "";
@@ -150,6 +164,18 @@ class ExpeditionController extends Controller
         $exp->Observation = $request->Observation;
         $exp->DateSaisie = date('Y-m-d H:i:s');
         if ($exp->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="update";
+                $Edit->Item=$exp->Tube;
+                $Edit->Zone="Z14";
+                $Edit->NumeroRap=$exp->NumeroRap;
+                $Edit->ItemId=$exp->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($exp->Bis == "true") $exp->Bis_t = 'checked'; else $exp->Bis_t = "";
             return response()->json(array('exp' => $exp), 200);
         } else {
@@ -166,8 +192,21 @@ class ExpeditionController extends Controller
     public function destroy($id)
     {
         $exp = \App\Visuel\Expedition::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$exp->Tube;
+            $Edit->Zone="Z14";
+            $Edit->NumeroRap=$exp->NumeroRap;
+            $Edit->ItemId=$exp->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($exp->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             $exp->tube->Z14 = false;
             $exp->tube->save();
 

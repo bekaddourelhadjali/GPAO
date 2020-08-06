@@ -1,7 +1,7 @@
 <div class="modal fade" id="cardBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
      style="padding-right: 0"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog  " role="document" id="CarteTubeModal">
+    <div class="modal-dialog  " role="document" id="CarteTubeModal" >
         <div class="modal-content " style="overflow: auto;   ">
             <div class="modal-header bg-gradient-light ">
                 <div class="col-10 modal-title">
@@ -12,9 +12,11 @@
                             <label class="col-lg-12" style="padding-left: 0" for="CTDid">Detail Projet</label>
                             <select class="form-control col-12" id="CTDid" name="CTDid">
                                 <option disabled selected></option>
+                                @if(isset($details))
                                 @foreach($details as $detail)
                                     <option value="{{$detail->Did}}">{{$detail->Nom}} -- Epais: {{$detail->Epaisseur}} mm -Diam : {{$detail->Diametre}}mm</option>
                                 @endforeach
+                                    @endif
                             </select>
                         </div>
                     </div>
@@ -38,7 +40,7 @@
             </div>
             <div class="modal-body " style="background-color: #eee; ">
                 <div class="row">
-                    <div class="table-container">
+                    <div class="table-container col-12">
                     <table class="col-12 table table-borderless bg-white" id="CarteTubeTable"  >
                         <thead></thead>
                         <tbody>

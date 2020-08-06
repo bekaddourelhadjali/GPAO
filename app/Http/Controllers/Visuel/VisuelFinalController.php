@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Visuel;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\DetailDefauts;
@@ -9,6 +10,7 @@ use App\Visuel\RX2;
 use App\Visuel\VisuelFinal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VisuelFinalController extends Controller
@@ -83,6 +85,18 @@ class VisuelFinalController extends Controller
         if ($visFin->save()) {
             $tube->Z10 = true;
             $tube->save();
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$visFin->Tube;
+                $Edit->Zone="Z10";
+                $Edit->NumeroRap=$visFin->NumeroRap;
+                $Edit->ItemId=$visFin->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($visFin->Bis=="true" || $visFin->Bis=="1") $visFin->Bis_t = "checked"; else $visFin->Bis_t = "";
 
                 foreach ($defauts as $defaut) {
@@ -206,6 +220,18 @@ class VisuelFinalController extends Controller
             $visFin->Defauts=$request->defauts;
         }
         if ($visFin->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$visFin->Tube;
+                $Edit->Zone="Z10";
+                $Edit->NumeroRap=$visFin->NumeroRap;
+                $Edit->ItemId=$visFin->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $visFin->Pid;
@@ -244,9 +270,23 @@ class VisuelFinalController extends Controller
     {
         $visFin = \App\Visuel\VisuelFinal::findOrFail($id);
         $oldDefs=$visFin->Defs;
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$visFin->Tube;
+            $Edit->Zone="Z10";
+            $Edit->NumeroRap=$visFin->NumeroRap;
+            $Edit->ItemId=$visFin->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($visFin->delete()) {
             $visFin->tube->Z10= false;
             $visFin->tube->save();
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             foreach ($oldDefs as $olddef) {
                 DetailDefauts::destroy($olddef->id);
             }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Controle;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
 use App\Fabrication\Rapport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -73,10 +75,24 @@ class ContBobineController extends Controller
                 if(DB::table('bobine')->insert($insert_data)){
 
                     $bobinesCount=Bobine::where('NbReception','=',null)->select('Bobine')->count();
+                    if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                        $Edit=new RapportsEdits();
+                        $Edit->Operation="Add";
+                        $Edit->Item="ListColisage";
+                        $Edit->Zone="RecBob";
+                        $Edit->NumeroRap=$request->NumRap;
+                        $Edit->ItemId=1;
+                        $Edit->User=Auth::user()->username;
+                        $Edit->Computer=gethostname();
+                        $Edit->DateSaisie=date('Y-m-d H:i:s');
+                        $Edit->save();
+                    }
                     return response()->json(array('data' => $insert_data,'Count'=>$bobinesCount), 200);
+
                 } else {
                     return response()->json(array('error' => error), 404);
                }
+
 
             }
         }
@@ -133,6 +149,18 @@ class ContBobineController extends Controller
             $bobine->LargeurBande=$request->largeur_bande;
         }
         if ($bobine->save()){
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$bobine->Bobine;
+                $Edit->Zone="RecBob";
+                $Edit->NumeroRap=0;
+                $Edit->ItemId=$bobine->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             return response()->json(array('bobine'=> $bobine), 200);
 
         }else{
@@ -150,7 +178,21 @@ class ContBobineController extends Controller
     public function destroy($id)
     {   $bobine=Bobine::find($id);
         $bobDid=$bobine->Did;
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+        $Edit=new RapportsEdits();
+        $Edit->Operation="Delete";
+        $Edit->Item=$bobine->Bobine;
+        $Edit->Zone="RecBob";
+        $Edit->NumeroRap=0;
+        $Edit->ItemId=$bobine->Id;
+        $Edit->User=Auth::user()->username;
+        $Edit->Computer=gethostname();
+        $Edit->DateSaisie=date('Y-m-d H:i:s');
+    }
         if(Bobine::destroy($id)){
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             $bobinesCount=Bobine::where('NbReception','=',null)->where('Did','=',$bobDid)->select('Bobine')->count();
             return response()->json(array('success' => true,'Count'=>$bobinesCount), 200);
         } else {

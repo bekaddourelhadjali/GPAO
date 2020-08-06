@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Visuel;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
 use App\Fabrication\Rapprod;
@@ -11,6 +12,7 @@ use App\Visuel\Defauts;
 use App\Visuel\Visuels;
 use App\Visuel\DetailDefauts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VisuelsController extends Controller
@@ -102,6 +104,18 @@ class VisuelsController extends Controller
         $visuel->NumTube = $tube->NumTube;
         $defauts = $request->Defauts;
         if ($visuel->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$visuel->Tube;
+                $Edit->Zone="Z02";
+                $Edit->NumeroRap=$visuel->NumeroRap;
+                $Edit->ItemId=$visuel->Numero;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $visuel->Pid;
@@ -197,6 +211,18 @@ class VisuelsController extends Controller
         $visuel->DiamD = $request->Diam_D;
         $visuel->DiamF = $request->Diam_F;
         if ($visuel->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$visuel->Tube;
+                $Edit->Zone="Z02";
+                $Edit->NumeroRap=$visuel->NumeroRap;
+                $Edit->ItemId=$visuel->Numero;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             return response()->json(array('visuel' => $visuel), 200);
 
         } else {
@@ -215,6 +241,17 @@ class VisuelsController extends Controller
     {
         $visuel = \App\Visuel\Visuels::findOrFail($id);
         $tube = $visuel->tube;
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$visuel->Tube;
+            $Edit->Zone="Z02";
+            $Edit->NumeroRap=$visuel->NumeroRap;
+            $Edit->ItemId=$visuel->Numero;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($visuel->delete()) {
             foreach ($visuel->Defauts() as $Defaut) {
                 $Defaut->delete();
@@ -227,6 +264,9 @@ class VisuelsController extends Controller
                     $tube->Z02 = false;
                     $tube->save();
                 }
+            }
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
             }
             return response()->json(array('success' => true), 200);
 

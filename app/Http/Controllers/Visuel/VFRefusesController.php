@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Visuel;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\DetailDefauts;
 use App\Visuel\VFRefuses;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VFRefusesController extends Controller
@@ -62,6 +64,18 @@ class VFRefusesController extends Controller
         $vfr->DateSaisie = date('Y-m-d H:i:s');
         $defauts=$request->Defauts;
         if ($vfr->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$vfr->Tube;
+                $Edit->Zone="DEC";
+                $Edit->NumeroRap=$vfr->NumeroRap;
+                $Edit->ItemId=$vfr->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($vfr->Bis=="true" || $vfr->Bis=="1") $vfr->Bis_t = "checked"; else $vfr->Bis_t = "";
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
@@ -160,6 +174,18 @@ class VFRefusesController extends Controller
         $oldDefs = $vfr->Defs;
         $defauts=$request->Defauts;
         if ($vfr->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$vfr->Tube;
+                $Edit->Zone="DEC";
+                $Edit->NumeroRap=$vfr->NumeroRap;
+                $Edit->ItemId=$vfr->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $vfr->Pid;
@@ -198,7 +224,21 @@ class VFRefusesController extends Controller
     {
         $vfr = \App\Visuel\VFRefuses::findOrFail($id);
         $oldDefs=$vfr->defs;
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$vfr->Tube;
+            $Edit->Zone="DEC";
+            $Edit->NumeroRap=$vfr->NumeroRap;
+            $Edit->ItemId=$vfr->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($vfr->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             foreach ($oldDefs as $olddef) {
                 DetailDefauts::destroy($olddef->id);
             }

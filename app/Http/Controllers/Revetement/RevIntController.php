@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Revetement;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Defauts;
@@ -10,6 +11,7 @@ use App\Visuel\Operations;
 use App\Visuel\RevInt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RevIntController extends Controller
@@ -66,6 +68,18 @@ class RevIntController extends Controller
         $revInt->User = $rapport->NomAgents;
         $revInt->DateSaisie = date('Y-m-d H:i:s');
         if ($revInt->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$revInt->Tube;
+                $Edit->Zone="Z12";
+                $Edit->NumeroRap=$revInt->NumeroRap;
+                $Edit->ItemId=$revInt->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z12 = true;
             $tube->save();
             if ($revInt->Bis == "true") $revInt->Bis_t = 'checked'; else $revInt->Bis_t = "";
@@ -143,6 +157,18 @@ r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" r
         $revInt->Observation = $request->Observation;
         $revInt->DateSaisie = date('Y-m-d H:i:s');
         if ($revInt->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$revInt->Tube;
+                $Edit->Zone="Z12";
+                $Edit->NumeroRap=$revInt->NumeroRap;
+                $Edit->ItemId=$revInt->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($revInt->Bis == "true") $revInt->Bis_t = 'checked'; else $revInt->Bis_t = "";
             return response()->json(array('revInt' => $revInt), 200);
         } else {
@@ -159,11 +185,23 @@ r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" r
     public function destroy($id)
     {
         $revInt = \App\Visuel\RevInt::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$revInt->Tube;
+            $Edit->Zone="Z12";
+            $Edit->NumeroRap=$revInt->NumeroRap;
+            $Edit->ItemId=$revInt->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($revInt->delete()) {
             $revInt->tube->Z12= false;
             $revInt->tube->save();
-
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             return response()->json(array('success' => true), 200);
 
         } else {

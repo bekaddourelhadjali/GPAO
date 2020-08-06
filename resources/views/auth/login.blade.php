@@ -52,11 +52,11 @@
 
                 <div class="card-body p-0">
                 <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background-size: contain"></div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Bienvenue!</h1>
                   </div>
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         {{csrf_field()}}
@@ -83,10 +83,7 @@
                             
                         </div>
                         <div class="form-group" style="vertical-align:middle;" >
-                      <div class="custom-control custom-checkbox ">
-                        <input type="checkbox" class="custom-control-input" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="custom-control-label" for="remember">Remember Me</label>
-                      </div>
+
                     </div> 
 
                          

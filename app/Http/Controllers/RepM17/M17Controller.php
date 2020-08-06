@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\RepM17;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Defauts;
@@ -9,6 +10,7 @@ use App\Visuel\DetailDefauts;
 use App\Visuel\M17;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class M17Controller extends Controller
@@ -72,6 +74,18 @@ class M17Controller extends Controller
         $m17->Computer=gethostname();
         $m17->DateSaisie = date('Y-m-d H:i:s');
         if ($m17->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$m17->Tube;
+                $Edit->Zone="Z05";
+                $Edit->NumeroRap=$m17->NumeroRap;
+                $Edit->ItemId=$m17->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ( $request->Defauts as $item) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $m17->Pid;
@@ -161,7 +175,18 @@ class M17Controller extends Controller
         $oldDefs = $m17->Defs;
         $defauts=$request->Defauts;
         if ($m17->save()) {
-
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$m17->Tube;
+                $Edit->Zone="Z05";
+                $Edit->NumeroRap=$m17->NumeroRap;
+                $Edit->ItemId=$m17->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ( $defauts as $item) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $m17->Pid;
@@ -195,7 +220,21 @@ class M17Controller extends Controller
     {
         $m17 = \App\Visuel\M17::findOrFail($id);
         $oldDefs=$m17->defs;
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$m17->Tube;
+            $Edit->Zone="Z05";
+            $Edit->NumeroRap=$m17->NumeroRap;
+            $Edit->ItemId=$m17->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($m17->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit->save();
+            }
             $m17->tube->Z05 = false;
             $m17->tube->save();
             foreach ($oldDefs as $olddef) {

@@ -1,5 +1,31 @@
 <script>
     $(document).ready(function () {
+            @if(\Illuminate\Support\Facades\Auth::check())
+             $('#CTDid').html('');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: "{{route('GetDetailsProjet')}}",
+            method: 'get',
+            data: {
+            },
+            success: function (result) {
+                if (result.details.length>0){
+                    $('#CTDid').append('  <option disabled selected></option>');
+                    result.details.forEach(function(item){
+                        $('#CTDid').append('  <option value="'+item.Did+'">'+item.Nom+' -- Epais: '+item.Epaisseur+' mm -Diam : '+item.Diametre+'mm</option>\n');
+                    });
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+             @endif
         $('#VFRRoot').hide();
         $('#ReceptionRoot').hide();
         $('#RevIntRoot').hide();
@@ -376,7 +402,7 @@
             });
 
         });
-        $('.collapse').each(function () {
+        $('#CarteTubeModal  .collapse').each(function () {
             $(this).on('hidden.bs.collapse', function () {
                 $(this).parent().find('i.fa.fa-angle-up').removeClass('fa-angle-up').addClass('fa-angle-down');
             });
@@ -384,7 +410,7 @@
                 $(this).parent().find('i.fa.fa-angle-down').removeClass('fa-angle-down').addClass('fa-angle-up');
             });
         });
-        $('.collapse').collapse();
+        $('#CarteTubeModal .collapse').collapse();
 
     });
 

@@ -90,28 +90,48 @@ Route::post('/bobine', function () {
 Route::resource('affectations', 'Dashboard\AffectationsController')->middleware('auth')->middleware('admin');
 Route::resource('agents', 'Dashboard\AgentsController')->middleware('auth')->middleware('admin');
 Route::resource('Locations', 'Dashboard\LocationsController')->middleware('auth')->middleware('admin');
-Route::resource('machines', 'Dashboard\MachinesController')->middleware('auth')->middleware('admin');
 Route::resource('clients', 'Dashboard\ClientsController')->middleware('auth')->middleware('admin');
 Route::resource('projects', 'Dashboard\ProjectsController')->middleware('auth')->middleware('admin');
 Route::resource('Defauts', 'Dashboard\DefautsController')->middleware('auth')->middleware('admin');
 Route::resource('Operations', 'Dashboard\OperationsController')->middleware('auth')->middleware('admin');
 Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middleware('admin');
-
 Route::resource('details_project', 'Dashboard\ProjectDetailsController')->middleware('auth')->middleware('admin');
+Route::resource('ContRecBob', 'Controle\ContRecBobController')->middleware('ChefProd:000');
+Route::get('resetpassword',function(){
+   return view('auth.passwords.reset',['token'=>csrf_token()]);
+})->name('resetpassword')->middleware('auth');
 
+Route::post('resetpassword',function(\Illuminate\Http\Request $request){
+    $user=User::where('username','=',$request->username)->first();
+       // ->where('password','=',\Illuminate\Support\Facades\Hash::make($request->oldpassword))->first();
+    if(isset($user) && $user!=null &&\Illuminate\Support\Facades\Hash::check($request->oldpassword,$user->password)){
+
+        $user->password=\Illuminate\Support\Facades\Hash::make($request->password);
+        if($user->save()){
+            return response()->json(array('Success' => 'Success'), 200);
+        }else{
+            return response()->json(array('error' => error), 404);
+        }
+    }else{
+        return response()->json(array('message' => "Mot De passe Erroné" ), 404);
+    }
+    return response()->json(array('error' => error), 404);
+})->name('resetpassword')->middleware('auth');
 //RecBob
 Route::resource('RecBobReport', 'Reports\RecBobReportController')->middleware('auth');
 Route::resource('RecBobRepAdv', 'Reports\RecBobRepAdvController')->middleware('auth');
 Route::resource('RecBobDailyRep', 'Reports\RecBobDailyRepController')->middleware('auth');
-Route::resource('ContRecBob', 'Controle\ContRecBobController')->middleware('ChefProd:000');
 Route::resource('rapports_RecBob', 'Reception\RecBobRapportsController')->middleware('Rapports:RecBob');
 Route::resource('RecBob', 'Reception\RecBobController')->middleware('ChefProd:RecBob');
+Route::resource('ContBobine', 'Controle\ContBobineController')->middleware('ChefProd:RecBob');
+
 //M3
 Route::resource('M3Report', 'Reports\M3\M3ReportController')->middleware('auth');
 Route::resource('M3RepAdv', 'Reports\M3\M3RepAdvController')->middleware('auth');
 Route::resource('M3DailyRep', 'Reports\M3\M3DailyRepController')->middleware('auth');
 Route::resource('rapports_M3', 'M3\M3RapportsController')->middleware('Rapports:Z00');
 Route::resource('M3', 'M3\M3Controller')->middleware('ChefProd:Z00');
+
 //Fabrication
 Route::resource('MasEPrep', 'Fabrication\MasEPrepController')->middleware('ChefProd:Z01');
 Route::resource('rapports', 'Fabrication\RapportsController')->middleware('Rapports:Z01');
@@ -228,7 +248,7 @@ Route::resource('ExpDailyRep', 'Reports\Exp\ExpDailyRepController')->middleware(
 
 
 //Rapports
-Route::resource('ContBobine', 'Controle\ContBobineController');
+
 //Route::resource('ContM3', 'Controle\ContM3Controller');
 
 Route::get('CarteTube/getTubes/{Did}', function ($Did) {
@@ -267,6 +287,13 @@ Route::get('CarteTube/getTubeData/{Tube}', function (\Illuminate\Http\Request $r
     ), 200);
 
 });
+
+Route::get('GetDetailsProjet',function (){
+    $details= \Illuminate\Support\Facades\DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
+          on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+
+    return response()->json(array('details' => $details), 200);
+})->name('GetDetailsProjet')->middleware('auth');
 Route::get('Rep_M17', function () {
     $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
 

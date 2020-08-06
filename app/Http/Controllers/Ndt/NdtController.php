@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Ndt;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Ndt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class NdtController extends Controller
@@ -64,6 +66,18 @@ class NdtController extends Controller
         $ndt->User = $rapport->NomAgents;
         $ndt->DateSaisie = date('Y-m-d H:i:s');
         if ($ndt->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$ndt->Tube;
+                $Edit->Zone="Z08";
+                $Edit->NumeroRap=$ndt->NumeroRap;
+                $Edit->ItemId=$ndt->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z08 = true;
             $tube->save();
             if ($ndt->Bis == "true") $ndt->Bis_t = 'checked'; else $ndt->Bis_t = "";
@@ -138,6 +152,18 @@ class NdtController extends Controller
         $ndt->Observation = $request->Observation;
         $ndt->DateSaisie = date('Y-m-d H:i:s');
         if ($ndt->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$ndt->Tube;
+                $Edit->Zone="Z08";
+                $Edit->NumeroRap=$ndt->NumeroRap;
+                $Edit->ItemId=$ndt->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($ndt->Bis == "true") $ndt->Bis_t = 'checked'; else $ndt->Bis_t = "";
             return response()->json(array('ndt' => $ndt), 200);
         } else {
@@ -154,8 +180,21 @@ class NdtController extends Controller
     public function destroy($id)
     {
         $ndt = \App\Visuel\Ndt::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$ndt->Tube;
+            $Edit->Zone="Z08";
+            $Edit->NumeroRap=$ndt->NumeroRap;
+            $Edit->ItemId=$ndt->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($ndt->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             $ndt->tube->Z08 = false;
             $ndt->tube->save();
 

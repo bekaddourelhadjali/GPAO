@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Reception;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\M24;
 use App\Visuel\Reception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RecTubeController extends Controller
@@ -64,6 +66,18 @@ class RecTubeController extends Controller
         $rec->User = $rapport->NomAgents;
         $rec->DateSaisie = date('Y-m-d H:i:s');
         if ($rec->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$rec->Tube;
+                $Edit->Zone="Z11";
+                $Edit->NumeroRap=$rec->NumeroRap;
+                $Edit->ItemId=$rec->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z11 = true;
             $tube->save();
             if ($rec->Bis == "true") $rec->Bis_t = 'checked'; else $rec->Bis_t = "";
@@ -141,6 +155,18 @@ class RecTubeController extends Controller
         $rec->Observation = $request->Observation;
         $rec->DateSaisie = date('Y-m-d H:i:s');
         if ($rec->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$rec->Tube;
+                $Edit->Zone="Z11";
+                $Edit->NumeroRap=$rec->NumeroRap;
+                $Edit->ItemId=$rec->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($rec->Bis == "true") $rec->Bis_t = 'checked'; else $rec->Bis_t = "";
             return response()->json(array('rec' => $rec), 200);
         } else {
@@ -157,8 +183,21 @@ class RecTubeController extends Controller
     public function destroy($id)
     {
         $rec = \App\Visuel\Reception::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$rec->Tube;
+            $Edit->Zone="Z11";
+            $Edit->NumeroRap=$rec->NumeroRap;
+            $Edit->ItemId=$rec->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($rec->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             $rec->tube->Z11 = false;
             $rec->tube->save();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Revetement;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\Defauts;
@@ -11,6 +12,7 @@ use App\Visuel\RevExt;
 use App\Visuel\RevInt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RevExtController extends Controller
@@ -67,6 +69,18 @@ class RevExtController extends Controller
         $revExt->User = $rapport->NomAgents;
         $revExt->DateSaisie = date('Y-m-d H:i:s');
         if ($revExt->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$revExt->Tube;
+                $Edit->Zone="Z13";
+                $Edit->NumeroRap=$revExt->NumeroRap;
+                $Edit->ItemId=$revExt->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z13 = true;
             $tube->save();
             if ($revExt->Bis == "true") $revExt->Bis_t = 'checked'; else $revExt->Bis_t = "";
@@ -144,6 +158,18 @@ r."Did"=? and r."NumReception" not in (select re."NumReception" from "rev_ext" r
         $revExt->Observation = $request->Observation;
         $revExt->DateSaisie = date('Y-m-d H:i:s');
         if ($revExt->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$revExt->Tube;
+                $Edit->Zone="Z13";
+                $Edit->NumeroRap=$revExt->NumeroRap;
+                $Edit->ItemId=$revExt->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($revExt->Bis == "true") $revExt->Bis_t = 'checked'; else $revExt->Bis_t = "";
             return response()->json(array('revExt' => $revExt), 200);
         } else {
@@ -160,8 +186,21 @@ r."Did"=? and r."NumReception" not in (select re."NumReception" from "rev_ext" r
     public function destroy($id)
     {
         $revExt = \App\Visuel\RevExt::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$revExt->Tube;
+            $Edit->Zone="Z13";
+            $Edit->NumeroRap=$revExt->NumeroRap;
+            $Edit->ItemId=$revExt->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($revExt->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             $revExt->tube->Z13 = false;
             $revExt->tube->save();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Fabrication;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Bobine;
 use App\Fabrication\detailprojet;
 use App\Fabrication\Rapport;
@@ -10,6 +11,7 @@ use App\Fabrication\Tube;
 use App\Fabrication\Ultrason;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UltrasonController extends Controller
@@ -63,6 +65,18 @@ class UltrasonController extends Controller
         $us->User = $rapport->NomAgents;
         $us->DateSaisie = date('Y-m-d H:i:s');
         if ($us->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$us->Tube;
+                $Edit->Zone="US";
+                $Edit->NumeroRap=$us->NumeroRap;
+                $Edit->ItemId=$us->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($us->RB == "true") $us->RB_t = 'checked'; else $us->RB_t = "";
 
             return response()->json(array('ultrason' => $us), 200);
@@ -143,6 +157,18 @@ class UltrasonController extends Controller
         $us->Observation = $request->Observation;
         $us->DateSaisie = date('Y-m-d H:i:s');
         if ($us->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$us->Tube;
+                $Edit->Zone="US";
+                $Edit->NumeroRap=$us->NumeroRap;
+                $Edit->ItemId=$us->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($us->RB == "true") $us->RB_t = 'checked'; else $us->RB_t = "";
             return response()->json(array('ultrason' => $us), 200);
         } else {
@@ -159,9 +185,21 @@ class UltrasonController extends Controller
     public function destroy($id)
     {
         $us = \App\Fabrication\Ultrason::findOrFail($id);
-
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$us->Tube;
+            $Edit->Zone="US";
+            $Edit->NumeroRap=$us->NumeroRap;
+            $Edit->ItemId=$us->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($us->delete()) {
-
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             return response()->json(array('success' => true), 200);
 
         } else {

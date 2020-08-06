@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\RX2;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Tube;
 use App\Visuel\DetailDefauts;
 use App\Visuel\RX2;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RX2Controller extends Controller
@@ -66,6 +68,18 @@ class RX2Controller extends Controller
         if ($rx2->save()) {
             $tube->Z09 = true;
             $tube->save();
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$rx2->Tube;
+                $Edit->Zone="Z09";
+                $Edit->NumeroRap=$rx2->NumeroRap;
+                $Edit->ItemId=$rx2->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             if ($rx2->Bis=="true" || $rx2->Bis=="1") $rx2->Bis_t = "checked"; else $rx2->Bis_t = "";
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
@@ -168,6 +182,18 @@ class RX2Controller extends Controller
         $rx2->CodeSoude = $request->CodeSoude;
         $defauts=$request->Defauts;
         if ($rx2->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$rx2->Tube;
+                $Edit->Zone="Z09";
+                $Edit->NumeroRap=$rx2->NumeroRap;
+                $Edit->ItemId=$rx2->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $rx2->Pid;
@@ -208,9 +234,23 @@ class RX2Controller extends Controller
     {
         $rx2 = \App\Visuel\RX2::findOrFail($id);
         $oldDefs=$rx2->defs;
+        if(Auth::check() && Auth::user()->role=="Chef Controle"){
+            $Edit=new RapportsEdits();
+            $Edit->Operation="Delete";
+            $Edit->Item=$rx2->Tube;
+            $Edit->Zone="Z09";
+            $Edit->NumeroRap=$rx2->NumeroRap;
+            $Edit->ItemId=$rx2->Id;
+            $Edit->User=Auth::user()->username;
+            $Edit->Computer=gethostname();
+            $Edit->DateSaisie=date('Y-m-d H:i:s');
+        }
         if ($rx2->delete()) {
             $rx2->tube->Z09 = false;
             $rx2->tube->save();
+            if(Auth::check() && Auth::user()->role=="Chef Controle"){
+                $Edit->save();
+            }
             foreach ($oldDefs as $olddef) {
                 DetailDefauts::destroy($olddef->id);
             }

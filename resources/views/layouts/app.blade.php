@@ -23,6 +23,11 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/selectize.css')}}" />
 
     <style>
+        @media (min-width: 576px) {
+            #CarteTubeModal {
+                max-width: 1000px;
+            }
+        }
         .TCVal{
             color: orangered;
         }

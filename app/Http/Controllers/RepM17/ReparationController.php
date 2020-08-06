@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\RepM17;
 
+use App\Dashboard\RapportsEdits;
 use App\Fabrication\Rapport;
 use App\Fabrication\Rapprod;
 use App\Fabrication\Tube;
@@ -9,6 +10,7 @@ use App\Visuel\DetailDefauts;
 use App\Visuel\Rep;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReparationController extends Controller
@@ -64,6 +66,18 @@ class ReparationController extends Controller
         $rep->DateSaisie = date('Y-m-d H:i:s');
         $defauts=$request->Defauts;
         if ($rep->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Add";
+                $Edit->Item=$rep->Tube;
+                $Edit->Zone="Z04";
+                $Edit->NumeroRap=$rep->NumeroRap;
+                $Edit->ItemId=$rep->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             $tube->Z04 = true;
             $tube->save();
             if ($rep->Bis=="true" || $rep->Bis=="1") $rep->Bis_t = "checked"; else $rep->Bis_t = "";
@@ -167,6 +181,18 @@ class ReparationController extends Controller
         $oldDefs = $rep->Defs;
         $defauts=$request->Defauts;
         if ($rep->save()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit=new RapportsEdits();
+                $Edit->Operation="Update";
+                $Edit->Item=$rep->Tube;
+                $Edit->Zone="Z04";
+                $Edit->NumeroRap=$rep->NumeroRap;
+                $Edit->ItemId=$rep->Id;
+                $Edit->User=Auth::user()->username;
+                $Edit->Computer=gethostname();
+                $Edit->DateSaisie=date('Y-m-d H:i:s');
+                $Edit->save();
+            }
             foreach ($defauts as $defaut) {
                 $detailDefaut = new \App\Visuel\DetailDefauts();
                 $detailDefaut->Pid = $rep->Pid;
@@ -207,7 +233,21 @@ class ReparationController extends Controller
     {
         $rep = \App\Visuel\Rep::findOrFail($id);
         $oldDefs=$rep->defs;
+        if(Auth::check() && Auth::user()->role=="Chef Production"){
+        $Edit=new RapportsEdits();
+        $Edit->Operation="Delete";
+        $Edit->Item=$rep->Tube;
+        $Edit->Zone="Z04";
+        $Edit->NumeroRap=$rep->NumeroRap;
+        $Edit->ItemId=$rep->Id;
+        $Edit->User=Auth::user()->username;
+        $Edit->Computer=gethostname();
+        $Edit->DateSaisie=date('Y-m-d H:i:s');
+    }
         if ($rep->delete()) {
+            if(Auth::check() && Auth::user()->role=="Chef Production"){
+                $Edit->save();
+            }
             $rep->tube->Z04 = false;
             $rep->tube->save();
             foreach ($oldDefs as $olddef) {
