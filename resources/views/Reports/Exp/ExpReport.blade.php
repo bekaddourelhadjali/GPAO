@@ -20,17 +20,17 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-RepReport" role="tabpanel"
-                 aria-labelledby="nav-RepReport-tab ">
+            <div class="tab-pane fade show active" id="nav-ExpReport" role="tabpanel"
+                 aria-labelledby="nav-ExpReport-tab ">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('RepDailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('ExpDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link active " id="nav-RepReport-tab" data-toggle="tab"
-                               href="#nav-RepReport" role="tab" aria-controls="nav-RepReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('RepRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link active " id="nav-ExpReport-tab" data-toggle="tab"
+                               href="#nav-ExpReport" role="tab" aria-controls="nav-ExpReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
+                            <a class="nav-item nav-link  "  href="{{route('ExpRepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
                     </nav>
@@ -76,7 +76,32 @@
                         </div>
                     </div>
 
+                    <div class="col-xl-3 col-md-6 py-1">
+                        <div class="card border-left-success shadow h-100 ">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-success text-uppercase mb-1">
 
+                                            Longueur t <span class="MonthRep">
+                                                    ({{$monthW}})</span>
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-danger">
+                                            <span id="MonthLT">{{$MonthLT}}</span>
+                                            Mètres
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <span id="MonthPT">{{$MonthPT}}</span>
+                                            Tonnes
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-ruler-horizontal fa-2x text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-xl-3 col-md-6 py-1">
                         <div class="card border-left-primary shadow h-100">
@@ -98,40 +123,48 @@
                         </div>
                     </div>
 
-
-                </div>
-                <div class="row" id="OperationsReport">
-                    @if(isset($OperationsReport))
-                        @foreach($OperationsReport as $item)
-                            <div class=" col-lg-3 col-md-4 col-6 py-1">
-                                <div class="card border-bottom-danger shadow text-center h-100 ">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">
-                                                    opr: <span class="Operation text-danger ">{{$item->Opr}}</span>&nbsp
-                                                    nb: <span  class="NBT text-danger">{{$item->NBT}}</span>&nbsp
-                                                    <span  class="VT text-danger">({{$item->VT}})</span>
-                                                </div>
-                                            </div>
+                    <div class="col-xl-3 col-md-6 py-1">
+                        <div class="card border-left-warning shadow h-100 ">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-warning text-uppercase mb-1">
+                                            Longueur T <span class="YearRep">({{date('Y')}})</span>
                                         </div>
+                                        <div class="h5 mb-0 font-weight-bold text-danger">
+                                            <span id="YearLT">{{$YearLT}}</span>
+                                            Mètres
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <span id="YearPT">{{$YearPT}}</span>
+                                            Tonnes
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-ruler-horizontal fa-2x text-warning"></i>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    @endif
+                        </div>
+                    </div>
                 </div>
                 <section>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-container">
-                                <table class="table table-borderless table-striped" id="RepReportTable"  cellspacing="0">
+                                <table class="table table-borderless table-striped" id="ExpReportTable"  cellspacing="0">
                                      <thead style="cursor: pointer">
                                     <tr class="text-white">
                                         <th>DateSaisie</th>
                                         <th>Poste</th>
                                         <th>Machine</th>
+                                        <th>Coulee</th>
+                                        <th>DateExpedition</th>
+                                        <th>Site</th>
+                                        <th>Transporteur</th>
                                         <th>NBT</th>
+                                        <th>PoidsTotal</th>
+                                        <th>LongueurTotal</th>
                                     </tr>
                                     </thead>
                                     <tbody id="Reports">
@@ -143,7 +176,13 @@
                                                 <td>{{$item->DateSaisie}}</td>
                                                 <td>Poste {{$item->Poste}}</td>
                                                 <td>{{$item->Machine}}</td>
+                                                <td>{{$item->Coulee}}</td>
+                                                <td>{{$item->DateExpedition}}</td>
+                                                <td>{{$item->Site}}</td>
+                                                <td>{{$item->Transporteur}}</td>
                                                 <td>{{$item->NBT}}</td>
+                                                <td>{{$item->PoidsTotal}}</td>
+                                                <td>{{$item->LongueurTotal}}</td>
                                             </tr>
 
                                         @endforeach
@@ -156,44 +195,16 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>  
+                                    <td></td>
+                                    <td></td>
                                     </tr>
                                     </tfoot>
                                 </table>
                             </div>
                         </div>
 
-                    </div>
-                </section>
-                <section>
-                    <h2 class="text-primary ">Rapport des Defauts</h2>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6 col-lg-4">
-                            <div class="table-container">
-                                <table class="table table-borderless table-striped" id="DefautsTable"
-                                       cellspacing="0">
-                                    <thead class="text-white">
-                                    <th>Defaut</th>
-                                    <th>NB_Total</th>
-                                    </thead>
-                                    <tbody>
-                                    @if(isset($DefautsReport))
-                                        @foreach($DefautsReport as $item)
-                                            <tr>
-                                                <td>{{$item->Defaut}}</td>
-                                                <td>{{$item->NBT}}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="chart-bar" >
-                                <canvas id="myBarChart"></canvas>
-                            </div>
-                        </div>
                     </div>
                 </section>
             </div>
@@ -218,15 +229,10 @@
 
         $(document).ready(function () {
 
-            chartId='myBarChart';
-            labels=@json(array_column($DefautsReport,'Defaut'));
-            data=@json(array_column($DefautsReport,'NBT'));
-            var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
-            $('#RepReportTable').DataTable();
-            calculateColumn(3);
-        $('#RepReportTable_filter input[type=search]').keyup(function () {
-            calculateColumn(3);
+            $('#ExpReportTable').DataTable();
+           calculateColumn(7); calculateColumn(8); calculateColumn(9);
+        $('#ExpReportTable_filter input[type=search]').keyup(function () {
+           calculateColumn(7); calculateColumn(8); calculateColumn(9);
         });
         });
 
@@ -239,70 +245,41 @@
             });
 
             $.ajax({
-                url: "{{url('/RepReport')}}/" + $('#Did').val(),
+                url: "{{url('/ExpReport')}}/" + $('#Did').val(),
                 method: 'get',
                 data: {
                 },
                 success: function (result) {
-                    parent = $('#myBarChart').parent();
-                    parent.html('');
-                    parent.append('<canvas id="myBarChart"></canvas>');
-                    labels = [];
-                    data = [];
-                    $('#OperationsReport').html('');
-                    $('#DefautsTable tbody').html('');
-                    $('#RepReportTable').DataTable().clear().draw();
+                    $('#ExpReportTable').DataTable().clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
+                    $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
+                    $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
                     $('#YearNBT').html(result.YearNBT);
+                    $('#YearLT').html(Number(Math.round(result.YearLT+'e3')+'e-3'));
+                    $('#YearPT').html(Number(Math.round(result.YearPT+'e3')+'e-3'));
 
-                    if(result.OperationsReport.length>0){
-                        result.OperationsReport.forEach(function (item) {
-                            $('#OperationsReport').append(' <div class=" col-lg-3 col-md-4 col-6 py-1">\n' +
-                                '                                <div class="card border-bottom-danger shadow text-center h-100 ">\n' +
-                                '                                    <div class="card-body">\n' +
-                                '                                        <div class="row no-gutters align-items-center">\n' +
-                                '                                            <div class="col mr-2">\n' +
-                                '                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">\n' +
-                                '                                                    opr: <span class="Operation text-danger ">'+item.Opr+'</span>&nbsp\n' +
-                                '                                                    nb: <span  class="NBT text-danger">'+item.NBT+'</span>&nbsp\n' +
-                                '                                                     <span  class="VT text-danger">('+(item.VT === null ? '' : Number(item.VT))+')</span>\n' +
-                                '                                                </div>\n' +
-                                '                                            </div>\n' +
-                                '                                        </div>\n' +
-                                '                                    </div>\n' +
-                                '                                </div>\n' +
-                                '                            </div>');
-                        });
-                    }
+
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RepReportTable').DataTable().row.add([
+                            $('#ExpReportTable').DataTable().row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
-                                item.Machine,
-                                item.NBT, ]
+                                item.Machine, 
+                                item.Coulee, 
+                                item.DateExpedition, 
+                                item.Site, 
+                                item.Transporteur, 
+                                item.NBT,
+                                item.PoidsTotal,
+                                item.LongueurTotal,]
                             );
 
                         });
-                        $('#RepReportTable').DataTable().draw(false);
-                        $('#RepReportTable tbody tr').attr('style','display: table-row;');
+                        $('#ExpReportTable').DataTable().draw(false);
+                        $('#ExpReportTable tbody tr').attr('style','display: table-row;');
                     }
-                    if (result.DefautsReport.length > 0) {
-                        labels=[];
-                        data=[];
-                        result.DefautsReport.forEach(function (item) {
-                            $('#DefautsTable tbody').append('<tr>' +
-                                '<td>'+item.Defaut+'</td>' +
-                                '<td>'+item.NBT+'</td>' +
-                                '</tr> ');
-                            labels.push(item.Defaut);
-                            data.push(item.NBT);
-                        });
-                        max=Math.max.apply(Math, data);
-                        chartId = 'myBarChart';
-                        DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
-                    }
-                    calculateColumn(3);
+
+                   calculateColumn(7); calculateColumn(8); calculateColumn(9);
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);

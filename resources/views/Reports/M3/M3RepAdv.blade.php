@@ -113,14 +113,14 @@
                             <tr id="PT_TR">
                                 @if(isset($M3Report))
                                     @foreach($M3Report as $item)
-                                    <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tons</td>
+                                    <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tonnes</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="CT_TR">
                                 @if(isset($M3Report))
                                     @foreach($M3Report as $item)
-                                        <td><span class="text-danger"><b>{{$item->CT}}</b></span> Tons</td>
+                                        <td><span class="text-danger"><b>{{$item->CT}}</b></span> Tonnes</td>
                                     @endforeach
                                 @endif
                             </tr>
@@ -150,7 +150,7 @@
             labels=@json(array_column($M3Report,'Filter'));
             data=@json(array_column($M3Report,'CT'));
             var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,$('#Filtre').val(),'Tons',max);
+            DrawChart(chartId,labels,data,$('#Filtre').val(),'Tonnes',max);
 
         });
 
@@ -186,8 +186,8 @@
                         result.reports.forEach(function (item) {
                             $('#Filter_TR').append( ' <th  >' + item.Filter + '</th> ');
                             $('#NBT_TR').append( '<td><span class="text-danger"><b>' + item.NBT + '</b></span> Bobs</td> ');
-                            $('#PT_TR').append( '<td><span class="text-danger"><b>' + item.PT + '</b></span> Tons</td>');
-                            $('#CT_TR').append( '<td><span class="text-danger"><b>' + item.CT + '</b></span> Tons</td>');
+                            $('#PT_TR').append( '<td><span class="text-danger"><b>' + item.PT + '</b></span> Tonnes</td>');
+                            $('#CT_TR').append( '<td><span class="text-danger"><b>' + item.CT + '</b></span> Tonnes</td>');
 
 
                             labels.push(item.Filter);
@@ -195,7 +195,7 @@
                         });
                          chartId = 'myBarChart';
                         var max = Math.max.apply(Math, data);
-                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Tons', max);
+                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Tonnes', max);
                     }
                 },
                 error: function (result) {

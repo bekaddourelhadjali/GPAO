@@ -123,7 +123,11 @@ class VisuelFinalController extends Controller
                 if ($rapport->Etat == 'N') {
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
-                    $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
+                    $tubes =  DB::select('Select "NumTube","Tube","Bis" from "tube"  where "Did"= ? and 
+                       "NumTube" not in (select distinct("NumTube") from "vf_refuses" where "Did"=?
+                        Union select distinct("NumTube") from "reception" where "Did"=? 
+                        union  select distinct("NumTube") from "visuel_final" where "Did"=? and "Defauts"=\'R.A.S\' or "Defauts"=\'Déclassé\'
+                        )  ',[$rapport->Did,$rapport->Did,$rapport->Did,$rapport->Did]);
                     $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z10')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z10')->get();
                     $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 

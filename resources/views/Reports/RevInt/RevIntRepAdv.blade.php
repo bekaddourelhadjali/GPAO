@@ -28,18 +28,18 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-M17RepAdv" role="tabpanel"
-                 aria-labelledby="nav-M17RepAdv-tab">
+            <div class="tab-pane fade show active" id="nav-RevIntRepAdv" role="tabpanel"
+                 aria-labelledby="nav-RevIntRepAdv-tab">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('M17DailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('RevIntDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('M17Report.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('RevIntReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link active " id="nav-M17RepAdv-tab" data-toggle="tab"
-                               href="#nav-M17RepAdv" role="tab" aria-controls="nav-M17RepAdv" aria-selected="true">
+                            <a class="nav-item nav-link active " id="nav-RevIntRepAdv-tab" data-toggle="tab"
+                               href="#nav-RevIntRepAdv" role="tab" aria-controls="nav-RevIntRepAdv" aria-selected="true">
                                 <b>Filtres Avancés</b></a>
 
                         </div>
@@ -70,32 +70,32 @@
                     </div>
                 </div>
                     <div class="table-container">
-                        <table class="col-12 table table-bordered  table-striped" id="M17ReportTable" style="min-width: 800px">
+                        <table class="col-12 table table-bordered  table-striped" id="RevIntReportTable" style="min-width: 800px">
                             <tbody id="Reports">
                             <tr id="Filter_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($RevIntReport))
+                                    @foreach($RevIntReport as $item)
                                     <th >{{$item->Filter}}</th>
                                 @endforeach
                                 @endif
                             </tr>
                             <tr id="NBT_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($RevIntReport))
+                                    @foreach($RevIntReport as $item)
                                     <td><span class="text-danger"><b>{{$item->NBT}}</b></span> Tubes</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="LT_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($RevIntReport))
+                                    @foreach($RevIntReport as $item)
                                         <td><span class="text-danger"><b>{{$item->LT}}</b></span> Mètres</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="PT_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($RevIntReport))
+                                    @foreach($RevIntReport as $item)
                                     <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tonnes</td>
                                     @endforeach
                                 @endif
@@ -123,8 +123,8 @@
         $(document).ready(function () {
 
             chartId='myBarChart';
-            labels=@json(array_column($M17Report,'Filter'));
-            data=@json(array_column($M17Report,'LT'));
+            labels=@json(array_column($RevIntReport,'Filter'));
+            data=@json(array_column($RevIntReport,'LT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,$('#Filtre').val(),'Mètres',max);
 
@@ -139,7 +139,7 @@
             });
 
             $.ajax({
-                url: "{{url('/M17RepAdv')}}/" + $('#Filtre').val(),
+                url: "{{url('/RevIntRepAdv')}}/" + $('#Filtre').val(),
                 method: 'get',
                 data: {
                 },

@@ -192,6 +192,7 @@
                     @php  @endphp
                     <input name="Numero" type="hidden" id="Numero" value="">
                     <input name="NumeroRap" type="hidden" id="NumeroRap" value="{{$rapport->Numero}}">
+                    <input name="NumRap" type="hidden" id="NumRap" value="{{$rapport->Numero}}">
                     <input type="hidden" id="Pid" name="Pid" value="{{$rapport->Pid}}">
                     <input type="hidden" id="Did" name="Did" value="{{$rapport->Did}}">
                     <input type="hidden" id="machine" name="machine" value="{{$rapport->Machine}}">

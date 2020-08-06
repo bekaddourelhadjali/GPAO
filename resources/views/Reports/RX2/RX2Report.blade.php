@@ -20,17 +20,17 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-RepReport" role="tabpanel"
-                 aria-labelledby="nav-RepReport-tab ">
+            <div class="tab-pane fade show active" id="nav-RX2Report" role="tabpanel"
+                 aria-labelledby="nav-RX2Report-tab ">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('RepDailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('RX2DailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link active " id="nav-RepReport-tab" data-toggle="tab"
-                               href="#nav-RepReport" role="tab" aria-controls="nav-RepReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('RepRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link active " id="nav-RX2Report-tab" data-toggle="tab"
+                               href="#nav-RX2Report" role="tab" aria-controls="nav-RX2Report" aria-selected="true"><b>Filtrage par détails de projet</b></a>
+                            <a class="nav-item nav-link  "  href="{{route('RX2RepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
                     </nav>
@@ -75,7 +75,6 @@
                             </div>
                         </div>
                     </div>
-
 
 
                     <div class="col-xl-3 col-md-6 py-1">
@@ -125,12 +124,13 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-container">
-                                <table class="table table-borderless table-striped" id="RepReportTable"  cellspacing="0">
+                                <table class="table table-borderless table-striped" id="RX2ReportTable"  cellspacing="0">
                                      <thead style="cursor: pointer">
                                     <tr class="text-white">
                                         <th>DateSaisie</th>
                                         <th>Poste</th>
                                         <th>Machine</th>
+                                        <th>CodeSoudeur</th>
                                         <th>NBT</th>
                                     </tr>
                                     </thead>
@@ -142,7 +142,8 @@
                                             <tr  style="display: table-row;" >
                                                 <td>{{$item->DateSaisie}}</td>
                                                 <td>Poste {{$item->Poste}}</td>
-                                                <td>{{$item->Machine}}</td>
+                                                <td>{{$item->Machine}}</td> 
+                                                <td>{{$item->CodeSoude}}</td>
                                                 <td>{{$item->NBT}}</td>
                                             </tr>
 
@@ -152,6 +153,7 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -223,10 +225,10 @@
             data=@json(array_column($DefautsReport,'NBT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
-            $('#RepReportTable').DataTable();
-            calculateColumn(3);
-        $('#RepReportTable_filter input[type=search]').keyup(function () {
-            calculateColumn(3);
+            $('#RX2ReportTable').DataTable();
+             calculateColumn(4);
+        $('#RX2ReportTable_filter input[type=search]').keyup(function () {
+            calculateColumn(4);
         });
         });
 
@@ -239,7 +241,7 @@
             });
 
             $.ajax({
-                url: "{{url('/RepReport')}}/" + $('#Did').val(),
+                url: "{{url('/RX2Report')}}/" + $('#Did').val(),
                 method: 'get',
                 data: {
                 },
@@ -251,7 +253,7 @@
                     data = [];
                     $('#OperationsReport').html('');
                     $('#DefautsTable tbody').html('');
-                    $('#RepReportTable').DataTable().clear().draw();
+                    $('#RX2ReportTable').DataTable().clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
                     $('#YearNBT').html(result.YearNBT);
 
@@ -276,16 +278,17 @@
                     }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RepReportTable').DataTable().row.add([
+                            $('#RX2ReportTable').DataTable().row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
                                 item.Machine,
+                                item.CodeSoude,
                                 item.NBT, ]
                             );
 
                         });
-                        $('#RepReportTable').DataTable().draw(false);
-                        $('#RepReportTable tbody tr').attr('style','display: table-row;');
+                        $('#RX2ReportTable').DataTable().draw(false);
+                        $('#RX2ReportTable tbody tr').attr('style','display: table-row;');
                     }
                     if (result.DefautsReport.length > 0) {
                         labels=[];
@@ -302,7 +305,7 @@
                         chartId = 'myBarChart';
                         DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
                     }
-                    calculateColumn(3);
+                     calculateColumn(4);
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);

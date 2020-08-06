@@ -97,7 +97,7 @@ Route::resource('Defauts', 'Dashboard\DefautsController')->middleware('auth')->m
 Route::resource('Operations', 'Dashboard\OperationsController')->middleware('auth')->middleware('admin');
 Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middleware('admin');
 
-Route::resource('details_project', 'Dashboard\ProjectDetailsController');
+Route::resource('details_project', 'Dashboard\ProjectDetailsController')->middleware('auth')->middleware('admin');
 
 //RecBob
 Route::resource('RecBobReport', 'Reports\RecBobReportController')->middleware('auth');
@@ -177,24 +177,59 @@ Route::resource('NDTReport', 'Reports\NDT\NDTReportController')->middleware('aut
 Route::resource('NDTRepAdv', 'Reports\NDT\NDTRepAdvController')->middleware('auth');
 Route::resource('NDTDailyRep', 'Reports\NDT\NDTDailyRepController')->middleware('auth');
 
+//RX2
+Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller')->middleware('Rapports:Z09');
+Route::resource('RX2', 'RX2\RX2Controller')->middleware('ChefCont:Z09');
+Route::resource('RX2Report', 'Reports\RX2\RX2ReportController')->middleware('auth');
+Route::resource('RX2RepAdv', 'Reports\RX2\RX2RepAdvController')->middleware('auth');
+Route::resource('RX2DailyRep', 'Reports\RX2\RX2DailyRepController')->middleware('auth');
+
+//VF
+Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController')->middleware('Rapports:Z10');
+Route::resource('VisuelFinal', 'Visuel\VisuelFinalController')->middleware('ChefCont:Z10');
+Route::resource('VFReport', 'Reports\VF\VFReportController')->middleware('auth');
+Route::resource('VFRepAdv', 'Reports\VF\VFRepAdvController')->middleware('auth');
+Route::resource('VFDailyRep', 'Reports\VF\VFDailyRepController')->middleware('auth');
+
+//VFR
+Route::resource('rapports_VFRefuses', 'Visuel\RapportsVFRefusesController')->middleware('Rapports:DEC');
+Route::resource('VFRefuses', 'Visuel\VFRefusesController')->middleware('ChefCont:DEC');
+Route::resource('VFRReport', 'Reports\VFR\VFRReportController')->middleware('auth');
+Route::resource('VFRRepAdv', 'Reports\VFR\VFRRepAdvController')->middleware('auth');
+Route::resource('VFRDailyRep', 'Reports\VFR\VFRDailyRepController')->middleware('auth');
+
+//Reception
+Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController')->middleware('Rapports:Z11');
+Route::resource('Reception', 'Reception\RecTubeController')->middleware('ChefCont:Z11');
+Route::resource('RecReport', 'Reports\Rec\RecReportController')->middleware('auth');
+Route::resource('RecRepAdv', 'Reports\Rec\RecRepAdvController')->middleware('auth');
+Route::resource('RecDailyRep', 'Reports\Rec\RecDailyRepController')->middleware('auth');
+
+//RevInt
+Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController')->middleware('Rapports:Z12');
+Route::resource('RevInt', 'Revetement\RevIntController')->middleware('ChefCont:Z12');
+Route::resource('RevIntReport', 'Reports\RevInt\RevIntReportController')->middleware('auth');
+Route::resource('RevIntRepAdv', 'Reports\RevInt\RevIntRepAdvController')->middleware('auth');
+Route::resource('RevIntDailyRep', 'Reports\RevInt\RevIntDailyRepController')->middleware('auth');
+
+//RevExt
+Route::resource('rapports_RevExt', 'Revetement\RevExtRapportsController')->middleware('Rapports:Z13');
+Route::resource('RevExt', 'Revetement\RevExtController')->middleware('ChefCont:Z13');
+Route::resource('RevExtReport', 'Reports\RevExt\RevExtReportController')->middleware('auth');
+Route::resource('RevExtRepAdv', 'Reports\RevExt\RevExtRepAdvController')->middleware('auth');
+Route::resource('RevExtDailyRep', 'Reports\RevExt\RevExtDailyRepController')->middleware('auth');
+
+//Expedition
+Route::resource('rapports_Expedition', 'Expedition\ExpeditionRapportsController')->middleware('Rapports:Z14');
+Route::resource('Expedition', 'Expedition\ExpeditionController')->middleware('ChefCont:Z14');
+Route::resource('ExpReport', 'Reports\Exp\ExpReportController')->middleware('auth');
+Route::resource('ExpRepAdv', 'Reports\Exp\ExpRepAdvController')->middleware('auth');
+Route::resource('ExpDailyRep', 'Reports\Exp\ExpDailyRepController')->middleware('auth');
+
 
 //Rapports
 Route::resource('ContBobine', 'Controle\ContBobineController');
-Route::resource('ContM3', 'Controle\ContM3Controller');
-Route::resource('rapports_RX2', 'RX2\RapportsRX2Controller')->middleware('Rapports:Z09');
-Route::resource('RX2', 'RX2\RX2Controller')->middleware('UnAuthorized:Z09');
-Route::resource('rapports_VisuelFinal', 'Visuel\RapportsVisuelFinalController')->middleware('Rapports:Z10');
-Route::resource('VisuelFinal', 'Visuel\VisuelFinalController')->middleware('UnAuthorized:Z10');
-Route::resource('rapports_VFRefuses', 'Visuel\RapportsVFRefusesController')->middleware('Rapports:DEC');
-Route::resource('VFRefuses', 'Visuel\VFRefusesController')->middleware('UnAuthorized:DEC');
-Route::resource('rapports_Reception', 'Reception\RecTubeRapportsController')->middleware('Rapports:Z11');
-Route::resource('Reception', 'Reception\RecTubeController')->middleware('UnAuthorized:Z11');
-Route::resource('rapports_RevInt', 'Revetement\RevIntRapportsController')->middleware('Rapports:Z12');
-Route::resource('RevInt', 'Revetement\RevIntController')->middleware('UnAuthorized:Z12');
-Route::resource('rapports_RevExt', 'Revetement\RevExtRapportsController')->middleware('Rapports:Z13');
-Route::resource('RevExt', 'Revetement\RevExtController')->middleware('UnAuthorized:Z13');
-Route::resource('rapports_Expedition', 'Expedition\ExpeditionRapportsController')->middleware('Rapports:Z14');
-Route::resource('Expedition', 'Expedition\ExpeditionController')->middleware('UnAuthorized:Z14');
+//Route::resource('ContM3', 'Controle\ContM3Controller');
 
 Route::get('CarteTube/getTubes/{Did}', function ($Did) {
     $tubes = $tube = \App\Fabrication\Tube::where('Did', '=', $Did)->select('NumTube', 'Tube', 'Bis')->get();
@@ -299,30 +334,7 @@ Route::post('/delete_operateur', function () {
 
 })->name('delete_operateur')->middleware('UnAuthorized:Z01');
 
-//Route::get('reprendreTube/{id}', function ($id) {
-    /*  $rapprod = \App\Fabrication\Rapprod::where('Did', '=', $_GET["Did"])->where('Tube', '=', $id)->first();
-      if ($rapprod) {
-          if ($rapprod->rapport->Etat == 'C') {
 
-              $rapportState = [
-                  'Etat' => 'C',
-                  'Numero' => $rapprod->rapport->Numero
-              ];
-              return response()->json(array('rapportState' => $rapportState), 200);
-          } elseif ($rapprod->rapport->Etat == 'N') {
-              $rapportState = [
-                  'Etat' => 'N',
-                  'Numero' => $rapprod->rapport->Numero
-              ];
-              return response()->json(array('rapportState' => $rapportState), 200);
-          } else {
-              return response()->json(array('error' => error), 404);
-          }
-      } else {
-          return response()->json(array('message' => "Tube N'existe Pas"), 404);
-      }
-
-  });*/
 Route::post('cloturer/{id}', function ($id, \Illuminate\Http\Request $request) {
     $rapport = \App\Fabrication\Rapport::find($id);
     $rapport->Etat = 'C';
@@ -474,6 +486,7 @@ Route::post('bobineGet', function (\Illuminate\Http\Request $request) {
         return response()->json(array('error' => "Coulee n'existe pas"), 404);
     }
 })->name('bobineGet');
+
 Route::fallback(function () {
     return \redirect('UnAuthorized');
 });

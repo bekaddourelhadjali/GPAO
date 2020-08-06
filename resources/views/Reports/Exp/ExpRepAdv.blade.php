@@ -28,18 +28,18 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-M17RepAdv" role="tabpanel"
-                 aria-labelledby="nav-M17RepAdv-tab">
+            <div class="tab-pane fade show active" id="nav-ExpRepAdv" role="tabpanel"
+                 aria-labelledby="nav-ExpRepAdv-tab">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('M17DailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('ExpDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('M17Report.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('ExpReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link active " id="nav-M17RepAdv-tab" data-toggle="tab"
-                               href="#nav-M17RepAdv" role="tab" aria-controls="nav-M17RepAdv" aria-selected="true">
+                            <a class="nav-item nav-link active " id="nav-ExpRepAdv-tab" data-toggle="tab"
+                               href="#nav-ExpRepAdv" role="tab" aria-controls="nav-ExpRepAdv" aria-selected="true">
                                 <b>Filtres Avancés</b></a>
 
                         </div>
@@ -70,32 +70,32 @@
                     </div>
                 </div>
                     <div class="table-container">
-                        <table class="col-12 table table-bordered  table-striped" id="M17ReportTable" style="min-width: 800px">
+                        <table class="col-12 table table-bordered  table-striped" id="ExpReportTable" style="min-width: 800px">
                             <tbody id="Reports">
                             <tr id="Filter_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($ExpReport))
+                                    @foreach($ExpReport as $item)
                                     <th >{{$item->Filter}}</th>
                                 @endforeach
                                 @endif
                             </tr>
                             <tr id="NBT_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($ExpReport))
+                                    @foreach($ExpReport as $item)
                                     <td><span class="text-danger"><b>{{$item->NBT}}</b></span> Tubes</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="LT_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($ExpReport))
+                                    @foreach($ExpReport as $item)
                                         <td><span class="text-danger"><b>{{$item->LT}}</b></span> Mètres</td>
                                     @endforeach
                                 @endif
                             </tr>
                             <tr id="PT_TR">
-                                @if(isset($M17Report))
-                                    @foreach($M17Report as $item)
+                                @if(isset($ExpReport))
+                                    @foreach($ExpReport as $item)
                                     <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tonnes</td>
                                     @endforeach
                                 @endif
@@ -111,7 +111,6 @@
 
 
 
-
 @endsection
 
 
@@ -123,10 +122,10 @@
         $(document).ready(function () {
 
             chartId='myBarChart';
-            labels=@json(array_column($M17Report,'Filter'));
-            data=@json(array_column($M17Report,'LT'));
+            labels=@json(array_column($ExpReport,'Filter'));
+            data=@json(array_column($ExpReport,'PT'));
             var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,$('#Filtre').val(),'Mètres',max);
+            DrawChart(chartId,labels,data,$('#Filtre').val(),'Tonnes',max);
 
         });
 
@@ -139,7 +138,7 @@
             });
 
             $.ajax({
-                url: "{{url('/M17RepAdv')}}/" + $('#Filtre').val(),
+                url: "{{url('/ExpRepAdv')}}/" + $('#Filtre').val(),
                 method: 'get',
                 data: {
                 },
@@ -165,11 +164,11 @@
 
 
                             labels.push(item.Filter);
-                            data.push(item.LT);
+                            data.push(item.PT);
                         });
                          chartId = 'myBarChart';
                         var max = Math.max.apply(Math, data);
-                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Mètres', max);
+                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Tonnes', max);
                     }
                 },
                 error: function (result) {

@@ -68,10 +68,13 @@
                                     <option value="Z07">Chanfreinage</option>
                                     <option value="Z08">NDT</option>
                                     <option value="Z09">RX2</option>
-                                    <option value="Z10">Réception</option>
-                                    <option value="Z11">Revêtement Interieur</option>
-                                    <option value="Z12">Revêtement Exterieur</option>
-                                    <option value="Z13">Expédition</option>
+                                    <option value="Z09">RX2</option>
+                                    <option value="Z10">Visuel Final</option>
+                                    <option value="DEC">Refusés Au Final</option>
+                                    <option value="Z11">Réception</option>
+                                    <option value="Z12">Revêtement Interieur</option>
+                                    <option value="Z13">Revêtement Exterieur</option>
+                                    <option value="Z14">Expédition</option>
                                 </select>
                             </div>
                             <div class="form-group col-lg-2 col-md-3 col-sm-6">
@@ -264,7 +267,7 @@
 
                                 if(typeof result.responseJSON.message !='undefined'){
                                     if(result.responseJSON.message.includes('Unique violation')){
-                                        alert("L'adresse IP : "+$('#ipaddress').val()+" est déjà utilisée dans une autre location");
+                                        alert("L'adresse IP : "+$('#ipaddress').val()+" est déjà utilisée dans cette Zone");
                                     }else{
                                         alert(result.responseJSON.message);console.log(result);
                                     }

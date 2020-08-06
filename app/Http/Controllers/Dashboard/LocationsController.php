@@ -116,7 +116,7 @@ class LocationsController extends Controller
      */
     public function destroy($id)
     {   $location=Locations::find($id);
-        Affectations::where('AdresseIp',$location->AdresseIp)->delete();
+        Affectations::where('AdresseIp',$location->AdresseIp)->where("Zone",'=',$location->Zone)->delete();
         if($location->delete()){
             return response()->json(array('success'=> true), 200);
         }else{

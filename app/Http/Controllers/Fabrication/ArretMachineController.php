@@ -48,7 +48,11 @@ class ArretMachineController extends Controller
         $arret_machine->Pid=detailprojet::find($request->Did)->Pid;
         $arret_machine->Did=$request->Did;
         $arret_machine->NumRap=$request->NumRap;
+        if(isset($rapport->Machine))
         $arret_machine->Machine=$rapport->Machine;
+        else{
+            $arret_machine->Machine="0" ;
+        }
         $arret_machine->TypeArret=$request->type_arret;
         $arret_machine->Du=$request->du;
         $arret_machine->Au=$request->au;

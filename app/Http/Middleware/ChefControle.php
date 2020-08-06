@@ -20,7 +20,7 @@ class ChefControle
     {
         if (Auth::check() && Auth::user()->role == "Chef Controle") {
             return $next($request);
-        } else {
+        } else if(!Auth::check()) {
             $location = Locations::where('AdresseIp',  Request::ip())->where('Zone', $zone)->get();
             if (sizeof($location) > 0)
                 return $next($request);

@@ -20,17 +20,17 @@
     <div class="container-fluid">
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-RepReport" role="tabpanel"
-                 aria-labelledby="nav-RepReport-tab ">
+            <div class="tab-pane fade show active" id="nav-VFReport" role="tabpanel"
+                 aria-labelledby="nav-VFReport-tab ">
 
                 <section >
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link  "  href="{{route('RepDailyRep.index')}}">
+                            <a class="nav-item nav-link  "  href="{{route('VFDailyRep.index')}}">
                                 <b>Rapport Journalier</b></a>
-                            <a class="nav-item nav-link active " id="nav-RepReport-tab" data-toggle="tab"
-                               href="#nav-RepReport" role="tab" aria-controls="nav-RepReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  "  href="{{route('RepRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link active " id="nav-VFReport-tab" data-toggle="tab"
+                               href="#nav-VFReport" role="tab" aria-controls="nav-VFReport" aria-selected="true"><b>Filtrage par détails de projet</b></a>
+                            <a class="nav-item nav-link  "  href="{{route('VFRepAdv.index')}}"><b>Filtres Avancés</b></a>
 
                         </div>
                     </nav>
@@ -76,7 +76,32 @@
                         </div>
                     </div>
 
+                    <div class="col-xl-3 col-md-6 py-1">
+                        <div class="card border-left-success shadow h-100 ">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-success text-uppercase mb-1">
 
+                                            Longueur t <span class="MonthRep">
+                                                    ({{$monthW}})</span>
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-danger">
+                                            <span id="MonthLT">{{$MonthLT}}</span>
+                                            Mètres
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <span id="MonthPT">{{$MonthPT}}</span>
+                                            Tonnes
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-ruler-horizontal fa-2x text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-xl-3 col-md-6 py-1">
                         <div class="card border-left-primary shadow h-100">
@@ -98,7 +123,30 @@
                         </div>
                     </div>
 
-
+                    <div class="col-xl-3 col-md-6 py-1">
+                        <div class="card border-left-warning shadow h-100 ">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-warning text-uppercase mb-1">
+                                            Longueur T <span class="YearRep">({{date('Y')}})</span>
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-danger">
+                                            <span id="YearLT">{{$YearLT}}</span>
+                                            Mètres
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <span id="YearPT">{{$YearPT}}</span>
+                                            Tonnes
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-ruler-horizontal fa-2x text-warning"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row" id="OperationsReport">
                     @if(isset($OperationsReport))
@@ -125,13 +173,15 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-container">
-                                <table class="table table-borderless table-striped" id="RepReportTable"  cellspacing="0">
+                                <table class="table table-borderless table-striped" id="VFReportTable"  cellspacing="0">
                                      <thead style="cursor: pointer">
                                     <tr class="text-white">
                                         <th>DateSaisie</th>
                                         <th>Poste</th>
                                         <th>Machine</th>
                                         <th>NBT</th>
+                                        <th>PoidsTotal</th>
+                                        <th>LongueurTotal</th>
                                     </tr>
                                     </thead>
                                     <tbody id="Reports">
@@ -142,8 +192,10 @@
                                             <tr  style="display: table-row;" >
                                                 <td>{{$item->DateSaisie}}</td>
                                                 <td>Poste {{$item->Poste}}</td>
-                                                <td>{{$item->Machine}}</td>
+                                                <td>{{$item->Machine}}</td> 
                                                 <td>{{$item->NBT}}</td>
+                                                <td>{{$item->PoidsTotal}}</td>
+                                                <td>{{$item->LongueurTotal}}</td>
                                             </tr>
 
                                         @endforeach
@@ -156,6 +208,8 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>  
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -223,10 +277,10 @@
             data=@json(array_column($DefautsReport,'NBT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
-            $('#RepReportTable').DataTable();
-            calculateColumn(3);
-        $('#RepReportTable_filter input[type=search]').keyup(function () {
-            calculateColumn(3);
+            $('#VFReportTable').DataTable();
+            calculateColumn(3); calculateColumn(4); calculateColumn(5);
+        $('#VFReportTable_filter input[type=search]').keyup(function () {
+            calculateColumn(3); calculateColumn(4); calculateColumn(5);
         });
         });
 
@@ -239,7 +293,7 @@
             });
 
             $.ajax({
-                url: "{{url('/RepReport')}}/" + $('#Did').val(),
+                url: "{{url('/VFReport')}}/" + $('#Did').val(),
                 method: 'get',
                 data: {
                 },
@@ -251,9 +305,13 @@
                     data = [];
                     $('#OperationsReport').html('');
                     $('#DefautsTable tbody').html('');
-                    $('#RepReportTable').DataTable().clear().draw();
+                    $('#VFReportTable').DataTable().clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
+                    $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
+                    $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
                     $('#YearNBT').html(result.YearNBT);
+                    $('#YearLT').html(Number(Math.round(result.YearLT+'e3')+'e-3'));
+                    $('#YearPT').html(Number(Math.round(result.YearPT+'e3')+'e-3'));
 
                     if(result.OperationsReport.length>0){
                         result.OperationsReport.forEach(function (item) {
@@ -276,16 +334,18 @@
                     }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RepReportTable').DataTable().row.add([
+                            $('#VFReportTable').DataTable().row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
                                 item.Machine,
-                                item.NBT, ]
+                                item.NBT,
+                                item.PoidsTotal,
+                                item.LongueurTotal,]
                             );
 
                         });
-                        $('#RepReportTable').DataTable().draw(false);
-                        $('#RepReportTable tbody tr').attr('style','display: table-row;');
+                        $('#VFReportTable').DataTable().draw(false);
+                        $('#VFReportTable tbody tr').attr('style','display: table-row;');
                     }
                     if (result.DefautsReport.length > 0) {
                         labels=[];
@@ -302,7 +362,7 @@
                         chartId = 'myBarChart';
                         DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
                     }
-                    calculateColumn(3);
+                    calculateColumn(3); calculateColumn(4); calculateColumn(5);
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);

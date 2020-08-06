@@ -96,7 +96,7 @@
                             <tr id="PT_TR">
                                 @if(isset($VisuelReport))
                                     @foreach($VisuelReport as $item)
-                                    <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tons</td>
+                                    <td><span class="text-danger"><b>{{$item->PT}}</b></span> Tonnes</td>
                                     @endforeach
                                 @endif
                             </tr>
@@ -160,7 +160,7 @@
                         result.reports.forEach(function (item) {
                             $('#Filter_TR').append( ' <th  >' + item.Filter + '</th> ');
                             $('#NBT_TR').append( '<td><span class="text-danger"><b>' + item.NBT + '</b></span> Tubes</td> ');
-                            $('#PT_TR').append( '<td><span class="text-danger"><b>' + item.PT + '</b></span> Tons</td>');
+                            $('#PT_TR').append( '<td><span class="text-danger"><b>' + item.PT + '</b></span> Tonnes</td>');
                             $('#LT_TR').append( '<td><span class="text-danger"><b>' + item.LT + '</b></span> Mètres</td>');
 
 
