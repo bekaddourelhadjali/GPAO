@@ -43,7 +43,8 @@
                                aria-selected="true"><b>Rapport Journalier</b></a>
                             <a class="nav-item nav-link  " href="{{route('RepReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  " href="{{route('RepRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link  " href="{{route('RepRepAdv.index')}}"><b>Filtres
+                                    Avancés</b></a>
 
                         </div>
                     </nav>
@@ -121,7 +122,7 @@
 
                 </div>
                 <div class="row" id="OperationsReport">
-                @if(isset($OperationsReport))
+                    @if(isset($OperationsReport))
                         @foreach($OperationsReport as $item)
                             <div class=" col-lg-3 col-md-4 col-6 py-1">
                                 <div class="card border-bottom-danger shadow text-center h-100 ">
@@ -130,8 +131,8 @@
                                             <div class="col mr-2">
                                                 <div class="text-md font-weight-bold text-primary text-uppercase mb-1">
                                                     opr: <span class="Operation text-danger ">{{$item->Opr}}</span>&nbsp
-                                                    nb: <span  class="NBT text-danger">{{$item->NBT}}</span>&nbsp
-                                                     <span  class="VT text-danger">({{$item->VT}})</span>
+                                                    nb: <span class="NBT text-danger">{{$item->NBT}}</span>&nbsp
+                                                    <span class="VT text-danger">({{$item->VT}})</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,7 +140,7 @@
                                 </div>
                             </div>
                         @endforeach
-                @endif
+                    @endif
                 </div>
                 <section>
                     <div class="row">
@@ -177,12 +178,14 @@
                                         @endforeach
                                     @endif
                                     </tbody>
-                                </table>
-                                <div id="tr-actions">
-                                    <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
-                                    <button class="reportDelete btn " style="width: 100px"></button>
+                                </table>@if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
-                                </div>
+                                    <div id="tr-actions">
+                                        <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
+                                        <button class="reportDelete btn " style="width: 100px"></button>
+
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -238,11 +241,14 @@
                                     @endif
                                     </tbody>
                                 </table>
-                                <div id="tr-actions">
-                                    <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
-                                    <button class="reportDelete btn " style="width: 100px"></button>
+                                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
-                                </div>
+                                    <div id="tr-actions">
+                                        <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
+                                        <button class="reportDelete btn " style="width: 100px"></button>
+
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -262,19 +268,19 @@
                                     </thead>
                                     <tbody>
                                     @if(isset($DefautsReport))
-                                            @foreach($DefautsReport as $item)
-                                                <tr>
-                                                    <td>{{$item->Defaut}}</td>
-                                                    <td>{{$item->NBT}}</td>
-                                                </tr>
-                                                @endforeach
+                                        @foreach($DefautsReport as $item)
+                                            <tr>
+                                                <td>{{$item->Defaut}}</td>
+                                                <td>{{$item->NBT}}</td>
+                                            </tr>
+                                        @endforeach
                                     @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="chart-bar" >
+                            <div class="chart-bar">
                                 <canvas id="myBarChart"></canvas>
                             </div>
                         </div>
@@ -312,11 +318,13 @@
             labels =@json( $ChartLabels);
             data =@json( $ChartData) ;
             drawPieChart(chartId, data, labels);
-            chartId='myBarChart';
-            labels=@json(array_column($DefautsReport,'Defaut'));
-            data=@json(array_column($DefautsReport,'NBT'));
+            chartId = 'myBarChart';
+            labels =@json(array_column($DefautsReport,'Defaut'));
+            data =@json(array_column($DefautsReport,'NBT'));
             var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
+            DrawChart(chartId, labels, data, 'Defaut', '', max, 'bar', "#0275ff", "#0275a8");
+            @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+
             addActions();
             console.log(max);
             $('.reportEdit').click(function () {
@@ -331,7 +339,10 @@
                     alert('Please allow popups for this website');
                 }
             });
+            @endif
         });
+
+        @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
         function addActions() {
 
@@ -431,6 +442,7 @@
 
         });
 
+        @endif
         function getData() {
 
             $.ajaxSetup({
@@ -462,7 +474,7 @@
                     table.clear().draw();
                     $('#NBT').html('');
                     $('#FoncTable').DataTable().clear().draw();
-                    if(result.OperationsReport.length>0){
+                    if (result.OperationsReport.length > 0) {
                         result.OperationsReport.forEach(function (item) {
                             $('#OperationsReport').append(' <div class=" col-lg-3 col-md-4 col-6 py-1">\n' +
                                 '                                <div class="card border-bottom-danger shadow text-center h-100 ">\n' +
@@ -470,9 +482,9 @@
                                 '                                        <div class="row no-gutters align-items-center">\n' +
                                 '                                            <div class="col mr-2">\n' +
                                 '                                                <div class="text-md font-weight-bold text-primary text-uppercase mb-1">\n' +
-                                '                                                    opr: <span class="Operation text-danger ">'+item.Opr+'</span>&nbsp\n' +
-                                '                                                    nb: <span  class="NBT text-danger">'+item.NBT+'</span>&nbsp\n' +
-                                '                                                     <span  class="VT text-danger">('+(item.VT === null ? '' : Number(item.VT))+')</span>\n' +
+                                '                                                    opr: <span class="Operation text-danger ">' + item.Opr + '</span>&nbsp\n' +
+                                '                                                    nb: <span  class="NBT text-danger">' + item.NBT + '</span>&nbsp\n' +
+                                '                                                     <span  class="VT text-danger">(' + (item.VT === null ? '' : Number(item.VT)) + ')</span>\n' +
                                 '                                                </div>\n' +
                                 '                                            </div>\n' +
                                 '                                        </div>\n' +
@@ -523,19 +535,19 @@
                         drawPieChart(chartId, data, labels);
                     }
                     if (result.DefautsReport.length > 0) {
-                        labels=[];
-                        data=[];
+                        labels = [];
+                        data = [];
                         result.DefautsReport.forEach(function (item) {
-                                $('#DefautsTable tbody').append('<tr>' +
-                                    '<td>'+item.Defaut+'</td>' +
-                                    '<td>'+item.NBT+'</td>' +
-                                    '</tr> ');
+                            $('#DefautsTable tbody').append('<tr>' +
+                                '<td>' + item.Defaut + '</td>' +
+                                '<td>' + item.NBT + '</td>' +
+                                '</tr> ');
                             labels.push(item.Defaut);
                             data.push(item.NBT);
-                              });
-                        max=Math.max.apply(Math, data);
+                        });
+                        max = Math.max.apply(Math, data);
                         chartId = 'myBarChart';
-                        DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
+                        DrawChart(chartId, labels, data, 'Defaut', '', max, 'bar', "#0275ff", "#0275a8");
                     }
                     addActions();
                 },

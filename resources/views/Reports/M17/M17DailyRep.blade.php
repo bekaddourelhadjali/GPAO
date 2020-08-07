@@ -223,11 +223,14 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+
                                 <div id="tr-actions">
                                     <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
                                     <button class="reportDelete btn " style="width: 100px"></button>
 
                                 </div>
+                                    @endif
                             </div>
                         </div>
 
@@ -283,11 +286,14 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+
                                 <div id="tr-actions">
                                     <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
                                     <button class="reportDelete btn " style="width: 100px"></button>
 
                                 </div>
+                                    @endif
                             </div>
                         </div>
 
@@ -362,8 +368,9 @@
             data=@json(array_column($DefautsReport,'NBT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
+            @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+
             addActions();
-            console.log(max);
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
                 const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
@@ -376,7 +383,9 @@
                     alert('Please allow popups for this website');
                 }
             });
+            @endif
         });
+        @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
         function addActions() {
 
@@ -475,7 +484,7 @@
             $(this).hide();
 
         });
-
+@endif
         function getData() {
 
             $.ajaxSetup({

@@ -206,11 +206,13 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
                                 <div id="tr-actions">
                                     <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
                                     <button class="reportDelete btn " style="width: 100px"></button>
 
                                 </div>
+                                    @endif
                             </div>
                         </div>
 
@@ -249,11 +251,14 @@
                                     <tbody id="ArretReports">
                                     </tbody>
                                 </table>
+                                @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+
                                 <div id="tr-actions">
                                     <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
                                     <button class="reportDelete btn " style="width: 100px"></button>
 
                                 </div>
+                                            @endif
                             </div>
                         </div>
 
@@ -284,6 +289,8 @@
 
         $('#FoncTable').DataTable();
         $(document).ready(function () {
+            @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+
             addActions();
 
             $('.reportEdit').click(function () {
@@ -298,7 +305,9 @@
                     alert('Please allow popups for this website');
                 }
             });
+            @endif
         });
+        @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
         function addActions() {
 
@@ -397,7 +406,7 @@
             $(this).hide();
 
         });
-
+@endif
         function getData() {
             parent=$('#myPieChart').parent();
             parent.html('');
