@@ -31,6 +31,9 @@ class CreateRapprodTable extends Migration
             $table->string('Computer',50)->nullable();
             $table->string('User',50)->nullable();
             $table->dateTime('DateSaisie');
+            $table->index('NumTube');
+            $table->index('Did');
+            $table->index([DB::raw('(ARRAY["Tube"])')], 'tube_index')->algorithm('btree');
         });
     }
 

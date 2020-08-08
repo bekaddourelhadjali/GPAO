@@ -24,41 +24,45 @@ class M17ReportController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $M17Report=[];
-        if(sizeof($details)>0){
-
-            $M17Report = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
-            SUM("Poids") "PoidsTotal" from "m17report" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
-
-        }
-        $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
-                      where "Did"=? and "Zone"=\'Z05\'  group by "Opr"   '
-            , [$details[0]->Did]);
-        $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
-                      where "Did"=? and "Zone"=\'Z05\'   group by "Defaut"   '
-            , [$details[0]->Did]);
+        $OperationsReport=[];
+        $DefautsReport=[];
         $MonthLT = 0;
         $MonthNBT = 0;
         $MonthPT = 0;
         $YearLT = 0;
         $YearNBT = 0;
         $YearPT = 0;
+        if(sizeof($details)>0){
 
-        foreach($M17Report as $item){
+            $M17Report = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
+            SUM("Poids") "PoidsTotal" from "m17report" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
 
-        $time=strtotime($item->DateSaisie);
-        $month = date("m",$time);
-        $year=date("Y",$time);
-            if($month==date('m')&&$year==date('Y')){
-                $MonthPT+=$item->PoidsTotal;
-                $MonthNBT+=$item->NBT;
-                $MonthLT+=$item->LongueurTotal;
-            }
-            if($year==date('Y')){
-                $YearPT+=$item->PoidsTotal;
-                $YearNBT+=$item->NBT;
-                $YearLT+=$item->LongueurTotal;
+
+        $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
+                      where "Did"=? and "Zone"=\'Z05\'  group by "Opr"   '
+            , [$details[0]->Did]);
+        $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
+                      where "Did"=? and "Zone"=\'Z05\'   group by "Defaut"   '
+            , [$details[0]->Did])        ;
+
+            foreach($M17Report as $item){
+
+                $time=strtotime($item->DateSaisie);
+                $month = date("m",$time);
+                $year=date("Y",$time);
+                if($month==date('m')&&$year==date('Y')){
+                    $MonthPT+=$item->PoidsTotal;
+                    $MonthNBT+=$item->NBT;
+                    $MonthLT+=$item->LongueurTotal;
+                }
+                if($year==date('Y')){
+                    $YearPT+=$item->PoidsTotal;
+                    $YearNBT+=$item->NBT;
+                    $YearLT+=$item->LongueurTotal;
+                }
             }
         }
+
         return view('Reports.M17.M17Report', [
                 'reports' => $M17Report,
                 'MonthLT' => $MonthLT,

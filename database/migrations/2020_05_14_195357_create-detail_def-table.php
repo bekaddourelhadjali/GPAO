@@ -30,6 +30,11 @@ class CreateDetailDefTable extends Migration
             $table->Boolean('Int')->default(0);
             $table->Boolean('Ext')->default(0);
             $table->string('Observation',50)->nullable();
+            $table->index('Did');
+            $table->index('Zone');
+            $table->index('NumRap');
+            $table->index('NumVisuel');
+            $table->index('Tube');
         });
     }
 

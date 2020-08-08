@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" type="image/png" href="{{asset('img/Login.png')}}" />
-  <title>GPAO</title>
+  <title>Accès Non Autorisé</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('css/all.min.css')}}"  rel="stylesheet" type="text/css">

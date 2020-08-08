@@ -14,14 +14,18 @@ class NDTDailyRepController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $NDTReport = [];
+        $ArretsReport = [];
+        $nbT = null;
+        $dureeTotal = null;
         if (sizeof($details) > 0) {
 
             $NDTReport = DB::select('select * from "ndtreport" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
-        }
+
         $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z08\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
 
         $nbT = sizeof($NDTReport);
         $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        }
         return view('Reports.NDT.NDTDailyRep', [
                 'reports' => (object)$NDTReport,
                 'nbT' => $nbT,

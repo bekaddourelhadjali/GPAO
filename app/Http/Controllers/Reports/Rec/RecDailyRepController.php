@@ -14,17 +14,22 @@ class RecDailyRepController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $RecReport = [];
+        $ArretsReport = [];
+        $nbT=null;
+        $LT=null;
+        $PT=null;
+        $dureeTotal=null;
         if (sizeof($details) > 0) {
 
             $RecReport = DB::select('select * from "recreport" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
-        }
+
         $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z11\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
 
 
         $nbT = sizeof($RecReport);
         $LT = array_sum(array_column($RecReport, "Longueur"));
         $PT = round(array_sum(array_column($RecReport, "Poids")), 3);
-        $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));}
         return view('Reports.Rec.RecDailyRep', [
                 'reports' => (object)$RecReport,
                 'nbT' => $nbT,

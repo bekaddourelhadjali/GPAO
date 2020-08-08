@@ -31,6 +31,12 @@ class CreateReceptionTable extends Migration
             $table->string('Computer',50);
             $table->dateTime('DateSaisie');
             $table->unique(['NumReception','Did']);
+            $table->index('Did');
+            $table->index('NumeroRap');
+            $table->index('Bis');
+            $table->index('NumTube');
+            $table->index('Tube');
+            $table->index('DateSaisie');
         });
     }
 

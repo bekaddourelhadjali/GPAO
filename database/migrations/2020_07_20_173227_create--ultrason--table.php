@@ -31,6 +31,11 @@ class CreateUltrasonTable extends Migration
             $table->string('Computer',50)->nullable();
             $table->string('User',50)->nullable();
             $table->dateTime('DateSaisie');
+            $table->index('Did');
+            $table->index('NumeroRap');
+            $table->index('NumTube');
+            $table->index('Tube');
+            $table->index('DateSaisie');
         });
     }
 

@@ -1,5 +1,7 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+
+    <title>Liste Globale Des Tubes</title>
     <style>
         @media (min-width: 576px) {
             #RecBobModal {

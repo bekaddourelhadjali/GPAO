@@ -24,12 +24,13 @@ class RecBobReportController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
 
-        if (sizeof($details) > 0)
+        $RecBobReport = [];
+        $MonthRep=null;
+        $YearRep=null;
+        if (sizeof($details) > 0){
             $RecBobReport = DB::select('Select * from "recbobreport" where "Did"=?', [$details[0]->Did]);
 
 
-    else
-        $RecBobReport = [];
         $MonthRep = DB::select('SELECT    EXTRACT(month FROM "DateRec")  as "Month" ,Sum("NbTotal") as "NBT",Sum("PoidsTotal") as "PT" FROM "recbobreport"
                                   WHERE EXTRACT(month FROM "DateRec") =?
                                   AND EXTRACT(year FROM "DateRec") = ? and "Did"=? group by  EXTRACT(month FROM "DateRec") ', [date("m"),date("Y"),$details[0]->Did]);
@@ -46,6 +47,7 @@ class RecBobReportController extends Controller
             $YearRep=$YearRep[0];
         }else{
             $YearRep=null;
+        }
         }
         return view('Reports.RecBobReport', [
                 'RecBobReport' => $RecBobReport,

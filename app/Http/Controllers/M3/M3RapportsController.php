@@ -66,10 +66,11 @@ class M3RapportsController extends Controller
             return redirect(route('M3.show',['id'=>$rapport->Numero]));
         }
     }else{
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+            ->where("Zone",'=','Z00')->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $agents = $location->agents;
+        $agents = $location->agents();
         $rapports=DB::select('select * from rapports where "Zone"=\'Z00\' order by "DateSaisie" desc limit 3');
         return view ('M3.M3Rapports',['details'=>$details
             ,'agents'=>$agents

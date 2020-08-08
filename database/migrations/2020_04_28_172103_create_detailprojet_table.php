@@ -24,6 +24,7 @@ class CreateDetailProjetTable extends Migration
             $table->string('Libelle')->nullable();
             $table->double('PoidsMetrique');
             $table->unique(['Did','Pid']);
+
         });
     }
 

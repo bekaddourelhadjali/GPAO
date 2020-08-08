@@ -1,5 +1,6 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+    <title>Tests Des Bobines</title>
     <style>
         @media (min-width: 576px) {
             #RecBobModal {

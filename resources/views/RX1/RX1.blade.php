@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('style')
+
+    <title>Rapport De Radiographie Numérique</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {
@@ -455,6 +457,8 @@
                         }
                         observation=$('#observation').val();
                         Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre,observation]);
+                        $('#valeur').val('');
+                        $('#nbr').val('');
                         SetDefauts();
                     } else {
                         alert('Sélectionner une opération autre que R.A.S');
@@ -538,6 +542,7 @@
                                     $('#Defauts').val('');
                                     Defauts = [];
 
+                                    rxdef = 0;
                                     addRapprodsListeners();
                                 },
                                 error: function (result) {
@@ -590,6 +595,7 @@
                                     $('#ntube').prop('disabled', false);
                                     Defauts = [];
 
+                                    rxdef = 0;
                                     addRapprodsListeners();
                                     $('#ntube').prop('disabled', false);
                                 },
@@ -645,6 +651,8 @@
                             },
                             success: function (result) {
                                 tr.remove();
+
+                                rxdef = 0;
                             },
                             error: function (result) {
                                 console.log(result);

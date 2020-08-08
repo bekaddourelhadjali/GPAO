@@ -24,6 +24,14 @@ class VFReportController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $VFReport=[];
+        $OperationsReport=[];
+        $DefautsReport=[];
+        $MonthLT = 0;
+        $MonthNBT = 0;
+        $MonthPT = 0;
+        $YearLT = 0;
+        $YearNBT = 0;
+        $YearPT = 0;
         if(sizeof($details)>0){
 
             $VFReport = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
@@ -31,20 +39,15 @@ class VFReportController extends Controller
              , Round(cast(("Longueur"*(("EpaisseurM"*pi()*7.85*("DiametreM"-"EpaisseurM"))/1000 ))/1000 as numeric),3) "Poids"
              from "vfreport" where "Did"=?) q1  group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
 
-        }
+
         $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
                       where "Did"=? and "Zone"=\'Z10\'  group by "Opr"   '
             , [$details[0]->Did]);
         $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
                       where "Did"=? and "Zone"=\'Z10\' and "Defaut" is not null  group by "Defaut"  '
             , [$details[0]->Did]);
-        $MonthLT = 0;
-        $MonthNBT = 0;
-        $MonthPT = 0;
-        $YearLT = 0;
-        $YearNBT = 0;
-        $YearPT = 0;
 
+        }
         foreach($VFReport as $item){
 
         $time=strtotime($item->DateSaisie);

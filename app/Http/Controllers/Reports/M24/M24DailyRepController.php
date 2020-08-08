@@ -14,14 +14,18 @@ class M24DailyRepController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $M24Report = [];
+        $ArretsReport = [];
+        $nbT = null;
+        $dureeTotal = null;
         if (sizeof($details) > 0) {
 
             $M24Report = DB::select('select * from "m24report" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
-        }
+
         $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z06\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
 
         $nbT = sizeof($M24Report);
         $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        }
         return view('Reports.M24.M24DailyRep', [
                 'reports' => (object)$M24Report,
                 'nbT' => $nbT,

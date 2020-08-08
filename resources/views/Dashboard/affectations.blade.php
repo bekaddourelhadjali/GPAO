@@ -1,5 +1,6 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+    <title>Gestion Des Affectations</title>
     <style>
         section{
             padding-left: 10px;

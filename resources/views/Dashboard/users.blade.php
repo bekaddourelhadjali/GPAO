@@ -44,13 +44,15 @@
             border: none;
         }
     </style>
+
+    <title>Gestion des Utilisateurs</title>
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class=" offset-lg-1 col-lg-10  offset-sm-0 col-sm-12">
                 <section >
-                    <h4 class="text-center  text-info"><b>Gestion Des Utilisateur</b></h4>
+                    <h4 class="text-center  text-info"><b>Gestion Des Utilisateurs</b></h4>
                     <hr>
                     <form id="UsersForm"  class="row text-center">
                         <input type="hidden" id="UserId" name="UserId" value="">

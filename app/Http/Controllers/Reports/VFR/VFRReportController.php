@@ -24,20 +24,22 @@ class VFRReportController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $VFRReport=[];
+        $OperationsReport=[];
+        $DefautsReport=[];
+        $MonthNBT = 0;
+        $YearNBT = 0;
         if(sizeof($details)>0){
 
             $VFRReport = DB::select('select "DateSaisie"::date,"Poste","Machine" ,count(*) "NBT"   from "vfrreport" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
 
-        }
+
         $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
                       where "Did"=? and "Zone"=\'DEC\'  group by "Opr"   '
             , [$details[0]->Did]);
         $DefautsReport = DB::select( 'select trim(REGEXP_REPLACE("Defaut",\'[U[:digit:].]\',\'\',\'g\')) "Defaut",Count(*) "NBT" from "defautsreport"
                       where "Did"=? and "Zone"=\'DEC\'  group by trim(REGEXP_REPLACE("Defaut",\'[U[:digit:].]\',\'\',\'g\')) '
             , [$details[0]->Did]);
-        $MonthNBT = 0;
-        $YearNBT = 0;
-
+        }
         foreach($VFRReport as $item){
 
         $time=strtotime($item->DateSaisie);

@@ -26,6 +26,8 @@ class CreateArretMachineTable extends Migration
             $table->string('Cause',255)->nullable();
             $table->string('NDI',10)->nullable();
             $table->string('Obs',255)->nullable();
+            $table->index('Did');
+            $table->index('NumRap'); 
 
         });
     }

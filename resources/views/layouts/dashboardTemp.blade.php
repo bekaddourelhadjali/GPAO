@@ -9,7 +9,6 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" type="image/jpg" href="{{asset('img/favicon.jpg')}}" />
-  <title>GPAO</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('css/all.min.css')}}"  rel="stylesheet" type="text/css">
@@ -148,21 +147,11 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{route('home')}}">
+        <a class="nav-link" href="{{route('Dashboard.index')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span style="font-size: 14px">Dashboard</span></a>
+          <span style="font-size: 14px">Tableau De Bord</span></a>
       </li>
 
-    @if(Auth::check() && Auth::user()->role == "Chef Production")
-      <!-- Divider -->
-        <hr class="sidebar-divider" style="margin-bottom: 0"><!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="{{route('ContRecBob.index')}}">
-            <i class="fas fa-fw fa-vial"></i>
-            <span style="font-size: 14px">Tests des Bobines</span></a>
-        </li>
-
-    @endif
       <!-- Divider -->
       <hr class="sidebar-divider">
 
@@ -170,26 +159,6 @@
       <div style="font-size: 12px" class="sidebar-heading text-white">
         Rapports
       </div>
-
-      <!-- Nav Item - Fabrication Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" style="cursor: pointer" data-toggle="collapse" data-target="#collapseFabrication" aria-expanded="true" aria-controls="collapseFabrication">
-          <i class="fas fa-fw fa-cog"></i>
-          <span   style="font-size: 16px" >Fabrication</span>
-        </a>
-        <div id="collapseFabrication" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded"  >
-            <h6 class="collapse-header ">Rapports Journaliers:</h6>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RecBobDailyRep.index')}}">Réception Bobine</a>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M3DailyRep.index')}}">Préparation Bobine</a>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('FabDailyRep.index')}}">Production</a>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RepDailyRep.index')}}">Soudure Manuelle</a>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M17DailyRep.index')}}">Chutage M17</a>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M24DailyRep.index')}}">Test Hydrostatique M24</a>
-            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M25DailyRep.index')}}">Chanfreinage M25</a>
-          </div>
-        </div>
-      </li>
 
       <!-- Nav Item - Contrôle Collapse Menu -->
       <li class="nav-item">
@@ -214,6 +183,27 @@
           </div>
         </div>
       </li>
+      <!-- Nav Item - Fabrication Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" style="cursor: pointer" data-toggle="collapse" data-target="#collapseFabrication" aria-expanded="true" aria-controls="collapseFabrication">
+          <i class="fas fa-fw fa-cog"></i>
+          <span   style="font-size: 16px" >Fabrication</span>
+        </a>
+        <div id="collapseFabrication" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded"  >
+            <h6 class="collapse-header ">Rapports Journaliers:</h6>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RecBobDailyRep.index')}}">Réception Bobine</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M3DailyRep.index')}}">Préparation Bobine</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('FabDailyRep.index')}}">Production</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('RepDailyRep.index')}}">Soudure Manuelle</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M17DailyRep.index')}}">Chutage M17</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M24DailyRep.index')}}">Test Hydrostatique M24</a>
+            <a class="collapse-item" style="padding:.4rem 1rem" href="{{route('M25DailyRep.index')}}">Chanfreinage M25</a>
+          </div>
+        </div>
+      </li>
+
+
       @if (isset(Auth::user()->role) && (strpos(Auth::user()->role,'Admin')!==false) )
       <!-- Nav Item - Gestion de l'application Collapse Menu -->
       <li class="nav-item">
@@ -237,6 +227,17 @@
       </li>
       @endif
     <!-- Divider -->
+
+    @if(Auth::check() && Auth::user()->role == "Chef Production")
+      <!-- Divider -->
+        <hr class="sidebar-divider" style="margin-bottom: 0"><!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('ContRecBob.index')}}">
+            <i class="fas fa-fw fa-vial"></i>
+            <span style="font-size: 14px">Tests des Bobines</span></a>
+        </li>
+
+      @endif
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
         <a class="nav-link" href="{{route('ListeGlobale.index')}}">

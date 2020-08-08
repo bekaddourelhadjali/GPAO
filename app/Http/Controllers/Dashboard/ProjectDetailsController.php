@@ -17,10 +17,9 @@ class ProjectDetailsController extends Controller
      */
     public function index()
     {
-        $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $detail_projects=detailprojet::all();
+         $detail_projects=detailprojet::all();
         $projects=Projet::all();
-        return view('Dashboard.ProjectDetails',["projet"=>$projet,
+        return view('Dashboard.ProjectDetails',[
             "detail_projects"=>$detail_projects,
             "projects"=>$projects,
 

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('style')
+
+    <title>Rapport des Bobines Non Réceptionnées</title>
     <style>
         @media (min-width: 576px) {
             #ListModal {

@@ -1,5 +1,7 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+
+    <title>Rapports D'Expédition</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {

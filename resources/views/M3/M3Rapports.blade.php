@@ -1,13 +1,8 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Rapports Des Bobines Préparées</title>
     <style>
-        /*input[type="date"]::-webkit-inner-spin-button,*/
-        /*input[type="date"]::-webkit-calendar-picker-indicator {*/
-        /*display: none;*/
-        /*-webkit-appearance: none;*/
-        /*margin:0;*/
-        /*}*/
         @media (min-width: 576px) {
             .modal-dialog {
                 max-width: 800px;

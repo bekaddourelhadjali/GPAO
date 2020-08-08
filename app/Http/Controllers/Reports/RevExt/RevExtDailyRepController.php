@@ -14,10 +14,15 @@ class RevExtDailyRepController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $RevExtReport = [];
+        $ArretsReport = [];
+        $nbT = null;
+        $LT = null;
+        $PT = null;
+        $dureeTotal = null;
         if (sizeof($details) > 0) {
 
             $RevExtReport = DB::select('select * from "revextreport" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
-        }
+
         $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z13\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
 
 
@@ -25,6 +30,7 @@ class RevExtDailyRepController extends Controller
         $LT = array_sum(array_column($RevExtReport, "Longueur"));
         $PT = round(array_sum(array_column($RevExtReport, "Poids")), 3);
         $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        }
         return view('Reports.RevExt.RevExtDailyRep', [
                 'reports' => (object)$RevExtReport,
                 'nbT' => $nbT,

@@ -23,6 +23,7 @@ class CreateProjetTable extends Migration
             $table->text('Comments')->nullable();
             $table->date('CompletedDate')->nullable();
             $table->integer('Customer');
+            $table->index([\Illuminate\Support\Facades\DB::raw('(ARRAY["Etat"])')], 'Etat_index')->algorithm('btree');
         });
     }
 

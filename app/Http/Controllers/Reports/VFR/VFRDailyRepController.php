@@ -14,10 +14,15 @@ class VFRDailyRepController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $VFRReport = [];
+        $ArretsReport = [];
+        $OperationsReport = [];
+        $DefautsReport = [];
+        $nbT = null;
+        $dureeTotal = null;
         if (sizeof($details) > 0) {
 
             $VFRReport = DB::select('select * from "vfrreport" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
-        }
+
         $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'DEC\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
         $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
                       where "Did"=? and "Zone"=\'DEC\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
@@ -31,6 +36,7 @@ class VFRDailyRepController extends Controller
 
         $nbT = sizeof($VFRReport);
         $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        }
         return view('Reports.VFR.VFRDailyRep', [
                 'reports' => (object)$VFRReport,
                 'nbT' => $nbT,

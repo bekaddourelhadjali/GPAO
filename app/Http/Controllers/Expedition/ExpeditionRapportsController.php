@@ -64,11 +64,11 @@ class ExpeditionRapportsController extends Controller
         if($rapport->save()) {
             return redirect(route('Expedition.show',['id'=>$rapport->Numero]));
         }
-    }else{
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+    }else{$location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+        ->where("Zone",'=','Z14')->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $agents = $location->agents;
+        $agents = $location->agents();
         $rapports=DB::select('select * from rapports where "Zone"=\'Z14\' order by "DateSaisie" desc limit 3');
         return view ('Expedition.ExpeditionRapports',['details'=>$details,'agents'=>$agents
             ,'rapports'=>$rapports,

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Rapport des Bobines Réceptionnées </title>
     <style>
 
         button {

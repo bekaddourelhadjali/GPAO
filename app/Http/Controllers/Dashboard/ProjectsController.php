@@ -16,10 +16,9 @@ class ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { $projet = Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $projects=Projet::all();
+    {    $projects=Projet::all();
         $clients=Client::all();
-        return view('Dashboard.Projects',["projet"=>$projet,
+        return view('Dashboard.Projects',[
             "projects"=>$projects,
             "clients"=>$clients,
 
@@ -51,7 +50,15 @@ class ProjectsController extends Controller
         $project->EndDate=$request->endDate;
         $project->Comments=$request->comments;
         $project->Customer=$request->customer;
+        $project->Etat=$request->etat;
         if($project->save()){
+            if($project->Etat=='C'){
+                $project->Etat='Fini';
+            }  elseif($project->Etat=='E'){
+                $project->Etat='En cours';
+            } else {
+                $project->Etat='Arreté';
+            }
             return response()->json(array('project'=> $project), 200);
 
         }else{
@@ -70,6 +77,13 @@ class ProjectsController extends Controller
     {
         $project= Projet::find($id);
         if($project!=null){
+            if($project->Etat=='C'){
+            $project->Etat='Fini';
+        }  elseif($project->Etat=='E'){
+            $project->Etat='En cours';
+        } else {
+            $project->Etat='Arreté';
+        }
             return response()->json(array('project'=> $project), 200);
 
         }else{
@@ -104,7 +118,15 @@ class ProjectsController extends Controller
         $project->EndDate=$request->endDate;
         $project->Comments=$request->comments;
         $project->Customer=$request->customer;
+        $project->Etat=$request->etat;
         if($project->save()){
+            if($project->Etat=='C'){
+                $project->Etat='Fini';
+            }  elseif($project->Etat=='E'){
+                $project->Etat='En cours';
+            } else {
+                $project->Etat='Arreté';
+            }
             return response()->json(array('project'=> $project), 200);
 
         }else{

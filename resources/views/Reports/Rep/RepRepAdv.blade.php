@@ -1,5 +1,6 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+    <title>Rapports De Soudure Manuelle</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {
@@ -112,7 +113,7 @@
             labels=@json(array_column($RepReport,'Filter'));
             data=@json(array_column($RepReport,'NBT'));
             var max = Math.max.apply(Math, data);
-            DrawChart(chartId,labels,data,$('#Filtre').val(),'Mètres',max);
+            DrawChart(chartId,labels,data,$('#Filtre').val(),'Tubes',max);
 
         });
 
@@ -151,7 +152,7 @@
                         });
                          chartId = 'myBarChart';
                         var max = Math.max.apply(Math, data);
-                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Mètres', max);
+                        DrawChart(chartId, labels, data, $('#Filter').val(), 'Tubes', max);
                     }
                 },
                 error: function (result) {

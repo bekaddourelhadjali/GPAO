@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Rapports De Réparation Et De Chutage  </title>
     <style>
 
         @keyframes rotating {

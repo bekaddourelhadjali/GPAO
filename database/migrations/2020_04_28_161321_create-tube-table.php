@@ -58,6 +58,7 @@ class CreateTubeTable extends Migration
             $table->Boolean('Z15')->default(false);
             $table->Boolean('Z16')->default(false);
             $table->unique(['Pid','Did','Machine','NumTube','Bis']);
+            $table->index('DateSaisie');
         });
     }
 

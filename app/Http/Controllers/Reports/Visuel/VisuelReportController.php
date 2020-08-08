@@ -24,25 +24,28 @@ class VisuelReportController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $VisuelReport=[];
-        if(sizeof($details)>0){
-
-            $VisuelReport = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
-            SUM("Poids") "PoidsTotal" from "visuelreport" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
-
-        }
-        $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
-                      where "Did"=? and "Zone"=\'Z02\'  group by "Opr"   '
-            , [$details[0]->Did]);
-        $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
-                      where "Did"=? and "Zone"=\'Z02\'   group by "Defaut"   '
-            , [$details[0]->Did]);
+        $OperationsReport=[];
+        $DefautsReport=[];
         $MonthLT = 0;
         $MonthNBT = 0;
         $MonthPT = 0;
         $YearLT = 0;
         $YearNBT = 0;
         $YearPT = 0;
+        if(sizeof($details)>0){
 
+            $VisuelReport = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT",SUM("Longueur") "LongueurTotal", 
+            SUM("Poids") "PoidsTotal" from "visuelreport" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
+
+
+        $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
+                      where "Did"=? and "Zone"=\'Z02\'  group by "Opr"   '
+            , [$details[0]->Did]);
+        $DefautsReport = DB::select('select "Defaut",Count(*) "NBT" from "defautsreport"
+                      where "Did"=? and "Zone"=\'Z02\'   group by "Defaut"   '
+            , [$details[0]->Did]);
+
+        }
         foreach($VisuelReport as $item){
 
         $time=strtotime($item->DateSaisie);

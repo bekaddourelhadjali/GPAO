@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Rapport De Production Des Tubes</title>
     <style>
         label{
             margin-bottom: 0;

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('style')
+
+    <title>Rapport De Revêtement Extérieur</title>
     <style>
         input[type="date"]::-webkit-inner-spin-button,
         input[type="date"]::-webkit-calendar-picker-indicator {

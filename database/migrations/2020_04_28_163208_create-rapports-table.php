@@ -52,6 +52,9 @@ class CreateRapportsTable extends Migration
             $table->dateTime('DateSaisie')->nullable();
             $table->string('Etat',1)->nullable();
             $table->text('ObsRap')->nullable();
+            $table->index('Did');
+            $table->index('Zone');
+            $table->index('DateSaisie');
         });
     }
 

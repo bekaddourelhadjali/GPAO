@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Fonctionnement Des Machines</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .table {
@@ -686,6 +687,7 @@
                                     '<td><button id="arret' + result.arret.id + 'Edit" class="arretEdit text-primary" ><i class="fa fa-edit"></i></button>' +
                                     '<button   id="arret' + result.arret.id + 'Delete" class="arretDelete text-danger" ><i class="fa fa-trash"></i></button></td></tr>');
 
+                                $('#arretForm').trigger("reset");
                                 addArretsListeners();
                             },
                             error: function (result) {

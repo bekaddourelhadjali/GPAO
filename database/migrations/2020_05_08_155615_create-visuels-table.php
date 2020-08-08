@@ -51,6 +51,12 @@ class CreateVisuelsTable extends Migration
             $table->string('User',50)->nullable();
             $table->dateTime('DateSaisie');
             $table->Boolean('Visible');
+            $table->index('Did');
+            $table->index('NumeroRap');
+            $table->index('Bis');
+            $table->index('NumTube');
+            $table->index('Tube');
+            $table->index('DateSaisie');
         });
     }
 

@@ -24,11 +24,15 @@ class RepReportController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $RepReport=[];
+        $OperationsReport=[];
+        $DefautsReport=[];
+        $MonthNBT=null;
+        $YearNBT=null;
         if(sizeof($details)>0){
 
             $RepReport = DB::select('select "DateSaisie"::date,"Poste","Machine",count(*) "NBT"  from "repreport" where "Did"=? group by "DateSaisie"::date,"Poste","Machine" ', [$details[0]->Did]);
 
-        }
+
         $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
                       where "Did"=? and "Zone"=\'Z04\'  group by "Opr"   '
             , [$details[0]->Did]);
@@ -37,7 +41,7 @@ class RepReportController extends Controller
             , [$details[0]->Did]);
         $MonthNBT = 0;
         $YearNBT = 0;
-
+        }
         foreach($RepReport as $item){
 
         $time=strtotime($item->DateSaisie);

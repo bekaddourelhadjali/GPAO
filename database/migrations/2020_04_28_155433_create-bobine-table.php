@@ -47,6 +47,8 @@ class CreateBobineTable extends Migration
             $table->string('ZoneAddSaisie');
             $table->unique(['Coulee','Bobine']);
             $table->unique(['NbReception','Pid']);
+            $table->index('Etat');
+            $table->index('NumeroRap');
 
         });
     }

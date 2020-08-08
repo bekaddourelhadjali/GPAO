@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('style')
-    {{--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />--}}
-    <style>
+    <title>Rapport Radioscopique RX2</title>
+     <style>
         @media (min-width: 576px) {
             .modal-dialog {
                 max-width: 1000px;
@@ -438,6 +438,8 @@
 
                     Obs = $('#observation').val();
                     Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, Int, Ext, Obs]);
+                    $('#valeur').val('');
+                    $('#nbr').val('');
                     SetDefauts();
 
                 } else {

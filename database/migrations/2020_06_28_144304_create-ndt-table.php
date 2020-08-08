@@ -31,6 +31,12 @@ class CreateNdtTable extends Migration
             $table->string('User',50);
             $table->string('Computer',50);
             $table->dateTime('DateSaisie');
+            $table->index('Did');
+            $table->index('NumeroRap');
+            $table->index('Bis');
+            $table->index('NumTube');
+            $table->index('Tube');
+            $table->index('DateSaisie');
         });
     }
 

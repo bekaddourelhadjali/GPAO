@@ -1,5 +1,6 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+    <title>Gestion Des Projets</title>
     <style>
         section{
             padding-left: 10px;
@@ -62,15 +63,19 @@
                                 <label  for="startDate"  > Date de début  </label>
                                 <input class=" form-control"  name="startDate" id="startDate" type="date" value="{{date("Y-m-d") }}" required >
                             </div>
-                            <div class="form-group col-xl-2 col-lg-3 col-sm-4">
+                            <div class="form-group col-xl-2 col-sm-4">
                                 <label  for="endDate"  > Date de fin  </label>
                                 <input class=" form-control"  name="endDate" id="endDate" type="date" value="{{date("Y-m-d") }}" required >
                             </div>
-                            <div class="form-group col-xl-3 col-lg-3 col-sm-4">
-                                <label  for="comments"  > Commentaires  </label>
-                                <input class=" form-control"  name="comments" id="comments" type="text"   >
+                            <div class="form-group  col-lg-3 col-sm-6">
+                                <label   for="etat" >  Etat   </label>
+                                <select class="form-control col-12" name="etat" id="etat"  required>
+                                    <option   value="E" selected>En cours</option>
+                                    <option   value="C" >Fini</option>
+                                    <option   value="A" >Arreté</option>
+                                </select>
                             </div>
-                            <div class="form-group col-xl-2 col-lg-3 col-sm-4">
+                            <div class="form-group   col-lg-3 col-sm-6 ">
                                 <label   for="name" >  Client   </label>
                                 <select class="form-control col-12" name="customer" id="customer"  required>
                                     <option disabled value="0" selected></option>
@@ -80,6 +85,10 @@
                                         @endforeach
                                     @endif
                                 </select>
+                            </div>
+                            <div class="form-group  col-sm-6">
+                                <label  for="comments"  > Commentaires  </label>
+                                <input class=" form-control"  name="comments" id="comments" type="text"   >
                             </div>
                             <div class="col-xl-1 form-group  col-md-2 col-sm-4 actions">
                                 <label class="col-12">&nbsp</label>
@@ -102,6 +111,8 @@
                                         <hr>
                                         <p class="card-text"><b><i class="fa fa-clock text-warning"></i>&nbsp;&nbsp;Date de début : <span id="project{{$project->Pid}}StartDate">{{$project->StartDate}}</span> </b></p>
                                         <p class="card-text"><b><i class="fa fa-clock text-success"></i>&nbsp;&nbsp;&nbsp;Date de fin : <span id="project{{$project->Pid}}EndDate">{{$project->EndDate}}</span>  </b></p>
+                                        <p class="card-text"><b><i class="fa fa-question text-success"></i>&nbsp;&nbsp;&nbsp;Etat : <span id="project{{$project->Pid}}EndDate">
+                                                    @if($project->Etat=="E") En cours @elseif($project->Etat=="A")Arreté @else Fini @endif</span>  </b></p>
                                         <div class="text-center">
                                         <button type="button" id="Edit{{$project->Pid}}Project" class="EditProject btn btn-primary" style="width:35px; height:35px; padding:0;" data-dismiss="modal"><i class="fa fa-edit"></i></button>
                                         <button type="button" id="Supprimer{{$project->Pid}}Project" style="width:35px; height:35px; padding:0;" class="SupprimerProject btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -147,6 +158,7 @@
                                 endDate: $('#endDate').val(),
                                 comments: $('#comments').val(),
                                 customer: $('#customer').val(),
+                                etat: $('#etat').val(),
 
                             },
                             success: function (result) {
@@ -157,6 +169,7 @@
                                     '                                        <hr>\n' +
                                     '                                        <p class="card-text"><b><i class="fa fa-clock text-warning"></i>&nbsp;&nbsp;Date de début : <span id="project'+result.project.Pid+'StartDate">'+result.project.StartDate+'</span> </b></p>\n' +
                                     '                                        <p class="card-text"><b><i class="fa fa-clock text-success"></i>&nbsp;&nbsp;&nbsp;Date de fin : <span id="project'+result.project.Pid+'EndDate">'+result.project.EndDate+'</span>  </b></p>\n' +
+                                    '                                        <p class="card-text"><b><i class="fa fa-question text-success"></i>&nbsp;&nbsp;&nbsp;Etat: <span id="project'+result.project.Pid+'EndDate">'+result.project.Etat+'</span>  </b></p>\n' +
                                     '                                        <div class="text-center">\n' +
                                     '                                        <button type="button" id="Edit'+result.project.Pid+'Project" class="EditProject btn btn-primary" style="width:35px; height:35px; padding:0;" data-dismiss="modal"><i class="fa fa-edit"></i></button>\n' +
                                     '                                        <button type="button" id="Supprimer'+result.project.Pid+'Project" style="width:35px; height:35px; padding:0;" class="SupprimerProject btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
@@ -193,6 +206,7 @@
                                 endDate: $('#endDate').val(),
                                 comments: $('#comments').val(),
                                 customer: $('#customer').val(),
+                                etat: $('#etat').val(),
                             },
                             success: function (result) {
                                 console.log(result);
@@ -201,6 +215,7 @@
                                     '                                        <hr>\n' +
                                     '                                        <p class="card-text"><b><i class="fa fa-clock text-warning"></i>&nbsp;&nbsp;Date de début : <span id="project'+result.project.Pid+'StartDate">'+result.project.StartDate+'</span> </b></p>\n' +
                                     '                                        <p class="card-text"><b><i class="fa fa-clock text-success"></i>&nbsp;&nbsp;&nbsp;Date de fin : <span id="project'+result.project.Pid+'EndDate">'+result.project.EndDate+'</span>  </b></p>\n' +
+                                    '                                        <p class="card-text"><b><i class="fa fa-question text-success"></i>&nbsp;&nbsp;&nbsp;Etat: <span id="project'+result.project.Pid+'EndDate">'+result.project.Etat+'</span>  </b></p>\n' +
                                     '                                        <div class="text-center">\n' +
                                     '                                        <button type="button" id="Edit'+result.project.Pid+'Project" class="EditProject btn btn-primary" style="width:35px; height:35px; padding:0;" data-dismiss="modal"><i class="fa fa-edit"></i></button>\n' +
                                     '                                        <button type="button" id="Supprimer'+result.project.Pid+'Project" style="width:35px; height:35px; padding:0;" class="SupprimerProject btn btn-danger"><i class="fa fa-trash"></i></button>\n'  );
@@ -273,6 +288,7 @@
                                 id: id,
                             },
                             success: function (result) {
+
                                 console.log(result);
                                  $('#nom').val(result.project.Nom);
                                  $('#ProjectId').val(result.project.Pid);
@@ -280,6 +296,12 @@
                                  $('#endDate').val(result.project.EndDate);
                                  $('#comments').val(result.project.Comments);
                                  $('#customer').val(result.project.Customer);
+                                 if(result.project.Etat.substring(0,1)=="F"){
+
+                                     $('#etat').val("C");
+                                 }else{
+                                     $('#etat').val(result.project.Etat.substring(0,1));
+                                 }
                                  $('#AnnulerProject').show();
                                 $('#AjouterProject').html('<i class="fa fa-check"></i>');
                             },

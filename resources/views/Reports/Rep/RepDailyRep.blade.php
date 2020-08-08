@@ -1,5 +1,6 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+    <title>Rapports De Soudure Manuelle</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {

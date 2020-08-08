@@ -19,6 +19,7 @@ class CreateOperateurTable extends Migration
             $table->integer('Did');
             $table->integer('NumRap');
             $table->String('Nom', 60);
+            $table->index('NumRap');
         });
     }
 

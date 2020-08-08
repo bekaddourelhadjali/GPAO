@@ -19,15 +19,12 @@ class AgentsController extends Controller
      */
     public function index()
     {
-        $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $locations=Locations::all()->sortBy("Zone");
+         $locations=Locations::all()->sortBy("Zone");
         $agents=Agents::all();
-        $machines=Machines::all();
         $target="agents";
-        return view('Dashboard.Locations',["projet"=>$projet,
+        return view('Dashboard.Locations',[
             "locations"=>$locations,
             "agents"=>$agents,
-            "machines"=>$machines,
             "target"=>$target
 
         ]);

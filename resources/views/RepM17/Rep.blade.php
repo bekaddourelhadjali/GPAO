@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
-    {{--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />--}}
+    <title>Rapport De Soudure Manuelle</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {

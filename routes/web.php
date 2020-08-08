@@ -26,9 +26,14 @@ Route::get('/',function(){
 
 Auth::routes();
 
-Route::get('/home', 'Reports\RecBobDailyRepController@index'
+Route::get('/home', function(){
+    if(\Illuminate\Support\Facades\Auth::check()){
+        return redirect(route('Dashboard.index'));
+    }else{
+        return view('home');
+    }
+}
 )->name('home')->middleware('auth');
-
 
 Route::post('/bobine', function () {
     $rapport = \App\Fabrication\Rapport::find($_POST['NumRap']);
@@ -98,6 +103,8 @@ Route::resource('users', 'Dashboard\UsersController')->middleware('auth')->middl
 Route::resource('details_project', 'Dashboard\ProjectDetailsController')->middleware('auth')->middleware('admin');
 Route::resource('ContRecBob', 'Controle\ContRecBobController')->middleware('ChefProd:000');
 Route::resource('ListeGlobale', 'Dashboard\ListeGlobaleController')->middleware('auth');
+Route::resource('Dashboard','Dashboard\DashboardController')->middleware('auth');
+Route::resource('DashboardAdv','Dashboard\DashboardAdvController')->middleware('auth');
 Route::get('resetpassword',function(){
    return view('auth.passwords.reset',['token'=>csrf_token()]);
 })->name('resetpassword')->middleware('auth');

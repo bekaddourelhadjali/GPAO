@@ -32,6 +32,7 @@
             border:none;
         }
     </style>
+    <title>Gestion Des Details Des Projets</title>
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -41,7 +42,6 @@
              <a class="nav-item nav-link   active " id="nav-detail_projects-tab" data-toggle="tab" href="#nav-detail_projects" role="tab" aria-controls="nav-detail_projects" aria-selected="true"><b>Details Projets</b></a>
             <a class="nav-item nav-link "   href="{{route('clients.index')}}"  ><b>Clients</b></a>
 
-            {{--<a class="nav-item nav-link  @if(isset($target)&& $target=='detail_projects') active @endif" id="nav-detail_projects-tab" data-toggle="tab" href="#nav-detail_projects" role="tab" aria-controls="nav-detail_projects" aria-selected="false"><b>detail_projects</b></a>--}}
 
         </div>
     </nav>
@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-12">
                     <section >
-                        <h4 class="text-center text-primary"><b>Gestion Des Details des projets</b></h4>
+                        <h4 class="text-center text-primary"><b>Gestion Des Details Des Projets</b></h4>
                         <hr>
                         <form id="detail_projectsForm" class="row text-center">
                             <input type="hidden" id="DetailProjectId" name="id" value="">
@@ -191,6 +191,7 @@
                                     '                                    <td id="detail_project'+result.detail_project.Did+'libelle">'+result.detail_project.Libelle+'</td>\n' +
                                     '                                </tr>');
                                 addDetail_projectsListeners();
+                                $('#detail_projectsForm').trigger('reset');
                             },
                             error: function (result) {
                                 if(typeof result.responseJSON.message !='undefined'){

@@ -44,6 +44,7 @@
             border: none;
         }
     </style>
+    <title>Gestion Des Clients</title>
 @endsection
 @section('content')
     <div class="container-fluid">

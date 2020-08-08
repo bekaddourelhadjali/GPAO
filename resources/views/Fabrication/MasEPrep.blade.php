@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Rapports Des Bobines Préparées Dans La Machine E</title>
     <style>
 
         button {
@@ -844,49 +845,58 @@
                 }
             });
             $('#NonRecBob').click(function () {
+
                 $('#Poids').val('');
                 $('#coulee').val('');
                 $('#bobine').val('');
-                bobinesEtat = 'NonREC';
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var did = $('#Did').val();
-                $.ajax({
-                    url: "{{url('/MasEPrep/')}}/" + did + '/edit',
-                    method: 'get',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                    },
-                    success: function (result) {
-                        if (result.bobines.length !== 0) {
-                            var bobines = result.bobines;
-                            $('#bobines2').html("");
-                            bobines.forEach(function (item, index) {
+                if(bobinesEtat==='NonREC'){
 
-                                $('#bobines2').append('<option  value="' + item.Bobine + '" >' + item.Bobine + '</option>');
-                                $('#bobine').attr('list', 'bobines2');
-                            });
-                            var coulees = result.coulees;
-                            $('#coulees2').html("");
-                            coulees.forEach(function (item, index) {
-
-                                $('#coulees2').append('<option  value="' + item.Coulee + '" >' + item.Coulee + '</option>');
-                                $('#coulee').attr('list', 'coulees2');
-                            });
-
-                        } else {
-                            alert("Pas de bobines Non réceptionnées dans ce Détail Projet");
-                            bobinesEtat = 'REC';
+                    bobinesEtat = 'REC';
+                    $('#coulee').attr('list', 'coulees');
+                    $('#bobine').attr('list', 'bobines');
+                    $('#NonRecBob').html('Bobine Non Réceptionné');
+                }else {
+                    bobinesEtat = 'NonREC';
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                    },
-                    error: function (result) {
-                        alert(result.responseJSON.error);
-                        console.log(result);
-                    }
-                });
+                    });
+                    var did = $('#Did').val();
+                    $.ajax({
+                        url: "{{url('/MasEPrep/')}}/" + did + '/edit',
+                        method: 'get',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                        },
+                        success: function (result) {
+                            if (result.bobines.length !== 0) {
+                                var bobines = result.bobines;
+                                $('#bobines2').html("");
+                                bobines.forEach(function (item, index) {
+
+                                    $('#bobines2').append('<option  value="' + item.Bobine + '" >' + item.Bobine + '</option>');
+                                    $('#bobine').attr('list', 'bobines2');
+                                });
+                                var coulees = result.coulees;
+                                $('#coulees2').html("");
+                                coulees.forEach(function (item, index) {
+
+                                    $('#coulees2').append('<option  value="' + item.Coulee + '" >' + item.Coulee + '</option>');
+                                    $('#coulee').attr('list', 'coulees2');
+                                });
+                                $('#NonRecBob').html('Bobines Réceptionnées');
+                            } else {
+                                alert("Pas de bobines Non réceptionnées dans ce Détail Projet");
+                                bobinesEtat = 'REC';
+                            }
+                        },
+                        error: function (result) {
+                            alert(result.responseJSON.error);
+                            console.log(result);
+                        }
+                    });
+                }
             });
         });
 

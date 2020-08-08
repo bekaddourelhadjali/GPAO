@@ -32,6 +32,8 @@ class CreateM3Table extends Migration
             $table->integer('NumeroRap');
             $table->string('Computer',25)->nullable();
             $table->string('DateSaisie',20);
+            $table->index('NumeroRap');
+            $table->index('DateSaisie');
 
         });
     }

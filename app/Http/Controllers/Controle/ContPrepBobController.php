@@ -25,8 +25,11 @@ class ContPrepBobController extends Controller
 //            'rapports'=>$rapports,
 //                'NbBobines'=>$bobines
 //        ]);
+        $details=[];
+        $coulees=[];
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+        if(sizeof($details)>0){
         $coulees = DB::select(' select * , Case When q1."nbTest"<q1."PoidsM" then \'Oui\' else \'Non\' end "BesoinTest",
   (sum(q1."PoidsTotal")/(((q1."Epaisseur")*pi()*7.85*((q1."Diametre"-q1."Epaisseur")))/1000)) "Lang" from
 (SELECT b."Did",b."Epaisseur",d."Diametre",b."Coulee" ,sum(b."Poids") "PoidsTotal",count(b."Test") filter (where  b."Test"=true) "nbTest"
@@ -35,8 +38,14 @@ from "bobine" b join "detailprojet" d on b."Did"=d."Did" and d."Did"='.$details[
 group by b."Coulee",b."Epaisseur",d."Diametre",b."Did",b."Poids","PoidsM")   q1 
 group by q1."Coulee",q1."Epaisseur",q1."Diametre",q1."Did",q1."PoidsTotal",q1."nbTest",q1."PoidsM"');
 
-        return view('Controle.ContRecBob', ["coulees" => $coulees,"details"=>$details,'RDid'=>$details[0]->Did
+        return view('Controle.ContRecBob', ["coulees" => $coulees,"details"=>$details
+            ,'RDid'=>$details[0]->Did
         ]);
+        }else{
+            return view('Controle.ContRecBob', ["coulees" => $coulees,"details"=>$details
+                ,'RDid'=>0
+            ]);
+        }
     }
 
     /**

@@ -35,6 +35,12 @@ class CreateExpeditionTable extends Migration
             $table->string('Computer',50);
             $table->dateTime('DateSaisie');
             $table->unique(['NumExpedition','Did']);
+            $table->index('Did');
+            $table->index('NumeroRap');
+            $table->index('Bis');
+            $table->index('NumTube');
+            $table->index('Tube');
+            $table->index('DateSaisie');
         });
     }
 

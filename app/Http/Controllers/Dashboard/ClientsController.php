@@ -16,10 +16,9 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $projet = \App\Fabrication\Projet::find(DB::select('select "Pid" from "projet" where CURRENT_DATE between "StartDate" and "EndDate" limit 1')[0]->Pid);
-        $clients=Client::all();
+         $clients=Client::all();
         $target="clients";
-        return view('Dashboard.Clients',["projet"=>$projet,
+        return view('Dashboard.Clients',[
             "target"=>$target,
             "clients"=>$clients,
 

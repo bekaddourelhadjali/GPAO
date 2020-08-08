@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('style')
+
+    <title>Rapports Des Bobines Préparées</title>
     <style>
 
         button {
@@ -193,39 +195,39 @@
                                required></div>
 
                     <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         off.png"margin-top:20px; font-size: 20px">
+                         style="margin-top:20px; font-size: 20px">
                         <input type="checkbox" class="form-check-input" id="DDB" name="DDB"
                         >&nbsp;
                         <label class="form-check-label" for="DDB">DDB</label>
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         off.png"margin-top:20px; font-size: 20px">
+                         style="margin-top:20px; font-size: 20px">
                         <input type="checkbox" class="form-check-input" id="DDB_R" name="DDB_R"
                         >&nbsp;
                         <label class="form-check-label" for="DDB_R">DDB/R</label>
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         off.png"margin-top:20px; font-size: 20px">
+                         style="margin-top:20px; font-size: 20px">
                         <input type="checkbox" class="form-check-input" id="FT" name="FT"
                         >&nbsp;
                         <label class="form-check-label" for="FT">FT</label>
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         off.png"margin-top:20px; font-size: 20px">
+                         style="margin-top:20px; font-size: 20px">
                         <input type="checkbox" class="form-check-input" id="GB_MB" name="GB_MB">&nbsp;
                         <label class="form-check-label" for="GB_MB">GB/MB</label>
                     </div>
 
 
                     <div class="col-xl-2 col-lg-2 col-md-3  col-sm-6 inputs form-check"
-                         off.png"margin-top:20px; font-size: 20px">
+                         style="margin-top:20px; font-size: 20px">
                         <input type="checkbox" class="form-check-input" id="Test1" name="Test1"
                         >&nbsp;
                         <label class="form-check-label" for="Test1">Test (1)</label>
                     </div>
 
                     <div class=" col-lg-6 col-md-12 col-sm-6 inputs row "
-                         off.png"margin-top:20px; font-size: 18px">
+                         style="margin-top:20px; font-size: 18px">
                         <label class="col-xl-3 col-lg-4 col-sm-12" for="observation">Observation</label>
                         <input class="col-xl-9 col-lg-8 col-sm-12 form-control" type="text" id="observation"
                                name="observation">
@@ -854,9 +856,17 @@
                 }
             });
             $('#NonRecBob').click(function () {
+
                 $('#Poids').val('');
                 $('#coulee').val('');
                 $('#bobine').val('');
+                if(bobinesEtat==='NonREC'){
+
+                        bobinesEtat = 'REC';
+                        $('#coulee').attr('list', 'coulees');
+                        $('#bobine').attr('list', 'bobines');
+                        $('#NonRecBob').html('Bobine Non Réceptionné');
+                }else{
                 bobinesEtat = 'NonREC';
                 $.ajaxSetup({
                     headers: {
@@ -886,6 +896,7 @@
                                 $('#coulees2').append('<option  value="' + item.Coulee + '" >' + item.Coulee + '</option>');
                                 $('#coulee').attr('list', 'coulees2');
                             });
+                            $('#NonRecBob').html('Bobines Réceptionnées');
 
                         } else {
                             alert("Pas de bobines Non réceptionnées dans ce Détail Projet");
@@ -897,7 +908,9 @@
                         console.log(result);
                     }
                 });
+                }
             });
+
         });
 
 

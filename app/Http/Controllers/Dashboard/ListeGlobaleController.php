@@ -16,15 +16,20 @@ class ListeGlobaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { $tubes = [];
+        $details = [];
         $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $tubes = [];
-        if (sizeof($details) > 0)
+
+        if (sizeof($details) > 0){
             $tubes = DB::select('select * from "listeglobale" where "Did"=?', [$details[0]->Did]);
 
         return view('Dashboard.ListeGlobale', ["tubes" => $tubes, "details" => $details, 'RDid' => $details[0]->Did
         ]);
+        }else{
+            return view('Dashboard.ListeGlobale', ["tubes" => $tubes, "details" => $details, 'RDid' => 0
+            ]);
+        }
     }
 
     /**

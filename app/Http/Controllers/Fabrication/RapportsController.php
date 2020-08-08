@@ -69,10 +69,11 @@ class RapportsController extends Controller
              return redirect(route('rapprod.show',['id'=>$rapport->Numero]));
             }
     }else{
-        $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())->first();
+            $location=Locations::where('AdresseIp',\Illuminate\Support\Facades\Request::ip())
+                ->where("Zone",'=','Z01')->first();
         $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-        $agents = $location->agents;
+        $agents = $location->agents();
         return view ('Fabrication.rapports',['details'=>$details
             ,'agents'=>$agents,
             'Error'=>'Code Incorrect']);

@@ -28,6 +28,7 @@
         }
 
     </style>
+    <title>Gestion Des Locations et Des Agents</title>
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -44,7 +45,8 @@
         <div class="tab-pane fade @if(isset($target)&& $target=='locations') show active @endif" id="nav-locations" role="tabpanel" aria-labelledby="nav-locations-tab">  <div class="row">
                 <div class="col-12">
                     <section style="">
-
+                        <h4 class="text-center  text-info"><b>Gestion Des Agents</b></h4>
+                        <hr>
                         <div class="row">
                         <form id="LocationsForm" class="col-12">
                             <input type="hidden" id="locationId" name="id" value="">
@@ -67,7 +69,6 @@
                                     <option value="Z06">Essai hydrostatique</option>
                                     <option value="Z07">Chanfreinage</option>
                                     <option value="Z08">NDT</option>
-                                    <option value="Z09">RX2</option>
                                     <option value="Z09">RX2</option>
                                     <option value="Z10">Visuel Final</option>
                                     <option value="DEC">Refusés Au Final</option>
@@ -204,7 +205,7 @@
 
                             },
                             success: function (result) {
-                                $('#locations').append('<div class="col-lg-3  col-md-4 col-sm-6" ><div class="card">\n' +
+                                $('#locations').prepend('<div class="col-lg-3  col-md-4 col-sm-6" ><div class="card">\n' +
                                     '                                    <div class="card-body" id="location'+result.location.id+'">\n' +
                                     '                                        <h5 class="card-title text-center  text-primary"><b><span id="location'+result.location.id+'Designation">'+result.location.Designation+'</span></b></h5>\n' +
                                     '                                        <hr>\n' +
@@ -218,7 +219,6 @@
                                     '                                </div>'+
                                     '                                </div>');
                                 addLocationsListeners();
-                                $('#LocationsForm').trigger('reset');
                                 $('#AnnulerLocation').hide();
                                 $('#AjouterLocation').html('<i class="fa fa-plus"></i>');
                             },

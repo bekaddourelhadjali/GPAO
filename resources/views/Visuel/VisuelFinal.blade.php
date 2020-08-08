@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('style')
-    {{--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />--}}
-    <style>
+    <title>Rapport Visuel Final</title>
+     <style>
         @media (min-width: 576px) {
             .modal-dialog {
                 max-width: 1000px;
@@ -554,6 +554,8 @@
                     Obs = $('#observation').val();
                     Defauts.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre, , Obs]);
                     SetDefauts();
+                        $('#valeur').val('');
+                        $('#nbr').val('');
                     } else {
                         alert('Sélectionner une opération autre que R.A.S et Déclassé');
                     }

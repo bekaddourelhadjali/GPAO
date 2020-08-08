@@ -25,12 +25,19 @@ class ContRecBobController extends Controller
 //            'rapports'=>$rapports,
 //                'NbBobines'=>$bobines
 //        ]);
+        $details=[];
+        $coulees=[];
         $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
+            if(sizeof($details)>0){
         $coulees = DB::table('couleedetails')->where('Did', '=', $details[0]->Did)->get()->toArray();
 
         return view('Controle.ContRecBob', ["coulees" => $coulees, "details" => $details, 'RDid' => $details[0]->Did
         ]);
+            }else{
+                return view('Controle.ContRecBob', ["coulees" => $coulees, "details" => $details, 'RDid' => 0
+                ]);
+            }
     }
 
     /**

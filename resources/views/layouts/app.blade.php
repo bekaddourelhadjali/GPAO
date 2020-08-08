@@ -9,7 +9,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="{{asset('img/favicon.jpg')}}"/>
-    <title>GPAO</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">

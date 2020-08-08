@@ -14,10 +14,17 @@ class M17DailyRepController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         $M17Report = [];
+        $ArretsReport = [];
+        $OperationsReport = [];
+        $DefautsReport = [];
+        $nbT = null;
+        $PT = null;
+        $LT = null;
+        $dureeTotal = null;
         if (sizeof($details) > 0) {
 
             $M17Report = DB::select('select * from "m17report" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
-        }
+
         $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z05\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
         $OperationsReport = DB::select('select "Opr",Count(*) "NBT",Sum("Valeur") "VT"  from "defautsreport" 
                       where "Did"=? and "Zone"=\'Z05\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
@@ -32,6 +39,7 @@ class M17DailyRepController extends Controller
         $LT = array_sum(array_column($M17Report, "Longueur"));
         $PT = round(array_sum(array_column($M17Report, "Poids")), 3);
         $dureeTotal = array_sum(array_column($ArretsReport, "Durée"));
+        }
         return view('Reports.M17.M17DailyRep', [
                 'reports' => (object)$M17Report,
                 'nbT' => $nbT,

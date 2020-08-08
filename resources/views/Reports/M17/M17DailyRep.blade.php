@@ -1,5 +1,7 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+
+    <title>Rapports De Chutage</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {
@@ -207,7 +209,7 @@
                                     @if(isset($reports))
 
                                         @foreach($reports as $item)
-                                            <tr id="report{{$item->Numero}}" rapportEtat="{{$item->Etat}}"
+                                            <tr id="report{{$item->Id}}" rapportEtat="{{$item->Etat}}"
                                                 rapportId="{{$item->NumeroRap}}">
                                                 <td>Poste {{$item->Poste}}</td>
                                                 <td>{{$item->Machine}}</td>
@@ -551,7 +553,7 @@
                                 item.User]
                             ).draw(false);
                             $('#M17ReportTable tbody tr:last-child')
-                                .attr('id', 'report' + item.Numero).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
+                                .attr('id', 'report' + item.Id).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
                         });
 
 

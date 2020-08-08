@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('style')
+    <title>Rapport des Bobines Réceptionnées </title>
     <style>
+
         input[type="date"]::-webkit-inner-spin-button,
         input[type="date"]::-webkit-calendar-picker-indicator {
             display: none;

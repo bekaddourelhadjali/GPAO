@@ -1,5 +1,6 @@
 @extends('layouts.dashboardTemp')
 @section('style')
+    <title>Gestion Des Defauts et Opérations </title>
     <style>
         section {
             padding-left: 10px;
@@ -133,7 +134,7 @@
                     </div>
                     <div class="col-lg-6 col-sm-12">
                         <section>
-                            <h4 class="text-center text-warning"><b>Gestion Des Operations</b></h4>
+                            <h4 class="text-center text-warning"><b>Gestion Des Opérations</b></h4>
                             <hr>
                             <form id="OperationsForm" class="row text-center">
                                 <input type="hidden" id="OperationId" name="id" value="">

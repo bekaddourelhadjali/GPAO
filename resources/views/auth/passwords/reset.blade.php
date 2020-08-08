@@ -1,5 +1,7 @@
 @extends('layouts.dashboardTemp')
-
+@section('style')
+     <title>Changer Le Mot De Passe</title>
+    @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

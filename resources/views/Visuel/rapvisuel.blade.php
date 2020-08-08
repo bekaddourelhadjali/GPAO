@@ -1,6 +1,7 @@
     @extends('layouts.app')
 
 @section('style')
+    <title>Rapport De Contrôle Visuel</title>
     <style>
         @media (min-width: 576px) {
             .modal-dialog {
@@ -520,6 +521,8 @@
                             Nombre = null;
                         }
                         DefautsSoudure.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre]);
+                        $('#defaut1').val('');
+                        $('#valeur1').val('');
                         console.log(DefautsSoudure);
                         SetDefautsSoudure();
 
@@ -549,6 +552,8 @@
                         }
                         DefautsMetal.push([Opr, IdDef, Defaut, Valeur, NbOpr, Nombre]);
                         console.log(DefautsMetal);
+                        $('#defaut2').val('');
+                        $('#valeur2').val('');
                         SetDefautsMetal();
                     } else {
                         alert('Sélectionner une opération autre que R.A.S');
@@ -835,6 +840,8 @@
                                 $('#ntube').removeAttr("readonly");
                                 $('#Bis').removeAttr("readonly");
                                 EnableForms();
+                                DefautsSoudure = [];
+                                DefautsMetal = [];
                             },
                             error: function (result) {
                                 console.log(result);
@@ -869,6 +876,8 @@
                         $('#Ajouter').html(' Modifier ');
                         $('#annulerButton').show();
                         DisableForms();
+                        DefautsSoudure = [];
+                        DefautsMetal = [];
                         $('#bis').removeAttr("readonly");
                     });
                 });
@@ -913,11 +922,11 @@
 
                     if (typeof item[2] !== 'undefined') {
                         obs = item[2];
-                        if ($('#nbr1').val() > 0) {
-                            obs = $('#nbr1').val() + ' ' + obs;
+                        if (item[5] > 0) {
+                            obs = item[5] + ' ' + obs;
                         }
-                        if ($('#valeur1').val() > 0) {
-                            obs = obs + '(' + $('#valeur1').val() + ')';
+                        if (item[3] > 0) {
+                            obs = obs + '(' + item[3] + ')';
                         }
                         if (DefautsSoudure.length > index + 1) {
                             NextOp = DefautsSoudure[index + 1][0];
@@ -930,8 +939,12 @@
                             $('#ObsSoudure').val($('#ObsSoudure').val() + '+' + obs + '|' + item[0] + '|');
                         }
                         ObsSoudure = $('#ObsSoudure').val();
+                        ObsSoudure= ObsSoudure.replace('|+','|');
                         if (ObsSoudure.charAt(0) === '+')
                             $('#ObsSoudure').val(ObsSoudure.substr(1));
+                        else{
+                        $('#ObsSoudure').val(ObsSoudure);
+                        }
                     }
                 });
 
@@ -943,11 +956,11 @@
                 DefautsMetal.forEach(function (item, index) {
                     if (typeof item[2] !== 'undefined') {
                         obs = item[2];
-                        if ($('#nbr2').val() > 0) {
-                            obs = $('#nbr2').val() + ' ' + obs;
+                        if (item[5] > 0) {
+                            obs = item[5] + ' ' + obs;
                         }
-                        if ($('#valeur2').val() > 0) {
-                            obs = obs + '(' + $('#valeur2').val() + ')';
+                        if (item[3] > 0) {
+                            obs = obs + '(' + item[3] + ')';
                         }
                         if (DefautsMetal.length > index + 1) {
                             NextOp = DefautsMetal[index + 1][0];
@@ -960,8 +973,12 @@
                             $('#ObsMetal').val($('#ObsMetal').val() + '+' + obs + '|' + item[0] + '|');
                         }
                         ObsMetal = $('#ObsMetal').val();
+                        ObsMetal = ObsMetal.replace('|+','|');;
                         if (ObsMetal.charAt(0) === '+')
                             $('#ObsMetal').val(ObsMetal.substr(1));
+                        else{
+                            $('#ObsMetal').val(ObsMetal);
+                        }
                     }
                 });
 

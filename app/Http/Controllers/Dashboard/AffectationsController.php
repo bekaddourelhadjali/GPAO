@@ -19,7 +19,7 @@ class AffectationsController extends Controller
      */
     public function index()
     {
-          $locations=Locations::orderBy("Zone")->paginate(12);
+          $locations=Locations::orderBy("Zone")->paginate(9);
         $agents=Agents::all();
         return view('Dashboard.affectations',[
                         "locations"=>$locations,

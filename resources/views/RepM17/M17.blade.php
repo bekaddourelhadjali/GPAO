@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('style')
-    {{--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />--}}
-    <style>
+
+    <title>Rapport De Chutage</title>
+      <style>
         div.item {
             background-color: #fe4c50 !important;
             color: #fff !important;
@@ -543,7 +544,7 @@
                     success: function (result) {
                         if (result.rapportState.Etat === 'C') {
                             alert('Rapport n°= ' + result.rapportState.Numero + ' est Cloturé avec succès');
-                            window.location.href = '{{route("rapports_RX1.index")}}';
+                            window.location.href = '{{route("rapports_M17.index")}}';
 
                         }
 
