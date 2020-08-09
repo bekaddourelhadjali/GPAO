@@ -37,71 +37,66 @@ class DashboardAdvController extends Controller
         $details = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
         if(sizeof($details)){
-            $RecBobReport=DB::select('select "Did","DateRec",sum("NbTotal") "nbT",sum("PoidsTotal") "PT" from "recbobreport" where 
-               "DateRec"  =CURRENT_DATE  and "Did"=? group by "Did","DateRec";',[$details[0]->Did]);
+            $RecBobReport=DB::select('select "Did",sum("NbTotal") "nbT",sum("PoidsTotal") "PT" from "recbobreport" where 
+               "Did"=? group by "Did";',[$details[0]->Did]);
 
             $M3Report = DB::select('select   Count(*) "nbT", SUM("Poids")/1000 "PT",SUM("ChuteTotal") "PCT" from (select m.*,p."Nom",
  CASE WHEN m."Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-50)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)
  Else Round(Cast(float8((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-11)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3) End
-  "ChuteTotal"  from  "m3report" m join "projet" p  on m."Pid"=p."Pid" where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ) q1  ', [$details[0]->Did]);
+  "ChuteTotal"  from  "m3report" m join "projet" p  on m."Pid"=p."Pid" where "Did"=?   ) q1  ', [$details[0]->Did]);
 
 
             $FABReport = DB::select('select  
                     Count(*) "nbT",Sum("Longueur") "LT",Sum("Poids") "PT" from "fabreport"  
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )  ',[$details[0]->Did ]);
+                  where "Did"=?    ',[$details[0]->Did ]);
 
             $VISReport = DB::select('select  
                     Count(*) "nbT",Sum("Longueur") "LT",Sum("Poids") "PT" from "visuelreport"  
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )  ',[$details[0]->Did ]);
+                  where "Did"=?    ',[$details[0]->Did ]);
 
             $USReport = DB::select('select  
                     Count(*) "nbT",COUNT(CASE WHEN "RB" = true then 1 ELSE NULL END) as "nbRB" from "usreport"
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $RX1Report = DB::select('select  count(*) "nbT"  from "rx1report"  
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $RepReport = DB::select('select  count(*) "nbT"  from "repreport"  
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $M17Report = DB::select('select  count(*) "nbT",SUM("Longueur") "LT", 
-            SUM("Poids") "PT"   from "m17report"   where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+            SUM("Poids") "PT"   from "m17report"   where "Did"=?   ',[$details[0]->Did ]);
 
             $M24Report = DB::select('select     Count(*) "nbT"  from "m24report"
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $M25Report = DB::select('select     Count(*) "nbT"  from "m25report"
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $NDTReport = DB::select('select     Count(*) "nbT"  from "ndtreport"
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $RX2Report = DB::select('select     Count(*) "nbT"  from "rx2report"
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $VFReport = DB::select('select  Count(*)  "nbT",SUM("Longueur") "LT", SUM("Poids") "PT" from ( select * 
              , Round(cast(("Longueur"*(("EpaisseurM"*pi()*7.85*("DiametreM"-"EpaisseurM"))/1000 ))/1000 as numeric),3) "Poids"
-             from "vfreport"  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
-              and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )) q1  ', [$details[0]->Did]);
+             from "vfreport"  where "Did"=? ) q1  ', [$details[0]->Did]);
 
             $VFRReport = DB::select('select     Count(*) "nbT"  from "vfrreport"
-                  where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ',[$details[0]->Did ]);
+                  where "Did"=?   ',[$details[0]->Did ]);
 
             $RecReport = DB::select('select count(*) "nbT",SUM("Longueur") "LT",  SUM("Poids") "PT" from "recreport"
-             where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
-             and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )   ', [$details[0]->Did]);
+             where "Did"=?    ', [$details[0]->Did]);
 
             $RevIntReport = DB::select('select count(*) "nbT",SUM("Longueur") "LT", 
-            SUM("Poids") "PT" from "revintreport" where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
-             and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )  ', [$details[0]->Did]);
+            SUM("Poids") "PT" from "revintreport" where "Did"=?   ', [$details[0]->Did]);
 
             $RevExtReport = DB::select('select  count(*) "nbT",SUM("Longueur") "LT", 
-            SUM("Poids") "PT" from "revextreport" where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
-             and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )   ', [$details[0]->Did]);
+            SUM("Poids") "PT" from "revextreport" where "Did"=?    ', [$details[0]->Did]);
 
             $ExpReport = DB::select('select  count(*) "nbT",SUM("Longueur") "LT", 
-            SUM("Poids") "PT" from "expreport" where "Did"=? and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\')
-             and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' )   ', [$details[0]->Did]);
+            SUM("Poids") "PT" from "expreport" where "Did"=?    ', [$details[0]->Did]);
 
 
         }
@@ -158,8 +153,8 @@ class DashboardAdvController extends Controller
      */
     public function show($id)
     {
-        $RecBobReport=DB::select('select "Did","DateRec",sum("NbTotal") "nbT",sum("PoidsTotal") "PT" from "recbobreport" where 
-               "Did"=? group by "Did","DateRec";', [$id]);
+        $RecBobReport=DB::select('select "Did",sum("NbTotal") "nbT",sum("PoidsTotal") "PT" from "recbobreport" where 
+               "Did"=? group by "Did"', [$id]);
 
             $M3Report = DB::select('select   Count(*) "nbT", SUM("Poids")/1000 "PT",SUM("ChuteTotal") "PCT" from (select m.*,p."Nom",
  CASE WHEN m."Etat"=\'Prep\' then Round(Cast(((("Poids")-("Chutes"*("LargeMoy"*"EpMoy"*7.85)))*(("LargeMoy"-(("LargeurBande"-50)/1000))/"LargeMoy")+("Chutes"*("LargeMoy"*"EpMoy"*7.85)))/1000 as numeric),3)

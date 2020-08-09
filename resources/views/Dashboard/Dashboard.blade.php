@@ -23,7 +23,9 @@
             font-size: 17px;
             border: none;
         }
-
+        .border-left-info, .border-left-primary, .border-left-danger,.border-left-success, .border-left-warning {
+            border-left-width: 10px!important;
+        }
     </style>
     <link href="{{asset('css/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 @endsection

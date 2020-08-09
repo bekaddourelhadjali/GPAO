@@ -24,6 +24,9 @@
             border: none;
         }
 
+        .border-left-info, .border-left-primary, .border-left-danger,.border-left-success, .border-left-warning {
+            border-left-width: 10px!important;
+        }
     </style>
     <link href="{{asset('css/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 @endsection
@@ -54,13 +57,13 @@
                                 <label class="col-lg-12" style="padding-left: 0" for="Did">Detail Projet</label>
                                 <select class="form-control col-12" id="Did" name="Did" onchange="getData()">
                                     @if(isset($details))
-                                    @foreach($details as $detail)
-                                        <option value="{{$detail->Did}}">{{$detail->Nom}} --
-                                            Epais: {{$detail->Epaisseur}} mm
-                                            -Diam : {{$detail->Diametre}}mm
-                                        </option>
-                                    @endforeach
-                                        @endif
+                                        @foreach($details as $detail)
+                                            <option value="{{$detail->Did}}">{{$detail->Nom}} --
+                                                Epais: {{$detail->Epaisseur}} mm
+                                                -Diam : {{$detail->Diametre}}mm
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>
@@ -69,7 +72,6 @@
 
                 </section>
 
-                <section>
                     <div class="row">
                         <div class="  col-xl-3 col-lg-4 col-sm-6  py-1">
                             <div class="card border-left-info shadow h-100">
@@ -81,13 +83,18 @@
                                                 Bobines Préparés
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTM3" class="TCVal"> @if(isset($M3Report) && sizeof($M3Report)>0){{$M3Report[0]->nbT}} @endif</span>
+                                                &nbsp; NB :<span id="NBTM3"
+                                                                 class="TCVal"> @if(isset($M3Report) && sizeof($M3Report)>0){{$M3Report[0]->nbT}} @endif</span>
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PTM3" class="TCVal"> @if(isset($M3Report) && sizeof($M3Report)>0){{$M3Report[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PTM3"
+                                                                   class="TCVal"> @if(isset($M3Report) && sizeof($M3Report)>0){{$M3Report[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Chute:<span id="PCTM3" class="TCVal"> @if(isset($M3Report) && sizeof($M3Report)>0){{$M3Report[0]->PCT}} @endif</span> T
+                                                &nbsp; Chute:<span id="PCTM3"
+                                                                   class="TCVal"> @if(isset($M3Report) && sizeof($M3Report)>0){{$M3Report[0]->PCT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
                                         {{--<div class="col-auto">--}}
@@ -107,13 +114,18 @@
                                                 Tubes Produits
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ01" class="TCVal"> @if(isset($FABReport) && sizeof($FABReport)>0){{$FABReport[0]->nbT}} @endif</span>
+                                                &nbsp; NB :<span id="NBTZ01"
+                                                                 class="TCVal"> @if(isset($FABReport) && sizeof($FABReport)>0){{$FABReport[0]->nbT}} @endif</span>
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ01" class="TCVal"> @if(isset($FABReport) && sizeof($FABReport)>0){{$FABReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ01"
+                                                                      class="TCVal"> @if(isset($FABReport) && sizeof($FABReport)>0){{$FABReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ01" class="TCVal"> @if(isset($FABReport) && sizeof($FABReport)>0){{$FABReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ01"
+                                                                   class="TCVal"> @if(isset($FABReport) && sizeof($FABReport)>0){{$FABReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
 
                                         </div>
@@ -134,13 +146,18 @@
                                                 Contrôle Visuel
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ02" class="TCVal"> @if(isset($VISReport) && sizeof($VISReport)>0){{$VISReport[0]->nbT}} @endif</span>
+                                                &nbsp; NB :<span id="NBTZ02"
+                                                                 class="TCVal"> @if(isset($VISReport) && sizeof($VISReport)>0){{$VISReport[0]->nbT}} @endif</span>
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ02" class="TCVal"> @if(isset($VISReport) && sizeof($VISReport)>0){{$VISReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ02"
+                                                                      class="TCVal"> @if(isset($VISReport) && sizeof($VISReport)>0){{$VISReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ02" class="TCVal"> @if(isset($VISReport) && sizeof($VISReport)>0){{$VISReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ02"
+                                                                   class="TCVal"> @if(isset($VISReport) && sizeof($VISReport)>0){{$VISReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
 
                                         </div>
@@ -158,13 +175,18 @@
                                                 Chutage
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ05" class="TCVal"> @if(isset($M17Report) && sizeof($M17Report)>0){{$M17Report[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ05"
+                                                                 class="TCVal"> @if(isset($M17Report) && sizeof($M17Report)>0){{$M17Report[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ05" class="TCVal"> @if(isset($M17Report) && sizeof($M17Report)>0){{$M17Report[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ05"
+                                                                      class="TCVal"> @if(isset($M17Report) && sizeof($M17Report)>0){{$M17Report[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ05" class="TCVal"> @if(isset($M17Report) && sizeof($M17Report)>0){{$M17Report[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ05"
+                                                                   class="TCVal"> @if(isset($M17Report) && sizeof($M17Report)>0){{$M17Report[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
                                     </div>
@@ -180,13 +202,18 @@
                                                 Visuel Final
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ10" class="TCVal"> @if(isset($VFReport) && sizeof($VFReport)>0){{$VFReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ10"
+                                                                 class="TCVal"> @if(isset($VFReport) && sizeof($VFReport)>0){{$VFReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ10" class="TCVal"> @if(isset($VFReport) && sizeof($VFReport)>0){{$VFReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ10"
+                                                                      class="TCVal"> @if(isset($VFReport) && sizeof($VFReport)>0){{$VFReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ10" class="TCVal"> @if(isset($VFReport) && sizeof($VFReport)>0){{$VFReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ10"
+                                                                   class="TCVal"> @if(isset($VFReport) && sizeof($VFReport)>0){{$VFReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
 
@@ -203,13 +230,18 @@
                                                 Tubes Réceptionnés
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ11" class="TCVal"> @if(isset($RecReport) && sizeof($RecReport)>0){{$RecReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ11"
+                                                                 class="TCVal"> @if(isset($RecReport) && sizeof($RecReport)>0){{$RecReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ11" class="TCVal"> @if(isset($RecReport) && sizeof($RecReport)>0){{$RecReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ11"
+                                                                      class="TCVal"> @if(isset($RecReport) && sizeof($RecReport)>0){{$RecReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ11" class="TCVal"> @if(isset($RecReport) && sizeof($RecReport)>0){{$RecReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ11"
+                                                                   class="TCVal"> @if(isset($RecReport) && sizeof($RecReport)>0){{$RecReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
                                     </div>
@@ -225,13 +257,18 @@
                                                 Tubes Expédis
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ14" class="TCVal"> @if(isset($ExpReport) && sizeof($ExpReport)>0){{$ExpReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ14"
+                                                                 class="TCVal"> @if(isset($ExpReport) && sizeof($ExpReport)>0){{$ExpReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ14" class="TCVal"> @if(isset($ExpReport) && sizeof($ExpReport)>0){{$ExpReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ14"
+                                                                      class="TCVal"> @if(isset($ExpReport) && sizeof($ExpReport)>0){{$ExpReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ14" class="TCVal"> @if(isset($ExpReport) && sizeof($ExpReport)>0){{$ExpReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ14"
+                                                                   class="TCVal"> @if(isset($ExpReport) && sizeof($ExpReport)>0){{$ExpReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
 
@@ -248,13 +285,18 @@
                                                 Revêtement Extérieur
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ13" class="TCVal"> @if(isset($RevExtReport) && sizeof($RevExtReport)>0){{$RevExtReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ13"
+                                                                 class="TCVal"> @if(isset($RevExtReport) && sizeof($RevExtReport)>0){{$RevExtReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ13" class="TCVal"> @if(isset($RevExtReport) && sizeof($RevExtReport)>0){{$RevExtReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ13"
+                                                                      class="TCVal"> @if(isset($RevExtReport) && sizeof($RevExtReport)>0){{$RevExtReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ13" class="TCVal"> @if(isset($RevExtReport) && sizeof($RevExtReport)>0){{$RevExtReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ13"
+                                                                   class="TCVal"> @if(isset($RevExtReport) && sizeof($RevExtReport)>0){{$RevExtReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
 
@@ -271,13 +313,18 @@
                                                 Revêtement Intérieur
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ12" class="TCVal"> @if(isset($RevIntReport) && sizeof($RevIntReport)>0){{$RevIntReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ12"
+                                                                 class="TCVal"> @if(isset($RevIntReport) && sizeof($RevIntReport)>0){{$RevIntReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Longueur:<span id="LZ12" class="TCVal"> @if(isset($RevIntReport) && sizeof($RevIntReport)>0){{$RevIntReport[0]->LT}} @endif</span> M
+                                                &nbsp; Longueur:<span id="LZ12"
+                                                                      class="TCVal"> @if(isset($RevIntReport) && sizeof($RevIntReport)>0){{$RevIntReport[0]->LT}} @endif</span>
+                                                M
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PZ12" class="TCVal"> @if(isset($RevIntReport) && sizeof($RevIntReport)>0){{$RevIntReport[0]->PT}} @endif</span> T
+                                                &nbsp; Poids:<span id="PZ12"
+                                                                   class="TCVal"> @if(isset($RevIntReport) && sizeof($RevIntReport)>0){{$RevIntReport[0]->PT}} @endif</span>
+                                                T
                                             </div>
                                         </div>
                                     </div>
@@ -294,10 +341,13 @@
                                                 Bobines Réceptionnées
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTRecBob" class="TCVal"> @if(isset($RecBobReport) && sizeof($RecBobReport)>0){{$RecBobReport[0]->nbT}} @endif</span>
+                                                &nbsp; NB :<span id="NBTRecBob"
+                                                                 class="TCVal"> @if(isset($RecBobReport) && sizeof($RecBobReport)>0){{$RecBobReport[0]->nbT}} @endif</span>
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; Poids:<span id="PTRecBob" class="TCVal"> @if(isset($RecBobReport) && sizeof($RecBobReport)>0){{$RecBobReport[0]->PT/1000}} @endif</span> T
+                                                &nbsp; Poids:<span id="PTRecBob"
+                                                                   class="TCVal"> @if(isset($RecBobReport) && sizeof($RecBobReport)>0){{$RecBobReport[0]->PT/1000}} @endif</span>
+                                                T
                                             </div>
                                         </div>
                                     </div>
@@ -314,10 +364,14 @@
                                                 US Automatique
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTUS" class="TCVal"> @if(isset($USReport) && sizeof($USReport)>0){{$USReport[0]->nbT}} @endif</span> Tubes
+                                                &nbsp; NB :<span id="NBTUS"
+                                                                 class="TCVal"> @if(isset($USReport) && sizeof($USReport)>0){{$USReport[0]->nbT}} @endif</span>
+                                                Tubes
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp; NB RB:<span id="NBRBUS" class="TCVal"> @if(isset($USReport) && sizeof($USReport)>0){{$USReport[0]->nbRB}} @endif</span>  Tubes
+                                                &nbsp; NB RB:<span id="NBRBUS"
+                                                                   class="TCVal"> @if(isset($USReport) && sizeof($USReport)>0){{$USReport[0]->nbRB}} @endif</span>
+                                                Tubes
                                             </div>
 
                                         </div>
@@ -335,7 +389,8 @@
                                                 Radiographie Numérique
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ03" class="TCVal"> @if(isset($RX1Report) && sizeof($RX1Report)>0){{$RX1Report[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ03"
+                                                                 class="TCVal"> @if(isset($RX1Report) && sizeof($RX1Report)>0){{$RX1Report[0]->nbT}}  @endif</span>Tubes
                                             </div>
 
                                         </div>
@@ -353,7 +408,8 @@
                                                 Soudure Manuelle
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ04" class="TCVal"> @if(isset($RepReport) && sizeof($RepReport)>0){{$RepReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ04"
+                                                                 class="TCVal"> @if(isset($RepReport) && sizeof($RepReport)>0){{$RepReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
 
                                         </div>
@@ -371,7 +427,8 @@
                                                 Test Hydrostatique
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ06" class="TCVal"> @if(isset($M24Report) && sizeof($M24Report)>0){{$M24Report[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ06"
+                                                                 class="TCVal"> @if(isset($M24Report) && sizeof($M24Report)>0){{$M24Report[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                         </div>
                                     </div>
@@ -387,7 +444,8 @@
                                                 Chanfreinage
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ07" class="TCVal"> @if(isset($M25Report) && sizeof($M25Report)>0){{$M25Report[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ07"
+                                                                 class="TCVal"> @if(isset($M25Report) && sizeof($M25Report)>0){{$M25Report[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                         </div>
 
@@ -404,7 +462,8 @@
                                                 UT Automatique
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ08" class="TCVal"> @if(isset($NDTReport) && sizeof($NDTReport)>0){{$NDTReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ08"
+                                                                 class="TCVal"> @if(isset($NDTReport) && sizeof($NDTReport)>0){{$NDTReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                         </div>
 
@@ -421,14 +480,15 @@
                                                 Contrôle Radioscopique
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTZ09" class="TCVal"> @if(isset($RX2Report) && sizeof($RX2Report)>0){{$RX2Report[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTZ09"
+                                                                 class="TCVal"> @if(isset($RX2Report) && sizeof($RX2Report)>0){{$RX2Report[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="  col-xl-3 col-lg-4 col-sm-6  py-1" >
+                        <div class="  col-xl-3 col-lg-4 col-sm-6  py-1">
                             <div class="card border-left-success shadow h-100">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -437,7 +497,8 @@
                                                 Tubes Réfusés
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                &nbsp;  NB :<span id="NBTDEC" class="TCVal"> @if(isset($VFRReport) && sizeof($VFRReport)>0){{$VFRReport[0]->nbT}}  @endif</span>Tubes
+                                                &nbsp; NB :<span id="NBTDEC"
+                                                                 class="TCVal"> @if(isset($VFRReport) && sizeof($VFRReport)>0){{$VFRReport[0]->nbT}}  @endif</span>Tubes
                                             </div>
                                         </div>
 
@@ -446,7 +507,6 @@
                             </div>
                         </div>
                     </div>
-                </section>
             </div>
         </div>
     </div>
@@ -482,14 +542,13 @@
             $.ajax({
                 url: "{{url('/DashboardAdv')}}/" + $('#Did').val(),
                 method: 'get',
-                data: {
-                },
+                data: {},
                 success: function (result) {
                     console.log(result);
 
                     if (result.RecBobReport.length > 0) {
                         $('#NBTRecBob').html(result.RecBobReport[0].nbT);
-                        $('#PTRecBob').html(result.RecBobReport[0].PT/1000);
+                        $('#PTRecBob').html(result.RecBobReport[0].PT / 1000);
                     }
                     if (result.M3Report.length > 0) {
 
