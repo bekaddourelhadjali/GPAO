@@ -304,11 +304,11 @@
     <script>
 
         var table = $('#RecReportTable').DataTable({
-            "bDestroy": true,
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true
         });
 
-        $('#FoncTable').DataTable();
+        $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
         $(document).ready(function () {
 
             chartId = 'myPieChart';
@@ -459,11 +459,11 @@
                     $('#NBT').html('');
                     $('#PT').html('');
                     $('#LT').html('');
-                    $('#FoncTable').DataTable().clear().draw();
+                    $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
 
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RecReportTable').DataTable().row.add([
+                            $('#RecReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste ' + item.Poste,
                                 item.Machine,
                                 item.Tube,
@@ -489,7 +489,7 @@
                     }
                     if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
-                            $('#FoncTable').DataTable().row.add([
+                            $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste ' + item.Poste,
                                 item.TypeArret,
                                 item.Cause,

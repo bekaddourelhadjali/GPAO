@@ -224,7 +224,7 @@
             data=@json(array_column($DefautsReport,'NBT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
-            $('#VFRReportTable').DataTable();
+            $('#VFRReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
              calculateColumn(3);
         $('#VFRReportTable_filter input[type=search]').keyup(function () {
             calculateColumn(3);
@@ -252,7 +252,7 @@
                     data = [];
                     $('#OperationsReport').html('');
                     $('#DefautsTable tbody').html('');
-                    $('#VFRReportTable').DataTable().clear().draw();
+                    $('#VFRReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
                     $('#YearNBT').html(result.YearNBT);
 
@@ -277,7 +277,7 @@
                     }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#VFRReportTable').DataTable().row.add([
+                            $('#VFRReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
                                 item.Machine,
@@ -286,7 +286,7 @@
                             );
 
                         });
-                        $('#VFRReportTable').DataTable().draw(false);
+                        $('#VFRReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
                         $('#VFRReportTable tbody tr').attr('style','display: table-row;');
                     }
                     if (result.DefautsReport.length > 0) {

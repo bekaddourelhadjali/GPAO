@@ -254,6 +254,13 @@ Route::resource('ExpReport', 'Reports\Exp\ExpReportController')->middleware('aut
 Route::resource('ExpRepAdv', 'Reports\Exp\ExpRepAdvController')->middleware('auth');
 Route::resource('ExpDailyRep', 'Reports\Exp\ExpDailyRepController')->middleware('auth');
 
+//RevInt Fonctionnement
+Route::resource('rapports_FoncRevInt', 'Fonctionnement\FoncRevIntRapportsController')->middleware('Rapports:FZ12');
+Route::resource('FoncRevInt', 'Fonctionnement\FoncRevIntController')->middleware('ChefProd:FZ12');
+
+//RevExt Fonctionnement
+Route::resource('rapports_FoncRevExt', 'Fonctionnement\FoncRevExtRapportsController')->middleware('Rapports:FZ13');
+Route::resource('FoncRevExt', 'Fonctionnement\FoncRevExtController')->middleware('ChefProd:FZ13');
 
 //Rapports
 
@@ -525,3 +532,4 @@ Route::post('bobineGet', function (\Illuminate\Http\Request $request) {
 Route::fallback(function () {
     return \redirect('UnAuthorized');
 });
+

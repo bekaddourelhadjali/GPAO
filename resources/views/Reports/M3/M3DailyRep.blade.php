@@ -245,7 +245,7 @@
 
     <script>
         var table = $('#RecBobReportTable').DataTable({
-            "bDestroy": true,
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true
         });
         $(document).ready(function () {
@@ -395,7 +395,7 @@
                     $('#PCT').html('');
                     if (result.reports.length > 0){
                         result.reports.forEach(function (item) {
-                            $('#RecBobReportTable').DataTable().row.add([
+                            $('#RecBobReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste '+item.Poste,
                                 item.Coulee,
                                 item.Bobine,

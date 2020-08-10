@@ -72,8 +72,9 @@
                                         <option value="Z05">Chutage</option>
                                         <option value="Z09">RX2</option>
                                         <option value="Z10">Visuel Final</option>
-                                        <option value="Z11">Revêtement Interieur</option>
-                                        <option value="Z12">Revêtement Exterieur</option>
+                                        <option value="Z12">Revêtement Interieur</option>
+                                        <option value="Z13">Revêtement Exterieur</option>
+                                        <option value="FZ12">Fonctionnement PE/EPOXY</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 col-6">
@@ -150,8 +151,8 @@
                                         <option value="Z04">Réparation</option>
                                         <option value="Z09">RX2</option>
                                         <option value="Z10">Visuel Final</option>
-                                        <option value="Z11">Revêtement Interieur</option>
-                                        <option value="Z12">Revêtement Exterieur</option>
+                                        <option value="Z12">Revêtement Interieur</option>
+                                        <option value="Z13">Revêtement Exterieur</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 col-6">

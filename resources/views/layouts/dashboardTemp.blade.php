@@ -164,7 +164,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" style="cursor: pointer"  data-toggle="collapse" data-target="#collapseContrôle" aria-expanded="true" aria-controls="collapseContrôle">
           <i class="fas fa-fw fa-eye"></i>
-          <span  style="font-size: 16px">Contrôle</span>
+          <span  style="font-size: 16px">Contrôle Qualité</span>
         </a>
         <div id="collapseContrôle" class="collapse" aria-labelledby="headingContrôle" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded" >
@@ -187,7 +187,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" style="cursor: pointer" data-toggle="collapse" data-target="#collapseFabrication" aria-expanded="true" aria-controls="collapseFabrication">
           <i class="fas fa-fw fa-cog"></i>
-          <span   style="font-size: 16px" >Fabrication</span>
+          <span   style="font-size: 16px" >Contrôle Production</span>
         </a>
         <div id="collapseFabrication" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded"  >
@@ -275,13 +275,16 @@
             <i class="fa fa-bars"></i>
           </button>
 
-
           <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav  " >
+          <h3 id="titleVal" class="font-weight-bolder text-primary"></h3>
+          </ul>
+          <ul class="navbar-nav  ml-auto" >
             <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
+
+            <li class="nav-item dropdown no-arrow ">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <b><span class="mr-2 d-none d-lg-inline text-gray-600 ">@if(\Illuminate\Support\Facades\Auth::check()){{\Illuminate\Support\Facades\Auth::user()->username}}@endif</span>
+                <b><span class="mr-2 d-none d-sm-inline text-gray-600 ">@if(\Illuminate\Support\Facades\Auth::check()){{\Illuminate\Support\Facades\Auth::user()->username}}@endif</span>
                 <i class="fa fa-user-circle"></i></b>
               </a>
               <!-- Dropdown - User Information -->
@@ -307,31 +310,6 @@
       </div>
       <!-- End of Main Content -->
 
-      {{--<!-- Footer -->--}}
-      {{--<div class="container-fluid">--}}
-      {{--<footer class="sticky-footer  ">--}}
-          {{--<div class="copyright  my-auto">--}}
-          {{--<section>--}}
-            {{--<div class="row ">--}}
-              {{--<div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">--}}
-                {{--<div class="row ">--}}
-                  {{--<img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">--}}
-                  {{--<div class="col-10">--}}
-                    {{--<h2>Projet : <b>{{$projet->Nom}}</b></h2>--}}
-                    {{--<h4 style="text-align: inherit; color: #000;">Client : <b>{{$projet->client->name}}</b></h4>--}}
-                    {{--<b  >Copyright © GPAO {{date('Y')}}</b>--}}
-                  {{--</div>--}}
-                {{--</div>--}}
-                {{--<br>--}}
-
-              {{--</div>--}}
-            {{--</div>--}}
-          {{--</section>--}}
-          {{--</div>--}}
-      {{--</footer>--}}
-      {{--</div>--}}
-      {{--<!-- End of Footer -->--}}
-
     </div>
     <!-- End of Content Wrapper -->
 
@@ -349,14 +327,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Prêt à partir?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-body">Sélectionner Logout pour Déconnecter</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
           <a class="btn btn-primary" role="button" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">Logout</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -382,6 +360,7 @@
   <script src="{{asset('js/SortTable.js')}}"></script>
  @yield('script')
  <script>
+
      function calculateColumn(index) {
          var total = 0;
          $('table tbody tr[style*="display: table-row;"]').each(function() {
@@ -395,9 +374,22 @@
 
          $('table tfoot td').eq(index).html('<span class="text-danger"><b>' +(Math.round((total + Number.EPSILON) * 1000) / 1000 )+"</b></span>");
      }
- </script>
+     @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle"
+                    ||\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+     $(document).ready(function () {
+         $('#titleVal').html($('title').html());
+         $('.dataTable').each(function () {
+             $(this).off('mosueenter');
+             $(this).mouseenter(function () {
+             addActions();});
+         });
+     });
 
-  @include('layouts.CarteTubeScript')
+   @endif
+ </script>
+   @include('layouts.CarteTubeScript')
+
+
 </body>
 
 </html>

@@ -110,7 +110,7 @@ r."Did"=? and r."NumReception" not in (select re."NumReception" from "rev_ext" r
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                     $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\'');
-                    $defauts=Operations::where('Zone','=','Z12')->select('Operation')->get();
+                    $defauts=Operations::where('Zone','=','Z13')->select('Operation')->get();
                     return view('Revetement.RevExt',
                         ['rapport' => $rapport,
                             'revExt' => $rapport->revExt,

@@ -73,8 +73,10 @@
                                     <option value="Z10">Visuel Final</option>
                                     <option value="DEC">Refusés Au Final</option>
                                     <option value="Z11">Réception</option>
-                                    <option value="Z12">Revêtement Interieur</option>
-                                    <option value="Z13">Revêtement Exterieur</option>
+                                    <option value="Z12">Revêtement Intérieur</option>
+                                    <option value="Z13">Revêtement Extérieur</option>
+                                    <option value="FZ13">Fonctionnement Rev Intérieur</option>
+                                    <option value="FZ12">Fonctionnement Rev Extérieur</option>
                                     <option value="Z14">Expédition</option>
                                 </select>
                             </div>

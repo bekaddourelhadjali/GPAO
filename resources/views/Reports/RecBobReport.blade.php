@@ -246,7 +246,7 @@
 
         $(document).ready(function () {
             $('#RecBobReportTable').DataTable({
-            "bDestroy": true,
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true
         });
             $('#RecBobReportTable_filter').remove();
@@ -277,7 +277,7 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
             $('#RecBobReportTable').DataTable({
-                "bDestroy": true,
+                "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
                 "bRetrieve": true
             });
             calculateColumn(8); calculateColumn(9);
@@ -336,7 +336,7 @@
                     }
 
                     $('#RecBobReportTable').DataTable({
-                        "bDestroy": true,
+                        "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
                         "bRetrieve": true
                     });
                     calculateColumn(8); calculateColumn(9);

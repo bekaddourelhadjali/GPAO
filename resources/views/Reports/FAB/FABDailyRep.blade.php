@@ -44,7 +44,8 @@
                                aria-selected="true"><b>Rapport Journalier</b></a>
                             <a class="nav-item nav-link  " href="{{route('FabReport.index')}}">
                                 <b>Filtrage par détails de projet</b></a>
-                            <a class="nav-item nav-link  " href="{{route('FabRepAdv.index')}}"><b>Filtres Avancés</b></a>
+                            <a class="nav-item nav-link  " href="{{route('FabRepAdv.index')}}"><b>Filtres
+                                    Avancés</b></a>
 
                         </div>
                     </nav>
@@ -109,7 +110,7 @@
                                             NB total des Tubes
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                           &nbsp; <span id="NBT"> @if(isset($nbT)){{$nbT}} @endif</span>
+                                            &nbsp; <span id="NBT"> @if(isset($nbT)){{$nbT}} @endif</span>
                                         </div>
                                     </div>
                                     <div class="col-auto">
@@ -189,7 +190,7 @@
                                     @if(isset($reports))
 
                                         @foreach($reports as $item)
-                                            <tr id="report{{$item->Numero}}"  rapportEtat="{{$item->Etat}}"
+                                            <tr id="report{{$item->Numero}}" rapportEtat="{{$item->Etat}}"
                                                 rapportId="{{$item->NumeroRap}}">
                                                 <td>Poste {{$item->Poste}}</td>
                                                 <td>{{$item->Machine}}</td>
@@ -208,12 +209,12 @@
                                     </tbody>
                                 </table>
                                 @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
-                                <div id="tr-actions">
-                                    <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
-                                    <button class="reportDelete btn " style="width: 100px"></button>
+                                    <div id="tr-actions">
+                                        <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
+                                        <button class="reportDelete btn " style="width: 100px"></button>
 
-                                </div>
-                                    @endif
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -221,21 +222,22 @@
                 </section>
                 <section>
                     <div class="row">
-                        <div class="col-12 col-md-6" style="padding: 20px 0" >
-                        <h2 class=" text-center text-danger " ><i class="fa fa-cog"></i>&nbsp; Rapport de Fonctionnement</h2>
+                        <div class="col-12 col-md-6" style="padding: 20px 0">
+                            <h2 class=" text-center text-danger "><i class="fa fa-cog"></i>&nbsp; Rapport de
+                                Fonctionnement</h2>
                         </div>
                         <div class=" col-12 col-md-6 text-left">
                             <canvas width="100px" height="100px" id="myPieChart"></canvas>
                         </div>
                     </div>
                     <hr>
-                        <div class="row">
+                    <div class="row">
                         <div class="col-12">
                             <div class="table-container" id="FABReportTableContainer">
                                 <table class="table table-borderless table-striped" id="FoncTable"
                                        cellspacing="0">
 
-                                    <thead style="cursor: pointer" id="TheadID"  >
+                                    <thead style="cursor: pointer" id="TheadID">
                                     <tr class="text-white">
                                         <th>Poste</th>
                                         <th>Machine</th>
@@ -254,12 +256,12 @@
                                 </table>
                                 @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
-                                <div id="tr-actions">
-                                    <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
-                                    <button class="reportDelete btn " style="width: 100px"></button>
+                                    <div id="tr-actions">
+                                        <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
+                                        <button class="reportDelete btn " style="width: 100px"></button>
 
-                                </div>
-                                            @endif
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -284,11 +286,16 @@
     <script src="{{asset('js/chart-pie-demo.js')}}"></script>
     <script>
         var table = $('#FABReportTable').DataTable({
-            "bDestroy": true,
-            "bRetrieve": true
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+            "bRetrieve": true,
+            "deferRender": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]
         });
 
-        $('#FoncTable').DataTable();
+        $('#FoncTable').DataTable({
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+            "bRetrieve": true,
+            "deferRender": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]
+        });
         $(document).ready(function () {
             @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
@@ -296,7 +303,7 @@
 
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
-                const reportId= $(this).attr("id").replace(/[^0-9]/g, '');
+                const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
                 var win = window.open("{{url('/rapprod/')}}/" + id, '_blank');
                 if (win) {
                     //Browser has allowed it to be opened
@@ -308,6 +315,7 @@
             });
             @endif
         });
+
         @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
         function addActions() {
@@ -388,7 +396,7 @@
                         $('#Reports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
                         $('#ArretReports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
 
-                    addActions();
+                        addActions();
                     },
                     error: function (result) {
 
@@ -407,13 +415,14 @@
             $(this).hide();
 
         });
-@endif
+
+        @endif
         function getData() {
-            parent=$('#myPieChart').parent();
+            parent = $('#myPieChart').parent();
             parent.html('');
             parent.append('<canvas id="myPieChart"></canvas>');
-            labels=[];
-            data=[];
+            labels = [];
+            data = [];
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -435,10 +444,14 @@
                     $('#NBT').html('');
                     $('#PT').html('');
                     $('#LT').html('');
-                    if (result.reports.length > 0){
+                    if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#FABReportTable').DataTable().row.add([
-                                'Poste '+item.Poste,
+                            $('#FABReportTable').DataTable({
+                                "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+                                "bRetrieve": true,
+                                "deferRender": true,
+                            }).row.add([
+                                'Poste ' + item.Poste,
                                 item.Machine,
                                 item.Coulee,
                                 item.Bobine,
@@ -451,9 +464,8 @@
                                 item.User]
                             ).draw(false);
                             $('#FABReportTable tbody tr:last-child')
-                                .attr('id','report'+item.Numero).attr('rapportEtat',item.Etat).attr('rapportId',item.NumeroRap);
+                                .attr('id', 'report' + item.Numero).attr('rapportEtat', item.Etat).attr('rapportId', item.NumeroRap);
                         });
-
 
 
                         $('#NBT').html(result.nbT);
@@ -462,11 +474,15 @@
 
                         addActions();
                     }
-                    $('#FoncTable').DataTable().clear().draw();
-                    if (result.ArretsReport.length > 0){
+                    $('#FoncTable').DataTable({
+                        "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+                        "bRetrieve": true,
+                        "deferRender": true, "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
+                    }).clear().draw();
+                    if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
-                            $('#FoncTable').DataTable().row.add([
-                                'Poste '+item.Poste,
+                            $('#FoncTable').DataTable({"lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]}).row.add([
+                                'Poste ' + item.Poste,
                                 item.Machine,
                                 item.TypeArret,
                                 item.Cause,
@@ -478,13 +494,13 @@
                                 item.User]
                             ).draw(false);
                             $('#FoncTable tbody tr:last-child')
-                                .attr('id','report'+item.id).attr('rapportEtat',item.Etat).attr('rapportId',item.NumRap);
+                                .attr('id', 'report' + item.id).attr('rapportEtat', item.Etat).attr('rapportId', item.NumRap);
                         });
-                        if($('#machine').val()!=='Tous'){
-                            chartId='myPieChart';
-                            labels=result.ChartLabels;
-                            data=result.ChartData;
-                            drawPieChart(chartId,data,labels );
+                        if ($('#machine').val() !== 'Tous') {
+                            chartId = 'myPieChart';
+                            labels = result.ChartLabels;
+                            data = result.ChartData;
+                            drawPieChart(chartId, data, labels);
                         }
                     }
                     addActions();

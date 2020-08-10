@@ -108,6 +108,8 @@ class M3Controller extends Controller
                 $coulees = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
                 $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
+
+
                 if ($rapport->Etat == 'N'||Auth::check()) {
                     $rapprods = $rapport->rapprods;
                     return view('M3.M3',

@@ -23,7 +23,7 @@ class RevExtDailyRepController extends Controller
 
             $RevExtReport = DB::select('select * from "revextreport" where "Did"=?   and "DateSaisie"  between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\' ) ', [$details[0]->Did]);
 
-        $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z13\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
+        $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'FZ13\' and "DateSaisie" between (CURRENT_DATE::timestamp +time \'05:00\') and  (CURRENT_DATE::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'  ) ', [$details[0]->Did]);
 
 
         $nbT = sizeof($RevExtReport);
@@ -99,10 +99,10 @@ class RevExtDailyRepController extends Controller
 
         }
         if($request->poste == 'Tous'){
-            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z13\' and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'    ) ', [$request->Did, $id, $id]);
+            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'FZ13\' and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'    ) ', [$request->Did, $id, $id]);
 
         }else{
-            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'Z13\' and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'   )  and "Poste"=?'
+            $ArretsReport = DB::select('select * from "arretsreport" where "Did"=? and "Zone"=\'FZ13\' and "DateSaisie" between (?::timestamp +time \'05:00\') and  (?::timestamp + (\'1 day\')::INTERVAL +time \'05:00\'   )  and "Poste"=?'
                 , [$request->Did, $id, $id, $request->poste]);
         }
 

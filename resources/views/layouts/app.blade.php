@@ -42,7 +42,7 @@
         body {
             color: #000;
             background-color: #f8f9fc;
-            font-family: Arial, Helvetica, sans-serif;
+            /*font-family: Arial,  sans-serif;*/
         }
         .nav-link{
             font-weight: bold;
@@ -110,7 +110,10 @@
 </head>
 
 <body id="page-top">
+<section class="mt-0" id="title-section">
 
+    <h3 id="titleVal" class="font-weight-bolder text-primary text-center nav-link " ></h3>
+</section>
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -121,30 +124,14 @@
 </div>
 <!-- End of Page Wrapper -->
 
-{{--<!-- Footer--}}
-{{--<div class="container-fluid">--}}
-    {{--<footer class="sticky-footer  ">--}}
-        {{--<div class="copyright  my-auto">--}}
-            {{--<section id="footer">--}}
-                {{--<div class="row ">--}}
-                    {{--<div class="top-content col-xl-6 col-lg-8 col-md-10 col-sm-12  offset-xl-4 offset-lg-3 offset-md-2 ">--}}
-                        {{--<div class="row ">--}}
-                            {{--<img id="top-image" class="col-2 " src="{{asset('img/Login.png')}}">--}}
-                            {{--<div class="col-10">--}}
-                                {{--<h2>Projet : <b>{{$projet->Nom}}</b></h2>--}}
-                                {{--<h4 style="text-align: inherit; ">Client : <b>{{$projet->client->name}}</b></h4>--}}
-                                {{--<b>Copyright © GPAO {{date('Y')}}</b>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<br>--}}
-
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</section>--}}
-        {{--</div>--}}
-    {{--</footer> --}}
-{{--</div>--}}
-{{---->--}}
+<footer class="sticky-footer container-fluid ">
+    <section class="mt-0" id="title-section  ">
+        <a class="navbar-brand text-center col-12 nav-link " href="{{route('home')}}">
+            <img src="{{asset('img/Login.jpg')}}" width="30" height="30" class="d-inline-block align-top"  >
+            Page D'accueil
+        </a>
+    </section>
+</footer>
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
@@ -167,6 +154,8 @@
 @yield('script')
 <script>
     $(document).ready(function(){
+
+        $('#titleVal').html($('title').html());
        $('td button i.fa.fa-edit').parent().parent().css("min-width","100px");
     });
 </script>

@@ -259,7 +259,7 @@
 
         $(document).ready(function () {
 
-            $('#M3ReportTable').DataTable();
+            $('#M3ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
             calculateColumn(9); calculateColumn(10); calculateColumn(11);
         $('#M3ReportTable_filter input[type=search]').keyup(function () {
             calculateColumn(9); calculateColumn(10); calculateColumn(11);
@@ -282,10 +282,10 @@
                     RiveE: $('#RiveE').val(),
                 },
                 success: function (result) {
-                    $('#M3ReportTable').DataTable().clear().draw();
+                    $('#M3ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#M3ReportTable').DataTable().row.add([
+                            $('#M3ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste '+item.Poste,
                                 item.DateSaisie,
                                 item.Nom,
@@ -301,7 +301,7 @@
                             );
 
                         });
-                        $('#M3ReportTable').DataTable().draw(false);
+                        $('#M3ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
                         $('#M3ReportTable tbody tr').attr('style','display: table-row;');
                     }
                     $('#MonthNBT').html(result.MonthNBT);

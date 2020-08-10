@@ -270,7 +270,7 @@
                                     @endif
                                     </tbody>
                                 </table>
-                                @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle")
+                                @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
                                 <div id="tr-actions">
                                     <button class="reportEdit btn btn-primary" style="width: 100px">Ouvrir</button>
@@ -304,24 +304,30 @@
     <script>
 
         var table = $('#RevExtReportTable').DataTable({
-            "bDestroy": true,
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true
         });
 
-        $('#FoncTable').DataTable();
+        $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
         $(document).ready(function () {
 
             chartId = 'myPieChart';
             labels =@json( $ChartLabels);
             data =@json( $ChartData) ;
             drawPieChart(chartId, data, labels);
-            @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle")
+            @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle"
+                ||\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
             addActions();
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
                 const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
+                        @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle")
                 var win = window.open("{{url('/RevExt/')}}/" + id, '_blank');
+                @elseif(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
+                var win = window.open("{{url('/FoncRevExt/')}}/" + id, '_blank');
+
+                @endif
                 if (win) {
                     //Browser has allowed it to be opened
                     win.focus();
@@ -330,14 +336,15 @@
                     alert('Please allow popups for this website');
                 }
             });
-            @endif
         });
+        @endif
         @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle")
 
+        alert('Controle')
         function addActions() {
 
             reportID = 0;
-            $("#Reports TR, #ArretReports TR").each(function () {
+            $("#Reports TR ").each(function () {
                 $(this).off('mouseenter');
                 $(this).mouseenter(function () {
                     rapportID = $(this).attr('rapportId');
@@ -378,7 +385,56 @@
             });
 
         }
+        @elseif(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
+        function addActions() {
+            reportID = 0;
+            $("  #ArretReports TR").each(function () {
+                $(this).off('mouseenter');
+                $(this).mouseenter(function () {
+                    rapportID = $(this).attr('rapportId');
+
+
+                    var o = $(this);
+                    var offset = o.offset();
+                    const id = $(this).attr("id").replace(/[^0-9]/g, '');
+                    reportID = id;
+
+                    $('#tr-actions .reportDelete').each(function () {
+                        $(this).attr('id', 'report' + id + 'Delete');
+                        $('#tr-actions #report' + id + 'Delete').attr('rapportId', rapportID);
+                    });
+
+
+                    $('#tr-actions .reportEdit').each(function () {
+                        $(this).attr('id', 'report' + id + 'Edit');
+                    });
+                    var height = ((($(this).height()) - $('#tr-actions').height()) / 2) + $('#FoncTable_wrapper .row').height() + 5;
+                    var width = (($('#RevExtReportTableContainer').width() - $('#tr-actions').width()) / 2);
+                    if ($(this).attr('rapportEtat') == 'C') {
+                        $('#tr-actions #report' + id + 'Delete').html("Déclôturer").addClass("btn-danger").removeClass("btn-success");
+
+                    } else {
+                        $('#tr-actions #report' + id + 'Delete').html("Clôturer").addClass("btn-success").removeClass("btn-danger");
+                    }
+                    $('#tr-actions #report' + id + 'Edit').attr('rapportId', $(this).attr("rapportId"));
+                    $('#tr-actions').css({
+                        'top': (offset.top - $('#FoncTable').offset().top) + height,
+                        'left': width,
+                    }).show();
+
+                })
+                    .mouseleave(function () {
+
+                        $('#tr-actions').hide();
+                    });
+            });
+
+        }
+        @endif
+
+        @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle"
+            ||\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
         $('.reportDelete').each(function () {
             $(this).off("click");
             $(this).click(function (e) {
@@ -424,6 +480,7 @@
             });
         });
         $('#tr-actions').mouseenter(function () {
+
             $(this).show();
 
         });
@@ -459,11 +516,11 @@
                     $('#NBT').html('');
                     $('#PT').html('');
                     $('#LT').html('');
-                    $('#FoncTable').DataTable().clear().draw();
+                    $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
 
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RevExtReportTable').DataTable().row.add([
+                            $('#RevExtReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste ' + item.Poste,
                                 item.Machine,
                                 item.Tube,
@@ -489,7 +546,7 @@
                     }
                     if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
-                            $('#FoncTable').DataTable().row.add([
+                            $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste ' + item.Poste,
                                 item.TypeArret,
                                 item.Cause,

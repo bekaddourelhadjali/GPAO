@@ -134,6 +134,7 @@
 @section('script')
     <script>
         $(document).ready(function(){
+            $('#title-section').remove();
             $('#img-out').show();
             $('#img-hover').hide();
        $('#settings-section').mouseover(function(){

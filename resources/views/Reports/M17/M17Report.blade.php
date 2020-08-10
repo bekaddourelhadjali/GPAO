@@ -278,7 +278,7 @@
             data=@json(array_column($DefautsReport,'NBT'));
             var max = Math.max.apply(Math, data);
             DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
-            $('#M17ReportTable').DataTable();
+            $('#M17ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
             calculateColumn(3); calculateColumn(4); calculateColumn(5);
         $('#M17ReportTable_filter input[type=search]').keyup(function () {
             calculateColumn(3); calculateColumn(4); calculateColumn(5);
@@ -306,7 +306,7 @@
                     data = [];
                     $('#OperationsReport').html('');
                     $('#DefautsTable tbody').html('');
-                    $('#M17ReportTable').DataTable().clear().draw();
+                    $('#M17ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
                     $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
                     $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
@@ -335,7 +335,7 @@
                     }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#M17ReportTable').DataTable().row.add([
+                            $('#M17ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
                                 item.Machine,
@@ -345,7 +345,7 @@
                             );
 
                         });
-                        $('#M17ReportTable').DataTable().draw(false);
+                        $('#M17ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
                         $('#M17ReportTable tbody tr').attr('style','display: table-row;');
                     }
                     if (result.DefautsReport.length > 0) {

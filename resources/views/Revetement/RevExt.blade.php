@@ -340,11 +340,6 @@
                 </div>
 
                 <div class=" col-lg-3 col-md-3 col-sm-6">
-                    <button type="button" class="btn btn-outline-danger col-12" data-toggle="modal"
-                            data-target="#staticBackdrop">
-                        <b><i class="fa fa-exclamation-triangle" style="font-size: 20px;"></i> &nbsp;&nbsp;Arrets
-                            Machine</b>
-                    </button>
                 </div>
                 <div class="  col-lg-3 col-md-3 col-sm-6">
                     <form method="post" action="{{route('rapports_RevExt.destroy',["id"=>$rapport->Numero])}}">
@@ -366,7 +361,6 @@
     </div>
     <!-- Modal -->
 
-    @include('layouts.ArretsLayout')
     @include('layouts.CarteTubeLayout')
 
 @endsection
@@ -719,6 +713,5 @@
 
 
     </script>
-    @include('layouts.ArretScript')
     @include('layouts.CarteTubeScript')
 @endsection

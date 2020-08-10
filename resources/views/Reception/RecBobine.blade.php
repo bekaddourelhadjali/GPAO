@@ -173,11 +173,12 @@
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
                                                                                            for="Fournisseur">Fournisseur</label>
-                                <select class="form-control" id="Fournisseur" name="Fournisseur">
+                                <input class="form-control" id="Fournisseur" autocomplete="on" name="Fournisseur" list="FournList">
+                                    <datalist id="FournList">
                                     <option value="ARCELOR">ARCELOR</option>
                                     <option value="THYSSEN">THYSSEN</option>
                                     <option value="SEVERSTAL">SEVERSTAL</option>
-                                </select>
+                                </datalist>
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
                                                                                            for="NbReception">N°Reception</label>
@@ -199,11 +200,14 @@
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
                                                                                            for="Source">Provenance</label>
-                                <select class="form-control" id="Source" name="Source" required>
-                                    <option value="Ann">Annaba</option>
+                                <input class="form-control" id="Source" name="Source" autocomplete="on" list="SourceList" required>
+                                    <datalist id="SourceList">
+
+                                    <option value="Annaba">Annaba</option>
                                     <option value="Port">Port</option>
-                                    <option value="Toug">Touggourt</option>
-                                </select>
+                                    <option value="Touggourt">Touggourt</option>
+
+                                    </datalist>
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 inputs"><label class="form-label"
                                                                                            for="NbBon">N°Bon</label>

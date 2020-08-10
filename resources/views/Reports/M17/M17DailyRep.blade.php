@@ -354,11 +354,11 @@
     <script>
 
         var table = $('#M17ReportTable').DataTable({
-            "bDestroy": true,
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true
         });
 
-        $('#FoncTable').DataTable();
+        $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
         $(document).ready(function () {
 
             chartId = 'myPieChart';
@@ -519,7 +519,7 @@
                     $('#NBT').html('');
                     $('#PT').html('');
                     $('#LT').html('');
-                    $('#FoncTable').DataTable().clear().draw();
+                    $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     if(result.OperationsReport.length>0){
                         result.OperationsReport.forEach(function (item) {
                             $('#OperationsReport').append(' <div class=" col-lg-3 col-md-4 col-6 py-1">\n' +
@@ -541,7 +541,7 @@
                     }
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#M17ReportTable').DataTable().row.add([
+                            $('#M17ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste ' + item.Poste,
                                 item.Machine,
                                 item.Tube,
@@ -565,7 +565,7 @@
                     }
                     if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
-                            $('#FoncTable').DataTable().row.add([
+                            $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste ' + item.Poste,
                                 item.TypeArret,
                                 item.Cause,

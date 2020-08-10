@@ -20,7 +20,7 @@ class AffectationsController extends Controller
     public function index()
     {
           $locations=Locations::orderBy("Zone")->paginate(9);
-        $agents=Agents::all();
+        $agents=DB::select('select * from "agents" where "id" not in (select "idAgent"  from "Affectations")');
         return view('Dashboard.affectations',[
                         "locations"=>$locations,
                         "agents"=>$agents,

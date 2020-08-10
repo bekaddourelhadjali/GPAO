@@ -244,7 +244,16 @@ class DefautsSeeder extends Seeder
 ('MB','Z10','Soudure'),
 ('Série Déf','Z10','Soudure'),
 ('SCVE','Z10','Soudure'),
-('SCVXE','Z10','Soudure')
+('SCVXE','Z10','Soudure'),
+('PREP PEIN','FZ12','Soudure'),
+('PAUSE','FZ12','Soudure'),
+('RUPTURE AMONT','FZ12','Soudure'),
+('AVAL ENGO','FZ12','Soudure'),
+('REGL FAB','FZ12','Soudure'),
+('PREV','FZ12','Soudure'),
+('ABSE','FZ12','Soudure'),
+('AUTRE','FZ12','Soudure'),
+
 
         ");
     }

@@ -261,7 +261,7 @@
             </form>
             <br>
             <div class="table-container">
-                <table id="MsTable" class="table table-striped table-hover table-bordered Mss " off.png"max-width:120%">
+                <table id="MsTable" class="table table-striped table-hover table-bordered Mss " style="max-width:120%">
                     <thead class="bg-primary text-white">
                     <tr>
                         <th rowspan="2">Coulee</th>
@@ -704,17 +704,6 @@
                 });
             });
 
-
-            $('#bobine').keydown(function () {
-                if ($(this).val() === "") {
-                    $(this).attr('list', "bobines");
-                }
-            });
-            $('#coulee').keydown(function () {
-                if ($(this).val() === "") {
-                    $(this).attr('list', "coulees");
-                }
-            });
             $('#bobine').on('change', function () {
                 if ($(this).val() !== "") {
 
@@ -753,47 +742,61 @@
                             }
                         }
                     });
-                }
+                }else{
+
+                $('#Poids').val('');
+                $('#coulee').val('');
+                $('#bobine').val('');
+            }
             });
             $('#coulee').on('change', function () {
-                const coulee = $(this).val();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url: "{{url('/bobineGet')}}",
-                    method: 'post',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        coulee: coulee,
-                        source: 'M3',
-                        etat: bobinesEtat
-                    },
-                    success: function (result) {
-                        if (result.bobines.length !== 0) {
-                            var bobines = result.bobines;
-
-                            $('#bobines2').html("");
-                            bobines.forEach(function (item, index) {
-                                $('#bobines2').append('<option  value="' + item.Bobine + '" >' + item.Bobine + '</option>');
-                                $('#bobine').attr('list', 'bobines2');
-                            });
-                        } else {
-                            alert("Coulee n'existe pas");
-                            $('#coulee').val('');
-                            $('#Poids').val('');
-                            $('#bobine').val('');
+                if ($(this).val() !== "") {
+                    const coulee = $(this).val();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                    },
-                    error: function (result) {
-                        alert(result.responseJSON.error);
-                        console.log(result);
-                    }
-                });
+                    });
+
+                    $.ajax({
+                        url: "{{url('/bobineGet')}}",
+                        method: 'post',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            coulee: coulee,
+                            source: 'M3',
+                            etat: bobinesEtat
+                        },
+                        success: function (result) {
+                            if (result.bobines.length !== 0) {
+                                var bobines = result.bobines;
+
+                                $('#bobines2').html("");
+                                bobines.forEach(function (item, index) {
+                                    $('#bobines2').append('<option  value="' + item.Bobine + '" >' + item.Bobine + '</option>');
+                                    $('#bobine').attr('list', 'bobines2');
+                                });
+                            } else {
+                                alert("Coulee n'existe pas");
+                                $('#coulee').val('');
+                                $('#Poids').val('');
+                                $('#bobine').val('');
+                            }
+                        },
+                        error: function (result) {
+                            alert(result.responseJSON.error);
+                            console.log(result);
+                        }
+                    });
+                }else{
+
+                $('#Poids').val('');
+                $('#coulee').val('');
+                $('#bobine').val('');
+            }
             });
+
+
             $('#AjouterBobine').click(function (e) {
 
                 if ($('#BobineForm')[0].checkValidity()) {
@@ -855,6 +858,7 @@
                     alert('Remplir tous les champs qui sont obligatoires svp!');
                 }
             });
+
             $('#NonRecBob').click(function () {
 
                 $('#Poids').val('');

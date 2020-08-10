@@ -163,7 +163,7 @@
 
         $(document).ready(function () {
 
-            $('#NDTReportTable').DataTable();
+            $('#NDTReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
             calculateColumn(3);
         $('#NDTReportTable_filter input[type=search]').keyup(function () {
             calculateColumn(3);
@@ -184,13 +184,13 @@
                 data: {
                 },
                 success: function (result) {
-                    $('#NDTReportTable').DataTable().clear().draw();
+                    $('#NDTReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
                     $('#YearNBT').html(result.YearNBT);
 
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#NDTReportTable').DataTable().row.add([
+                            $('#NDTReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
                                 item.Machine,
@@ -198,7 +198,7 @@
                             );
 
                         });
-                        $('#NDTReportTable').DataTable().draw(false);
+                        $('#NDTReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
                         $('#NDTReportTable tbody tr').attr('style','display: table-row;');
                     }
 

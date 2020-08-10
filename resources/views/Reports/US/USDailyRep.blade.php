@@ -264,11 +264,11 @@
     <script src="{{asset('js/chart-pie-demo.js')}}"></script>
     <script>
         var table = $('#USReportTable').DataTable({
-            "bDestroy": true,
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true
         });
 
-        $('#FoncTable').DataTable();
+        $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
         $(document).ready(function () {
             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Controle")
 
@@ -416,7 +416,7 @@
                     $('#nbRB').html('');
                     if (result.reports.length > 0){
                         result.reports.forEach(function (item) {
-                            $('#USReportTable').DataTable().row.add([
+                            $('#USReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste '+item.Poste,
                                 item.Machine,
                                 item.Coulee,
@@ -439,10 +439,10 @@
 
                         addActions();
                     }
-                    $('#FoncTable').DataTable().clear().draw();
+                    $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     if (result.ArretsReport.length > 0){
                         result.ArretsReport.forEach(function (item) {
-                            $('#FoncTable').DataTable().row.add([
+                            $('#FoncTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 'Poste '+item.Poste,
                                 item.Machine,
                                 item.TypeArret,

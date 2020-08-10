@@ -97,8 +97,8 @@ class RecBobController extends Controller
                 $bobines = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->where('Epaisseur','=',detailprojet::find($rapport->Did)->Epaisseur)->select('Bobine')->get();
                 $coulees = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->where('Epaisseur','=',detailprojet::find($rapport->Did)->Epaisseur)->select('Coulee')->distinct('Coulee')->get();
                 if ($rapport->Etat == 'N'||Auth::check()) {
-                    $maxArr = Bobine::where('Etat', '=', 'NonREC')->max('Arrivage');
-                    $maxRec = Bobine::where('Etat', '=', 'REC')->max('NbReception') + 1;
+                    $maxArr = Bobine::where('Etat', '=', 'NonREC')->where('Did','=',$rapport->Did)->max('Arrivage');
+                    $maxRec = Bobine::where('Did','=',$rapport->Did)->max('NbReception') + 1;
                     return view('Reception.RecBobine',
                         ['rapport' => $rapport,
                             'bobines' => $bobines,

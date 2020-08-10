@@ -226,7 +226,7 @@
 
         $(document).ready(function () {
 
-            $('#RevIntReportTable').DataTable();
+            $('#RevIntReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
            calculateColumn(5); calculateColumn(6); calculateColumn(7);
         $('#RevIntReportTable_filter input[type=search]').keyup(function () {
            calculateColumn(5); calculateColumn(6); calculateColumn(7);
@@ -247,7 +247,7 @@
                 data: {
                 },
                 success: function (result) {
-                    $('#RevIntReportTable').DataTable().clear().draw();
+                    $('#RevIntReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
                     $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
                     $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));
@@ -258,7 +258,7 @@
 
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#RevIntReportTable').DataTable().row.add([
+                            $('#RevIntReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
                                 item.DateSaisie,
                                 "Poste "+item.Poste,
                                 item.Machine,
@@ -270,7 +270,7 @@
                             );
 
                         });
-                        $('#RevIntReportTable').DataTable().draw(false);
+                        $('#RevIntReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
                         $('#RevIntReportTable tbody tr').attr('style','display: table-row;');
                     }
 

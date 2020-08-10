@@ -265,7 +265,7 @@
                                     <label class="col-12" for="Site"
                                            style="padding-left: 0">Site</label>
                                     <input class="form-control col-12" type="text" id="Site"
-                                           name="Site"
+                                           name="Site" autocomplete="on"
                                            required>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@
                                     <label class="col-12" for="Transporteur"
                                            style="padding-left: 0">Transporteur</label>
                                     <input class="form-control col-12" type="text" id="Transporteur"
-                                           name="Transporteur"
+                                           name="Transporteur" autocomplete="on"
                                            required>
                                 </div>
                             </div>
