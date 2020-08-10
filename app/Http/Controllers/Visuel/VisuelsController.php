@@ -151,7 +151,7 @@ class VisuelsController extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z02') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $defautsMetal = \App\Visuel\Defauts::where('Zone', '=', 'Z02')->where('Type', '=', 'Metal')->get();
                     $defautsSoudure = \App\Visuel\Defauts::where('Zone', '=', 'Z02')->where('Type', '=', 'Soudure')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z02')->get();

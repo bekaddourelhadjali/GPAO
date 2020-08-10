@@ -99,7 +99,7 @@ class RecTubeController extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z11') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $tubes = DB::select('select t."NumTube" ,t."Tube",t."Bis",t."Coulee" from "tube" t where "NumTube" not in (
                    select "NumTube" from "reception" r where r."Did"=? ) and "NumTube" not in (
                    select "NumTube" from "vf_refuses" r where r."Did"=? ) and t."Did"=?',[$rapport->Did,$rapport->Did,$rapport->Did]);

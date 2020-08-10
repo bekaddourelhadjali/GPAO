@@ -104,7 +104,7 @@ class ExpeditionController extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z14') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $tubes = DB::select('select t."NumTube" ,t."Tube",t."Bis",t."Coulee" from "reception" t where "NumTube" not in (
                    select "NumTube" from "expedition" r where r."Did"=?) and t."Did"=?',[$rapport->Did,$rapport->Did]);
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 

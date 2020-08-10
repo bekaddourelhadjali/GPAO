@@ -252,7 +252,7 @@
 
             @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
-            addActions();
+            if (typeof obj === 'AddActions') {AddActions(); }
 
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
@@ -420,7 +420,7 @@
                         $('#PT').html(result.pT);
                         $('#PCT').html(result.pCT);
 
-                        addActions();
+                        if (typeof obj === 'AddActions') {AddActions(); }
                     }
 
                 },

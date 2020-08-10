@@ -93,7 +93,7 @@ class RecBobController extends Controller
 
         $rapport = Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'RecBob') {
+            if ($rapport->Zone == 'RecBob'||(Auth::check() && Auth::user()->role == "Chef Production")) {
                 $bobines = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->where('Epaisseur','=',detailprojet::find($rapport->Did)->Epaisseur)->select('Bobine')->get();
                 $coulees = Bobine::where('NbReception','=',null)->where('Did','=',$rapport->Did)->where('Epaisseur','=',detailprojet::find($rapport->Did)->Epaisseur)->select('Coulee')->distinct('Coulee')->get();
                 if ($rapport->Etat == 'N'||Auth::check()) {

@@ -102,7 +102,7 @@ class RevExtController extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z13') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $tubes = DB::select('select r."NumTube",r."Tube",r."Bis",r."NumReception" from "reception" r where
 r."Did"=? and r."NumReception" not in (select re."NumReception" from "rev_ext" re
 						  where re."Did"=? and re."Accepte"=true ) ',[$rapport->Did,$rapport->Did]);

@@ -111,7 +111,7 @@ class UltrasonController extends Controller
                 }
                 $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $rapprods = $rapport->rapprods;
                     return view('Fabrication.Ultrason',
                         ['rapport' => $rapport,

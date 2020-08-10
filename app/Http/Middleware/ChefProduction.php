@@ -16,6 +16,7 @@ class ChefProduction
      * @param  \Closure $next
      * @return mixed
      */
+
     public function handle($request, Closure $next, $zone)
     {
         if (Auth::check() && Auth::user()->role == "Chef Production") {

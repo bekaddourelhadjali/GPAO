@@ -101,7 +101,7 @@ class RevIntController extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z12') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $tubes = DB::select('select r."NumTube",r."Tube",r."Bis",r."NumReception" from "reception" r where
 r."Did"=? and r."NumReception" not in (select ri."NumReception" from "rev_int" ri
 						  where ri."Did"=? and ri."Accepte"=true ) ',[$rapport->Did,$rapport->Did]);

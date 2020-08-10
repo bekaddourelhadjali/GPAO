@@ -372,7 +372,7 @@
             DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
             @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
-            addActions();
+            if (typeof obj === 'AddActions') {AddActions(); }
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
                 const reportId = $(this).attr("id").replace(/[^0-9]/g, '');
@@ -467,7 +467,7 @@
                         $('#Reports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
                         $('#ArretReports tr[rapportId=' + id + '] ').attr("rapportEtat", result.rapportState.Etat);
 
-                        addActions();
+                        if (typeof obj === 'AddActions') {AddActions(); }
                     },
                     error: function (result) {
 
@@ -561,7 +561,7 @@
                         $('#PT').html(result.PT);
                         $('#LT').html(result.LT);
 
-                        addActions();
+                        if (typeof obj === 'AddActions') {AddActions(); }
                     }
                     if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
@@ -599,7 +599,7 @@
                         chartId = 'myBarChart';
                         DrawChart(chartId,labels,data,'Defaut','',max,'bar',"#0275ff","#0275a8");
                     }
-                    addActions();
+                    if (typeof obj === 'AddActions') {AddActions(); }
                 },
                 error: function (result) {
                     alert(result.responseJSON.message);

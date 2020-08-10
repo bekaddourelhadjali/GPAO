@@ -157,7 +157,7 @@ class RapprodController extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z01') {
+            if ($rapport->Zone == 'Z01'||(Auth::check() && Auth::user()->role == "Chef Production")) {
                 if ($rapport->Machine == "E") {
                     $bobines = Bobine::where('Etat', '=', 'MasEPrep')->where('Did','=',$rapport->Did)->select('Bobine')->get();
                     $coulees = Bobine::where('Etat', '=', 'MasEPrep')->where('Did','=',$rapport->Did)->select('Coulee')->distinct('Coulee')->get();

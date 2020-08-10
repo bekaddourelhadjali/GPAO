@@ -103,7 +103,7 @@ class M3Controller extends Controller
 
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z00') {
+            if ($rapport->Zone == 'Z00'||(Auth::check() && Auth::user()->role == "Chef Production")) {
                 $bobines = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Bobine')->get();
                 $coulees = Bobine::where('Etat', '=', 'M3')->orWhere('Etat', '=', 'REC')->select('Coulee')->distinct('Coulee')->get();
                 $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 

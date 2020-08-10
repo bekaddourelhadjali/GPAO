@@ -98,7 +98,7 @@ class M25Controller extends Controller
     {
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
-            if ($rapport->Zone == 'Z07') {
+            if ($rapport->Zone == 'Z07'||(Auth::check() && Auth::user()->role == "Chef Production")) {
                 if ($rapport->Etat == 'N') {
                     $tubes = \App\Fabrication\Tube::where('Did', '=', $rapport->Did)->select(['NumTube', 'Tube', 'Bis'])->get();
                     $detailP = $details = DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 

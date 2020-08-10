@@ -111,7 +111,7 @@ class VFRefusesController extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'DEC') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                     $detailP=$details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
           on p."Pid"=d."Pid" where p."Etat"!=\'C\' and d."Did"=\''.$rapport->Did.'\'')[0];
                     $tubes = \App\Visuel\VisuelFinal::where('Did', '=', $rapport->Did)->where('Defauts','=','Déclassé')->select(['NumTube', 'Tube', 'Bis'])->get();

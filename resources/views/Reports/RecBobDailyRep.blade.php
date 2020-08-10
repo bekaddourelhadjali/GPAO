@@ -183,7 +183,7 @@
                 "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
                 "bRetrieve": true
             });
-            addActions();
+            if (typeof obj === 'AddActions') {AddActions(); }
 
             $('.reportEdit').click(function () {
                 const id = $(this).attr("rapportId").replace(/[^0-9]/g, '');
@@ -344,7 +344,7 @@
                         });
                 $('#NBT').html(result.nbT);
                 $('#PT').html(result.pT);
-                        addActions();
+                        if (typeof obj === 'AddActions') {AddActions(); }
                     }
 
                 },

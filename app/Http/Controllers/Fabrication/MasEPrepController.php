@@ -98,7 +98,7 @@ class MasEPrepController extends Controller
     {
         $rapport =\App\Fabrication\Rapport::find($id);
         if($rapport!=null) {
-        if($rapport->Zone=='Z01'&&$rapport->Machine=="E"){
+        if(($rapport->Zone=='Z01'&&$rapport->Machine=="E")||(Auth::check() && Auth::user()->role == "Chef Production")){
                 $bobines = Bobine::where('Etat','=','MasE')->orWhere('Etat','=','REC')->select('Bobine')->get();
                 $coulees = Bobine::where('Etat','=','MasE')->orWhere('Etat','=','REC')->select('Coulee')->distinct('Coulee')->get();
                 if($rapport->Etat=='N'||Auth::check()){

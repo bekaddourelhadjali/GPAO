@@ -133,7 +133,7 @@ class RX1Controller extends Controller
         $rapport = \App\Fabrication\Rapport::find($id);
         if ($rapport != null) {
             if ($rapport->Zone == 'Z03') {
-                if ($rapport->Etat == 'N') {
+                if ($rapport->Etat == 'N'||(Auth::check() && Auth::user()->role == "Chef Controle")) {
                      $defauts = \App\Visuel\Defauts::where('Zone', '=', 'Z03')->get();
                     $operations = \App\Visuel\Operations::where('Zone', '=', 'Z03')->get();
                     $details= DB::select('Select p."Nom",d."Did",d."Epaisseur",d."Diametre" from "projet" p join "detailprojet" d 
