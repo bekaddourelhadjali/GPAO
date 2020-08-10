@@ -35,6 +35,6 @@ class CreateDetailProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_details');
+        Schema::dropIfExists('detailprojet');
     }
 }

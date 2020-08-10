@@ -24,6 +24,7 @@ class DashboardAdvController extends Controller
         $USReport=[];
         $RX1Report=[];
         $M17Report=[];
+        $RepReport=[];
         $M24Report=[];
         $M25Report=[];
         $NDTReport=[];

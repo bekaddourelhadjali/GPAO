@@ -252,7 +252,7 @@ class DefautsSeeder extends Seeder
 ('REGL FAB','FZ12','Soudure'),
 ('PREV','FZ12','Soudure'),
 ('ABSE','FZ12','Soudure'),
-('AUTRE','FZ12','Soudure'),
+('AUTRE','FZ12','Soudure')
 
 
         ");
