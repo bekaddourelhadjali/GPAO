@@ -252,10 +252,10 @@
                 data: {
                 },
                 success: function (result) {
-                    $('#FABReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
+                    $('#FABReportTable').DataTable().clear().draw();
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#FABReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
+                            $('#FABReportTable').DataTable().row.add([
                                 item.DateSaisie,
                                 item.Epaisseur,
                                 item.Diametre,
@@ -269,7 +269,7 @@
                             );
 
                         });
-                        $('#FABReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
+                        $('#FABReportTable').DataTable().draw(false);
                         $('#FABReportTable tbody tr').attr('style','display: table-row;');
                     }
                     $('#MonthNBT').html(result.MonthNBT);

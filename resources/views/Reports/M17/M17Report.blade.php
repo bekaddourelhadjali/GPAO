@@ -306,7 +306,7 @@
                     data = [];
                     $('#OperationsReport').html('');
                     $('#DefautsTable tbody').html('');
-                    $('#M17ReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
+                    $('#M17ReportTable').DataTable().clear().draw();
                     $('#MonthNBT').html(result.MonthNBT);
                     $('#MonthLT').html(Number(Math.round(result.MonthLT+'e3')+'e-3'));
                     $('#MonthPT').html(Number(Math.round(result.MonthPT+'e3')+'e-3'));

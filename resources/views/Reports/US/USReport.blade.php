@@ -239,10 +239,10 @@
                 data: {
                 },
                 success: function (result) {
-                    $('#USReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).clear().draw();
+                    $('#USReportTable').DataTable().clear().draw();
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
-                            $('#USReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
+                            $('#USReportTable').DataTable().row.add([
                                 item.DateSaisie,
                                 item.Epaisseur,
                                 item.Diametre,
@@ -255,7 +255,7 @@
                             );
 
                         });
-                        $('#USReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).draw(false);
+                        $('#USReportTable').DataTable().draw(false);
                         $('#USReportTable tbody tr').attr('style','display: table-row;');
                     }
                     $('#MonthNBT').html(result.MonthNBT);

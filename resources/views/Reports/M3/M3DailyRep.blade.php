@@ -395,7 +395,7 @@
                     $('#PCT').html('');
                     if (result.reports.length > 0){
                         result.reports.forEach(function (item) {
-                            $('#RecBobReportTable').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]}).row.add([
+                            $('#RecBobReportTable').DataTable().row.add([
                                 'Poste '+item.Poste,
                                 item.Coulee,
                                 item.Bobine,

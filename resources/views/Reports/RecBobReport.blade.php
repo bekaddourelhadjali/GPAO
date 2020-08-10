@@ -276,10 +276,7 @@
             $("#" + tab + " tbody tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
-            $('#RecBobReportTable').DataTable({
-                "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
-                "bRetrieve": true
-            });
+            $('#RecBobReportTable').DataTable();
             calculateColumn(8); calculateColumn(9);
 
         }
@@ -335,10 +332,7 @@
                         $('#YearPT').html('0');
                     }
 
-                    $('#RecBobReportTable').DataTable({
-                        "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
-                        "bRetrieve": true
-                    });
+                    $('#RecBobReportTable').DataTable();
                     calculateColumn(8); calculateColumn(9);
                 },
                 error: function (result) {

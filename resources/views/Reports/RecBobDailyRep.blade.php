@@ -179,7 +179,10 @@
 
         $(document).ready(function () {
             @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
-
+            $('#RecBobReportTable').DataTable({
+                "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+                "bRetrieve": true
+            });
             addActions();
 
             $('.reportEdit').click(function () {
@@ -198,10 +201,7 @@
         @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
 
         function addActions() {
-            $('#RecBobReportTable').DataTable({
-                "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
-                "bRetrieve": true
-            });
+
             reportID=0;
             $("#Reports TR").each(function () {
                 $(this).off('mouseenter');

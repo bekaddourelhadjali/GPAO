@@ -288,13 +288,13 @@
         var table = $('#FABReportTable').DataTable({
             "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true,
-            "deferRender": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]
+            "deferRender": true
         });
 
         $('#FoncTable').DataTable({
             "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true,
-            "deferRender": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]
+            "deferRender": true
         });
         $(document).ready(function () {
             @if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role == "Chef Production")
@@ -447,7 +447,7 @@
                     if (result.reports.length > 0) {
                         result.reports.forEach(function (item) {
                             $('#FABReportTable').DataTable({
-                                "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+                                "bDestroy": true,
                                 "bRetrieve": true,
                                 "deferRender": true,
                             }).row.add([
@@ -474,14 +474,10 @@
 
                         addActions();
                     }
-                    $('#FoncTable').DataTable({
-                        "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
-                        "bRetrieve": true,
-                        "deferRender": true, "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
-                    }).clear().draw();
+                    $('#FoncTable').DataTable().clear().draw();
                     if (result.ArretsReport.length > 0) {
                         result.ArretsReport.forEach(function (item) {
-                            $('#FoncTable').DataTable({"lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]}).row.add([
+                            $('#FoncTable').DataTable().row.add([
                                 'Poste ' + item.Poste,
                                 item.Machine,
                                 item.TypeArret,
