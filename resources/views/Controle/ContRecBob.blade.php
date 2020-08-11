@@ -57,7 +57,7 @@
             </div>
             <hr>
             <div class="table-container">
-                <table class="table table-hover  table-light  table-striped">
+                <table class="table table-hover  table-light  table-striped" id="TestBobs">
                     <thead>
                     <tr class="btn-primary">
                         <th>Epaisseur</th>
@@ -176,8 +176,12 @@
 @endsection
 
 @section('script')
+
+    <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
     <script>
         $(document).ready(function () {
+            $('#TestBobs').DataTable({ "lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]]});
             $('#Did').val('{{$RDid}}');
             $('#Did').change(function () {
                 document.location.href = "{{route('ContRecBob.index')}}/" + $(this).val();

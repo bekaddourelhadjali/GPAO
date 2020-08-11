@@ -367,7 +367,7 @@
     <script>
 
         var table = $('#VisuelReportTable').DataTable({
-            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
+            "bDestroy": true,"lengthMenu": [[ -1,10, 25, 50], ["All",10, 25, 50]],
             "bRetrieve": true,
         });
 
